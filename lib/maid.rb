@@ -2,9 +2,19 @@ module Maid
   autoload :Maid, 'maid/maid'
   autoload :Tools, 'maid/tools'
   autoload :NumericExtensions, 'maid/numeric_extensions'
+  autoload :Rule, 'maid/rule'
 
-  def self.rules(&block)
-    Tools.class_eval(&block)
+  class << self
+    def with_instance(instance)
+      @instance = instance
+      result = yield
+      @instance = nil
+      result
+    end
+
+    def rules(&block)
+      @instance.instance_eval(&block)
+    end
   end
 end
 

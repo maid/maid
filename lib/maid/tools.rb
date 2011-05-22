@@ -1,7 +1,5 @@
 module Maid::Tools
-  class << self
-    # def foo
-    #   'bar'
-    # end
+  def move
+    'my tool'
   end
 end

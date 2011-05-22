@@ -52,7 +52,7 @@ module Maid
     describe '#clean' do
       before :each do
         @maid = Maid.new
-        @maid.stub!(:process_rules)
+        @maid.stub!(:add_rules)
         @logger.stub!(:info)
       end
 
@@ -63,26 +63,49 @@ module Maid
       end
 
       it 'should process the default rules' do
-        @maid.should_receive(:process_rules).with(Maid::DEFAULTS[:rules_path])
+        @maid.should_receive(:add_rules).with(Maid::DEFAULTS[:rules_path])
         @maid.clean
       end
 
       it 'should process the given rules, if provided' do
         rules_path = '/home/username/.local/maid/rules.rb'
-        @maid.should_receive(:process_rules).with(rules_path)
+        @maid.should_receive(:add_rules).with(rules_path)
         @maid.clean(rules_path)
       end
     end
 
-    describe '#process_rules' do
+    describe '#add_rules' do
       before :each do
+        Kernel.stub!(:require)
         @maid = Maid.new
+      end
+
+      it 'should set the Maid instance' do
+        ::Maid.should_receive(:with_instance).with(@maid)
+        @maid.add_rules('path')
       end
 
       it 'should require the path' do
         path = 'rules.rb'
         Kernel.should_receive(:require).with(path)
-        @maid.process_rules(path)
+        @maid.add_rules(path)
+      end
+    end
+
+    describe '#rule' do
+      before :each do
+        @maid = Maid.new
+      end
+
+      it 'should add a rule to the list of rules' do
+        @maid.rules.length.should == 0
+
+        @maid.rule 'description' do
+          'instructions'
+        end
+
+        @maid.rules.length.should == 1
+        @maid.rules.first.description.should == 'description'
       end
     end
   end

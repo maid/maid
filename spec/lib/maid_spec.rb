@@ -6,9 +6,21 @@ describe Maid do
   end
 end
 
+describe Maid, '.with_instance' do
+  it 'should temporarily set the instance to the given argument and execute the block' do
+    instance = mock('instance')
+    Maid.with_instance(instance) { 0 }.should == 0
+    Maid.instance_eval { @instance }.should be_nil
+  end
+end
+
 describe Maid, '.rules' do
-  it 'should run in the context of Tools' do
-    Maid::Tools.should_receive(:class_eval)
-    Maid.rules { 'rule block' }
+  it 'should run in the context of the Maid::Maid instance' do
+    instance = mock('instance')
+    instance.should_receive(:foo)
+
+    Maid.with_instance(instance) do
+      Maid.rules { foo }
+    end
   end
 end
