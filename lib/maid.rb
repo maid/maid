@@ -1,3 +1,3 @@
 module Maid
-  # Your code goes here...
+  autoload :Maid, 'maid/maid'
 end
