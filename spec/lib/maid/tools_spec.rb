@@ -4,16 +4,15 @@ module Maid
   describe Tools do
     before :each do
       @home = File.expand_path('~')
+      FileUtils.stub!(:mv)
 
       Maid.ancestors.should include(Tools)
       @maid = Maid.new
-      FileUtils.stub!(:mv)
+      @logger  = @maid.instance_eval { @logger }
     end
 
     describe '#move' do
       before :each do
-        @logger  = @maid.instance_eval { @logger }
-
         @from    = '~/Downloads/foo.zip'
         @to      = '~/Reference/'
         @options = @maid.file_options
@@ -70,6 +69,49 @@ module Maid
         f = lambda { }
         Find.should_receive(:find).with("#@home/Downloads/foo.zip", &f)
         @maid.find('~/Downloads/foo.zip', &f)
+      end
+    end
+
+    describe '#downloaded_from' do
+      it 'should use Spotlight metadata to determine the download site' do
+        @maid.should_receive(:cmd).and_return(%Q{(\n    "http://www.site.com/foo.zip",\n"http://www.site.com/"\n)})
+        @maid.downloaded_from('foo.zip').should == ['http://www.site.com/foo.zip', 'http://www.site.com/']
+      end
+    end
+
+    describe '#duration_s' do
+      it 'should use Spotlight metadata to determine audio length' do
+        @maid.should_receive(:cmd).and_return('235.705')
+        @maid.duration_s('foo.mp3').should == 235.705
+      end
+    end
+
+    describe '#locate' do
+      it 'should use Spotlight to locate a file by name' do
+        @maid.should_receive(:cmd).and_return("/a/foo.zip\n/b/foo.zip\n")
+        @maid.locate('foo.zip').should == ['/a/foo.zip', '/b/foo.zip']
+      end
+    end
+
+    describe '#zipfile_contents' do
+      it 'should use unzip to inspect the contents of a .zip file' do
+        @maid.should_receive(:cmd).and_return("foo/foo.exe\nfoo/README.txt\n")
+        @maid.zipfile_contents('foo.zip').should == ['foo/foo.exe', 'foo/README.txt']
+      end
+    end
+
+    describe '#disk_usage' do
+      it 'should use du to find the disk usage of a file' do
+        @maid.should_receive(:cmd).and_return("136     foo.zip")
+        @maid.disk_usage('foo.zip').should == 136
+      end
+    end
+
+    describe '#git_piston' do
+      it 'should pull and push the given git repository, logging the action' do
+        @maid.should_receive(:cmd).with(%Q{cd "#@home/code/projectname" && git pull && git push 2>&1})
+        @logger.should_receive(:info)
+        @maid.git_piston('~/code/projectname')
       end
     end
   end
