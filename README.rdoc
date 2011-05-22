@@ -1,1 +1,13 @@
 = Maid
+
+Sample rules file format:
+
+  Maid.rules do
+    rule 'files downloaded while developing' do
+      'foo'
+    end
+  
+    rule 'MP3s likely to be music' do
+      'bar'
+    end
+  end

@@ -5,6 +5,7 @@ module Maid
   autoload :Rule, 'maid/rule'
 
   class << self
+    # Execute the block with the Maid instance set to <tt>instance</tt>.
     def with_instance(instance)
       @instance = instance
       result = yield
@@ -12,6 +13,7 @@ module Maid
       result
     end
 
+    # Define rules for the Maid instance.
     def rules(&block)
       @instance.instance_eval(&block)
     end

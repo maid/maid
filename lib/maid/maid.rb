@@ -49,6 +49,7 @@ class Maid::Maid
     end
   end
 
+  # Add a rule with a description and instructions (lambda function).
   def rule(description, &instructions)
     @rules << ::Maid::Rule.new(description, instructions)
   end
