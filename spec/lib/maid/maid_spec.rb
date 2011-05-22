@@ -47,6 +47,29 @@ module Maid
         @logger.should_receive(:progname=).with('Fran')
         Maid.new(:progname => 'Fran')
       end
+
+      it 'should set the file options to the defaults' do
+        Maid.new.file_options.should == Maid::DEFAULTS[:file_options]
+      end
+
+      it 'should set the file options to the given options, if provided' do
+        maid = Maid.new(:file_options => {:verbose => true})
+        maid.file_options.should == {:verbose => true}
+      end
+
+      it 'should set the rules path' do
+        Maid.new.rules_path.should == Maid::DEFAULTS[:rules_path]
+      end
+
+      it 'should set the ruels pathto the given path, if provided' do
+        maid = Maid.new(:rules_path => 'Maidfile')
+        maid.rules_path.should == 'Maidfile'
+      end
+
+      it 'should ignore nil options' do
+        maid = Maid.new(:rules_path => nil)
+        maid.rules_path.should == Maid::DEFAULTS[:rules_path]
+      end
     end
 
     describe '#clean' do

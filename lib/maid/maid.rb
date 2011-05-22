@@ -8,12 +8,11 @@ class Maid::Maid
     :log_path   => File.expand_path('~/.maid/maid.log'),
     :rules_path => File.expand_path('~/.maid/rules.rb'),
     :trash_path => File.expand_path('~/.Trash'),
-    # :file_utils => {:noop => true, :verbose => true},
+    :file_options => {:noop => true, :verbose => true}, # for FileUtils
   }.freeze
 
   include ::Maid::Tools
-  attr_reader :trash_path
-  attr_reader :rules
+  attr_reader :file_options, :rules, :rules_path, :trash_path
 
   # Make a new Maid, setting up paths for the log and trash.
   # 
@@ -22,13 +21,15 @@ class Maid::Maid
   #   Maid::Maid.new(:log_path => '/home/username/log/maid.log', :trash_path => '/home/username/.local/share/Trash/files/')
   # 
   def initialize(options = {})
-    options = DEFAULTS.merge(options)
+    options = DEFAULTS.merge(options.reject { |k, v| v.nil? })
 
     FileUtils.mkdir_p(File.dirname(options[:log_path]))
     @logger = Logger.new(options[:log_path])
     @logger.progname = options[:progname]
 
+    @rules_path = options[:rules_path]
     @trash_path = options[:trash_path]
+    @file_options = options[:file_options]
 
     @rules = []
   end
