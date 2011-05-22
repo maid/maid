@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'find'
 require 'time'
 
 module Maid::Tools
@@ -24,5 +25,13 @@ module Maid::Tools
     else
       move(path, @trash_path)
     end
+  end
+
+  def dir(glob)
+    Dir[File.expand_path(glob)]
+  end
+
+  def find(path, &block)
+    Find.find(File.expand_path(path), &block)
   end
 end
