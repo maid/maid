@@ -8,7 +8,7 @@ class Maid::Maid
     :log_path   => File.expand_path('~/.maid/maid.log'),
     :rules_path => File.expand_path('~/.maid/rules.rb'),
     :trash_path => File.expand_path('~/.Trash'),
-    :file_options => {:noop => true, :verbose => true}, # for FileUtils
+    :file_options => {:noop => true}, # for FileUtils
   }.freeze
 
   include ::Maid::Tools
