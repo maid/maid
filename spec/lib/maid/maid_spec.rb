@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'maid/maid'
 
 module Maid
   describe Maid do
