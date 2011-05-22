@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'rspec'
+require 'timecop'
 
 require 'maid'
 
