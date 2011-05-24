@@ -71,7 +71,7 @@ To do this, edit your crontab in your tool of choice and have it invoke the <tt>
 Example for every day at 1am:
 
     # minute hour day_of_month month day_of_week command_to_execute
-    0 1 * * * bash -li -c "maid --silent"
+    0 1 * * * /bin/bash -li -c "maid --silent"
 
 == Sample and Ideas
 
