@@ -38,6 +38,7 @@ class Maid::Maid
   
   # Start cleaning, based on the rules defined at rules_path.
   def clean
+    @logger.info "maid v#{Maid::VERSION}"
     @logger.info 'Started'
     add_rules(@rules_path)
     follow_rules

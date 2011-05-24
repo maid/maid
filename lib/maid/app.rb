@@ -10,7 +10,9 @@ class Maid::App < Thor
   method_option :silent, :type => :boolean, :aliases => %w[-s]
   def clean
     maid = Maid::Maid.new(maid_options(options))
-    say "Logging actions to #{maid.log_path.inspect}" unless options.silent? || options.noop?
+    unless options.silent? || options.noop?
+      say "Logging actions to #{maid.log_path.inspect}"
+    end
     maid.clean
   end
 

@@ -1,12 +1,23 @@
 require 'spec_helper'
+require 'stringio'
 
 module Maid
   describe App, '#clean' do
+    def capture_stdout
+      out = StringIO.new
+      $stdout = out
+      yield
+      return out
+    ensure
+      $stdout = STDOUT
+    end
+
     before :each do
       @app = App.new
       @app.stub!(:maid_options)
       @app.stub!(:say)
 
+      # NOTE It's pretty important that this is stubbed, unless you want your rules to be run over and over when you test!
       @maid = mock('Maid')
       @maid.stub!(:clean)
       @maid.stub!(:log_path)
@@ -23,6 +34,10 @@ module Maid
     it 'should tell the Maid to clean' do
       @maid.should_receive(:clean)
       @app.clean
+    end
+
+    it 'should be silent if given the --silent option' do
+      capture_stdout { App.start(['clean', '--silent']) }.string.should == ''
     end
   end
 
