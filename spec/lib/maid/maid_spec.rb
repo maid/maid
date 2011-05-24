@@ -91,10 +91,9 @@ module Maid
       end
 
       it 'should follow the given rules, if provided' do
-        rules_path = '/home/username/.local/maid/rules.rb'
-        @maid.should_receive(:add_rules).with(rules_path)
+        @maid.should_receive(:add_rules)
         @maid.should_receive(:follow_rules)
-        @maid.clean(rules_path)
+        @maid.clean
       end
     end
 

@@ -65,7 +65,7 @@ module Maid::Tools
   # Run a shell command.
   #
   # Delegates to Kernel.`.  Made primarily for testing other commands.
-  def cmd(command)
+  def cmd(command) #:nodoc:
     %x(#{command})
   end
 

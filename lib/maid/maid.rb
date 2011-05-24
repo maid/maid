@@ -37,9 +37,9 @@ class Maid::Maid
   end
   
   # Start cleaning, based on the rules defined at rules_path.
-  def clean(rules_path = DEFAULTS[:rules_path])
+  def clean
     @logger.info 'Started'
-    add_rules(rules_path)
+    add_rules(@rules_path)
     follow_rules
     @logger.info 'Finished'
   end

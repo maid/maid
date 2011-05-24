@@ -7,7 +7,6 @@ class Maid::App < Thor
   desc 'clean', 'Clean based on rules'
   method_option :rules, :type => :string,  :aliases => %w[-r]
   method_option :noop,  :type => :boolean, :aliases => %w[-n --dry-run]
-
   def clean
     maid = Maid::Maid.new(maid_options(options))
     say "Logging actions to #{maid.log_path.inspect}" unless options.noop?
