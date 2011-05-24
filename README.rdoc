@@ -6,7 +6,21 @@ Your maid keeps files from sitting around too long, untouched.  Many of the down
 
 Worried about things happening that you don't expect?  Your maid doesn't overwrite files and actions are logged so you can tell what happened.
 
+Maid is inspired by the Mac OS X shareware program Hazel[http://www.noodlesoft.com/hazel.php].  This tool was created on Mac OS X 10.6, but should be generally portable to other systems.  (Some of the more advanced features such as <tt>downloaded_from</tt> require OS X, however.)
+
 Your rules are defined in Ruby, so easy rules are easy and difficult rules are possible.
+
+== Installation
+
+If you have RubyGems installed (default on OS X and most Ruby installations):
+
+    gem install maid
+
+If you want to install the executable into <tt>/usr/bin</tt>, you may need to give root access:
+
+    sudo gem install maid
+
+Maid is currently in beta, but I encourage you to give it a try.  I'm using it on several computers daily.
 
 == Tutorial
 
@@ -14,33 +28,55 @@ Maid can be used in several ways.
 
 Before you start running your rules, you'll likely want to test them using one of the following forms:
 
-    maid --dry-run  # Does a "dry run" of your rules.  No actions are taken; you just see what would happen with your rules as defined.
+    # Do a "dry run" of your rules.
+    # No actions are taken; you just see what would happen with your rules as defined.
+    maid --dry-run
     maid --noop
     maid -n
 
 To run your rules on demand, you can run <tt>maid</tt> manually:
 
-    maid                    # Runs the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
-    maid -r some_rules.rb   # Runs the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
+    maid                    # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
+    maid -r some_rules.rb   # Run the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
+
+So, for example, if this is <tt>some_rules.rb</tt>:
+
+    Maid.rules do
+      rule 'pdf files' do
+        dir('~/Downloads/*.pdf').each do |path|
+          move(path, path) # Intentionally does nothing
+        end
+      end
+    end
+
+This is the command to test, as well as some sample output:
+
+    $ maid -nr some_rules.rb
+    Started
+    Rule: pdf files
+    mv "/Users/ben/Downloads/bill.pdf" "/Users/ben/Downloads/bill.pdf"
+    mv "/Users/ben/Downloads/book.pdf" "/Users/ben/Downloads/book.pdf"
+    mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Downloads/issue12.pdf"
+    mv "/Users/ben/Downloads/spring2011newsletter.pdf" "/Users/ben/Downloads/spring2011newsletter.pdf"
+    Finished
+
+For more helper methods, please see the documentation of Maid::Tools.
+
+=== Automation
 
 Once you get a hang for what you can do with Maid, the easiest way is to let Maid do its stuff automatically throughout the day.  You'll find your computer stays a little tidier with as you teach it how to handle your common files.
 
-To do this, edit your crontab in your tool of choice and have it invoke the "maid" command.  The "--silent" option is provided to keep this from emailing you, if desired.  A log of the actions taken is kept at ~/.maid/maid.log.
+To do this, edit your crontab in your tool of choice and have it invoke the <tt>maid</tt> command.  The <tt>--silent</tt> option is provided to keep this from emailing you, if desired.  A log of the actions taken is kept at <tt>~/.maid/maid.log</tt>.
 
 Example for every day at 1am:
 
     # minute hour day_of_month month day_of_week command_to_execute
-    0 1 * * * bash -li -c maid --silent
-
-This tool was created for use on Mac OS X 10.6, but should be generally portable to other systems.  Some of the more advanced features (such as downloaded_from) require it.
+    0 1 * * * bash -li -c "maid --silent"
 
 == Sample and Ideas
 
-Helper methods are in the Maid::Tools module.
-
-Here's a sampling from my rules file to get you started:
+Here's a sampling from my <tt>~/.maid/rules.rb</tt> file to get you started:
   
-  # Store this file at ~/.maid/rules.rb
   software_archive_path = '~/Reference/Software/'
 
   osx_app_extensions = %w[app dmg pkg wdgt]
