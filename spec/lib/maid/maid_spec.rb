@@ -131,5 +131,21 @@ module Maid
         @maid.rules.first.description.should == 'description'
       end
     end
+
+    describe '#follow_rules' do
+      it 'should follow each rule' do
+        n = 3
+        maid = Maid.new
+        @logger.should_receive(:info).exactly(n).times
+        rules = (1..n).map do |n|
+          mock = mock("rule ##{n}", :description => 'description')
+          mock.should_receive(:follow)
+          mock
+        end
+        maid.instance_eval { @rules = rules }
+
+        maid.follow_rules
+      end
+    end
   end
 end

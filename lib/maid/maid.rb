@@ -49,8 +49,16 @@ class Maid::Maid
     end
   end
 
-  # Add a rule with a description and instructions (lambda function).
+  # Register a rule with a description and instructions (lambda function).
   def rule(description, &instructions)
     @rules << ::Maid::Rule.new(description, instructions)
+  end
+
+  # Follow all registered rules.
+  def follow_rules
+    @rules.each do |rule|
+      @logger.info("Rule: #{rule.description}")
+      rule.follow
+    end
   end
 end
