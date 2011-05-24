@@ -29,7 +29,7 @@ module Maid
   describe App, '#version' do
     it 'should print out the gem version' do
       app = App.new
-      app.should_receive(:say).with(Maid::VERSION)
+      app.should_receive(:say).with(VERSION)
       app.version
     end
   end
@@ -47,8 +47,8 @@ module Maid
     end
 
     it 'should set the rules path when given rules' do
-      opts = @app.maid_options('rules' => 'Maidfile')
-      opts[:rules_path].should == 'Maidfile'
+      opts = @app.maid_options('rules' => 'maid_rules.rb')
+      opts[:rules_path].should match(/\/maid_rules.rb$/)
     end
   end
 end
