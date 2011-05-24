@@ -26,6 +26,14 @@ module Maid
     end
   end
 
+  describe App, '#version' do
+    it 'should print out the gem version' do
+      app = App.new
+      app.should_receive(:say).with(Maid::VERSION)
+      app.version
+    end
+  end
+
   describe App, '#maid_options' do
     before :each do
       @app = App.new

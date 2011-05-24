@@ -13,6 +13,11 @@ class Maid::App < Thor
     maid.clean
   end
 
+  desc 'version', 'print version number'
+  def version
+    say Maid::VERSION
+  end
+
   no_tasks do
     def maid_options(options)
       h = {}

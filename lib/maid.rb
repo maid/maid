@@ -4,6 +4,7 @@ module Maid
   autoload :Tools, 'maid/tools'
   autoload :NumericExtensions, 'maid/numeric_extensions'
   autoload :Rule, 'maid/rule'
+  autoload :VERSION, 'maid/version'
 
   class << self
     # Execute the block with the Maid instance set to <tt>instance</tt>.
