@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Benjamin Oakes"]
   s.email       = ["hello@benjaminoakes.com"]
-  s.homepage    = "http://www.benjaminoakes.com/"
+  s.homepage    = "http://github.com/benjaminoakes/maid"
   s.summary     = %q{Maid cleans up after you, based on rules you define.}
   s.description = s.summary
 
