@@ -1,13 +1,164 @@
 = Maid
 
-Sample rules file format:
+Maid cleans up after you, based on rules you define.
+
+Your maid keeps files from sitting around too long, untouched.  Many of the downloads and other files you collect can easily be categorized and handled appropriately by rules you define.  Let the maid in your computer take care of the easy stuff, so you can spend more of your time on what matters.
+
+Worried about things happening that you don't expect?  Your maid doesn't overwrite files and actions are logged so you can tell what happened.
+
+Your rules are defined in Ruby, so easy rules are easy and difficult rules are possible.
+
+== Tutorial
+
+Maid can be used in several ways.
+
+Before you start running your rules, you'll likely want to test them using one of the following forms:
+
+    maid --dry-run  # Does a "dry run" of your rules.  No actions are taken; you just see what would happen with your rules as defined.
+    maid --noop
+    maid -n
+
+To run your rules on demand, you can run <tt>maid</tt> manually:
+
+    maid                    # Runs the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
+    maid -r some_rules.rb   # Runs the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
+
+Once you get a hang for what you can do with Maid, the easiest way is to let Maid do its stuff automatically throughout the day.  You'll find your computer stays a little tidier with as you teach it how to handle your common files.  To do this, edit your crontab in your tool of choice and have it invoke the "maid" command.  A log of the actions taken is kept at ~/.maid/maid.log.
+
+This tool was created for use on Mac OS X 10.6, but should be generally portable to other systems.  Some of the more advanced features (such as downloaded_from) require it.
+
+== Sample and Ideas
+
+Helper methods are in the Maid::Tools module.
+
+Here's a sampling from my rules file to get you started:
+  
+  # Store this file at ~/.maid/rules.rb
+  software_archive_path = '~/Reference/Software/'
+
+  osx_app_extensions = %w[app dmg pkg wdgt]
+  osx_app_patterns = osx_app_extensions.map { |ext| (/\.#{ext}\/$/) }
+  linux_app_archive_path = "#{software_archive_path}/Linux/"
+  osx_app_archive_path = "#{software_archive_path}/Mac OS X/"
+  win_app_archive_path = "#{software_archive_path}/Windows XP/"
 
   Maid.rules do
-    rule 'files downloaded while developing' do
-      'foo'
+    rule 'Files downloaded while developing' do
+      dir('~/Downloads/*').select do |path|
+        if downloaded_from(path).any? { |url| url.match(/^http:\/\/localhost:/) || url.match('staging.yourcompany.com') }
+          trash(path)
+        end
+      end
     end
-  
+
     rule 'MP3s likely to be music' do
-      'bar'
+      dir('~/Downloads/*.mp3').each do |path|
+        if duration_s(path) > 30.0
+          move(path, '~/Music/iTunes/iTunes Media/Automatically Add to iTunes/')
+        end
+      end
+    end
+
+    rule 'Accidentally downloaded HTML' do # this basically only happens to me on accident
+      dir('~/Downloads/*.html').each do |path|
+        trash(path)
+      end
+    end
+
+    rule 'Linux ISOs, etc' do
+      dir('~/Downloads/*.iso').each do |path|
+        move(path, software_archive_path)
+      end
+    end
+
+    rule 'Linux applications in Debian packages' do
+      dir('~/Downloads/*.deb').each do |path|
+        move(path, linux_app_archive_path)
+      end
+    end
+
+    rule 'Mac OS X applications in disk images' do
+      dir('~/Downloads/*.dmg').each do |path|
+        move(path, osx_app_archive_path)
+      end
+    end
+
+    rule 'Mac OS X applications in zip files' do
+      dir('~/Downloads/*.zip').select do |path|
+        candidates = zipfile_contents(path)
+        candidates.any? { |c| osx_app_patterns.any? { |re| c.match(re) } }
+      end.each do |path|
+        move(path, osx_app_archive_path)
+      end
+    end
+
+    rule 'Windows applications' do
+      dir('~/Downloads/*.exe').each do |path|
+        move(path, win_app_archive_path)
+      end
+    end
+
+    rule 'Windows applications in zip files' do
+      dir('~/Downloads/*.zip').select do |path|
+        candidates = zipfile_contents(path)
+        candidates.any? { |candidate| candidate.match(/\.exe$/) }
+      end.each do |path|
+        move(path, win_app_archive_path)
+      end
+    end
+
+    rule 'Accidental Wikipedia downloads' do
+      dir('~/Downloads/*').each do |path|
+        if downloaded_from(path).any? { |url| url.match('wikipedia') }
+          trash(path)
+        end
+      end
+    end
+
+    # If you store your working files in ~/Outbox/ (like Ethan Schoonover's "Kinkless Desktop"), you can have them automatically filed away...
+
+    rule 'JS snippets I write' do
+      dir('~/Outbox/*.js').each do |path|
+        if 1.weeks.ago > File.atime(path)
+          move(path, '~/Projects/snippets/javascript/')
+        end
+      end
+    end
+      
+    rule 'Ruby snippets' do
+      dir('~/Outbox/*.rb').each do |path|
+        if 1.week.ago > File.atime(path)
+          move(path, '~/Projects/snippets/ruby/')
+        end
+      end
+    end
+
+    rule 'Email drafts' do
+      dir('~/Outbox/*.eml').each do |path|
+        if 1.week.ago > File.atime(path)
+          move(path, '~/Archive/Misc Drafts/')
+        end
+      end
+    end
+    
+    rule 'Misc notes' do
+      %w[md markdown rtf txt].inject([]) { |all, ext| all + dir("~/Outbox/*.#{ext}") }.each do |path|
+        if 1.week.ago > File.atime(path)
+          move(path, '~/Archive/Misc Notes/')
+        end
+      end
+    end
+
+    rule 'Misc Screenshots' do
+      dir('~/Outbox/Screen shot *').each do |path|
+        if 1.week.ago > File.atime(path)
+          move(path, '~/Archive/Misc Screenshots/')
+        end
+      end
+    end
+     
+    rule 'Clear my working "temp" directory' do
+      trash('~/tmp')
+      FileUtils.mkdir_p(File.expand_path('~/tmp'))
     end
   end
