@@ -5,11 +5,12 @@ class Maid::App < Thor
   default_task 'clean'
 
   desc 'clean', 'Clean based on rules'
-  method_option :rules, :type => :string,  :aliases => %w[-r]
-  method_option :noop,  :type => :boolean, :aliases => %w[-n --dry-run]
+  method_option :rules,  :type => :string,  :aliases => %w[-r]
+  method_option :noop,   :type => :boolean, :aliases => %w[-n --dry-run]
+  method_option :silent, :type => :boolean, :aliases => %w[-s]
   def clean
     maid = Maid::Maid.new(maid_options(options))
-    say "Logging actions to #{maid.log_path.inspect}" unless options.noop?
+    say "Logging actions to #{maid.log_path.inspect}" unless options.silent? || options.noop?
     maid.clean
   end
 

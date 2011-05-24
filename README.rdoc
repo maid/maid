@@ -23,7 +23,9 @@ To run your rules on demand, you can run <tt>maid</tt> manually:
     maid                    # Runs the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
     maid -r some_rules.rb   # Runs the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
 
-Once you get a hang for what you can do with Maid, the easiest way is to let Maid do its stuff automatically throughout the day.  You'll find your computer stays a little tidier with as you teach it how to handle your common files.  To do this, edit your crontab in your tool of choice and have it invoke the "maid" command.  A log of the actions taken is kept at ~/.maid/maid.log.
+Once you get a hang for what you can do with Maid, the easiest way is to let Maid do its stuff automatically throughout the day.  You'll find your computer stays a little tidier with as you teach it how to handle your common files.
+
+To do this, edit your crontab in your tool of choice and have it invoke the "maid" command.  The "--silent" option is provided to keep this from emailing you, if desired.  A log of the actions taken is kept at ~/.maid/maid.log.
 
 This tool was created for use on Mac OS X 10.6, but should be generally portable to other systems.  Some of the more advanced features (such as downloaded_from) require it.
 
