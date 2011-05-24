@@ -27,6 +27,11 @@ Once you get a hang for what you can do with Maid, the easiest way is to let Mai
 
 To do this, edit your crontab in your tool of choice and have it invoke the "maid" command.  The "--silent" option is provided to keep this from emailing you, if desired.  A log of the actions taken is kept at ~/.maid/maid.log.
 
+Example for every day at 1am:
+
+    # minute hour day_of_month month day_of_week command_to_execute
+    0 1 * * * bash -li -c maid --silent
+
 This tool was created for use on Mac OS X 10.6, but should be generally portable to other systems.  Some of the more advanced features (such as downloaded_from) require it.
 
 == Sample and Ideas
