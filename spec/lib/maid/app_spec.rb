@@ -48,7 +48,7 @@ module Maid
 
     it 'should set the rules path when given rules' do
       opts = @app.maid_options('rules' => 'maid_rules.rb')
-      opts[:rules_path].should match(/\/maid_rules.rb$/)
+      opts[:rules_path].should match(/maid_rules.rb$/)
     end
   end
 end
