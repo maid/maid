@@ -1,4 +1,5 @@
 module Maid
+  autoload :App, 'maid/app'
   autoload :Maid, 'maid/maid'
   autoload :Tools, 'maid/tools'
   autoload :NumericExtensions, 'maid/numeric_extensions'
@@ -22,4 +23,8 @@ end
 
 class Numeric
   include Maid::NumericExtensions
+end
+
+if __FILE__ == $PROGRAM_NAME
+  Maid::App.start
 end

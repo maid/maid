@@ -12,7 +12,7 @@ class Maid::Maid
   }.freeze
 
   include ::Maid::Tools
-  attr_reader :file_options, :rules, :rules_path, :trash_path
+  attr_reader :file_options, :log_path, :rules, :rules_path, :trash_path
 
   # Make a new Maid, setting up paths for the log and trash.
   # 
@@ -23,9 +23,11 @@ class Maid::Maid
   def initialize(options = {})
     options = DEFAULTS.merge(options.reject { |k, v| v.nil? })
 
-    FileUtils.mkdir_p(File.dirname(options[:log_path]))
-    @logger = Logger.new(options[:log_path])
+    @log_path = options[:log_path]
+    FileUtils.mkdir_p(File.dirname(@log_path)) unless @log_path.kind_of?(IO)
+    @logger = Logger.new(@log_path)
     @logger.progname = options[:progname]
+    @logger.formatter = options[:log_formatter] if options[:log_formatter]
 
     @rules_path = options[:rules_path]
     @trash_path = options[:trash_path]
@@ -38,6 +40,7 @@ class Maid::Maid
   def clean(rules_path = DEFAULTS[:rules_path])
     @logger.info 'Started'
     add_rules(rules_path)
+    follow_rules
     @logger.info 'Finished'
   end
 
