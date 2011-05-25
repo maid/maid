@@ -2,6 +2,7 @@ require 'rubygems'
 require 'thor'
 
 class Maid::App < Thor
+  check_unknown_options!
   default_task 'clean'
 
   desc 'clean', 'Clean based on rules'
