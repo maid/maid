@@ -114,6 +114,6 @@ module Maid::Tools
   def git_piston(path)
     full_path = File.expand_path(path)
     stdout = cmd("cd #{full_path.inspect} && git pull && git push 2>&1")
-    @logger.info "Fired piston on #{full_path.inspect}.  STDOUT:\n\n#{stdout}"
+    @logger.info "Fired git piston on #{full_path.inspect}.  STDOUT:\n\n#{stdout}"
   end
 end
