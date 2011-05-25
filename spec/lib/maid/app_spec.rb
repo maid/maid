@@ -37,6 +37,7 @@ module Maid
     end
 
     it 'should be silent if given the --silent option' do
+      # TODO It might even make sense to wrap "maid.clean" in capture_stdout { }...
       capture_stdout { App.start(['clean', '--silent']) }.string.should == ''
     end
   end
