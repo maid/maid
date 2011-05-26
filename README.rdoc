@@ -4,7 +4,7 @@ Be lazy!  Let Maid clean up after you, based on rules you define.
 
 Your maid keeps files from sitting around too long, untouched.  Many of the downloads and other files you collect can easily be categorized and handled appropriately by rules you define.  Let the maid in your computer take care of the easy stuff, so you can spend more of your time on what matters.
 
-Worried about things happening that you don't expect?  Your maid doesn't overwrite files and actions are logged so you can tell what happened.
+Think of it like the email filters you might already have, but for files.  Worried about things happening that you don't expect?  Your maid doesn't overwrite files and actions are logged so you can tell what happened.
 
 Maid is inspired by the Mac OS X shareware program Hazel[http://www.noodlesoft.com/hazel.php].  This tool was created on Mac OS X 10.6, but should be generally portable to other systems.  (Some of the more advanced features such as <tt>downloaded_from</tt> require OS X, however.)
 
