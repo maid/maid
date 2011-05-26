@@ -99,7 +99,7 @@ module Maid
 
     describe '#add_rules' do
       before :each do
-        Kernel.stub!(:require)
+        Kernel.stub!(:load)
         @maid = Maid.new
       end
 
@@ -108,9 +108,9 @@ module Maid
         @maid.add_rules('path')
       end
 
-      it 'should require the path' do
+      it 'should load the path' do
         path = 'rules.rb'
-        Kernel.should_receive(:require).with(path)
+        Kernel.should_receive(:load).with(path)
         @maid.add_rules(path)
       end
     end

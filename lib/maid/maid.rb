@@ -49,7 +49,8 @@ class Maid::Maid
   def add_rules(path)
     Maid.with_instance(self) do
       # Using 'Kernel' here to help with testability
-      Kernel.require(path)
+      # Kernel.load must be used for non-".rb" files to be required, it seems.
+      Kernel.load(path)
     end
   end
 
