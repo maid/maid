@@ -12,6 +12,15 @@ module Maid
       $stdout = STDOUT
     end
 
+    def capture_stderr
+      out = StringIO.new
+      $stderr = out
+      yield
+      return out
+    ensure
+      $stderr = STDERR
+    end
+
     before :each do
       @app = App.new
       @app.stub!(:maid_options)
@@ -39,6 +48,14 @@ module Maid
     it 'should be silent if given the --silent option' do
       # TODO It might even make sense to wrap "maid.clean" in capture_stdout { }...
       capture_stdout { App.start(['clean', '--silent']) }.string.should == ''
+    end
+
+    it 'should complain about a MISSPELLED option' do
+      capture_stderr { App.start(['clean', '--slient']) }.string.should match(/Unknown/)
+    end
+
+    it 'should complain about an undefined task' do
+      capture_stderr { App.start(['rules.rb']) }.string.should match(/Could not find/)
     end
   end
 
