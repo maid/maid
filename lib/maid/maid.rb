@@ -4,10 +4,10 @@ require 'logger'
 # Maid cleans up according to the given rules, logging what it does.
 class Maid::Maid
   DEFAULTS = {
-    :progname   => 'Maid',
-    :log_path   => File.expand_path('~/.maid/maid.log'),
-    :rules_path => File.expand_path('~/.maid/rules.rb'),
-    :trash_path => File.expand_path('~/.Trash'),
+    :progname     => 'Maid',
+    :log_path     => File.expand_path('~/.maid/maid.log'),
+    :rules_path   => File.expand_path('~/.maid/rules.rb'),
+    :trash_path   => File.expand_path('~/.Trash'),
     :file_options => {:noop => true}, # for FileUtils
   }.freeze
 
