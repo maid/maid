@@ -113,6 +113,12 @@ module Maid
         Kernel.should_receive(:load).with(path)
         @maid.add_rules(path)
       end
+
+      it 'should give an error on STDERR if there is a LoadError' do
+        Kernel.stub!(:load).and_raise(LoadError)
+        STDERR.should_receive(:puts)
+        @maid.add_rules('path')
+      end
     end
 
     describe '#rule' do

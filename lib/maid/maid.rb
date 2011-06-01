@@ -52,6 +52,8 @@ class Maid::Maid
       # Kernel.load must be used for non-".rb" files to be required, it seems.
       Kernel.load(path)
     end
+  rescue LoadError => e
+    STDERR.puts e.message
   end
 
   # Register a rule with a description and instructions (lambda function).
