@@ -12,15 +12,19 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 
 == Installation
 
+Maid is currently in beta, but I encourage you to give it a try.  I'm using it on several computers daily.
+
 If you have RubyGems installed (default on OS X and most Ruby installations):
 
     gem install maid
 
-If you want to install the executable into <tt>/usr/bin</tt>, you may need to give root access:
+If you want to install the executable for all users, you may need to give root access:
 
     sudo gem install maid
 
-Maid is currently in beta, but I encourage you to give it a try.  I'm using it on several computers daily.
+Not needed on Mac OS X:  You might also need to add the RubyGems <tt>bin</tt> directory to your <tt>$PATH</tt>.  For example, on Ubuntu you might need to add something like this to your <tt>~/.bashrc</tt>:
+
+    export PATH="/var/lib/gems/1.8/bin:$PATH"
 
 == Tutorial
 
