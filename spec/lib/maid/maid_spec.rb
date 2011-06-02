@@ -164,9 +164,9 @@ module Maid
         @maid.cmd('not-a-real-command arg1 arg2')
       end
 
-      it 'should report `cd` as a real command' do
+      it 'should report `echo` as a real command' do
         STDERR.should_not_receive(:puts)
-        @maid.cmd('cd .')
+        @maid.cmd('echo .')
       end
     end
   end

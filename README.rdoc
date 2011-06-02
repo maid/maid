@@ -14,7 +14,7 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 
 Maid is currently in beta, but I encourage you to give it a try.  I'm using it on several computers daily.
 
-If you have RubyGems installed (default on OS X and most Ruby installations):
+If you have RubyGems installed (default on Mac OS X and many Ruby installations):
 
     gem install maid --pre
 
@@ -22,7 +22,14 @@ If you want to install the executable for all users, you may need to give root a
 
     sudo gem install maid --pre
 
-Not needed on Mac OS X:  You might also need to add the RubyGems <tt>bin</tt> directory to your <tt>$PATH</tt>.  For example, on Ubuntu you might need to add something like this to your <tt>~/.bashrc</tt>:
+=== Ubuntu, et al.
+
+As you might expect, you need Ruby and RubyGems installed to do the above.
+
+    sudo apt-get install ruby
+    sudo apt-get install rubygems
+
+You might also need to add the RubyGems <tt>bin</tt> directory to your <tt>$PATH</tt>.  For example, on Ubuntu you might need to add something like this to your <tt>~/.bashrc</tt>:
 
     export PATH="/var/lib/gems/1.8/bin:$PATH"
 
