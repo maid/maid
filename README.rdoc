@@ -2,9 +2,9 @@
 
 Be lazy!  Let Maid clean up after you, based on rules you define.
 
-Your maid keeps files from sitting around too long, untouched.  Many of the downloads and other files you collect can easily be categorized and handled appropriately by rules you define.  Let the maid in your computer take care of the easy stuff, so you can spend more of your time on what matters.
+Maid keeps files from sitting around too long, untouched.  Many of the downloads and other files you collect can easily be categorized and handled appropriately by rules you define.  Let the maid in your computer take care of the easy stuff, so you can spend more of your time on what matters.
 
-Think of it like the email filters you might already have, but for files.  Worried about things happening that you don't expect?  Your maid doesn't overwrite files and actions are logged so you can tell what happened.
+Think of it like the email filters you might already have, but for files.  Worried about things happening that you don't expect?  Maid doesn't overwrite files and actions are logged so you can tell what happened.
 
 Maid is inspired by the Mac OS X shareware program Hazel[http://www.noodlesoft.com/hazel.php].  This tool was created on Mac OS X 10.6, but should be generally portable to other systems.  (Some of the more advanced features such as <tt>downloaded_from</tt> require OS X, however.)
 
@@ -16,11 +16,11 @@ Maid is currently in beta, but I encourage you to give it a try.  I'm using it o
 
 If you have RubyGems installed (default on OS X and most Ruby installations):
 
-    gem install maid
+    gem install maid --pre
 
 If you want to install the executable for all users, you may need to give root access:
 
-    sudo gem install maid
+    sudo gem install maid --pre
 
 Not needed on Mac OS X:  You might also need to add the RubyGems <tt>bin</tt> directory to your <tt>$PATH</tt>.  For example, on Ubuntu you might need to add something like this to your <tt>~/.bashrc</tt>:
 
@@ -28,11 +28,20 @@ Not needed on Mac OS X:  You might also need to add the RubyGems <tt>bin</tt> di
 
 == Tutorial
 
-Maid can be used in several ways.
+Maid rules are defined using Ruby, with some common operations made easier with a small DSL (Domain Specific Language).  Here's a sample:
 
-Before you start running your rules, you'll likely want to test them using one of the following forms:
+  Maid.rules do
+    rule 'Old files downloaded while developing/testing' do
+      dir('~/Downloads/*').each do |path|
+        if downloaded_from(path).any? {|u| u.match 'http://localhost'} && 1.week.since? last_accessed(path)
+          trash(path)
+        end
+      end
+    end
+  end
 
-    # Do a "dry run" of your rules.
+Before you start running your rules, you'll likely want to be able to test them.  Here's how:
+
     # No actions are taken; you just see what would happen with your rules as defined.
     maid --dry-run
     maid --noop
@@ -46,9 +55,9 @@ To run your rules on demand, you can run <tt>maid</tt> manually:
 So, for example, if this is <tt>some_rules.rb</tt>:
 
     Maid.rules do
-      rule 'pdf files' do
+      rule 'downloaded PDF books' do
         dir('~/Downloads/*.pdf').each do |path|
-          move(path, path) # Intentionally does nothing
+          move(path, '~/Books')
         end
       end
     end
@@ -56,19 +65,16 @@ So, for example, if this is <tt>some_rules.rb</tt>:
 This is the command to test, as well as some sample output:
 
     $ maid -nr some_rules.rb
-    Started
-    Rule: pdf files
-    mv "/Users/ben/Downloads/bill.pdf" "/Users/ben/Downloads/bill.pdf"
-    mv "/Users/ben/Downloads/book.pdf" "/Users/ben/Downloads/book.pdf"
-    mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Downloads/issue12.pdf"
-    mv "/Users/ben/Downloads/spring2011newsletter.pdf" "/Users/ben/Downloads/spring2011newsletter.pdf"
-    Finished
+    Rule: downloaded PDF books
+    mv "/Users/ben/Downloads/book.pdf" "/Users/ben/Books/"
+    mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Books/"
+    mv "/Users/ben/Downloads/spring2011newsletter.pdf" "/Users/ben/Books/"
 
-For more helper methods, please see the documentation of Maid::Tools.
+For more DSL helper methods, please see the documentation of Maid::Tools.
 
 === Automation
 
-Once you get a hang for what you can do with Maid, the easiest way is to let Maid do its stuff automatically throughout the day.  You'll find your computer stays a little tidier with as you teach it how to handle your common files.
+Once you get a hang for what you can do with Maid, let it do its stuff automatically throughout the day.  You'll find your computer stays a little tidier with as you teach it how to handle your common files.
 
 To do this, edit your crontab in your tool of choice and have it invoke the <tt>maid</tt> command.  The <tt>--silent</tt> option is provided to keep this from emailing you, if desired.  A log of the actions taken is kept at <tt>~/.maid/maid.log</tt>.
 
@@ -76,6 +82,8 @@ Example for every day at 1am:
 
     # minute hour day_of_month month day_of_week command_to_execute
     0 1 * * * /bin/bash -li -c "maid --silent"
+
+Both Mac OS X and Linux support callbacks when folders are changed, and that may be a forthcoming feature in Maid.  That said, I find cron to take care of most of my needs.
 
 == Sample and Ideas
 
