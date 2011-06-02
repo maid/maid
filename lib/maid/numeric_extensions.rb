@@ -73,4 +73,17 @@ module Maid::NumericExtensions
 
   # Reads best without arguments:  10.minutes.from_now
   alias :from_now :since
+
+  ######################
+  ### Maid additions ###
+  ######################
+
+  # TODO find a better place for these to live?
+
+  # Reads well in a case like:
+  #
+  #   1.week.since? last_accessed('filename')
+  def since?(other_time)
+    other_time < self.ago
+  end
 end

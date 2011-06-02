@@ -26,6 +26,4 @@ class Numeric
   include Maid::NumericExtensions
 end
 
-if __FILE__ == $PROGRAM_NAME
-  Maid::App.start
-end
+# TODO Is there a no-conflict way of including the extensions?
