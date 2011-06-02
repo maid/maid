@@ -10,3 +10,5 @@ This is a Ruby Gem, built using Bundler.  For a walkthrough of how that works, s
 == Guidelines
 
 * Whenever possible, retain compatibility with Ruby 1.8.
+* `rake spec` needs to pass for any additions.
+* Unless there's a good reason not to (e.g. just a documentation change), it's best to have specs for new code.
