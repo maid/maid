@@ -153,5 +153,21 @@ module Maid
         maid.follow_rules
       end
     end
+
+    describe '#cmd' do
+      before :each do
+        @maid = Maid.new
+      end
+
+      it 'should report `not-a-real-command` as not being a supported command' do
+        STDERR.should_receive(:puts)
+        @maid.cmd('not-a-real-command arg1 arg2')
+      end
+
+      it 'should report `cd` as a real command' do
+        STDERR.should_not_receive(:puts)
+        @maid.cmd('cd .')
+      end
+    end
   end
 end

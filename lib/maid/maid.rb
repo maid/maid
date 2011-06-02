@@ -11,8 +11,8 @@ class Maid::Maid
     :file_options => {:noop => true}, # for FileUtils
   }.freeze
 
-  include ::Maid::Tools
   attr_reader :file_options, :log_path, :rules, :rules_path, :trash_path
+  include ::Maid::Tools
 
   # Make a new Maid, setting up paths for the log and trash.
   # 
@@ -67,5 +67,27 @@ class Maid::Maid
       @logger.info("Rule: #{rule.description}")
       rule.follow
     end
+  end
+
+  # Run a shell command.
+  #--
+  # Delegates to Kernel.`.  Made primarily for testing other commands and some error handling.
+  def cmd(command) #:nodoc:
+    if supported_command?(command)
+      %x(#{command})
+    else
+      STDERR.puts "Unsupported command: #{command.inspect}"
+    end
+  end
+
+private
+
+  # Does the OS support this command?
+  def supported_command?(command) #:nodoc:
+    @@supported_commands ||= {}
+
+    command_name = command.strip.split(/\s+/)[0]
+    supported = @@supported_commands[command_name]
+    @@supported_commands[command_name] = supported ? supported : !%x(which #{command_name}).empty?
   end
 end

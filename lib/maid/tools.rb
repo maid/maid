@@ -62,26 +62,6 @@ module Maid::Tools
     Find.find(File.expand_path(path), &block)
   end
 
-  # Run a shell command.
-  #--
-  # Delegates to Kernel.`.  Made primarily for testing other commands.
-  def cmd(command) #:nodoc:
-    if supported_command?(command)
-      %x(#{command})
-    else
-      STDERR.puts "Unsupported command: #{command.inspect}"
-    end
-  end
-
-  # Does the OS support this command?
-  def supported_command?(command)
-    @@supported_commands ||= {}
-
-    command_name = command.strip.split(/\s+/)[0]
-    supported = @@supported_commands[command_name]
-    @@supported_commands[command_name] = supported ? supported : !%x(which #{command_name}).empty?
-  end
-
   # Use Spotlight metadata to determine the site from which a file was downloaded.
   #
   #   downloaded_from('foo.zip') # => ['http://www.site.com/foo.zip', 'http://www.site.com/']
