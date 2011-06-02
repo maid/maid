@@ -10,19 +10,19 @@ module Maid
 
     describe '.new' do
       it 'should set up a logger with the default path' do
-        Logger.should_receive(:new).with(Maid::DEFAULTS[:log_path])
+        Logger.should_receive(:new).with(Maid::DEFAULTS[:log_device])
         Maid.new
       end
 
       it 'should set up a logger with the given path, if provided' do
-        log_path = '/var/log/maid.log'
-        Logger.should_receive(:new).with(log_path)
-        Maid.new(:log_path => log_path)
+        log_device = '/var/log/maid.log'
+        Logger.should_receive(:new).with(log_device)
+        Maid.new(:log_device => log_device)
       end
 
       it 'should make the log directory in case it does not exist' do
         FileUtils.should_receive(:mkdir_p).with('/home/username/log')
-        Maid.new(:log_path => '/home/username/log/maid.log')
+        Maid.new(:log_device => '/home/username/log/maid.log')
       end
 
       it 'should set the trash to the default path' do

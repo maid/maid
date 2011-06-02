@@ -5,27 +5,27 @@ require 'logger'
 class Maid::Maid
   DEFAULTS = {
     :progname     => 'Maid',
-    :log_path     => File.expand_path('~/.maid/maid.log'),
+    :log_device   => File.expand_path('~/.maid/maid.log'),
     :rules_path   => File.expand_path('~/.maid/rules.rb'),
     :trash_path   => File.expand_path('~/.Trash'),
     :file_options => {:noop => true}, # for FileUtils
   }.freeze
 
-  attr_reader :file_options, :log_path, :rules, :rules_path, :trash_path
+  attr_reader :file_options, :log_device, :rules, :rules_path, :trash_path
   include ::Maid::Tools
 
   # Make a new Maid, setting up paths for the log and trash.
   # 
   # Sane defaults for a log and trash path are set for Mac OS X, but they can easily be overridden like so:
   # 
-  #   Maid::Maid.new(:log_path => '/home/username/log/maid.log', :trash_path => '/home/username/.local/share/Trash/files/')
+  #   Maid::Maid.new(:log_device => '/home/username/log/maid.log', :trash_path => '/home/username/.local/share/Trash/files/')
   # 
   def initialize(options = {})
     options = DEFAULTS.merge(options.reject { |k, v| v.nil? })
 
-    @log_path = options[:log_path]
-    FileUtils.mkdir_p(File.dirname(@log_path)) unless @log_path.kind_of?(IO)
-    @logger = Logger.new(@log_path)
+    @log_device = options[:log_device]
+    FileUtils.mkdir_p(File.dirname(@log_device)) unless @log_device.kind_of?(IO)
+    @logger = Logger.new(@log_device)
     @logger.progname  = options[:progname]
     @logger.formatter = options[:log_formatter] if options[:log_formatter]
 

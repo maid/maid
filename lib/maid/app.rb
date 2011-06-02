@@ -12,7 +12,7 @@ class Maid::App < Thor
   def clean
     maid = Maid::Maid.new(maid_options(options))
     unless options.silent? || options.noop?
-      say "Logging actions to #{maid.log_path.inspect}"
+      say "Logging actions to #{maid.log_device.inspect}"
     end
     maid.clean
   end
@@ -29,7 +29,7 @@ class Maid::App < Thor
       if options['noop']
         # You're testing, so a simple log goes to STDOUT and no actions are taken
         h[:file_options] = {:noop => true}
-        h[:log_path] = STDOUT
+        h[:log_device] = STDOUT
         h[:log_formatter] = lambda { |_, _, _, msg| "#{msg}\n" }
       end
 
