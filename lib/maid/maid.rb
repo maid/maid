@@ -26,11 +26,11 @@ class Maid::Maid
     @log_path = options[:log_path]
     FileUtils.mkdir_p(File.dirname(@log_path)) unless @log_path.kind_of?(IO)
     @logger = Logger.new(@log_path)
-    @logger.progname = options[:progname]
+    @logger.progname  = options[:progname]
     @logger.formatter = options[:log_formatter] if options[:log_formatter]
 
-    @rules_path = options[:rules_path]
-    @trash_path = options[:trash_path]
+    @rules_path   = options[:rules_path]
+    @trash_path   = options[:trash_path]
     @file_options = options[:file_options]
 
     @rules = []
