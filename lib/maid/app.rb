@@ -17,7 +17,7 @@ class Maid::App < Thor
     maid.clean
   end
 
-  desc 'version', 'print version number'
+  desc 'version', 'Print version number'
   def version
     say Maid::VERSION
   end
