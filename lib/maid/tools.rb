@@ -5,6 +5,8 @@ require 'time'
 # Collection of utility methods included in Maid::Maid (and thus available in the rules DSL).
 #
 # In general, all paths are automatically expanded (e.g. '~/Downloads/foo.zip' becomes '/home/username/Downloads/foo.zip').
+#
+# Some methods are not available on all platforms.  An <tt>ArgumentError</tt> is raised when a command is not available.  See tags: [Mac OS X]
 module Maid::Tools
   # Move from <tt>from</tt> to <tt>to</tt>.
   #
