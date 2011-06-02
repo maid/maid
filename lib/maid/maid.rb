@@ -38,11 +38,17 @@ class Maid::Maid
   
   # Start cleaning, based on the rules defined at rules_path.
   def clean
-    @logger.info "v#{Maid::VERSION}"
-    @logger.info 'Started'
+    unless @log_device.kind_of?(IO)
+      @logger.info "v#{Maid::VERSION}"
+      @logger.info 'Started'
+    end
+
     add_rules(@rules_path)
     follow_rules
-    @logger.info 'Finished'
+
+    unless @log_device.kind_of?(IO)
+      @logger.info 'Finished'
+    end
   end
 
   # Add the rules at path.
