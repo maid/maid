@@ -82,7 +82,7 @@ class Maid::Maid
     if supported_command?(command)
       %x(#{command})
     else
-      STDERR.puts "Unsupported command: #{command.inspect}"
+      raise ArgumentError, "Unsupported command: #{command.inspect}"
     end
   end
 

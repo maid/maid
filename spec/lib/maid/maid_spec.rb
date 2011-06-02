@@ -160,13 +160,11 @@ module Maid
       end
 
       it 'should report `not-a-real-command` as not being a supported command' do
-        STDERR.should_receive(:puts)
-        @maid.cmd('not-a-real-command arg1 arg2')
+        lambda { @maid.cmd('not-a-real-command arg1 arg2') }.should raise_error(ArgumentError)
       end
 
       it 'should report `echo` as a real command' do
-        STDERR.should_not_receive(:puts)
-        @maid.cmd('echo .')
+        lambda { @maid.cmd('echo .') }.should_not raise_error(ArgumentError)
       end
     end
   end
