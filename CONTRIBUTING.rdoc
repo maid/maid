@@ -1,0 +1,12 @@
+= Contributing
+
+This is a Ruby Gem, built using Bundler.  For a walkthrough of how that works, see http://railscasts.com/episodes/245-new-gem-with-bundler.
+
+== Notes
+
+* `rake install` builds and installs the gem, but you'll probably need to do `sudo rake install`.
+* Keep in mind that the gemspec only looks at files in the VCS (git).
+
+== Guidelines
+
+* Whenever possible, retain compatibility with Ruby 1.8.
