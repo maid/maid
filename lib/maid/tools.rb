@@ -101,6 +101,13 @@ module Maid::Tools
     raw.split(/\s+/).first.to_i
   end
 
+  # In Unix speak, "atime".
+  #
+  #   last_accessed('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
+  def last_accessed(path)
+    File.atime(File.expand_path(path))
+  end
+
   # Pulls and pushes the given git repository.
   #
   #   git_piston('~/code/projectname')

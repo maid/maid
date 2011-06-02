@@ -107,6 +107,14 @@ module Maid
       end
     end
 
+    describe '#last_accessed' do
+      it 'should give the last accessed time of the file' do
+        time = Time.now
+        File.should_receive(:atime).with("#@home/foo.zip").and_return(time)
+        @maid.last_accessed('~/foo.zip').should == time
+      end
+    end
+
     describe '#git_piston' do
       it 'should pull and push the given git repository, logging the action' do
         @maid.should_receive(:cmd).with(%Q{cd "#@home/code/projectname" && git pull && git push 2>&1})
