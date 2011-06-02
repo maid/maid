@@ -17,4 +17,3 @@ tmtags
 doc/*
 *.gem
 .bundle
-Gemfile.lock
