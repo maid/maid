@@ -72,36 +72,36 @@ module Maid
       end
     end
 
+    describe '#locate' do
+      it 'should locate a file by name' do
+        @maid.should_receive(:cmd).and_return("/a/foo.zip\n/b/foo.zip\n")
+        @maid.locate('foo.zip').should == ['/a/foo.zip', '/b/foo.zip']
+      end
+    end
+
     describe '#downloaded_from' do
-      it 'should use Spotlight metadata to determine the download site' do
+      it 'should determine the download site' do
         @maid.should_receive(:cmd).and_return(%Q{(\n    "http://www.site.com/foo.zip",\n"http://www.site.com/"\n)})
         @maid.downloaded_from('foo.zip').should == ['http://www.site.com/foo.zip', 'http://www.site.com/']
       end
     end
 
     describe '#duration_s' do
-      it 'should use Spotlight metadata to determine audio length' do
+      it 'should determine audio length' do
         @maid.should_receive(:cmd).and_return('235.705')
         @maid.duration_s('foo.mp3').should == 235.705
       end
     end
 
-    describe '#locate' do
-      it 'should use Spotlight to locate a file by name' do
-        @maid.should_receive(:cmd).and_return("/a/foo.zip\n/b/foo.zip\n")
-        @maid.locate('foo.zip').should == ['/a/foo.zip', '/b/foo.zip']
-      end
-    end
-
     describe '#zipfile_contents' do
-      it 'should use unzip to inspect the contents of a .zip file' do
+      it 'should inspect the contents of a .zip file' do
         @maid.should_receive(:cmd).and_return("foo/foo.exe\nfoo/README.txt\n")
         @maid.zipfile_contents('foo.zip').should == ['foo/foo.exe', 'foo/README.txt']
       end
     end
 
     describe '#disk_usage' do
-      it 'should use du to find the disk usage of a file' do
+      it 'should give the disk usage of a file' do
         @maid.should_receive(:cmd).and_return("136     foo.zip")
         @maid.disk_usage('foo.zip').should == 136
       end

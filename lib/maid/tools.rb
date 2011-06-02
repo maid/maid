@@ -62,6 +62,13 @@ module Maid::Tools
     Find.find(File.expand_path(path), &block)
   end
 
+  # On OS X, use Spotlight to locate all files matching the given filename as `locate` isn't available by default.
+  #
+  #   locate('foo.zip') # => ['/a/foo.zip', '/b/foo.zip']
+  def locate(name)
+    cmd("mdfind -name #{name.inspect}").split("\n")
+  end
+
   # Use Spotlight metadata to determine the site from which a file was downloaded.
   #
   #   downloaded_from('foo.zip') # => ['http://www.site.com/foo.zip', 'http://www.site.com/']
@@ -76,13 +83,6 @@ module Maid::Tools
   #   duration_s('foo.mp3') # => 235.705
   def duration_s(path)
     cmd("mdls -raw -name kMDItemDurationSeconds #{path.inspect}").to_f
-  end
-
-  # Use Spotlight to locate all files matching the given filename
-  #
-  #   locate('foo.zip') # => ['/a/foo.zip', '/b/foo.zip']
-  def locate(name)
-    cmd("mdfind -name #{name.inspect}").split("\n")
   end
 
   # Inspect the contents of a .zip file.
