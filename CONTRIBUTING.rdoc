@@ -1,14 +1,18 @@
 = Contributing
 
-This is a Ruby Gem, built using Bundler.  For a walkthrough of how that works, see http://railscasts.com/episodes/245-new-gem-with-bundler.
+Wow, you want to contribute?  That's awesome!  Thanks!
+
+To make things easier on you, I've compiled some Notes and Guidelines.
 
 == Notes
 
-* `rake install` builds and installs the gem, but you'll probably need to do `sudo rake install`.
+* This is a Ruby Gem, built using Bundler.  For a walkthrough of how that works, see http://railscasts.com/episodes/245-new-gem-with-bundler.
+* `rake install` builds and installs the gem, but you'll probably need to do `sudo rake install`.  This lets you test the `maid` command.
 * Keep in mind that the gemspec only looks at files in the VCS (git).
 
 == Guidelines
 
-* Whenever possible, retain compatibility with Ruby 1.8.
+* Looking for something to do?  Anything in the TODO file is a good place to start.
+* Whenever possible, retain compatibility with Ruby 1.8.7.
+* Unless there's a good reason not to (e.g. just a documentation change), specs are appreciated for any new code.
 * `rake spec` needs to pass for any additions.
-* Unless there's a good reason not to (e.g. just a documentation change), it's best to have specs for new code.

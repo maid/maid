@@ -1,0 +1,31 @@
+= TODO
+
+== v0.1.0
+
+It's in beta right now.  Here's what's left for the first release:
+
+* Better first use experience
+  * Better error message if there are no rules to be found
+  * Offer sample rules
+* Decent warnings for features not available outside of Mac OS X 10.5 and 10.6
+* (Maybe) better user documentation of the DSL (in Maid::Tools)
+
+== Future Releases
+
+Some of these might not happen, but they're being thought about.  Feel free to add your own.
+
+* GUI for configuring easy rules
+* "Watch" rules that use Folder Actions on OS X (and icron on Linux?).  Something like:
+
+    Maid.rules do
+      watch '~/Downloads' do
+        rule 'watch rule 1' do
+        end
+
+        rule 'watch rule 2' do
+        end
+      end
+
+      rule 'normal rule 3' do
+      end
+    end
