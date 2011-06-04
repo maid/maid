@@ -14,5 +14,11 @@ To make things easier on you, I've compiled some Notes and Guidelines.
 
 * Looking for something to do?  Anything in the TODO file is a good place to start.
 * Whenever possible, retain compatibility with Ruby 1.8.7.
-* Unless there's a good reason not to (e.g. just a documentation change), specs are appreciated for any new code.
-* `rake spec` needs to pass for any additions.
+
+== Note on Patches/Pull Requests
+ 
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a future version unintentionally.
+* Commit, do not mess with rakefile, version, or history.  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
