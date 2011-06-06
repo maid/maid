@@ -33,10 +33,9 @@ class Maid::App < Thor
     path = self.class.sample_rules_path
 
     FileUtils.mkdir_p(File.dirname(path))
-    # File.open(path, 'w').puts(File.read()
-    puts File.read(File.join(File.dirname(__FILE__), 'rules.sample.rb'))
+    File.open(path, 'w').puts(File.read(File.join(File.dirname(__FILE__), 'rules.sample.rb')))
 
-    puts "Sample rules created at #{path.inspect}"
+    say "Sample rules created at #{path.inspect}", :green
   end
 
   no_tasks do
