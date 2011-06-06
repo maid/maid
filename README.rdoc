@@ -40,7 +40,7 @@ Maid rules are defined using Ruby, with some common operations made easier with 
   Maid.rules do
     rule 'Old files downloaded while developing/testing' do
       dir('~/Downloads/*').each do |path|
-        if downloaded_from(path).any? {|u| u.match 'http://localhost'} && 1.week.since? last_accessed(path)
+        if downloaded_from(path).any? {|u| u.match 'http://localhost'} && 1.week.since?(last_accessed(path))
           trash(path)
         end
       end
@@ -92,138 +92,11 @@ Example for every day at 1am:
 
 Both Mac OS X and Linux support callbacks when folders are changed, and that may be a forthcoming feature in Maid.  That said, I find cron to take care of most of my needs.
 
-== Sample and Ideas
+== Sample
 
-Here's a sampling from my <tt>~/.maid/rules.rb</tt> file to get you started:
-  
-  software_archive_path = '~/Reference/Software/'
+For a sample rules file, run:
 
-  osx_app_extensions = %w[app dmg pkg wdgt]
-  osx_app_patterns = osx_app_extensions.map { |ext| (/\.#{ext}\/$/) }
-  linux_app_archive_path = "#{software_archive_path}/Linux/"
-  osx_app_archive_path = "#{software_archive_path}/Mac OS X/"
-  win_app_archive_path = "#{software_archive_path}/Windows XP/"
-
-  Maid.rules do
-    rule 'Files downloaded while developing' do
-      dir('~/Downloads/*').select do |path|
-        if downloaded_from(path).any? { |url| url.match(/^http:\/\/localhost:/) || url.match('staging.yourcompany.com') }
-          trash(path)
-        end
-      end
-    end
-
-    rule 'MP3s likely to be music' do
-      dir('~/Downloads/*.mp3').each do |path|
-        if duration_s(path) > 30.0
-          move(path, '~/Music/iTunes/iTunes Media/Automatically Add to iTunes/')
-        end
-      end
-    end
-
-    rule 'Accidentally downloaded HTML' do # this basically only happens to me on accident
-      dir('~/Downloads/*.html').each do |path|
-        trash(path)
-      end
-    end
-
-    rule 'Linux ISOs, etc' do
-      dir('~/Downloads/*.iso').each do |path|
-        move(path, software_archive_path)
-      end
-    end
-
-    rule 'Linux applications in Debian packages' do
-      dir('~/Downloads/*.deb').each do |path|
-        move(path, linux_app_archive_path)
-      end
-    end
-
-    rule 'Mac OS X applications in disk images' do
-      dir('~/Downloads/*.dmg').each do |path|
-        move(path, osx_app_archive_path)
-      end
-    end
-
-    rule 'Mac OS X applications in zip files' do
-      dir('~/Downloads/*.zip').select do |path|
-        candidates = zipfile_contents(path)
-        candidates.any? { |c| osx_app_patterns.any? { |re| c.match(re) } }
-      end.each do |path|
-        move(path, osx_app_archive_path)
-      end
-    end
-
-    rule 'Windows applications' do
-      dir('~/Downloads/*.exe').each do |path|
-        move(path, win_app_archive_path)
-      end
-    end
-
-    rule 'Windows applications in zip files' do
-      dir('~/Downloads/*.zip').select do |path|
-        candidates = zipfile_contents(path)
-        candidates.any? { |candidate| candidate.match(/\.exe$/) }
-      end.each do |path|
-        move(path, win_app_archive_path)
-      end
-    end
-
-    rule 'Accidental Wikipedia downloads' do
-      dir('~/Downloads/*').each do |path|
-        if downloaded_from(path).any? { |url| url.match('wikipedia') }
-          trash(path)
-        end
-      end
-    end
-
-    # If you store your working files in ~/Outbox/ (like Ethan Schoonover's "Kinkless Desktop"), you can have them automatically filed away...
-
-    rule 'JS snippets I write' do
-      dir('~/Outbox/*.js').each do |path|
-        if 1.weeks.ago > File.atime(path)
-          move(path, '~/Projects/snippets/javascript/')
-        end
-      end
-    end
-      
-    rule 'Ruby snippets' do
-      dir('~/Outbox/*.rb').each do |path|
-        if 1.week.ago > File.atime(path)
-          move(path, '~/Projects/snippets/ruby/')
-        end
-      end
-    end
-
-    rule 'Email drafts' do
-      dir('~/Outbox/*.eml').each do |path|
-        if 1.week.ago > File.atime(path)
-          move(path, '~/Archive/Misc Drafts/')
-        end
-      end
-    end
-    
-    rule 'Misc notes' do
-      %w[md markdown rtf txt].inject([]) { |all, ext| all + dir("~/Outbox/*.#{ext}") }.each do |path|
-        if 1.week.ago > File.atime(path)
-          move(path, '~/Archive/Misc Notes/')
-        end
-      end
-    end
-
-    rule 'Misc Screenshots' do
-      dir('~/Outbox/Screen shot *').each do |path|
-        if 1.week.ago > File.atime(path)
-          move(path, '~/Archive/Misc Screenshots/')
-        end
-      end
-    end
-     
-    rule 'Clear my working "temp" directory' do
-      trash('~/tmp')
-      FileUtils.mkdir_p(File.expand_path('~/tmp'))
-    end
-  end
+    maid sample
 
 == Warranty
 
