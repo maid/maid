@@ -49,7 +49,8 @@ module Maid
       end
 
       it 'should use a safe path if the target exists' do
-        Timecop.freeze(Time.parse('2011-05-22T16:53:52-04:00')) do
+        # Without an offset, ISO8601 parses to local time, which is what we want here.
+        Timecop.freeze(Time.parse('2011-05-22T16:53:52')) do
           File.stub!(:exist?).and_return(true)
           @maid.should_receive(:move).with(@path, "#{@trash_path}/foo.zip 2011-05-22-16-53-52")
           @maid.trash(@path)
