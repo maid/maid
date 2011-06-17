@@ -5,16 +5,13 @@
 It's in beta right now.  Here's what's left for the first release:
 
 * Turn off forced noop before release
-* Better first use experience
-  * Better error message if there are no rules to be found
-  * Offer sample rules
 * Decent warnings for features not available outside of Mac OS X 10.5 and 10.6
-* (Maybe) better user documentation of the DSL (in Maid::Tools)
 
 == Future Releases
 
 Some of these might not happen, but they're being thought about.  Feel free to add your own.
 
+* Better user documentation of the DSL (in Maid::Tools)
 * Man pages, e.g. maid(1) and maid(5)
   * I've read http://ozmm.org/posts/man_what.html and http://rcrowley.org/articles/man-pages-vs-rubygems.html and I'm not too happy with the available tools for this
 * Use a Cocoa interface to get Spotlight results
