@@ -5,7 +5,6 @@
 It's in beta right now.  Here's what's left for the first release:
 
 * Turn off forced noop before release
-* Decent warnings for features not available outside of Mac OS X 10.5 and 10.6
 
 == Future Releases
 
