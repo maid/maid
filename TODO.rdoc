@@ -36,4 +36,14 @@ Some of these might not happen, but they're being thought about.  Feel free to a
       end
     end
 
+* Guard has some similar "watch" functionality.  Here's what they use:
+  * FSEvent support on Mac OS X 10.5+ (without RubyCocoa!, rb-fsevent gem, >= 0.3.5 required).
+  * Inotify support on Linux (rb-inotify gem, >= 0.5.1 required).
+  * Directory Change Notification support on Windows (rb-fchange, >= 0.0.2 required).
+  * Polling on the other operating systems (help us to support more OS).
+  * Automatic & Super fast (when polling is not used) files modifications detection (even new files are detected).
+* Possibly: notifications
+  * Growl notifications (growlnotify & growl gem required).
+  * Libnotify notifications (libnotify gem required).
+
 * GUI for configuring easy rules
