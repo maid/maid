@@ -8,7 +8,7 @@ class Maid::Maid
     :log_device   => File.expand_path('~/.maid/maid.log'),
     :rules_path   => File.expand_path('~/.maid/rules.rb'),
     :trash_path   => File.expand_path('~/.Trash'),
-    :file_options => {:noop => true}, # for FileUtils
+    :file_options => {:noop => false}, # for FileUtils
   }.freeze
 
   attr_reader :file_options, :log_device, :rules, :rules_path, :trash_path
