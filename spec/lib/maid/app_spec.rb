@@ -45,6 +45,10 @@ module Maid
       @app.clean
     end
 
+    it 'should not be silent if not given the --silent option' do
+      capture_stdout { App.start(['clean']) }.string.should_not == ''
+    end
+
     it 'should be silent if given the --silent option' do
       # TODO It might even make sense to wrap "maid.clean" in capture_stdout { }...
       capture_stdout { App.start(['clean', '--silent']) }.string.should == ''
@@ -56,6 +60,12 @@ module Maid
 
     it 'should complain about an undefined task' do
       capture_stderr { App.start(['rules.rb']) }.string.should match(/Could not find/)
+    end
+  end
+
+  describe App, 'sample rules' do
+    it 'should be able to run' do
+      lambda { App.start(%w[clean --silent --noop --rules=lib/maid/rules.sample.rb]) }.should_not raise_error(SyntaxError)
     end
   end
 

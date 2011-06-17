@@ -45,8 +45,11 @@ class Maid::App < Thor
       if options['noop']
         # You're testing, so a simple log goes to STDOUT and no actions are taken
         h[:file_options] = {:noop => true}
-        h[:log_device] = STDOUT
-        h[:log_formatter] = lambda { |_, _, _, msg| "#{msg}\n" }
+
+        unless options['silent']
+          h[:log_device] = STDOUT
+          h[:log_formatter] = lambda { |_, _, _, msg| "#{msg}\n" }
+        end
       end
 
       if options['rules']
