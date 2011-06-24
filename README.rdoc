@@ -14,8 +14,6 @@ http://travis-ci.org/benjaminoakes/maid.png ({More info}[http://travis-ci.org/be
 
 == Installation
 
-Maid is currently in beta, but I encourage you to give it a try.  I'm using it on several computers daily.
-
 If you have RubyGems installed (default on Mac OS X and many Ruby installations):
 
     gem install maid --pre
