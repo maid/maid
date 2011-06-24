@@ -16,11 +16,11 @@ http://travis-ci.org/benjaminoakes/maid.png ({More info}[http://travis-ci.org/be
 
 If you have RubyGems installed (default on Mac OS X and many Ruby installations):
 
-    gem install maid --pre
+    gem install maid
 
 If you want to install the executable for all users, you may need to give root access:
 
-    sudo gem install maid --pre
+    sudo gem install maid
 
 === Ubuntu, et al.
 
