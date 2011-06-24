@@ -10,6 +10,10 @@ It's in beta right now.  Here's what's left for the first release:
 
 Some of these might not happen, but they're being thought about.  Feel free to add your own.
 
+* Daemon mode
+* Menubar/system tray icon
+* Import of rules from other programs
+
 * Better user documentation of the DSL (in Maid::Tools)
 * Man pages, e.g. maid(1) and maid(5)
   * I've read http://ozmm.org/posts/man_what.html and http://rcrowley.org/articles/man-pages-vs-rubygems.html and I'm not too happy with the available tools for this
