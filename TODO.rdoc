@@ -1,11 +1,5 @@
 = TODO
 
-== v0.1.0
-
-It's in beta right now.  Here's what's left for the first release:
-
-* Turn off forced noop before release
-
 == Future Releases
 
 Some of these might not happen, but they're being thought about.  Feel free to add your own.
