@@ -4,6 +4,17 @@
 
 Some of these might not happen, but they're being thought about.  Feel free to add your own.
 
+* Classifiers and file-content based rules.  Example:
+  * Take bills and bank statements, classify them as the type of document they are, and then rename them based on their content:
+    * ["eStatement.pdf", "eStatement (1).pdf", "eStatement (2).pdf", "statement-1c3f34d.pdf", "statement-2c53ad1.pdf", "document-34d1c3f.pdf", "document-3ad12c5.pdf"] => ['ING', 'ING', 'ING', 'Citi', 'Citi', 'UI', 'UI']
+    * For example, ING statements have a date found with the pattern /Your Savings Summary as of\s+(.*?)$/i, Citi statements have the pattern /Statement Closing Date.*?(\d\d\/\d\d\/\d\d\d\d)/im, etc.  Map using the patterns and rules.
+
+    # (Define classification rules in some format here, naming one 'bank_statements' with the extraction rule 'date')
+
+    dir('~/Downloads/*.pdf').classify(as: 'bank_statements', extract: 'date').each do |original_path, classification, date|
+      move(original_path, "~/Bills/#{classification}/#{date.strftime(...)}.pdf")
+    end
+
 * Daemon mode
 * Menubar/system tray icon
 * Import of rules from other programs
