@@ -13,9 +13,7 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 http://stillmaintained.com/benjaminoakes/maid.png
 http://travis-ci.org/benjaminoakes/maid.png ({More info}[http://travis-ci.org/benjaminoakes/maid])
 
-== FAQ
-
-=== Is it any good?
+== Is it any good?
 
 Yes.
 
