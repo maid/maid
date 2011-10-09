@@ -31,7 +31,7 @@ class Maid::Maid
     @logger = unless options[:logger]
       @log_device = options[:log_device]
       FileUtils.mkdir_p(File.dirname(@log_device)) unless @log_device.kind_of?(IO)
-      Logger.new(@log_device)
+      Logger.new(@log_device, 5, 1048576)
     else
       options[:logger]
     end
