@@ -10,7 +10,7 @@
 #   * Read the README at http://github.com/benjaminoakes/maid
 #   * For more DSL helper methods, please see the documentation of Maid::Tools at http://rubydoc.info/gems/maid/0.1.0/Maid/Tools
 #   * Come up with some cool tools of your own?  Fork, make your changes, and send me a pull request on GitHub!
-#   * Ask me a question over email (hello@benjaminoakes.com) or twitter (@benjaminoakes)
+#   * Ask me a question over email (hello@benjaminoakes.com) or Twitter (@benjaminoakes)
 #
 Maid.rules do
   rule 'MP3s likely to be music' do
