@@ -6,7 +6,7 @@ Maid keeps files from sitting around too long, untouched.  Many of the downloads
 
 Think of it like the email filters you might already have, but for files.  Worried about things happening that you don't expect?  Maid doesn't overwrite files and actions are logged so you can tell what happened.
 
-Maid is inspired by the Mac OS X shareware program Hazel[http://www.noodlesoft.com/hazel.php].  This tool was created on Mac OS X 10.6, but should be generally portable to other systems.  (Some of the more advanced features such as <tt>downloaded_from</tt> require OS X, however.)
+Maid is inspired by the Mac OS X shareware program Hazel[http://www.noodlesoft.com/hazel.php].  This tool was created on Mac OS X 10.6, but should be generally portable to other systems.  (Some of the more advanced features such as +downloaded_from+ require OS X, however.)
 
 Your rules are defined in Ruby, so easy rules are easy and difficult rules are possible.
 
@@ -64,7 +64,7 @@ To run your rules on demand, you can run <tt>maid</tt> manually:
     maid                    # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
     maid -r some_rules.rb   # Run the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
 
-So, for example, if this is <tt>some_rules.rb</tt>:
+So, for example, if this is +some_rules.rb+:
 
     Maid.rules do
       rule 'downloaded PDF books' do
