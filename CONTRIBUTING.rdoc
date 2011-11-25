@@ -9,6 +9,7 @@ To make things easier on you, I've compiled some Notes and Guidelines.
 * This is a Ruby Gem, built using Bundler.  For a walkthrough of how that works, see http://railscasts.com/episodes/245-new-gem-with-bundler.
 * `rake install` builds and installs the gem, but you'll probably need to do `sudo rake install`.  This lets you test the `maid` command.
 * Keep in mind that the gemspec only looks at files in the VCS (git).
+* Developing using Ruby 1.9.2?  Use "irb -I lib -r maid" to have access to Maid in irb.
 
 == Guidelines
 
