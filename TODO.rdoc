@@ -4,6 +4,7 @@
 
 Some of these might not happen, but they're being thought about.  Feel free to add your own.
 
+* "Push to S3" method (for backing up, etc)
 * Classifiers and file-content based rules.  Example:
   * Take bills and bank statements, classify them as the type of document they are, and then rename them based on their content:
     * ["eStatement.pdf", "eStatement (1).pdf", "eStatement (2).pdf", "statement-1c3f34d.pdf", "statement-2c53ad1.pdf", "document-34d1c3f.pdf", "document-3ad12c5.pdf"] => ['ING', 'ING', 'ING', 'Citi', 'Citi', 'UI', 'UI']
