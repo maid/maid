@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+# UNIX based commands in Ruby
+
+install = `sudo gem install maid`
+sample = `maid sample`
+rename = `cd ~/.maid; mv rules.sample.rb rules.rb`
+
+puts install + sample + rename
