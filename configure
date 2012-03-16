@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -o errexit
+
+curl -so .roboconf.sh https://raw.github.com/benjaminoakes/roboconf/master/roboconf.sh
+source .roboconf.sh
+
+roboconf-bundler '~> 1.0.0'

@@ -1,19 +1,4 @@
-## MAC OS
-.DS_Store
-
-## TEXTMATE
-*.tmproj
-tmtags
-
-## EMACS
-*~
-\#*
-.\#*
-
-## VIM
-*.swp
-
-## PROJECT
-doc/*
 *.gem
 .bundle
+.roboconf.sh
+doc/*
