@@ -114,6 +114,8 @@ module Maid::Tools
 
   # Pulls and pushes the given git repository.
   #
+  # You might also be interested in SparkleShare (http://sparkleshare.org/), a great git-based file syncronization project.
+  #
   #   git_piston('~/code/projectname')
   def git_piston(path)
     full_path = File.expand_path(path)
