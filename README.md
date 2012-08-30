@@ -25,7 +25,11 @@ Yes.
 
 ## Installation
 
-If you have RubyGems installed (default on Mac OS X and many Ruby installations):
+Maid supports OS X and Ubuntu.  Other Linux distributions may work, but are not officially supported.  (Contributions are welcome, however.)
+
+### OS X
+
+Open a terminal and run:
 
     gem install maid
 
@@ -33,16 +37,26 @@ If you want to install the executable for all users, you may need to give root a
 
     sudo gem install maid
 
-### Ubuntu, et al.
+### Ubuntu
 
-As you might expect, you need Ruby and RubyGems installed to do the above.
+**Want easier installation?** Please make your voice heard in [issue #3](https://github.com/benjaminoakes/maid/issues/3).
+
+You'll need Ruby and RubyGems installed.  Open a terminal and run:
 
     sudo apt-get install ruby
     sudo apt-get install rubygems
 
-You might also need to add the RubyGems `bin` directory to your `$PATH`.  For example, on Ubuntu you might need to add something like this to your `~/.bashrc`:
+You might also need to add the RubyGems `bin` directory to your `$PATH`.  For example, you might need to add something like this to your `~/.bashrc`:
 
     export PATH="/var/lib/gems/1.8/bin:$PATH"
+    
+Then install Maid itself:
+    
+    gem install maid
+
+If you want to install the executable for all users, you may need to give root access:
+
+    sudo gem install maid
 
 ## Tutorial
 
