@@ -15,6 +15,10 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 ![Still Maintained?](http://stillmaintained.com/benjaminoakes/maid.png)
 [![Build Status](http://travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
 
+## Buzz
+
+* [OneThingWell: Maid](http://onethingwell.org/post/30455088809/maid) (August 29th, 2012)
+
 ## Is it any good?
 
 Yes.
