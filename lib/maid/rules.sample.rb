@@ -13,6 +13,7 @@
 #   * Ask me a question over email (hello@benjaminoakes.com) or Twitter (@benjaminoakes)
 #
 Maid.rules do
+  # NOTE: Finding the duration is not currently supported in Linux.
   rule 'MP3s likely to be music' do
     dir('~/Downloads/*.mp3').each do |path|
       if duration_s(path) > 30.0
@@ -20,7 +21,8 @@ Maid.rules do
       end
     end
   end
-
+  
+  # NOTE: Finding where a file is download from is not currently supported in Linux.
   rule 'Old files downloaded while developing/testing' do
     dir('~/Downloads/*').each do |path|
       if downloaded_from(path).any? {|u| u.match 'http://localhost' || u.match('http://staging.yourcompany.com') } && 1.week.since?(last_accessed(path))
