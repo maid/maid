@@ -39,7 +39,11 @@ If you want to install the executable for all users, you may need to give root a
 
 ### Ubuntu
 
-**Want easier installation?** Please make your voice heard in [issue #3](https://github.com/benjaminoakes/maid/issues/3).
+#### Ubuntu Software Center
+
+[https://github.com/benjaminoakes/maid/raw/master/resources/download-for-ubuntu.png](https://github.com/benjaminoakes/maid/issues/3)
+
+#### Manually
 
 You'll need Ruby and RubyGems installed.  Open a terminal and run:
 
