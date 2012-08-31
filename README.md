@@ -41,7 +41,7 @@ If you want to install the executable for all users, you may need to give root a
 
 #### Ubuntu Software Center
 
-[https://github.com/benjaminoakes/maid/raw/master/resources/download-for-ubuntu.png](https://github.com/benjaminoakes/maid/issues/3)
+[![Download for Ubuntu](https://github.com/benjaminoakes/maid/raw/master/resources/download-for-ubuntu.png)](https://github.com/benjaminoakes/maid/issues/3)
 
 #### Manually
 
