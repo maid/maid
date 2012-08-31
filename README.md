@@ -25,7 +25,7 @@ Yes.
 
 ## Installation
 
-Maid supports OS X and Ubuntu.  Other Linux distributions may work, but are not officially supported.  (Contributions are welcome, however.)
+Maid supports OS X and Ubuntu.  Other Unix-like operating systems may work, but are not officially supported.  (Contributions are welcome, however.)
 
 ### OS X
 
