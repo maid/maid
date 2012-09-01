@@ -1,6 +1,4 @@
 require 'fileutils'
-
-require 'rubygems'
 require 'thor'
 
 class Maid::App < Thor
