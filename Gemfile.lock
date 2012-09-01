@@ -8,7 +8,20 @@ GEM
   remote: http://rubygems.org/
   specs:
     ZenTest (4.4.2)
+    arr-pm (0.0.7)
+      cabin (> 0)
+    backports (2.6.2)
+    cabin (0.4.4)
+      json
+    clamp (0.3.1)
     diff-lcs (1.1.2)
+    fpm (0.4.14)
+      arr-pm (~> 0.0.7)
+      backports (= 2.6.2)
+      cabin (~> 0.4.3)
+      clamp (= 0.3.1)
+      json (= 1.6.6)
+    json (1.6.6)
     rake (0.8.7)
     rspec (2.5.0)
       rspec-core (~> 2.5.0)
@@ -26,6 +39,7 @@ PLATFORMS
 
 DEPENDENCIES
   ZenTest (~> 4.4.2)
+  fpm (~> 0.4.14)
   maid!
   rake (~> 0.8.7)
   rspec (~> 2.5.0)
