@@ -6,8 +6,9 @@ Gem::Specification.new do |s|
   s.name        = "maid"
   s.version     = Maid::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Benjamin Oakes"]
-  s.email       = ["hello@benjaminoakes.com"]
+  s.license     = 'GPL-2'
+  s.author     = "Benjamin Oakes"
+  s.email       = "hello@benjaminoakes.com"
   s.homepage    = "http://github.com/benjaminoakes/maid"
   s.summary     = %q{Be lazy.  Let Maid clean up after you, based on rules you define.}
   s.description = s.summary

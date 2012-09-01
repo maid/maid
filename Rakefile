@@ -23,9 +23,13 @@ namespace :build do
   desc 'Build maid-*.deb into the pkg directory'
   task :ubuntu => :build do
     latest_gem = Dir.glob('pkg/maid-*.gem').last
-    cmd = "fpm -s gem -t deb #{latest_gem}"
+    # FIXME: Use the value from the gemspec
+    maintainer = "Benjamin Oakes <hello@benjaminoakes.com>"
+    cmd = "fpm --maintainer #{maintainer.inspect} -s gem -t deb #{latest_gem}"
+
     puts cmd
     `#{cmd}`
+
     FileUtils.mv(Dir.glob('*.deb'), 'pkg/', f_opts)
   end
 end
