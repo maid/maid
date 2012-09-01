@@ -47,8 +47,7 @@ If you want to install the executable for all users, you may need to give root a
 
 You'll need Ruby and RubyGems installed.  Open a terminal and run:
 
-    sudo apt-get install ruby
-    sudo apt-get install rubygems
+    sudo apt-get install ruby rubygems
 
 You might also need to add the RubyGems `bin` directory to your `$PATH`.  For example, you might need to add something like this to your `~/.bashrc`:
 
