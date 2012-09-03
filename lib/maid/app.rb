@@ -3,7 +3,7 @@ require 'thor'
 
 class Maid::App < Thor
   check_unknown_options!
-  default_task 'clean'
+  default_task 'help'
 
   def self.sample_rules_path
     File.join(File.dirname(Maid::Maid::DEFAULTS[:rules_path]), 'rules.sample.rb')
