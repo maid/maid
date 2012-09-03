@@ -1,37 +1,7 @@
 #!/usr/bin/env bash
-# Run this script on a precise32 VM created with Vagrant to test installation, etc.
-#
-# It depends on the `.deb` being present in the `pkg` directory. 
-#
-# Usage:
-#
-#     host$ vagrant destroy && vagrant up && vagrant ssh
-#     guest$ cd /vagrant
-#     guest$ sudo script/vagrant-test
+# Test `maid` in a Vagrant-created guest OS.  This script should be run on the host.
 set -o errexit
 
-function echo_cmd {
-  echo \$ $*
-  $*
-}
-
-apt-get -qq update
-apt-get -qq install -y gdebi
-gdebi --non-interactive --quiet pkg/maid*.deb
-
-echo '-----------------------------------------------------------------------'
-echo '  Smoke test starting...'
-echo '-----------------------------------------------------------------------'
-
-echo_cmd maid version
-echo_cmd maid help
-echo_cmd maid sample
-echo_cmd mv -v ~/.maid/rules.sample.rb ~/.maid/rules.rb
-echo_cmd maid help clean
-echo_cmd maid clean --dry-run
-
-echo '-----------------------------------------------------------------------'
-echo '  Smoke test finished'
-echo '-----------------------------------------------------------------------'
-
-apt-get -qq remove -y maid
+vagrant destroy
+vagrant up
+vagrant ssh --command 'cd /vagrant && sudo script/vagrant-test-guest'
