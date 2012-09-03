@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "maid"
 
   s.add_dependency('thor', '~> 0.14.6')
-  s.add_development_dependency('fpm', '~> 0.4.14')
   s.add_development_dependency('rake', '~> 0.8.7')
   s.add_development_dependency('rspec', '~> 2.5.0')
   s.add_development_dependency('timecop', '~> 0.3.5')

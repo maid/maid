@@ -20,23 +20,26 @@ RSpec::Core::RakeTask.new(:spec)
 
 namespace :build do
   # While other Linux distributions may work, the only officially supported one is Ubuntu.
-  desc 'Build maid-*.deb into the pkg directory'
-  task :ubuntu => :build do
-    latest_gem = Dir.glob('pkg/maid-*.gem').last
-    # TODO: Use the value from the gemspec
-    maintainer = "Benjamin Oakes <hello@benjaminoakes.com>"
+  #
+  # See also: Ubuntu.md
+  desc 'Build maid_*_all.deb into the pkg directory'
+  task :ubuntu => :clean do
+    Dir.chdir('pkg')
+    doc = { :version => Maid::VERSION }
+    package_name = "maid_#{doc[:version]}_all"
 
-    # FIXME: Doesn't package dependencies
-    cmd = "fpm --maintainer #{maintainer.inspect} -s gem -t deb #{latest_gem}"
-
-    puts cmd
-    `#{cmd}`
-
-    FileUtils.mv(Dir.glob('*.deb'), 'pkg/', f_opts)
+    FileUtils.mkdir_p(package_name, f_opts)
+    FileUtils.cp_r('../ubuntu/DEBIAN', package_name)
+    sh "dpkg --build #{package_name}"
   end
 end
 
 task :clean do
-  FileUtils.rm_rf('doc', f_opts)
-  FileUtils.rm_rf('pkg', f_opts)
+  recreate_dir = lambda do |path|
+    FileUtils.rm_rf(path, f_opts)
+    FileUtils.mkdir(path, f_opts)
+  end
+
+  recreate_dir.call('doc')
+  recreate_dir.call('pkg')
 end

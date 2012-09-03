@@ -1,0 +1,10 @@
+Package: maid
+Version: 0.1.1
+Architecture: all
+Maintainer: Benjamin Oakes <hello@benjaminoakes.com>
+Installed-Size: 60
+Depends: ruby1.9.1
+Section: ruby
+Priority: optional
+Homepage: http://github.com/benjaminoakes/maid
+Description: Be lazy.  Let Maid clean up after you, based on rules you define.
