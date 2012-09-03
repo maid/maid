@@ -6,6 +6,7 @@ module Maid
       @logger = mock('Logger')
       @logger.stub!(:progname=)
       Logger.stub!(:new).and_return(@logger)
+      FileUtils.stub(:mkdir_p)
     end
 
     describe '.new' do
@@ -26,13 +27,16 @@ module Maid
       end
 
       it 'should set the trash to the default path' do
+        trash_path = Maid::DEFAULTS[:trash_path]
+        FileUtils.should_receive(:mkdir_p).with(trash_path).once
         maid = Maid.new
         maid.trash_path.should_not be_nil
-        maid.trash_path.should == Maid::DEFAULTS[:trash_path]
+        maid.trash_path.should == trash_path
       end
 
       it 'should set the trash to the given path, if provided' do
         trash_path = '/home/username/.local/share/Trash/files/'
+        FileUtils.should_receive(:mkdir_p).with(trash_path).once
         maid = Maid.new(:trash_path => trash_path)
         maid.trash_path.should_not be_nil
         maid.trash_path.should == trash_path

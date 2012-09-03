@@ -25,6 +25,7 @@ class Maid::Maid
 
     @log_device = options[:log_device]
     FileUtils.mkdir_p(File.dirname(@log_device)) unless @log_device.kind_of?(IO)
+
     @logger = Logger.new(@log_device)
     @logger.progname  = options[:progname]
     @logger.formatter = options[:log_formatter] if options[:log_formatter]
@@ -32,6 +33,9 @@ class Maid::Maid
     @rules_path   = options[:rules_path]
     @trash_path   = options[:trash_path]
     @file_options = options[:file_options]
+
+    # Just in case it isn't there...
+    FileUtils.mkdir_p(@trash_path)
 
     @rules = []
   end
