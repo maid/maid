@@ -9,6 +9,7 @@ GEM
   specs:
     ZenTest (4.4.2)
     diff-lcs (1.1.2)
+    mustache (0.99.4)
     rake (0.8.7)
     rspec (2.5.0)
       rspec-core (~> 2.5.0)
@@ -27,6 +28,7 @@ PLATFORMS
 DEPENDENCIES
   ZenTest (~> 4.4.2)
   maid!
+  mustache (~> 0.99.4)
   rake (~> 0.8.7)
   rspec (~> 2.5.0)
   timecop (~> 0.3.5)

@@ -3,6 +3,7 @@ require 'rake'
 require 'rake/rdoctask'
 require 'rspec/core/rake_task'
 require 'bundler'
+require 'mustache'
 
 f_opts = { :verbose => true }
 
@@ -28,8 +29,23 @@ namespace :build do
     doc = { :version => Maid::VERSION }
     package_name = "maid_#{doc[:version]}_all"
 
-    FileUtils.mkdir_p(package_name, f_opts)
-    FileUtils.cp_r('../ubuntu/DEBIAN', package_name)
+    FileUtils.mkdir_p("#{package_name}/DEBIAN", f_opts)
+
+    Dir.glob('../ubuntu/*').each do |path|
+      raw = File.read(path)
+      rendered = Mustache.render(raw, doc)
+      outfile = File.join(package_name, 'DEBIAN', File.basename(path, '.mustache'))
+
+      File.open(outfile, 'w') do |f|
+        f.puts(rendered)
+
+        # The new file needs to have its 'x' bit set:
+        #
+        #     dpkg-deb: error: maintainer script `postinst' has bad permissions 664 (must be >=0555 and <=0775)
+        f.chmod(0555)
+      end
+    end
+
     sh "dpkg --build #{package_name}"
   end
 end
