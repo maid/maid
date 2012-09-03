@@ -23,7 +23,9 @@ echo '  Smoke test starting...'
 echo '-----------------------------------------------------------------------'
 
 echo_cmd maid version
+echo_cmd maid
 echo_cmd maid help
+echo_cmd maid --help
 echo_cmd maid sample
 echo_cmd mv -v ~/.maid/rules.sample.rb ~/.maid/rules.rb
 echo_cmd maid help clean

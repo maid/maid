@@ -2,6 +2,7 @@
 # Test `maid` in a Vagrant-created guest OS.  This script should be run on the host.
 set -o errexit
 
+rake build:ubuntu
 vagrant destroy
 vagrant up
 vagrant ssh --command 'cd /vagrant && sudo script/vagrant-test-guest'
