@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Run a smoke test on the `maid` executable.
+#
+# From the [Wikipedia article](http://en.wikipedia.org/wiki/Smoke_test):
+# > Smoke testing refers to physical tests made to closed systems of pipes to
+# > test for leaks. By metaphorical extension, the term is also used for the
+# > first test made after assembly or repairs to a system, to provide some
+# > assurance that the system under test will not catastrophically fail. After a
+# > smoke test proves that "the pipes will not leak, the keys seal properly, the
+# > circuit will not burn, or the software will not crash outright," the system
+# > is ready for more stressful testing.
+
+function echo_cmd {
+  echo \$ $*
+  $*
+}
+
+echo '-----------------------------------------------------------------------'
+echo '  Smoke test starting...'
+echo '-----------------------------------------------------------------------'
+
+echo_cmd maid version
+echo_cmd maid --help
+echo_cmd maid help
+echo_cmd maid
+echo_cmd maid sample
+echo_cmd mv -v ~/.maid/rules.sample.rb ~/.maid/rules.rb
+echo_cmd maid help clean
+echo_cmd maid clean --dry-run
+
+echo '-----------------------------------------------------------------------'
+echo '  Smoke test finished'
+echo '-----------------------------------------------------------------------'
