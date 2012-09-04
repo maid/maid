@@ -36,19 +36,19 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 
 [![Download for Ubuntu](https://github.com/benjaminoakes/maid/raw/master/resources/download-for-ubuntu.png)](https://github.com/benjaminoakes/maid/issues/3)
 
-### Manual Installation
-
-Offically supported:
+#### Offically supported:
 
 * **OS:** Mac OS X, Ubuntu
 * **Ruby:** 1.8.7, 1.9.3 (preferred)
 
 (Other Ruby versions and OSes may work, but are not officially supported.  Contributions are welcome, however.)
 
+### Manual Installation
+
 First, you need Ruby:
 
 * **Mac OS X:** Ruby 1.8.7 comes preinstalled.
-* **Ubuntu:** Ruby is not preinstalled.  ([Interested in a package?](https://github.com/benjaminoakes/maid/issues/3))  To install Ruby 1.9.3: `sudo apt-get install ruby1.9.1 # (sic)`
+* **Ubuntu:** Ruby is not preinstalled.  To install Ruby 1.9.3: `sudo apt-get install ruby1.9.1 # (sic)`  ([Interested in a package?](https://github.com/benjaminoakes/maid/issues/3))
 
 Then, you can install via RubyGems.  Open a terminal and run:
 
