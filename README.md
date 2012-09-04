@@ -32,34 +32,25 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 <blockquote class="twitter-tweet"><p><a href="https://t.co/YnOzpwRV" title="https://github.com/benjaminoakes/maid">github.com/benjaminoakes/…</a> 這個拿來整理檔案似乎不錯.... <a href="http://t.co/rUt2f258" title="http://fb.me/1CxgLtmyq">fb.me/1CxgLtmyq</a></p>&mdash; xdite (@xdite) <a href="https://twitter.com/xdite/status/242335478626521088" data-datetime="2012-09-02T18:57:35+00:00">September 2, 2012</a></blockquote>
 <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-## Installation and Updating
-
-Maid supports Mac OS X and Ubuntu.  Other Unix-like operating systems may work, but are not officially supported.  (Contributions are welcome, however.)
-
-### Mac OS X
-
-To install, open a terminal and run:
-
-    sudo gem install maid
-
-At a later date, you can update by running:
-
-    sudo gem update maid
-
-### Ubuntu
-
-#### From a Package
+## Installation
 
 [![Download for Ubuntu](https://github.com/benjaminoakes/maid/raw/master/resources/download-for-ubuntu.png)](https://github.com/benjaminoakes/maid/issues/3)
 
-#### Manually
+Offically supported:
 
-You'll need to have installed Ruby and RubyGems.  Open a terminal and run:
+* Ruby: 1.8.7, 1.9.3 (preferred)
+* OS: Mac OS X, Ubuntu
 
-    # Installs Ruby 1.9.3p0 and RubyGems
-    sudo apt-get install ruby1.9.1
+Other Ruby versions and OSes may work, but are not officially supported.  (Contributions are welcome, however.)
 
-Then install Maid itself:
+### Manual Installation
+
+First, you need Ruby:
+
+* **Mac OS X:** Ruby 1.8.7 comes preinstalled.
+* **Ubuntu:** Ruby is not preinstalled.  ([Interested in a package?](https://github.com/benjaminoakes/maid/issues/3))  To install Ruby 1.9.3: `sudo apt-get install ruby1.9.1 # (sic)`
+
+Then, you can install via RubyGems.  Open a terminal and run:
 
     sudo gem install maid
 
@@ -67,10 +58,16 @@ At a later date, you can update by running:
 
     sudo gem update maid
 
+If you decide you don't want Maid installed anymore, remove it:
+
+    sudo gem uninstall maid
+
+**NOTE:** This does not remove any files under `~/.maid` or crontab entries.  Please remove them at your convenience.
+
 ### Troubleshooting
 
-* Older releases of Ruby for Ubuntu may not automatically add the RubyGems `bin` directory to your `$PATH`.  Double check your settings.
-* Having multiple Ruby versions installed can confuse things.  If you're a Ruby developer, you may prefer to just `gem install maid` with your preferred setup.  Ruby 1.9.3 is preferred.
+* Having multiple Ruby versions installed can confuse things.  If you're a Ruby developer, you may prefer to just `gem install maid` with your preferred setup.  Ruby 1.9.3 is recommended.
+* Older packages of Ruby for Ubuntu may not automatically add the RubyGems `bin` directory to your `$PATH`.  Double check your settings.
 
 ## Tutorial
 
