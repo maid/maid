@@ -15,6 +15,12 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 ![Still Maintained?](http://stillmaintained.com/benjaminoakes/maid.png)
 [![Build Status](http://travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
 
+## Want to help?
+
+* Participate in [beta testing](https://github.com/benjaminoakes/maid/issues/10)
+* [Report an issue](https://github.com/benjaminoakes/maid/issues) (bug or feature request)
+* Even just [share a link to Maid](https://twitter.com/intent/tweet?related=yarrcat&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fbenjaminoakes%2Fmaid) :)
+
 ## Buzz
 
 * [OneThingWell: Maid](http://onethingwell.org/post/30455088809/maid) - August 29th, 2012
