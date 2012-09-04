@@ -85,9 +85,7 @@ Before you start running your rules, you'll likely want to be able to test them.
 
 ```bash
 # No actions are taken; you just see what would happen with your rules as defined.
-maid clean --dry-run
-maid clean --noop
-maid clean -n
+maid clean --dry-run # Synonyms: -n, --noop
 ```
 
 To run your rules on demand, you can run `maid` manually:
