@@ -5,3 +5,7 @@ curl -so .roboconf.sh https://raw.github.com/benjaminoakes/roboconf/master/roboc
 source .roboconf.sh
 
 roboconf-bundler '~> 1.0.0'
+
+# ??? for dpkg
+# dput
+# devscripts for debuild
