@@ -38,15 +38,11 @@ Maid supports OS X and Ubuntu.  Other Unix-like operating systems may work, but 
 
 Open a terminal and run:
 
-    gem install maid
-
-If you want to install the executable for all users, you may need to give root access:
-
     sudo gem install maid
 
 ### Ubuntu
 
-#### Ubuntu Software Center
+#### From a Package
 
 [![Download for Ubuntu](https://github.com/benjaminoakes/maid/raw/master/resources/download-for-ubuntu.png)](https://github.com/benjaminoakes/maid/issues/3)
 
@@ -54,13 +50,15 @@ If you want to install the executable for all users, you may need to give root a
 
 You'll need Ruby and RubyGems installed.  Open a terminal and run:
 
-    sudo apt-get install ruby1.9.1
+    sudo apt-get install ruby1.9.1 # includes RubyGems
 
 (You might also need to add the RubyGems `bin` directory to your `$PATH`.)
 
 Then install Maid itself:
 
-    sudo gem install maid
+    sudo gem1.9.1 install maid
+
+(Using `gem` may also work, but `gem1.9.1` uses the Ruby installed in the step above.)
 
 ## Tutorial
 
