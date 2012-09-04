@@ -28,9 +28,9 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 
 ## Installation
 
-Maid supports OS X and Ubuntu.  Other Unix-like operating systems may work, but are not officially supported.  (Contributions are welcome, however.)
+Maid supports Mac OS X and Ubuntu.  Other Unix-like operating systems may work, but are not officially supported.  (Contributions are welcome, however.)
 
-### OS X
+### Mac OS X
 
 Open a terminal and run:
 
