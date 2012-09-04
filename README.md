@@ -50,15 +50,17 @@ Open a terminal and run:
 
 You'll need Ruby and RubyGems installed.  Open a terminal and run:
 
-    sudo apt-get install ruby1.9.1 # includes RubyGems
-
-(You might also need to add the RubyGems `bin` directory to your `$PATH`.)
+    # Installs Ruby 1.9.3p0 and RubyGems
+    sudo apt-get install ruby1.9.1
 
 Then install Maid itself:
 
-    sudo gem1.9.1 install maid
+    sudo gem install maid
 
-(Using `gem` may also work, but `gem1.9.1` uses the Ruby installed in the step above.)
+#### Troubleshooting
+
+* Older releases of Ruby for Ubuntu may not automatically add the RubyGems `bin` directory to your `$PATH`.  Double check your settings.
+* Having multiple Ruby versions installed can confuse things.  If you're a Ruby developer, you may prefer to just `gem install maid` with your preferred setup.  Ruby 1.9.3 is preferred.
 
 ## Tutorial
 
