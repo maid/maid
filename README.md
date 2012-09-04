@@ -36,14 +36,14 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 
 [![Download for Ubuntu](https://github.com/benjaminoakes/maid/raw/master/resources/download-for-ubuntu.png)](https://github.com/benjaminoakes/maid/issues/3)
 
+### Manual Installation
+
 Offically supported:
 
-* Ruby: 1.8.7, 1.9.3 (preferred)
-* OS: Mac OS X, Ubuntu
+* **OS:** Mac OS X, Ubuntu
+* **Ruby:** 1.8.7, 1.9.3 (preferred)
 
-Other Ruby versions and OSes may work, but are not officially supported.  (Contributions are welcome, however.)
-
-### Manual Installation
+(Other Ruby versions and OSes may work, but are not officially supported.  Contributions are welcome, however.)
 
 First, you need Ruby:
 
