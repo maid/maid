@@ -85,14 +85,14 @@ Maid rules are defined using Ruby, with some common operations made easier with 
 Before you start running your rules, you'll likely want to be able to test them.  Here's how:
 
     # No actions are taken; you just see what would happen with your rules as defined.
-    maid --dry-run
-    maid --noop
-    maid -n
+    maid clean --dry-run
+    maid clean --noop
+    maid clean -n
 
 To run your rules on demand, you can run `maid` manually:
 
-    maid                    # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
-    maid -r some_rules.rb   # Run the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
+    maid clean                    # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
+    maid clean -r some_rules.rb   # Run the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
 
 So, for example, if this is `some_rules.rb`:
 
@@ -106,7 +106,7 @@ So, for example, if this is `some_rules.rb`:
 
 This is the command to test, as well as some sample output:
 
-    $ maid -nr some_rules.rb
+    $ maid clean -nr some_rules.rb
     Rule: downloaded PDF books
     mv "/Users/ben/Downloads/book.pdf" "/Users/ben/Books/"
     mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Books/"
