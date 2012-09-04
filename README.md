@@ -59,7 +59,7 @@ Then install Maid itself:
 
     sudo gem install maid
 
-#### Troubleshooting
+### Troubleshooting
 
 * Older releases of Ruby for Ubuntu may not automatically add the RubyGems `bin` directory to your `$PATH`.  Double check your settings.
 * Having multiple Ruby versions installed can confuse things.  If you're a Ruby developer, you may prefer to just `gem install maid` with your preferred setup.  Ruby 1.9.3 is preferred.
