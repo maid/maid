@@ -19,7 +19,7 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 
 * Participate in [beta testing](https://github.com/benjaminoakes/maid/issues/10)
 * [Report an issue](https://github.com/benjaminoakes/maid/issues) (bug or feature request)
-* Even just [share a link to Maid](https://twitter.com/intent/tweet?related=yarrcat&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fbenjaminoakes%2Fmaid) :)
+* Even just [share a link to Maid](https://twitter.com/intent/tweet?related=benjaminoakes&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fbenjaminoakes%2Fmaid) :)
 
 ## Buzz
 
