@@ -54,17 +54,11 @@ If you want to install the executable for all users, you may need to give root a
 
 You'll need Ruby and RubyGems installed.  Open a terminal and run:
 
-    sudo apt-get install ruby rubygems
+    sudo apt-get install ruby1.9.1
 
-You might also need to add the RubyGems `bin` directory to your `$PATH`.  For example, you might need to add something like this to your `~/.bashrc`:
+(You might also need to add the RubyGems `bin` directory to your `$PATH`.)
 
-    export PATH="/var/lib/gems/1.8/bin:$PATH"
-    
 Then install Maid itself:
-    
-    gem install maid
-
-If you want to install the executable for all users, you may need to give root access:
 
     sudo gem install maid
 
@@ -85,14 +79,14 @@ Maid rules are defined using Ruby, with some common operations made easier with 
 Before you start running your rules, you'll likely want to be able to test them.  Here's how:
 
     # No actions are taken; you just see what would happen with your rules as defined.
-    maid --dry-run
-    maid --noop
-    maid -n
+    maid clean --dry-run
+    maid clean --noop
+    maid clean -n
 
 To run your rules on demand, you can run `maid` manually:
 
-    maid                    # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
-    maid -r some_rules.rb   # Run the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
+    maid clean                    # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
+    maid clean -r some_rules.rb   # Run the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
 
 So, for example, if this is `some_rules.rb`:
 
@@ -106,7 +100,7 @@ So, for example, if this is `some_rules.rb`:
 
 This is the command to test, as well as some sample output:
 
-    $ maid -nr some_rules.rb
+    $ maid clean -nr some_rules.rb
     Rule: downloaded PDF books
     mv "/Users/ben/Downloads/book.pdf" "/Users/ben/Books/"
     mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Books/"
