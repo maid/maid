@@ -26,23 +26,7 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 * [OneThingWell: Maid](http://onethingwell.org/post/30455088809/maid) - August 29th, 2012
 * [Maid – Paresseux mais ordonné!](http://korben.info/maid-ruby-script.html) (FR) - August 30th, 2012
 
-<blockquote class="twitter-tweet"><p>Maid – Paresseux mais ordonné ! <a href="http://t.co/d36mTowU" title="http://korben.info/maid-ruby-script.html">korben.info/maid-ruby-scri…</a> - une gem pour tout ranger !</p>&mdash; David Authier (@david_authier) <a href="https://twitter.com/david_authier/status/241437800350760960" data-datetime="2012-08-31T07:30:31+00:00">August 31, 2012</a></blockquote>
-<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<blockquote class="twitter-tweet"><p>gem install maid するとメイドさんが手に入るので Ruby 便利．<a href="https://t.co/gH6XgWJH" title="https://github.com/benjaminoakes/maid">github.com/benjaminoakes/…</a></p>&mdash; りんだん（実際犬） (@Linda_pp) <a href="https://twitter.com/Linda_pp/status/241588990166310912" data-datetime="2012-08-31T17:31:18+00:00">August 31, 2012</a></blockquote>
-<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<blockquote class="twitter-tweet"><p><a href="https://t.co/YnOzpwRV" title="https://github.com/benjaminoakes/maid">github.com/benjaminoakes/…</a> 這個拿來整理檔案似乎不錯.... <a href="http://t.co/rUt2f258" title="http://fb.me/1CxgLtmyq">fb.me/1CxgLtmyq</a></p>&mdash; xdite (@xdite) <a href="https://twitter.com/xdite/status/242335478626521088" data-datetime="2012-09-02T18:57:35+00:00">September 2, 2012</a></blockquote>
-<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<blockquote class="twitter-tweet"><p>メイドさん便利そう / benjaminoakes/maid <a href="https://t.co/hSlzo1WF" title="https://github.com/benjaminoakes/maid">github.com/benjaminoakes/…</a></p>&mdash; jugyo [河野十行] (@jugyo) <a href="https://twitter.com/jugyo/status/242752710091341824" data-datetime="2012-09-03T22:35:30+00:00">September 3, 2012</a></blockquote>
-<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<blockquote class="twitter-tweet"><p>メイドさんGPLだ。誰にも縛られない自由なメイドさんだ。 benjaminoakes/maid · GitHub <a href="http://t.co/CnA0BE52" title="http://ow.ly/1Ou237">ow.ly/1Ou237</a></p>&mdash; いろ (@irohiroki) <a href="https://twitter.com/irohiroki/status/242771134926426113" data-datetime="2012-09-03T23:48:43+00:00">September 3, 2012</a></blockquote>
-<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<blockquote class="twitter-tweet"><p>这个东西可以让你写ruby DSL来整理文件~赞 <a href="https://t.co/d4LPhuHf" title="https://github.com/benjaminoakes/maid">github.com/benjaminoakes/…</a></p>&mdash; Sean Lee (@seansay) <a href="https://twitter.com/seansay/status/242791501019611136" data-datetime="2012-09-04T01:09:39+00:00">September 4, 2012</a></blockquote>
-<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+[More...](https://github.com/benjaminoakes/maid/wiki/In-the-Media) (tweets, etc)
 
 ## Installation
 
