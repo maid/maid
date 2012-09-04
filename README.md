@@ -119,14 +119,18 @@ For more DSL helper methods, please see the documentation of [Maid::Tools](http:
 
 Once you get a hang for what you can do with Maid, let it do its stuff automatically throughout the day.  You'll find your computer stays a little tidier with as you teach it how to handle your common files.
 
-To do this, edit your crontab in your tool of choice and have it invoke the `maid` command.  The `--silent` option is provided to keep this from emailing you, if desired.  A log of the actions taken is kept at `~/.maid/maid.log`.
+To do this, edit your crontab in your tool of choice:
+
+    crontab -e
+
+...and have it invoke the `maid clean` command.  The `--silent` option is provided to keep this from emailing you, if desired.  A log of the actions taken is kept at `~/.maid/maid.log`.
 
 Example for every day at 1am:
 
     # minute hour day_of_month month day_of_week command_to_execute
-    0 1 * * * /bin/bash -li -c "maid --silent"
+    0 1 * * * /bin/bash -li -c "maid clean --silent"
 
-Both Mac OS X and Linux support callbacks when folders are changed, and that may be a forthcoming feature in Maid.  That said, I find `cron` to take care of most of my needs.
+Both Mac OS X and Ubuntu support callbacks when folders are changed, and that may be a forthcoming feature in Maid.  That said, I find `cron` to take care of most of my needs.
 
 ## Sample
 
