@@ -73,37 +73,45 @@ If you decide you don't want Maid installed anymore, remove it:
 
 Maid rules are defined using Ruby, with some common operations made easier with a small DSL (Domain Specific Language).  Here's a sample:
 
-    Maid.rules do
-      rule 'Old files downloaded while developing/testing' do
-        dir('~/Downloads/*').each do |path|
-          if downloaded_from(path).any? {|u| u.match 'http://localhost'} && 1.week.since?(last_accessed(path))
-            trash(path)
-          end
-        end
+```ruby
+Maid.rules do
+  rule 'Old files downloaded while developing/testing' do
+    dir('~/Downloads/*').each do |path|
+      if downloaded_from(path).any? {|u| u.match 'http://localhost'} && 1.week.since?(last_accessed(path))
+        trash(path)
       end
     end
+  end
+end
+```
 
 Before you start running your rules, you'll likely want to be able to test them.  Here's how:
 
-    # No actions are taken; you just see what would happen with your rules as defined.
-    maid clean --dry-run
-    maid clean --noop
-    maid clean -n
+```bash
+# No actions are taken; you just see what would happen with your rules as defined.
+maid clean --dry-run
+maid clean --noop
+maid clean -n
+```
 
 To run your rules on demand, you can run `maid` manually:
 
-    maid clean                    # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
-    maid clean -r some_rules.rb   # Run the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
+```bash
+maid clean                    # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
+maid clean -r some_rules.rb   # Run the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
+```
 
 So, for example, if this is `some_rules.rb`:
 
-    Maid.rules do
-      rule 'downloaded PDF books' do
-        dir('~/Downloads/*.pdf').each do |path|
-          move(path, '~/Books')
-        end
-      end
+```ruby
+Maid.rules do
+  rule 'downloaded PDF books' do
+    dir('~/Downloads/*.pdf').each do |path|
+      move(path, '~/Books')
     end
+  end
+end
+```
 
 This is the command to test, as well as some sample output:
 
