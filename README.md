@@ -54,17 +54,11 @@ If you want to install the executable for all users, you may need to give root a
 
 You'll need Ruby and RubyGems installed.  Open a terminal and run:
 
-    sudo apt-get install ruby rubygems
+    sudo apt-get install ruby1.9.1
 
-You might also need to add the RubyGems `bin` directory to your `$PATH`.  For example, you might need to add something like this to your `~/.bashrc`:
+(You might also need to add the RubyGems `bin` directory to your `$PATH`.)
 
-    export PATH="/var/lib/gems/1.8/bin:$PATH"
-    
 Then install Maid itself:
-    
-    gem install maid
-
-If you want to install the executable for all users, you may need to give root access:
 
     sudo gem install maid
 
