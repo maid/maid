@@ -83,6 +83,18 @@ Maid.rules do
 end
 ```
 
+If you're new to Ruby and would prefer a more traditional `for` loop, you can also do this:
+
+```ruby
+Maid.rules do
+  rule 'My rule' do
+    for path in dir('~/Downloads/*')
+      # ...
+    end
+  end
+end
+```
+
 Before you start running your rules, you'll likely want to be able to test them.  Here's how:
 
 ```bash
