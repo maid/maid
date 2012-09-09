@@ -19,12 +19,14 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 
 * Participate in [beta testing](https://github.com/benjaminoakes/maid/issues/10)
 * [Report an issue](https://github.com/benjaminoakes/maid/issues) (bug or feature request)
+* Read through the [wiki](https://github.com/benjaminoakes/maid/wiki)
 * Even just [share a link to Maid](https://twitter.com/intent/tweet?related=benjaminoakes&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fbenjaminoakes%2Fmaid) :)
 
 ## Buzz
 
 * [OneThingWell: Maid](http://onethingwell.org/post/30455088809/maid) - August 29th, 2012
 * [Maid – Paresseux mais ordonné!](http://korben.info/maid-ruby-script.html) (FR) - August 30th, 2012
+* [Ruby5 Podcast #302](http://ruby5.envylabs.com/episodes/306-episode-302-august-31st-2012) (at 2:45) - August 31st, 2012
 
 [More...](https://github.com/benjaminoakes/maid/wiki/In-the-Media) (tweets, etc)
 
@@ -76,6 +78,18 @@ Maid.rules do
       if downloaded_from(path).any? {|u| u.match 'http://localhost'} && 1.week.since?(last_accessed(path))
         trash(path)
       end
+    end
+  end
+end
+```
+
+If you're new to Ruby and would prefer a more traditional `for` loop, you can also do this:
+
+```ruby
+Maid.rules do
+  rule 'My rule' do
+    for path in dir('~/Downloads/*')
+      # ...
     end
   end
 end
