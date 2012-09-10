@@ -127,7 +127,7 @@ module Maid::Tools
   # 
   # If you set the delete variable to true, it will remove files from the 'to' location to keep the folders in sync.
   #
-  #   sync('~/music', '/backup/music', false)
+  #   sync('~/music', '/backup/music')
   def sync(from, to, delete=false)
     from = File.expand_path(from)
     to = File.expand_path(to)
