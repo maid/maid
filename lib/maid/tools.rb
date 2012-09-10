@@ -125,16 +125,42 @@ module Maid::Tools
 
   # [Rsync] Simple sync of two files/folders using rsync.
   # 
-  # If you set the delete variable to true, it will remove files from the 'to' location to keep the folders in sync.
-  #
+  # Options:
+  # See rsync man page for a detailed description.
+  # - :delete => boolean
+  # - :verbose => boolean
+  # - :archive => boolean (default true)
+  # - :update => boolean (default true)
+  # - :exclude => string EXE :exclude => ".git" or :exclude => [".git", ".rvmrc"]
+  # - :prune_empty => boolean
   #   sync('~/music', '/backup/music')
-  def sync(from, to, delete=false)
+  def sync(from, to, options={})
     # expand path removes trailing slash
     # cannot use str[-1] due to ruby 1.8.7 restriction
     from = File.expand_path(from) + (from.end_with?('/') ? '/' : '')
     to = File.expand_path(to) + (to.end_with?('/') ? '/' : '')
-    delete_option = delete ? '--delete ' : ''
-    stdout = cmd("rsync -au #{delete_option}#{from.inspect} #{to.inspect} 2>&1")
+    # default options
+    options = {:archive => true, :update => true}.merge(options)
+    ops = '-'
+    ops << 'a' if options[:archive]
+    ops << 'v' if options[:verbose]
+    ops << 'u' if options[:update]
+    ops << 'm' if options[:prune_empty]
+    if options[:exclude]
+      if options[:exclude].kind_of?(Array)
+        options[:exclude].each do |path|
+          ops << " --exclude=#{path.inspect}"
+        end
+      else
+        ops << " --exclude=#{options[:exclude].inspect}"
+      end
+    end
+    if options[:delete]
+      ops << ' --delete'
+    end
+    ops << ' ' unless ops == '-'
+    ops = '' if ops == '-'
+    stdout = cmd("rsync #{ops}#{from.inspect} #{to.inspect} 2>&1")
     @logger.info "Fired sync from #{from.inspect} to #{to.inspect}.  STDOUT:\n\n#{stdout}"
   end
 end

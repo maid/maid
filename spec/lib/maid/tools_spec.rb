@@ -140,9 +140,19 @@ module Maid
         @maid.sync(@from, @to)
       end
 
-      it 'should add delete option' do
-        @maid.should_receive(:cmd).with(%Q{rsync -au --delete "#@home/Downloads/" "#@home/Reference" 2>&1})
-        @maid.sync(@from, @to, true)
+      it 'should have no options' do
+        @maid.should_receive(:cmd).with(%Q{rsync "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to, :archive => false, :update => false)
+      end
+
+      it 'should add all options' do
+        @maid.should_receive(:cmd).with(%Q{rsync -avum --exclude=".git" --delete "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to, :archive => true, :update => true, :delete => true, :verbose => true, :prune_empty => true, :exclude => '.git')
+      end
+
+      it 'should add multiple exlcude options' do
+        @maid.should_receive(:cmd).with(%Q{rsync -au --exclude=".git" --exclude=".rvmrc" "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to, :exclude => ['.git', '.rvmrc'])
       end
     end
   end
