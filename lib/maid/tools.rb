@@ -146,6 +146,7 @@ module Maid::Tools
     ops << 'v' if options[:verbose]
     ops << 'u' if options[:update]
     ops << 'm' if options[:prune_empty]
+    ops << 'n' if @file_options[:noop]
     if options[:exclude]
       if options[:exclude].kind_of?(Array)
         options[:exclude].each do |path|
@@ -155,9 +156,7 @@ module Maid::Tools
         ops << " --exclude=#{options[:exclude].inspect}"
       end
     end
-    if options[:delete]
-      ops << ' --delete'
-    end
+    ops << ' --delete' if options[:delete]
     ops << ' ' unless ops == '-'
     ops = '' if ops == '-'
     stdout = cmd("rsync #{ops}#{from.inspect} #{to.inspect} 2>&1")
