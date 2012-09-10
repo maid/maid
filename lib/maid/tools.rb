@@ -141,25 +141,23 @@ module Maid::Tools
     to = File.expand_path(to) + (to.end_with?('/') ? '/' : '')
     # default options
     options = {:archive => true, :update => true}.merge(options)
-    ops = '-'
-    ops << 'a' if options[:archive]
-    ops << 'v' if options[:verbose]
-    ops << 'u' if options[:update]
-    ops << 'm' if options[:prune_empty]
-    ops << 'n' if @file_options[:noop]
+    ops = []
+    ops << '-a' if options[:archive]
+    ops << '-v' if options[:verbose]
+    ops << '-u' if options[:update]
+    ops << '-m' if options[:prune_empty]
+    ops << '-n' if @file_options[:noop]
     if options[:exclude]
       if options[:exclude].kind_of?(Array)
         options[:exclude].each do |path|
-          ops << " --exclude=#{path.inspect}"
+          ops << "--exclude=#{path.inspect}"
         end
       else
-        ops << " --exclude=#{options[:exclude].inspect}"
+        ops << "--exclude=#{options[:exclude].inspect}"
       end
     end
-    ops << ' --delete' if options[:delete]
-    ops << ' ' unless ops == '-'
-    ops = '' if ops == '-'
-    stdout = cmd("rsync #{ops}#{from.inspect} #{to.inspect} 2>&1")
+    ops << '--delete' if options[:delete]
+    stdout = cmd("rsync #{ops.join(' ')} #{from.inspect} #{to.inspect} 2>&1")
     @logger.info "Fired sync from #{from.inspect} to #{to.inspect}.  STDOUT:\n\n#{stdout}"
   end
 end

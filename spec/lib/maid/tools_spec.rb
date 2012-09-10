@@ -131,7 +131,7 @@ module Maid
       end
 
       it 'should sync the expanded paths, retaining backslash' do
-        @maid.should_receive(:cmd).with(%Q{rsync -au "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.should_receive(:cmd).with(%Q{rsync -a -u "#@home/Downloads/" "#@home/Reference" 2>&1})
         @maid.sync(@from, @to)
       end
 
@@ -141,17 +141,17 @@ module Maid
       end
 
       it 'should have no options' do
-        @maid.should_receive(:cmd).with(%Q{rsync "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.should_receive(:cmd).with(%Q{rsync  "#@home/Downloads/" "#@home/Reference" 2>&1})
         @maid.sync(@from, @to, :archive => false, :update => false)
       end
 
       it 'should add all options' do
-        @maid.should_receive(:cmd).with(%Q{rsync -avum --exclude=".git" --delete "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.should_receive(:cmd).with(%Q{rsync -a -v -u -m --exclude=".git" --delete "#@home/Downloads/" "#@home/Reference" 2>&1})
         @maid.sync(@from, @to, :archive => true, :update => true, :delete => true, :verbose => true, :prune_empty => true, :exclude => '.git')
       end
 
       it 'should add multiple exlcude options' do
-        @maid.should_receive(:cmd).with(%Q{rsync -au --exclude=".git" --exclude=".rvmrc" "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.should_receive(:cmd).with(%Q{rsync -a -u --exclude=".git" --exclude=".rvmrc" "#@home/Downloads/" "#@home/Reference" 2>&1})
         @maid.sync(@from, @to, :exclude => ['.git', '.rvmrc'])
       end
     end
