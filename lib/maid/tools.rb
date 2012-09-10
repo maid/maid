@@ -122,4 +122,17 @@ module Maid::Tools
     stdout = cmd("cd #{full_path.inspect} && git pull && git push 2>&1")
     @logger.info "Fired git piston on #{full_path.inspect}.  STDOUT:\n\n#{stdout}"
   end
+
+  # [Rsync] Simple sync of two files/folders using rsync.
+  # 
+  # If you set the delete variable to true, it will remove files from the 'to' location to keep the folders in sync.
+  #
+  #   sync('~/music', '/backup/music', false)
+  def sync(from, to, delete=false)
+    from = File.expand_path(from)
+    to = File.expand_path(to)
+    delete_option = delete ? '--delete ' : ''
+    stdout = cmd("rsync -avu #{delete_option}#{from.inspect} #{to.inspect} 2>&1")
+    @logger.info "Fired sync from #{from.inspect} to #{to.inspect}.  STDOUT:\n\n#{stdout}"
+  end
 end

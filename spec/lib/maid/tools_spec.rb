@@ -123,5 +123,27 @@ module Maid
         @maid.git_piston('~/code/projectname')
       end
     end
+
+    describe '#sync' do
+      before :each do
+        @from    = '~/Downloads'
+        @to      = '~/Reference'
+      end
+
+      it 'should sync the expanded paths' do
+        @maid.should_receive(:cmd).with(%Q{rsync -avu "#@home/Downloads" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to)
+      end
+
+      it 'should log the action' do
+        @logger.should_receive(:info)
+        @maid.sync(@from, @to)
+      end
+
+      it 'should add delete option' do
+        @maid.should_receive(:cmd).with(%Q{rsync -avu --delete "#@home/Downloads" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to, true)
+      end
+    end
   end
 end
