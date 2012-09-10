@@ -126,12 +126,12 @@ module Maid
 
     describe '#sync' do
       before :each do
-        @from    = '~/Downloads'
+        @from    = '~/Downloads/'
         @to      = '~/Reference'
       end
 
-      it 'should sync the expanded paths' do
-        @maid.should_receive(:cmd).with(%Q{rsync -avu "#@home/Downloads" "#@home/Reference" 2>&1})
+      it 'should sync the expanded paths, retaining backslash' do
+        @maid.should_receive(:cmd).with(%Q{rsync -au "#@home/Downloads/" "#@home/Reference" 2>&1})
         @maid.sync(@from, @to)
       end
 
@@ -141,7 +141,7 @@ module Maid
       end
 
       it 'should add delete option' do
-        @maid.should_receive(:cmd).with(%Q{rsync -avu --delete "#@home/Downloads" "#@home/Reference" 2>&1})
+        @maid.should_receive(:cmd).with(%Q{rsync -au --delete "#@home/Downloads/" "#@home/Reference" 2>&1})
         @maid.sync(@from, @to, true)
       end
     end

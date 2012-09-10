@@ -129,10 +129,12 @@ module Maid::Tools
   #
   #   sync('~/music', '/backup/music')
   def sync(from, to, delete=false)
-    from = File.expand_path(from)
-    to = File.expand_path(to)
+    # expand path removes trailing slash
+    # cannot use str[-1] due to ruby 1.8.7 restriction
+    from = File.expand_path(from) + (from.end_with?('/') ? '/' : '')
+    to = File.expand_path(to) + (to.end_with?('/') ? '/' : '')
     delete_option = delete ? '--delete ' : ''
-    stdout = cmd("rsync -avu #{delete_option}#{from.inspect} #{to.inspect} 2>&1")
+    stdout = cmd("rsync -au #{delete_option}#{from.inspect} #{to.inspect} 2>&1")
     @logger.info "Fired sync from #{from.inspect} to #{to.inspect}.  STDOUT:\n\n#{stdout}"
   end
 end
