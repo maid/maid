@@ -161,6 +161,12 @@ module Maid
         @maid.should_receive(:cmd).with(%Q{rsync -a -u --exclude=".git" --exclude=".rvmrc" "#@home/Downloads/" "#@home/Reference" 2>&1})
         @maid.sync(@from, @to, :exclude => ['.git', '.rvmrc'])
       end
+
+      it 'should add noop option' do
+        @maid.file_options[:noop] = true
+        @maid.should_receive(:cmd).with(%Q{rsync -a -u -n "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to)
+      end
     end
   end
 end
