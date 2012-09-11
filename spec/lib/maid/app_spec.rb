@@ -63,12 +63,6 @@ module Maid
     end
   end
 
-  describe App, 'sample rules' do
-    it 'should be able to run' do
-      lambda { App.start(%w[clean --silent --noop --rules=lib/maid/rules.sample.rb]) }.should_not raise_error(SyntaxError)
-    end
-  end
-
   describe App, '#version' do
     it 'should print out the gem version' do
       app = App.new
