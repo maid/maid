@@ -8,7 +8,14 @@ module Maid
 
       Maid.ancestors.should include(Tools)
       @maid = Maid.new
-      @logger  = @maid.instance_eval { @logger }
+
+      # FIXME: Maid should really take the logger directly, rather than the device.
+      logger = mock('Logger', :info => nil, :warn => nil)
+      @maid.instance_eval { @logger = logger }
+      @logger = logger
+
+      # For safety, stub `cmd` to prevent running commands:
+      @maid.stub(:cmd)
     end
 
     describe '#move' do
