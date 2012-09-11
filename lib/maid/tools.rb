@@ -122,4 +122,42 @@ module Maid::Tools
     stdout = cmd("cd #{full_path.inspect} && git pull && git push 2>&1")
     @logger.info "Fired git piston on #{full_path.inspect}.  STDOUT:\n\n#{stdout}"
   end
+
+  # [Rsync] Simple sync of two files/folders using rsync.
+  # 
+  # Options:
+  # See rsync man page for a detailed description.
+  # - :delete => boolean
+  # - :verbose => boolean
+  # - :archive => boolean (default true)
+  # - :update => boolean (default true)
+  # - :exclude => string EXE :exclude => ".git" or :exclude => [".git", ".rvmrc"]
+  # - :prune_empty => boolean
+  #   sync('~/music', '/backup/music')
+  def sync(from, to, options={})
+    # expand path removes trailing slash
+    # cannot use str[-1] due to ruby 1.8.7 restriction
+    from = File.expand_path(from) + (from.end_with?('/') ? '/' : '')
+    to = File.expand_path(to) + (to.end_with?('/') ? '/' : '')
+    # default options
+    options = {:archive => true, :update => true}.merge(options)
+    ops = []
+    ops << '-a' if options[:archive]
+    ops << '-v' if options[:verbose]
+    ops << '-u' if options[:update]
+    ops << '-m' if options[:prune_empty]
+    ops << '-n' if @file_options[:noop]
+    if options[:exclude]
+      if options[:exclude].kind_of?(Array)
+        options[:exclude].each do |path|
+          ops << "--exclude=#{path.inspect}"
+        end
+      else
+        ops << "--exclude=#{options[:exclude].inspect}"
+      end
+    end
+    ops << '--delete' if options[:delete]
+    stdout = cmd("rsync #{ops.join(' ')} #{from.inspect} #{to.inspect} 2>&1")
+    @logger.info "Fired sync from #{from.inspect} to #{to.inspect}.  STDOUT:\n\n#{stdout}"
+  end
 end
