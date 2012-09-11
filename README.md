@@ -16,10 +16,17 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 
 ## Want to help?
 
+Users:
+
 * Participate in [beta testing](https://github.com/benjaminoakes/maid/issues/10)
 * [Report an issue](https://github.com/benjaminoakes/maid/issues) (bug or feature request)
 * Read through the [wiki](https://github.com/benjaminoakes/maid/wiki)
 * Even just [share a link to Maid](https://twitter.com/intent/tweet?related=benjaminoakes&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fbenjaminoakes%2Fmaid) :)
+
+Developers:
+
+* Complete an issue (easy ones [are labelled](https://github.com/benjaminoakes/maid/issues?labels=difficulty-1&page=1&state=open)).
+* See the [Contributing guide](https://github.com/benjaminoakes/maid/wiki/Contributing)
 
 ## Buzz
 
