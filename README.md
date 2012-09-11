@@ -12,7 +12,6 @@ Maid is inspired by the Mac OS X shareware program [Hazel](http://www.noodlesoft
 
 Your rules are defined in Ruby, so easy rules are easy and difficult rules are possible.
 
-![Still Maintained?](http://stillmaintained.com/benjaminoakes/maid.png)
 [![Build Status](http://travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
 
 ## Want to help?
