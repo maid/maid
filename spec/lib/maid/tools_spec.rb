@@ -58,6 +58,30 @@ module Maid
       end
     end
 
+    describe '#remove' do
+      before :each do
+        FileUtils.stub!(:rm_r)
+        @path = '~/Downloads/foo.zip'
+        @options = { :secure => true }.merge(@maid.file_options)
+      end
+
+      it 'should remove expanded paths, passing options' do
+        FileUtils.should_receive(:rm_r).with("#{@home}/Downloads/foo.zip", @options)
+        @maid.remove(@path)
+      end
+
+      it 'should log the remove' do
+        @logger.should_receive(:info)
+        @maid.remove(@path)
+      end
+
+      it 'should set the force option' do
+        @options = @options.merge({:force => true})
+        FileUtils.should_receive(:rm_r).with("#{@home}/Downloads/foo.zip", @options)
+        @maid.remove(@path, :force => true)
+      end
+    end
+
     describe '#dir' do
       it 'should delegate to Dir#[] with an expanded path' do
         Dir.should_receive(:[]).with("#@home/Downloads/*.zip")

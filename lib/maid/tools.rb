@@ -44,6 +44,24 @@ module Maid::Tools
     end
   end
 
+
+
+  # Remove directory/file
+  #
+  # Directory/file is removed securely (See FileUtils.remove_entry_secure for further details).
+  # 
+  # Options:
+  # - :force => boolean
+  #
+  # remove('~/Downloads/foo.zip')
+  def remove(path, options = {})
+    path = File.expand_path(path)
+    options = {:secure => true}.merge(@file_options).merge(options)
+
+    @logger.info "Removing #{path}"
+    FileUtils.rm_r(path,options)
+  end
+
   # Give all files matching the given glob.
   #
   # Delgates to Dir.
