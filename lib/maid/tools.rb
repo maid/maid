@@ -46,17 +46,18 @@ module Maid::Tools
 
 
 
-  # Remove directory/file
+  # Remove the given path.
   #
-  # Directory/file is removed securely (See FileUtils.remove_entry_secure for further details).
+  # Remove the given path recursively.
   # 
   # Options:
   # - :force => boolean
+  # - :secure => boolean (See FileUtils.remove_entry_secure for further details)
   #
   # remove('~/Downloads/foo.zip')
   def remove(path, options = {})
     path = File.expand_path(path)
-    options = {:secure => true}.merge(@file_options).merge(options)
+    options = @file_options.merge(options)
 
     @logger.info "Removing #{path}"
     FileUtils.rm_r(path,options)

@@ -5,6 +5,7 @@ module Maid
     before :each do
       @home = File.expand_path('~')
       FileUtils.stub!(:mv)
+      FileUtils.stub!(:rm_r)
 
       Maid.ancestors.should include(Tools)
       @maid = Maid.new
@@ -60,9 +61,8 @@ module Maid
 
     describe '#remove' do
       before :each do
-        FileUtils.stub!(:rm_r)
         @path = '~/Downloads/foo.zip'
-        @options = { :secure => true }.merge(@maid.file_options)
+        @options = @maid.file_options
       end
 
       it 'should remove expanded paths, passing options' do
@@ -73,6 +73,12 @@ module Maid
       it 'should log the remove' do
         @logger.should_receive(:info)
         @maid.remove(@path)
+      end
+
+      it 'should set the secure option' do
+        @options = @options.merge({:secure => true})
+        FileUtils.should_receive(:rm_r).with("#{@home}/Downloads/foo.zip", @options)
+        @maid.remove(@path, :secure => true)
       end
 
       it 'should set the force option' do
