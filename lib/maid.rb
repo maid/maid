@@ -23,7 +23,8 @@ module Maid
 end
 
 class Numeric
-  include Maid::NumericExtensions
+  include Maid::NumericExtensions::Time
+  include Maid::NumericExtensions::SizeToKb
 end
 
 # TODO Is there a no-conflict way of including the extensions?
