@@ -54,13 +54,22 @@ module Maid::Tools
   # - :force => boolean
   # - :secure => boolean (See FileUtils.remove_entry_secure for further details)
   #
-  # remove('~/Downloads/foo.zip')
-  def remove(path, options = {})
-    path = File.expand_path(path)
-    options = @file_options.merge(options)
+  #   remove('~/Downloads/foo.zip')
+  #
+  # This method can handle multiple remove paths.
+  #
+  #   remove(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
+  #   remove(dir('~/Downloads/*.zip'))
+  def remove(paths, options = {})
+    paths = [paths] unless paths.kind_of?(Array)
 
-    @logger.info "Removing #{path}"
-    FileUtils.rm_r(path,options)
+    paths.each do |path|
+      path = File.expand_path(path)
+      options = @file_options.merge(options)
+
+      @logger.info "Removing #{path}"
+      FileUtils.rm_r(path,options)
+    end
   end
 
   # Give all files matching the given glob.

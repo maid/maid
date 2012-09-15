@@ -86,6 +86,13 @@ module Maid
         FileUtils.should_receive(:rm_r).with("#{@home}/Downloads/foo.zip", @options)
         @maid.remove(@path, :force => true)
       end
+
+      it 'should handle multiple paths' do
+        @paths = ['~/Downloads/foo.zip', '~/Downloads/bar.zip']
+        FileUtils.should_receive(:rm_r).once.ordered.with("#{@home}/Downloads/foo.zip", @options)
+        FileUtils.should_receive(:rm_r).once.ordered.with("#{@home}/Downloads/bar.zip", @options)
+        @maid.remove(@paths)
+      end
     end
 
     describe '#dir' do
