@@ -19,7 +19,7 @@ module Maid::Tools
   # This method can handle multiple from paths.
   #
   #   move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
-  #   move(Dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
+  #   move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
   def move(froms, to)
     froms = [froms] unless froms.kind_of?(Array)
     
@@ -46,7 +46,7 @@ module Maid::Tools
   # This method can handle multiple paths.
   #
   #   trash(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
-  #   trash(Dir('~/Downloads/*.zip'))
+  #   trash(dir('~/Downloads/*.zip'))
   def trash(paths)
     paths = [paths] unless paths.kind_of?(Array)
     
