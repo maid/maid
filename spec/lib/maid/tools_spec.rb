@@ -35,6 +35,13 @@ module Maid
 
         @maid.move(@from, @to)
       end
+
+      it 'should handle multiple from paths' do
+        @froms = ['~/Downloads/foo.zip', '~/Downloads/bar.zip']
+        FileUtils.should_receive(:mv).once.ordered.with("#{@home}/Downloads/foo.zip", "#{@home}/Reference", @options)
+        FileUtils.should_receive(:mv).once.ordered.with("#{@home}/Downloads/bar.zip", "#{@home}/Reference", @options)
+        @maid.move(@froms, @to)
+      end
     end
 
     describe '#trash' do

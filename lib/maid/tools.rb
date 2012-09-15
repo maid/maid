@@ -15,16 +15,25 @@ module Maid::Tools
   # This method delegates to FileUtils.  The instance-level <tt>file_options</tt> hash is passed to control the <tt>:noop</tt> option.
   #
   #   move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
-  def move(from, to)
-    from = File.expand_path(from)
-    to = File.expand_path(to)
-    target = File.join(to, File.basename(from))
+  # 
+  # This method can handle multiple from paths.
+  #
+  #   move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
+  #   move(Dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
+  def move(froms, to)
+    froms = [froms] unless froms.kind_of?(Array)
+    
+    froms.each do |from|
+      from = File.expand_path(from)
+      to = File.expand_path(to)
+      target = File.join(to, File.basename(from))
 
-    unless File.exist?(target)
-      @logger.info "mv #{from.inspect} #{to.inspect}"
-      FileUtils.mv(from, to, @file_options)
-    else
-      @logger.warn "skipping #{from.inspect} because #{target.inspect} already exists"
+      unless File.exist?(target)
+        @logger.info "mv #{from.inspect} #{to.inspect}"
+        FileUtils.mv(from, to, @file_options)
+      else
+        @logger.warn "skipping #{from.inspect} because #{target.inspect} already exists"
+      end
     end
   end
 
