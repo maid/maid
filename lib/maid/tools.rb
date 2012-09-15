@@ -31,16 +31,29 @@ module Maid::Tools
   # Move the given path to the trash (as set by <tt>trash_path</tt>).
   #
   # The path is moved if a file already exists in the trash with the same name.  However, the current date and time is appended to the filename.
+  # 
+  # Options:
+  #   :remove => int.SizeToKb (EXE 1.gigabyte, 1024.megabytes) If the size of a path is greater then the remove, 
+  #     remove it.  See Maid::NumericExtensions::SizeToKb
   #
   #   trash('~/Downloads/foo.zip')
-  def trash(path)
+  def trash(path, options = {})
+    removed = false
     target = File.join(@trash_path, File.basename(path))
     safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
 
-    if File.exist?(target)
-      move(path, safe_trash_path)
-    else
-      move(path, @trash_path)
+    if options[:remove] and disk_usage(path) > options[:remove]
+      remove(path)
+      removed = true
+      @logger.info "Removed #{path.inspect} rather then trashing."
+    end
+
+    if not removed
+      if File.exist?(target)
+        move(path, safe_trash_path)
+      else
+        move(path, @trash_path)
+      end
     end
   end
 

@@ -57,6 +57,19 @@ module Maid
           @maid.trash(@path)
         end
       end
+
+      it 'should remove files greater then the remove option size' do
+        @maid.stub!(:disk_usage).and_return(1025)
+        @maid.should_receive(:remove).with(@path)
+        @logger.should_receive(:info)
+        @maid.trash(@path, :remove => 1.mb)
+      end
+
+      it 'should trash files less then the remove option size' do
+        @maid.stub!(:disk_usage).and_return(1023)
+        @maid.should_receive(:move).with(@path, @trash_path)
+        @maid.trash(@path, :remove => 1.mb)
+      end
     end
 
     describe '#remove' do
