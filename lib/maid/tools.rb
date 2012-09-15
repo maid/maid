@@ -42,14 +42,23 @@ module Maid::Tools
   # The path is moved if a file already exists in the trash with the same name.  However, the current date and time is appended to the filename.
   #
   #   trash('~/Downloads/foo.zip')
-  def trash(path)
-    target = File.join(@trash_path, File.basename(path))
-    safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
+  # 
+  # This method can handle multiple paths.
+  #
+  #   trash(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
+  #   trash(Dir('~/Downloads/*.zip'))
+  def trash(paths)
+    paths = [paths] unless paths.kind_of?(Array)
+    
+    paths.each do |path|
+      target = File.join(@trash_path, File.basename(path))
+      safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
 
-    if File.exist?(target)
-      move(path, safe_trash_path)
-    else
-      move(path, @trash_path)
+      if File.exist?(target)
+        move(path, safe_trash_path)
+      else
+        move(path, @trash_path)
+      end
     end
   end
 

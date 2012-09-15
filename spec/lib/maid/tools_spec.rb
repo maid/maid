@@ -63,6 +63,13 @@ module Maid
           @maid.trash(@path)
         end
       end
+
+      it 'should handle multiple paths' do
+        @paths = ['~/Downloads/foo.zip', '~/Downloads/bar.zip']
+        @maid.should_receive(:move).once.ordered.with("~/Downloads/foo.zip", @trash_path)
+        @maid.should_receive(:move).once.ordered.with("~/Downloads/bar.zip", @trash_path)
+        @maid.trash(@paths)
+      end
     end
 
     describe '#dir' do
