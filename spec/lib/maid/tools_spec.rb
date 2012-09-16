@@ -71,6 +71,11 @@ module Maid
         Find.should_receive(:find).with("#@home/Downloads/foo.zip", &f)
         @maid.find('~/Downloads/foo.zip', &f)
       end
+
+      it 'should return an array when no block is given' do
+        Dir.should_receive(:[]).with("#@home/Downloads/foo.zip")
+        @maid.find('~/Downloads/foo.zip')
+      end
     end
 
     describe '#locate' do
