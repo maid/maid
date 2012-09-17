@@ -21,9 +21,7 @@ module Maid::Tools
   #   move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
   #   move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
   def move(froms, to)
-    froms = [froms] unless froms.kind_of?(Array)
-    
-    froms.each do |from|
+    Array(froms).each do |from|
       from = File.expand_path(from)
       to = File.expand_path(to)
       target = File.join(to, File.basename(from))
@@ -48,9 +46,7 @@ module Maid::Tools
   #   trash(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
   #   trash(dir('~/Downloads/*.zip'))
   def trash(paths)
-    paths = [paths] unless paths.kind_of?(Array)
-    
-    paths.each do |path|
+    Array(paths).each do |path|
       target = File.join(@trash_path, File.basename(path))
       safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
 
