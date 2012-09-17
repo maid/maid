@@ -93,13 +93,24 @@ module Maid::Tools
 
   # Find matching files, akin to the Unix utility <tt>find</tt>.
   #
-  # Delegates to Find.find.
+  # If no block is given, it will return an array.
+  #
+  #   find '~/Downloads/'
+  #
+  # or delegates to Find.find.
   #
   #   find '~/Downloads/' do |path|
   #     # ...
   #   end
+  #
   def find(path, &block)
-    Find.find(File.expand_path(path), &block)
+    if block.nil?
+      files = []
+      Find.find(File.expand_path(path)) { |file_path| files << file_path }
+      files
+    else
+      Find.find(File.expand_path(path), &block)
+    end
   end
 
   # [Mac OS X] Use Spotlight to locate all files matching the given filename.
