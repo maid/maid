@@ -59,9 +59,7 @@ module Maid::Tools
   #   remove(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
   #   remove(dir('~/Downloads/*.zip'))
   def remove(paths, options = {})
-    paths = [paths] unless paths.kind_of?(Array)
-
-    paths.each do |path|
+    Array(paths).each do |path|
       path = File.expand_path(path)
       options = @file_options.merge(options)
 
