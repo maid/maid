@@ -44,6 +44,34 @@ module Maid::Tools
     end
   end
 
+
+
+  # Remove the given path.
+  #
+  # Remove the given path recursively.
+  # 
+  # Options:
+  # - :force => boolean
+  # - :secure => boolean (See FileUtils.remove_entry_secure for further details)
+  #
+  #   remove('~/Downloads/foo.zip')
+  #
+  # This method can handle multiple remove paths.
+  #
+  #   remove(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
+  #   remove(dir('~/Downloads/*.zip'))
+  def remove(paths, options = {})
+    paths = [paths] unless paths.kind_of?(Array)
+
+    paths.each do |path|
+      path = File.expand_path(path)
+      options = @file_options.merge(options)
+
+      @logger.info "Removing #{path}"
+      FileUtils.rm_r(path,options)
+    end
+  end
+
   # Give all files matching the given glob.
   #
   # Delgates to Dir.

@@ -5,6 +5,7 @@ module Maid
     before :each do
       @home = File.expand_path('~')
       FileUtils.stub!(:mv)
+      FileUtils.stub!(:rm_r)
 
       Maid.ancestors.should include(Tools)
       @maid = Maid.new
@@ -55,6 +56,42 @@ module Maid
           @maid.should_receive(:move).with(@path, "#{@trash_path}/foo.zip 2011-05-22-16-53-52")
           @maid.trash(@path)
         end
+      end
+    end
+
+    describe '#remove' do
+      before :each do
+        @path = '~/Downloads/foo.zip'
+        @options = @maid.file_options
+      end
+
+      it 'should remove expanded paths, passing options' do
+        FileUtils.should_receive(:rm_r).with("#{@home}/Downloads/foo.zip", @options)
+        @maid.remove(@path)
+      end
+
+      it 'should log the remove' do
+        @logger.should_receive(:info)
+        @maid.remove(@path)
+      end
+
+      it 'should set the secure option' do
+        @options = @options.merge({:secure => true})
+        FileUtils.should_receive(:rm_r).with("#{@home}/Downloads/foo.zip", @options)
+        @maid.remove(@path, :secure => true)
+      end
+
+      it 'should set the force option' do
+        @options = @options.merge({:force => true})
+        FileUtils.should_receive(:rm_r).with("#{@home}/Downloads/foo.zip", @options)
+        @maid.remove(@path, :force => true)
+      end
+
+      it 'should handle multiple paths' do
+        @paths = ['~/Downloads/foo.zip', '~/Downloads/bar.zip']
+        FileUtils.should_receive(:rm_r).once.ordered.with("#{@home}/Downloads/foo.zip", @options)
+        FileUtils.should_receive(:rm_r).once.ordered.with("#{@home}/Downloads/bar.zip", @options)
+        @maid.remove(@paths)
       end
     end
 
