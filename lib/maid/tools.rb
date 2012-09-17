@@ -147,15 +147,11 @@ module Maid::Tools
     ops << '-u' if options[:update]
     ops << '-m' if options[:prune_empty]
     ops << '-n' if @file_options[:noop]
-    if options[:exclude]
-      if options[:exclude].kind_of?(Array)
-        options[:exclude].each do |path|
-          ops << "--exclude=#{path.inspect}"
-        end
-      else
-        ops << "--exclude=#{options[:exclude].inspect}"
-      end
+
+    Array(options[:exclude]).each do |path|
+      ops << "--exclude=#{path.inspect}"
     end
+
     ops << '--delete' if options[:delete]
     stdout = cmd("rsync #{ops.join(' ')} #{from.inspect} #{to.inspect} 2>&1")
     @logger.info "Fired sync from #{from.inspect} to #{to.inspect}.  STDOUT:\n\n#{stdout}"
