@@ -7,6 +7,10 @@ Vagrant::Config.run do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
+  # 
+  # The base precise64 box can be found at http://files.vagrantup.com/precise64.box
+  # 
+  # For more info, please see https://github.com/benjaminoakes/maid/wiki/Contributing
   config.vm.box = "precise64"
 
   # The url from where the 'config.vm.box' box will be fetched if it
