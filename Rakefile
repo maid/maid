@@ -14,3 +14,7 @@ Rake::RDocTask.new do |rd|
 end
 
 RSpec::Core::RakeTask.new(:spec)
+
+task :console do
+  sh 'irb -I lib -r maid'
+end
