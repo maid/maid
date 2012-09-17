@@ -44,8 +44,6 @@ module Maid::Tools
     end
   end
 
-
-
   # Remove the given path.
   #
   # Remove the given path recursively.
@@ -68,7 +66,7 @@ module Maid::Tools
       options = @file_options.merge(options)
 
       @logger.info "Removing #{path}"
-      FileUtils.rm_r(path,options)
+      FileUtils.rm_r(path, options)
     end
   end
 
