@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Maid
-  describe Tools do
+  describe Tools, :fakefs => true do
     before :each do
       @home = File.expand_path('~')
       FileUtils.stub!(:mv)
@@ -17,6 +17,9 @@ module Maid
 
       # For safety, stub `cmd` to prevent running commands:
       @maid.stub(:cmd)
+
+      # mkdir on fakefs
+      FileUtils.mkdir_p("Foo/Bar")
     end
 
     describe '#move' do
@@ -128,6 +131,12 @@ module Maid
         f = lambda { }
         Find.should_receive(:find).with("#@home/Downloads/foo.zip", &f)
         @maid.find('~/Downloads/foo.zip', &f)
+      end
+
+      it "should return an an array of all the files's names when no block given" do
+        File.open("Foo/Bar/baz.txt", "w") { |f| f.puts("Ruby Rocks!") }
+        dir_path = File.expand_path("Foo/Bar")
+        @maid.find(dir_path).should == [dir_path, dir_path + '/baz.txt']
       end
     end
 
