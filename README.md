@@ -25,7 +25,7 @@ Users:
 
 Developers:
 
-* Complete an issue (easy ones [are labelled](https://github.com/benjaminoakes/maid/issues?labels=difficulty-1&page=1&state=open)).
+* Complete an issue (easy ones [are labelled](https://github.com/benjaminoakes/maid/issues?labels=difficulty-1&page=1&state=open), and issues for future releases are [grouped by milestone](https://github.com/benjaminoakes/maid/issues/milestones)).
 * See the [Contributing guide](https://github.com/benjaminoakes/maid/wiki/Contributing)
 
 ## Buzz
