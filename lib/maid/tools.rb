@@ -15,16 +15,25 @@ module Maid::Tools
   # This method delegates to FileUtils.  The instance-level <tt>file_options</tt> hash is passed to control the <tt>:noop</tt> option.
   #
   #   move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
-  def move(from, to)
-    from = File.expand_path(from)
-    to = File.expand_path(to)
-    target = File.join(to, File.basename(from))
+  # 
+  # This method can handle multiple from paths.
+  #
+  #   move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
+  #   move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
+  def move(froms, to)
+    froms = [froms] unless froms.kind_of?(Array)
+    
+    froms.each do |from|
+      from = File.expand_path(from)
+      to = File.expand_path(to)
+      target = File.join(to, File.basename(from))
 
-    unless File.exist?(target)
-      @logger.info "mv #{from.inspect} #{to.inspect}"
-      FileUtils.mv(from, to, @file_options)
-    else
-      @logger.warn "skipping #{from.inspect} because #{target.inspect} already exists"
+      unless File.exist?(target)
+        @logger.info "mv #{from.inspect} #{to.inspect}"
+        FileUtils.mv(from, to, @file_options)
+      else
+        @logger.warn "skipping #{from.inspect} because #{target.inspect} already exists"
+      end
     end
   end
 
@@ -33,14 +42,23 @@ module Maid::Tools
   # The path is moved if a file already exists in the trash with the same name.  However, the current date and time is appended to the filename.
   #
   #   trash('~/Downloads/foo.zip')
-  def trash(path)
-    target = File.join(@trash_path, File.basename(path))
-    safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
+  # 
+  # This method can handle multiple paths.
+  #
+  #   trash(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
+  #   trash(dir('~/Downloads/*.zip'))
+  def trash(paths)
+    paths = [paths] unless paths.kind_of?(Array)
+    
+    paths.each do |path|
+      target = File.join(@trash_path, File.basename(path))
+      safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
 
-    if File.exist?(target)
-      move(path, safe_trash_path)
-    else
-      move(path, @trash_path)
+      if File.exist?(target)
+        move(path, safe_trash_path)
+      else
+        move(path, @trash_path)
+      end
     end
   end
 

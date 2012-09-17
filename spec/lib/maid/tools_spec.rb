@@ -43,6 +43,13 @@ module Maid
 
         @maid.move(@from, @to)
       end
+
+      it 'should handle multiple from paths' do
+        @froms = ['~/Downloads/foo.zip', '~/Downloads/bar.zip']
+        FileUtils.should_receive(:mv).once.ordered.with("#{@home}/Downloads/foo.zip", "#{@home}/Reference", @options)
+        FileUtils.should_receive(:mv).once.ordered.with("#{@home}/Downloads/bar.zip", "#{@home}/Reference", @options)
+        @maid.move(@froms, @to)
+      end
     end
 
     describe '#trash' do
@@ -63,6 +70,13 @@ module Maid
           @maid.should_receive(:move).with(@path, "#{@trash_path}/foo.zip 2011-05-22-16-53-52")
           @maid.trash(@path)
         end
+      end
+
+      it 'should handle multiple paths' do
+        @paths = ['~/Downloads/foo.zip', '~/Downloads/bar.zip']
+        @maid.should_receive(:move).once.ordered.with("~/Downloads/foo.zip", @trash_path)
+        @maid.should_receive(:move).once.ordered.with("~/Downloads/bar.zip", @trash_path)
+        @maid.trash(@paths)
       end
     end
 
