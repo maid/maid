@@ -9,7 +9,14 @@ module Maid
 
       Maid.ancestors.should include(Tools)
       @maid = Maid.new
-      @logger  = @maid.instance_eval { @logger }
+
+      # FIXME: Maid should really take the logger directly, rather than the device.
+      logger = mock('Logger', :info => nil, :warn => nil)
+      @maid.instance_eval { @logger = logger }
+      @logger = logger
+
+      # For safety, stub `cmd` to prevent running commands:
+      @maid.stub(:cmd)
     end
 
     describe '#move' do
@@ -158,6 +165,44 @@ module Maid
         @maid.should_receive(:cmd).with(%Q{cd "#@home/code/projectname" && git pull && git push 2>&1})
         @logger.should_receive(:info)
         @maid.git_piston('~/code/projectname')
+      end
+    end
+
+    describe '#sync' do
+      before :each do
+        @from    = '~/Downloads/'
+        @to      = '~/Reference'
+      end
+
+      it 'should sync the expanded paths, retaining backslash' do
+        @maid.should_receive(:cmd).with(%Q{rsync -a -u "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to)
+      end
+
+      it 'should log the action' do
+        @logger.should_receive(:info)
+        @maid.sync(@from, @to)
+      end
+
+      it 'should have no options' do
+        @maid.should_receive(:cmd).with(%Q{rsync  "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to, :archive => false, :update => false)
+      end
+
+      it 'should add all options' do
+        @maid.should_receive(:cmd).with(%Q{rsync -a -v -u -m --exclude=".git" --delete "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to, :archive => true, :update => true, :delete => true, :verbose => true, :prune_empty => true, :exclude => '.git')
+      end
+
+      it 'should add multiple exlcude options' do
+        @maid.should_receive(:cmd).with(%Q{rsync -a -u --exclude=".git" --exclude=".rvmrc" "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to, :exclude => ['.git', '.rvmrc'])
+      end
+
+      it 'should add noop option' do
+        @maid.file_options[:noop] = true
+        @maid.should_receive(:cmd).with(%Q{rsync -a -u -n "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to)
       end
     end
   end
