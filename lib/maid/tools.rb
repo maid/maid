@@ -61,7 +61,7 @@ module Maid::Tools
   #     # ...
   #   end
   def find(path, &block)
-    Find.find(File.expand_path(path), &block)
+    block.nil? ? dir(path) : Find.find(File.expand_path(path), &block)
   end
 
   # [Mac OS X] Use Spotlight to locate all files matching the given filename.
