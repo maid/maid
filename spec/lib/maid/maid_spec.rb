@@ -10,14 +10,24 @@ module Maid
 
     describe '.new' do
       it 'should set up a logger with the default path' do
-        Logger.should_receive(:new).with(Maid::DEFAULTS[:log_device])
+        Logger.should_receive(:new).with(Maid::DEFAULTS[:log_device], anything, anything)
         Maid.new
       end
 
-      it 'should set up a logger with the given path, if provided' do
+      it 'should set up a logger with the given path, when provided' do
         log_device = '/var/log/maid.log'
-        Logger.should_receive(:new).with(log_device)
+        Logger.should_receive(:new).with(log_device, anything, anything)
         Maid.new(:log_device => log_device)
+      end
+
+      it 'should rotate the log with the default settings' do
+        Logger.should_receive(:new).with(anything, Maid::DEFAULTS[:log_shift_age], Maid::DEFAULTS[:log_shift_size])
+        Maid.new
+      end
+
+      it 'should rotate the log with the given settings, when provided' do
+        Logger.should_receive(:new).with(anything, 42, 1_000_000)
+        Maid.new(:log_shift_age => 42, :log_shift_size => 1_000_000)
       end
 
       it 'should make the log directory in case it does not exist' do
