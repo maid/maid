@@ -32,15 +32,15 @@ Maid.rules do
   end
 
   rule 'Linux ISOs, etc' do
-    dir('~/Downloads/*.iso').each { |p| trash p }
+    trash(dir('~/Downloads/*.iso'))
   end
 
   rule 'Linux applications in Debian packages' do
-    dir('~/Downloads/*.deb').each { |p| trash p }
+    trash(dir('~/Downloads/*.deb'))
   end
 
   rule 'Mac OS X applications in disk images' do
-    dir('~/Downloads/*.dmg').each { |p| trash p }
+    trash(dir('~/Downloads/*.dmg'))
   end
 
   rule 'Mac OS X applications in zip files' do
