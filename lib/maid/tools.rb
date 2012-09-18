@@ -104,12 +104,14 @@ module Maid::Tools
   #   end
   #
   def find(path, &block)
+    expanded_path = File.expand_path(path)
+
     if block.nil?
       files = []
-      Find.find(File.expand_path(path)) { |file_path| files << file_path }
+      Find.find(expanded_path) { |file_path| files << file_path }
       files
     else
-      Find.find(File.expand_path(path), &block)
+      Find.find(expanded_path, &block)
     end
   end
 
