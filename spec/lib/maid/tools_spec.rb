@@ -133,7 +133,7 @@ module Maid
         @maid.find('~/Downloads/foo.zip', &f)
       end
 
-      it "should return an an array of all the files's names when no block given" do
+      it "should return an array of all the files' names when no block is given" do
         File.open("Foo/Bar/baz.txt", "w") { |f| f.puts("Ruby Rocks!") }
         dir_path = File.expand_path("Foo/Bar")
         @maid.find(dir_path).should == [dir_path, dir_path + '/baz.txt']
