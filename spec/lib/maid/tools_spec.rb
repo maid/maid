@@ -9,8 +9,6 @@ module Maid
   describe Tools, :fakefs => true do
     before :each do
       @home = File.expand_path('~')
-      FileUtils.stub!(:mv)
-      FileUtils.stub!(:rm_r)
 
       Maid.ancestors.should include(Tools)
       @maid = Maid.new
@@ -22,105 +20,120 @@ module Maid
 
       # For safety, stub `cmd` to prevent running commands:
       @maid.stub(:cmd)
-
-      # mkdir on fakefs
-      FileUtils.mkdir_p("Foo/Bar")
     end
 
     describe '#move' do
       before :each do
-        @from    = '~/Downloads/foo.zip'
-        @to      = '~/Reference/'
-        @options = @maid.file_options
+        @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
+        FileUtils.mkdir_p(@src_dir)
+        FileUtils.touch(@src_file)
+        FileUtils.mkdir_p(@dst_dir = '~/Destination/')
       end
 
       it 'should move expanded paths, passing file_options' do
-        FileUtils.should_receive(:mv).with("#{@home}/Downloads/foo.zip", "#{@home}/Reference", @options)
-        @maid.move('~/Downloads/foo.zip', '~/Reference/')
+        @maid.move(@src_file, @dst_dir)
+        File.exists?(@dst_dir + @file_name).should be_true
       end
 
       it 'should log the move' do
         @logger.should_receive(:info)
-        @maid.move(@from, @to)
+        @maid.move(@src_file, @dst_dir)
       end
 
       it 'should not move if the target already exists' do
-        File.stub!(:exist?).and_return(true)
-        FileUtils.should_not_receive(:mv)
+        FileUtils.touch(@dst_dir + @file_name)
         @logger.should_receive(:warn)
 
-        @maid.move(@from, @to)
+        @maid.move(@src_file, @dst_dir)
       end
 
       it 'should handle multiple from paths' do
-        @froms = ['~/Downloads/foo.zip', '~/Downloads/bar.zip']
-        FileUtils.should_receive(:mv).once.ordered.with("#{@home}/Downloads/foo.zip", "#{@home}/Reference", @options)
-        FileUtils.should_receive(:mv).once.ordered.with("#{@home}/Downloads/bar.zip", "#{@home}/Reference", @options)
-        @maid.move(@froms, @to)
+        @second_src_file = @src_dir + (@second_file_name = 'bar.zip')
+        FileUtils.touch(@second_src_file)
+        @src_files = [@src_file, @second_src_file]
+
+        @maid.move(@src_files, @dst_dir)
+        File.exist?(@dst_dir + @file_name).should be_true
+        File.exist?(@dst_dir + @second_file_name).should be_true
       end
     end
 
     describe '#trash' do
       before :each do
         @trash_path = @maid.trash_path
-        @path = '~/Downloads/foo.zip'
+        @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
+        FileUtils.mkdir_p(@src_dir)
+        FileUtils.touch(@src_file)
+
+        @trash_file = File.join(@trash_path, @file_name)
       end
 
       it 'should move the path to the trash' do
-        @maid.should_receive(:move).with(@path, @trash_path)
-        @maid.trash(@path)
+        @maid.trash(@src_file)
+        File.exist?(@trash_file).should be_true
       end
 
       it 'should use a safe path if the target exists' do
         # Without an offset, ISO8601 parses to local time, which is what we want here.
         Timecop.freeze(Time.parse('2011-05-22T16:53:52')) do
-          File.stub!(:exist?).and_return(true)
-          @maid.should_receive(:move).with(@path, "#{@trash_path}/foo.zip 2011-05-22-16-53-52")
-          @maid.trash(@path)
+          FileUtils.touch(@trash_file)
+          @maid.trash(@src_file)
+          new_trash_file = File.join(@trash_path, @file_name + ' 2011-05-22-16-53-52')
+          File.exist?(new_trash_file).should be_true
         end
       end
 
       it 'should handle multiple paths' do
-        @paths = ['~/Downloads/foo.zip', '~/Downloads/bar.zip']
-        @maid.should_receive(:move).once.ordered.with("~/Downloads/foo.zip", @trash_path)
-        @maid.should_receive(:move).once.ordered.with("~/Downloads/bar.zip", @trash_path)
-        @maid.trash(@paths)
+        @second_src_file = @src_dir + (@second_file_name = 'bar.zip')
+        FileUtils.touch(@second_src_file)
+        @src_files = [@src_file, @second_src_file]
+        @maid.trash(@src_files)
+
+        second_trash_file = File.join(@trash_path, @second_file_name)
+        File.exist?(@trash_file).should be_true
+        File.exist?(second_trash_file).should be_true
       end
     end
 
     describe '#remove' do
       before :each do
-        @path = '~/Downloads/foo.zip'
+        @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
+        FileUtils.mkdir_p(@src_dir)
+        FileUtils.touch(@src_file)
+        @src_file_expand_path = File.expand_path @src_file
         @options = @maid.file_options
       end
 
       it 'should remove expanded paths, passing options' do
-        FileUtils.should_receive(:rm_r).with("#{@home}/Downloads/foo.zip", @options)
-        @maid.remove(@path)
+        @maid.remove(@src_file)
+        File.exist?(@src_file).should be_false
       end
 
       it 'should log the remove' do
         @logger.should_receive(:info)
-        @maid.remove(@path)
+        @maid.remove(@src_file)
       end
 
       it 'should set the secure option' do
         @options = @options.merge({:secure => true})
-        FileUtils.should_receive(:rm_r).with("#{@home}/Downloads/foo.zip", @options)
-        @maid.remove(@path, :secure => true)
+        FileUtils.should_receive(:rm_r).with(@src_file_expand_path, @options)
+        @maid.remove(@src_file, :secure => true)
       end
 
       it 'should set the force option' do
         @options = @options.merge({:force => true})
-        FileUtils.should_receive(:rm_r).with("#{@home}/Downloads/foo.zip", @options)
-        @maid.remove(@path, :force => true)
+        FileUtils.should_receive(:rm_r).with(@src_file_expand_path, @options)
+        @maid.remove(@src_file, :force => true)
       end
 
       it 'should handle multiple paths' do
-        @paths = ['~/Downloads/foo.zip', '~/Downloads/bar.zip']
-        FileUtils.should_receive(:rm_r).once.ordered.with("#{@home}/Downloads/foo.zip", @options)
-        FileUtils.should_receive(:rm_r).once.ordered.with("#{@home}/Downloads/bar.zip", @options)
-        @maid.remove(@paths)
+        @second_src_file = @src_dir + (@second_file_name = 'bar.zip')
+        FileUtils.touch(@second_src_file)
+        @src_files = [@src_file, @second_src_file]
+
+        @maid.remove(@src_files)
+        File.exist?(@src_file).should be_false
+        File.exist?(@second_src_file).should be_false
       end
     end
 
@@ -132,16 +145,21 @@ module Maid
     end
 
     describe '#find' do
+      before(:each) do
+        @file = (@dir = '~/Source/') + (@file_name = 'foo.zip')
+        FileUtils.mkdir_p(@dir)
+        FileUtils.touch(@file)
+        @dir_expand_path = File.expand_path(@dir)
+        @file_expand_path = File.expand_path(@file)
+      end
       it 'should delegate to Find.find with an expanded path' do
         f = lambda { }
-        Find.should_receive(:find).with("#@home/Downloads/foo.zip", &f)
-        @maid.find('~/Downloads/foo.zip', &f)
+        Find.should_receive(:find).with(@file_expand_path, &f)
+        @maid.find(@file, &f)
       end
 
       it "should return an array of all the files' names when no block is given" do
-        File.open("Foo/Bar/baz.txt", "w") { |f| f.puts("Ruby Rocks!") }
-        dir_path = File.expand_path("Foo/Bar")
-        @maid.find(dir_path).should == [dir_path, dir_path + '/baz.txt']
+        @maid.find(@dir).should == [@dir_expand_path, @file_expand_path]
       end
     end
 
