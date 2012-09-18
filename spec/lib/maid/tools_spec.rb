@@ -42,6 +42,8 @@ module Maid
       before :each do
         @trash_path = @maid.trash_path
         @path = '~/Downloads/foo.zip'
+        File.stub!(:exist?)
+        File.should_receive(:exist?).with(@path).and_return(true)
       end
 
       it 'should move the path to the trash' do
@@ -52,23 +54,23 @@ module Maid
       it 'should use a safe path if the target exists' do
         # Without an offset, ISO8601 parses to local time, which is what we want here.
         Timecop.freeze(Time.parse('2011-05-22T16:53:52')) do
-          File.stub!(:exist?).and_return(true)
+          File.should_receive(:exist?).and_return(true)
           @maid.should_receive(:move).with(@path, "#{@trash_path}/foo.zip 2011-05-22-16-53-52")
           @maid.trash(@path)
         end
       end
 
       it 'should remove files greater then the remove option size' do
+        File.should_receive(:exist?).and_return(false)
         @maid.stub!(:disk_usage).and_return(1025)
         @maid.should_receive(:remove).with(@path)
-        @logger.should_receive(:info)
-        @maid.trash(@path, :remove => 1.mb)
+        @maid.trash(@path, :remove_over => 1.mb)
       end
 
       it 'should trash files less then the remove option size' do
         @maid.stub!(:disk_usage).and_return(1023)
         @maid.should_receive(:move).with(@path, @trash_path)
-        @maid.trash(@path, :remove => 1.mb)
+        @maid.trash(@path, :remove_over => 1.mb)
       end
     end
 

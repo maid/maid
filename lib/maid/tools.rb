@@ -33,22 +33,19 @@ module Maid::Tools
   # The path is moved if a file already exists in the trash with the same name.  However, the current date and time is appended to the filename.
   # 
   # Options:
-  #   :remove => int.SizeToKb (EXE 1.gigabyte, 1024.megabytes) If the size of a path is greater then the remove, 
+  #   :remove_over => int.SizeToKb (EXE 1.gigabyte, 1024.megabytes) If the size of a path is greater then the remove, 
   #     remove it.  See Maid::NumericExtensions::SizeToKb
   #
   #   trash('~/Downloads/foo.zip')
   def trash(path, options = {})
-    removed = false
     target = File.join(@trash_path, File.basename(path))
     safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
 
-    if options[:remove] and disk_usage(path) > options[:remove]
+    if options[:remove_over] && disk_usage(path) > options[:remove_over]
       remove(path)
-      removed = true
-      @logger.info "Removed #{path.inspect} rather then trashing."
     end
 
-    if not removed
+    if File.exist?(path)
       if File.exist?(target)
         move(path, safe_trash_path)
       else
@@ -74,13 +71,11 @@ module Maid::Tools
   #   remove(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
   #   remove(dir('~/Downloads/*.zip'))
   def remove(paths, options = {})
-    paths = [paths] unless paths.kind_of?(Array)
-
-    paths.each do |path|
+    Array(paths).each do |path|
       path = File.expand_path(path)
       options = @file_options.merge(options)
 
-      @logger.info "Removing #{path}"
+      @logger.info "Removing #{path.inspect}"
       FileUtils.rm_r(path,options)
     end
   end
