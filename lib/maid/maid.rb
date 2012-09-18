@@ -12,8 +12,9 @@ class Maid::Maid
     :progname     => 'Maid',
 
     :log_device   => File.expand_path('~/.maid/maid.log'),
+    # We don't want the log files to grow without check, but 50 MB doesn't seem too bad.  (We're going with a larger size just for safety right now.)
     :log_shift_age  => 5,
-    :log_shift_size => 1048576, # 1 MB
+    :log_shift_size => 10 * 1_048_576, # 10 * 1 MB
 
     :rules_path   => File.expand_path('~/.maid/rules.rb'),
     :file_options => { :noop => false }, # for `FileUtils`
