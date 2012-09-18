@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 module Maid
+  # NOTE: The goal is to have as many specs as possible use FakeFS instead of mocking and stubbing specific calls which happen to modify the filesystem.
+  #
+  # More info:
+  #
+  # * [FakeFS](https://github.com/defunkt/fakefs)
   describe Tools, :fakefs => true do
     before :each do
       @home = File.expand_path('~')
