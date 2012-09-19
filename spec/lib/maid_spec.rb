@@ -1,8 +1,11 @@
 require 'spec_helper'
 
 describe Maid do
-  it 'should include Maid::NumericExtensions' do
+  it 'should include Maid::NumericExtensions::Time' do
     1.minute.should == 60
+  end
+  it 'should include Maid::NumericExtensions::SizeToKb' do
+    1.megabyte.should == 1024
   end
 end
 
