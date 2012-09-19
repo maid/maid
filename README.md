@@ -121,9 +121,7 @@ So, for example, if this is `some_rules.rb`:
 ```ruby
 Maid.rules do
   rule 'downloaded PDF books' do
-    dir('~/Downloads/*.pdf').each do |path|
-      move(path, '~/Books')
-    end
+    move(dir('~/Downloads/*.pdf'), '~/Books')
   end
 end
 ```
