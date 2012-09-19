@@ -15,16 +15,23 @@ module Maid::Tools
   # This method delegates to FileUtils.  The instance-level <tt>file_options</tt> hash is passed to control the <tt>:noop</tt> option.
   #
   #   move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
-  def move(from, to)
-    from = File.expand_path(from)
-    to = File.expand_path(to)
-    target = File.join(to, File.basename(from))
+  # 
+  # This method can handle multiple from paths.
+  #
+  #   move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
+  #   move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
+  def move(froms, to)
+    Array(froms).each do |from|
+      from = File.expand_path(from)
+      to = File.expand_path(to)
+      target = File.join(to, File.basename(from))
 
-    unless File.exist?(target)
-      @logger.info "mv #{from.inspect} #{to.inspect}"
-      FileUtils.mv(from, to, @file_options)
-    else
-      @logger.warn "skipping #{from.inspect} because #{target.inspect} already exists"
+      unless File.exist?(target)
+        @logger.info "mv #{from.inspect} #{to.inspect}"
+        FileUtils.mv(from, to, @file_options)
+      else
+        @logger.warn "skipping #{from.inspect} because #{target.inspect} already exists"
+      end
     end
   end
 
@@ -37,9 +44,15 @@ module Maid::Tools
   #     remove it.  See Maid::NumericExtensions::SizeToKb
   #
   #   trash('~/Downloads/foo.zip')
-  def trash(path, options = {})
-    target = File.join(@trash_path, File.basename(path))
-    safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
+  # 
+  # This method can handle multiple paths.
+  #
+  #   trash(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
+  #   trash(dir('~/Downloads/*.zip'))
+  def trash(paths, options = {})
+    Array(paths).each do |path|
+      target = File.join(@trash_path, File.basename(path))
+      safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
 
     if options[:remove_over] && disk_usage(path) > options[:remove_over]
       remove(path)
@@ -53,8 +66,6 @@ module Maid::Tools
       end
     end
   end
-
-
 
   # Remove the given path.
   #
@@ -91,13 +102,26 @@ module Maid::Tools
 
   # Find matching files, akin to the Unix utility <tt>find</tt>.
   #
-  # Delegates to Find.find.
+  # If no block is given, it will return an array.
+  #
+  #   find '~/Downloads/'
+  #
+  # or delegates to Find.find.
   #
   #   find '~/Downloads/' do |path|
   #     # ...
   #   end
+  #
   def find(path, &block)
-    Find.find(File.expand_path(path), &block)
+    expanded_path = File.expand_path(path)
+
+    if block.nil?
+      files = []
+      Find.find(expanded_path) { |file_path| files << file_path }
+      files
+    else
+      Find.find(expanded_path, &block)
+    end
   end
 
   # [Mac OS X] Use Spotlight to locate all files matching the given filename.
@@ -157,5 +181,39 @@ module Maid::Tools
     full_path = File.expand_path(path)
     stdout = cmd("cd #{full_path.inspect} && git pull && git push 2>&1")
     @logger.info "Fired git piston on #{full_path.inspect}.  STDOUT:\n\n#{stdout}"
+  end
+
+  # [Rsync] Simple sync of two files/folders using rsync.
+  # 
+  # Options:
+  # See rsync man page for a detailed description.
+  # - :delete => boolean
+  # - :verbose => boolean
+  # - :archive => boolean (default true)
+  # - :update => boolean (default true)
+  # - :exclude => string EXE :exclude => ".git" or :exclude => [".git", ".rvmrc"]
+  # - :prune_empty => boolean
+  #   sync('~/music', '/backup/music')
+  def sync(from, to, options={})
+    # expand path removes trailing slash
+    # cannot use str[-1] due to ruby 1.8.7 restriction
+    from = File.expand_path(from) + (from.end_with?('/') ? '/' : '')
+    to = File.expand_path(to) + (to.end_with?('/') ? '/' : '')
+    # default options
+    options = {:archive => true, :update => true}.merge(options)
+    ops = []
+    ops << '-a' if options[:archive]
+    ops << '-v' if options[:verbose]
+    ops << '-u' if options[:update]
+    ops << '-m' if options[:prune_empty]
+    ops << '-n' if @file_options[:noop]
+
+    Array(options[:exclude]).each do |path|
+      ops << "--exclude=#{path.inspect}"
+    end
+
+    ops << '--delete' if options[:delete]
+    stdout = cmd("rsync #{ops.join(' ')} #{from.inspect} #{to.inspect} 2>&1")
+    @logger.info "Fired sync from #{from.inspect} to #{to.inspect}.  STDOUT:\n\n#{stdout}"
   end
 end

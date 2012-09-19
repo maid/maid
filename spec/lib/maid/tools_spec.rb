@@ -1,7 +1,12 @@
 require 'spec_helper'
 
 module Maid
-  describe Tools do
+  # NOTE: The goal is to have as many specs as possible use FakeFS instead of mocking and stubbing specific calls which happen to modify the filesystem.
+  #
+  # More info:
+  #
+  # * [FakeFS](https://github.com/defunkt/fakefs)
+  describe Tools, :fakefs => true do
     before :each do
       @home = File.expand_path('~')
       FileUtils.stub!(:mv)
@@ -9,7 +14,17 @@ module Maid
 
       Maid.ancestors.should include(Tools)
       @maid = Maid.new
-      @logger  = @maid.instance_eval { @logger }
+
+      # FIXME: Maid should really take the logger directly, rather than the device.
+      logger = mock('Logger', :info => nil, :warn => nil)
+      @maid.instance_eval { @logger = logger }
+      @logger = logger
+
+      # For safety, stub `cmd` to prevent running commands:
+      @maid.stub(:cmd)
+
+      # mkdir on fakefs
+      FileUtils.mkdir_p("Foo/Bar")
     end
 
     describe '#move' do
@@ -36,6 +51,13 @@ module Maid
 
         @maid.move(@from, @to)
       end
+
+      it 'should handle multiple from paths' do
+        @froms = ['~/Downloads/foo.zip', '~/Downloads/bar.zip']
+        FileUtils.should_receive(:mv).once.ordered.with("#{@home}/Downloads/foo.zip", "#{@home}/Reference", @options)
+        FileUtils.should_receive(:mv).once.ordered.with("#{@home}/Downloads/bar.zip", "#{@home}/Reference", @options)
+        @maid.move(@froms, @to)
+      end
     end
 
     describe '#trash' do
@@ -60,7 +82,14 @@ module Maid
         end
       end
 
-      it 'should remove files greater then the remove option size' do
+      it 'should handle multiple paths' do
+        @paths = ['~/Downloads/foo.zip', '~/Downloads/bar.zip']
+        @maid.should_receive(:move).once.ordered.with("~/Downloads/foo.zip", @trash_path)
+        @maid.should_receive(:move).once.ordered.with("~/Downloads/bar.zip", @trash_path)
+        @maid.trash(@paths)
+      end
+
+	  it 'should remove files greater then the remove option size' do
         File.should_receive(:exist?).and_return(false)
         @maid.stub!(:disk_usage).and_return(1025)
         @maid.should_receive(:remove).with(@path)
@@ -123,6 +152,12 @@ module Maid
         Find.should_receive(:find).with("#@home/Downloads/foo.zip", &f)
         @maid.find('~/Downloads/foo.zip', &f)
       end
+
+      it "should return an array of all the files' names when no block is given" do
+        File.open("Foo/Bar/baz.txt", "w") { |f| f.puts("Ruby Rocks!") }
+        dir_path = File.expand_path("Foo/Bar")
+        @maid.find(dir_path).should == [dir_path, dir_path + '/baz.txt']
+      end
     end
 
     describe '#locate' do
@@ -173,6 +208,44 @@ module Maid
         @maid.should_receive(:cmd).with(%Q{cd "#@home/code/projectname" && git pull && git push 2>&1})
         @logger.should_receive(:info)
         @maid.git_piston('~/code/projectname')
+      end
+    end
+
+    describe '#sync' do
+      before :each do
+        @from    = '~/Downloads/'
+        @to      = '~/Reference'
+      end
+
+      it 'should sync the expanded paths, retaining backslash' do
+        @maid.should_receive(:cmd).with(%Q{rsync -a -u "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to)
+      end
+
+      it 'should log the action' do
+        @logger.should_receive(:info)
+        @maid.sync(@from, @to)
+      end
+
+      it 'should have no options' do
+        @maid.should_receive(:cmd).with(%Q{rsync  "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to, :archive => false, :update => false)
+      end
+
+      it 'should add all options' do
+        @maid.should_receive(:cmd).with(%Q{rsync -a -v -u -m --exclude=".git" --delete "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to, :archive => true, :update => true, :delete => true, :verbose => true, :prune_empty => true, :exclude => '.git')
+      end
+
+      it 'should add multiple exlcude options' do
+        @maid.should_receive(:cmd).with(%Q{rsync -a -u --exclude=".git" --exclude=".rvmrc" "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to, :exclude => ['.git', '.rvmrc'])
+      end
+
+      it 'should add noop option' do
+        @maid.file_options[:noop] = true
+        @maid.should_receive(:cmd).with(%Q{rsync -a -u -n "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.sync(@from, @to)
       end
     end
   end
