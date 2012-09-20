@@ -56,7 +56,9 @@ module Maid::Tools
       target = File.join(@trash_path, File.basename(path))
       safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
 
-      if options[:remove_over] && disk_usage(path) > options[:remove_over]
+      if options[:remove_over] &&
+          File.exist?(path) &&
+          disk_usage(path) > options[:remove_over]
         remove(path)
       end
 
