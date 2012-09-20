@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Maid
-  # NOTE: The goal is to have as many specs as possible use FakeFS instead of mocking and stubbing specific calls which happen to modify the filesystem.
+  # NOTE: Please use FakeFS instead of mocking and stubbing specific calls which happen to modify the filesystem.
   #
   # More info:
   #
