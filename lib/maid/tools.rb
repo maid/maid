@@ -175,11 +175,33 @@ module Maid::Tools
     end
   end
 
+  # In Unix speak, "ctime".
+  #
+  #   created_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
+  def created_at(path)
+    File.ctime(File.expand_path(path))
+  end
+
   # In Unix speak, "atime".
   #
-  #   last_accessed('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
-  def last_accessed(path)
+  #   accessed_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
+  def accessed_at(path)
     File.atime(File.expand_path(path))
+  end
+
+  # In Unix speak, "atime". kept for backwards compatibility.
+  #
+  #   accessed_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
+  def last_accessed(path)
+    @logger.warning "last_accessed has been replaced by accessed_at."
+    accessed_at(path)
+  end
+
+  # In Unix speak, "mtime".
+  #
+  #   modified_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
+  def modified_at(path)
+    File.mtime(File.expand_path(path))
   end
 
   # Pulls and pushes the given git repository.

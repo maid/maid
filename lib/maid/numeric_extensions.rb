@@ -83,7 +83,7 @@ module Maid::NumericExtensions
 
     # Reads well in a case like:
     #
-    #   1.week.since? last_accessed('filename')
+    #   1.week.since? accessed_at('filename')
     def since?(other_time)
       other_time < self.ago
     end
