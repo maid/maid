@@ -138,9 +138,14 @@ module Maid
     end
 
     describe '#dir' do
-      it 'should delegate to Dir#[] with an expanded path' do
-        Dir.should_receive(:[]).with("#@home/Downloads/*.zip")
-        @maid.dir('~/Downloads/*.zip')
+      before :each do
+        @file = (dir = "#@home/Downloads/") + 'foo.zip'
+        FileUtils.mkdir_p(dir)
+      end
+
+      it 'lists files in a directory' do
+        FileUtils.touch(@file)
+        @maid.dir('~/Downloads/*.zip').should == [@file]
       end
     end
 
