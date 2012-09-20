@@ -97,7 +97,7 @@ module Maid
         File.exist?(second_trash_file).should be_true
       end
 
-	    it 'should remove files greater then the remove option size' do
+      it 'should remove files greater then the remove option size' do
         @maid.stub!(:disk_usage).and_return(1025)
         @maid.trash(@src_file, :remove_over => 1.mb)
         File.exist?(@src_file).should_not be_true
