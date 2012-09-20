@@ -12,7 +12,7 @@ module Maid
 
       Maid.ancestors.should include(Tools)
 
-      # Due to issues with log creation prior to setting log below.  Define logger.
+      # Due to issues with log creation prior to setting log below, use an existing file.
       @maid = Maid.new(:log_device => STDOUT)
 
       # FIXME: Maid should really take the logger directly, rather than the device.
