@@ -215,6 +215,13 @@ module Maid
         @maid.should_receive(:cmd).and_return('136     foo.zip')
         @maid.disk_usage('foo.zip').should == 136
       end
+
+      context 'when the file does not exist' do
+        it 'raises an error' do
+          @maid.should_receive(:cmd).and_return('du: cannot access `foo.zip\': No such file or directory')
+          lambda { @maid.disk_usage('foo.zip') }.should raise_error(RuntimeError)
+        end
+      end
     end
 
     describe '#last_accessed' do

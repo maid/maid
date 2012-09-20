@@ -159,10 +159,18 @@ module Maid::Tools
 
   # Calculate disk usage of a given path.
   #
+  # FIXME: This reports in kilobytes, but should probably report in bytes.
+  #
   #   disk_usage('foo.zip') # => 136
   def disk_usage(path)
     raw = cmd("du -s #{path.inspect}")
-    raw.split(/\s+/).first.to_i
+    usage_kb = raw.split(/\s+/).first.to_i
+   
+    if usage_kb.zero?
+      raise "Stopping pessimistically because of unexpected value from du (#{raw.inspect})"
+    else
+      usage_kb
+    end
   end
 
   # In Unix speak, "atime".
