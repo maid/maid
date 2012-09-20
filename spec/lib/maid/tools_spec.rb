@@ -48,13 +48,13 @@ module Maid
       end
 
       it 'should handle multiple from paths' do
-        @second_src_file = @src_dir + (@second_file_name = 'bar.zip')
-        FileUtils.touch(@second_src_file)
-        @src_files = [@src_file, @second_src_file]
+        second_src_file = @src_dir + (second_file_name = 'bar.zip')
+        FileUtils.touch(second_src_file)
+        src_files = [@src_file, second_src_file]
 
-        @maid.move(@src_files, @dst_dir)
+        @maid.move(src_files, @dst_dir)
         File.exist?(@dst_dir + @file_name).should be_true
-        File.exist?(@dst_dir + @second_file_name).should be_true
+        File.exist?(@dst_dir + second_file_name).should be_true
       end
     end
 
@@ -84,12 +84,12 @@ module Maid
       end
 
       it 'should handle multiple paths' do
-        @second_src_file = @src_dir + (@second_file_name = 'bar.zip')
-        FileUtils.touch(@second_src_file)
-        @src_files = [@src_file, @second_src_file]
+        second_src_file = @src_dir + (second_file_name = 'bar.zip')
+        FileUtils.touch(second_src_file)
+        @src_files = [@src_file, second_src_file]
         @maid.trash(@src_files)
 
-        second_trash_file = File.join(@trash_path, @second_file_name)
+        second_trash_file = File.join(@trash_path, second_file_name)
         File.exist?(@trash_file).should be_true
         File.exist?(second_trash_file).should be_true
       end
@@ -127,13 +127,13 @@ module Maid
       end
 
       it 'should handle multiple paths' do
-        @second_src_file = @src_dir + (@second_file_name = 'bar.zip')
-        FileUtils.touch(@second_src_file)
-        @src_files = [@src_file, @second_src_file]
+        second_src_file = @src_dir + (second_file_name = 'bar.zip')
+        FileUtils.touch(second_src_file)
+        @src_files = [@src_file, second_src_file]
 
         @maid.remove(@src_files)
         File.exist?(@src_file).should be_false
-        File.exist?(@second_src_file).should be_false
+        File.exist?(second_src_file).should be_false
       end
     end
 
