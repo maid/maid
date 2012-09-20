@@ -11,7 +11,9 @@ module Maid
       @home = File.expand_path('~')
 
       Maid.ancestors.should include(Tools)
-      @maid = Maid.new
+
+      # Due to issues with log creation prior to setting log below.  Define logger.
+      @maid = Maid.new(:log_device => STDOUT)
 
       # FIXME: Maid should really take the logger directly, rather than the device.
       logger = mock('Logger', :info => nil, :warn => nil)
