@@ -246,9 +246,10 @@ module Maid
         File.should_receive(:atime).with("#@home/foo.zip").and_return(time)
         @maid.accessed_at('~/foo.zip').should == time
       end
-      it 'should give the last accessed time of the file using alias' do
+      it 'should trigger deprecation warning when last_accessed is used, but still run' do
         time = Time.now
         File.should_receive(:atime).with("#@home/foo.zip").and_return(time)
+        @logger.should_receive(:warning)
         @maid.last_accessed('~/foo.zip').should == time
       end
     end

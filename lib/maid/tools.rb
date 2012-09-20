@@ -188,7 +188,14 @@ module Maid::Tools
   def accessed_at(path)
     File.atime(File.expand_path(path))
   end
-  alias :last_accessed :accessed_at # keep for legacy compatibility.
+
+  # In Unix speak, "atime". kept for backwards compatibility.
+  #
+  #   accessed_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
+  def last_accessed(path)
+    @logger.warning "last_accessed has been replaced by accessed_at."
+    accessed_at(path)
+  end
 
   # In Unix speak, "mtime".
   #
