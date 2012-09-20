@@ -60,9 +60,6 @@ module Maid
 
     describe '#trash' do
       before :each do
-        FileUtils.unstub!(:mv)
-        FileUtils.unstub!(:rm_r)
-
         @trash_path = @maid.trash_path
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
         FileUtils.mkdir_p(@src_dir)
