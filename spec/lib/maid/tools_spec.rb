@@ -222,39 +222,39 @@ module Maid
 
     describe '#sync' do
       before :each do
-        @from    = '~/Downloads/'
-        @to      = '~/Reference'
+        @src_dir = '~/Downloads/'
+        @dst_dir = '~/Reference'
       end
 
       it 'should sync the expanded paths, retaining backslash' do
         @maid.should_receive(:cmd).with(%(rsync -a -u "#@home/Downloads/" "#@home/Reference" 2>&1))
-        @maid.sync(@from, @to)
+        @maid.sync(@src_dir, @dst_dir)
       end
 
       it 'should log the action' do
         @logger.should_receive(:info)
-        @maid.sync(@from, @to)
+        @maid.sync(@src_dir, @dst_dir)
       end
 
       it 'should have no options' do
         @maid.should_receive(:cmd).with(%(rsync  "#@home/Downloads/" "#@home/Reference" 2>&1))
-        @maid.sync(@from, @to, :archive => false, :update => false)
+        @maid.sync(@src_dir, @dst_dir, :archive => false, :update => false)
       end
 
       it 'should add all options' do
         @maid.should_receive(:cmd).with(%(rsync -a -v -u -m --exclude=".git" --delete "#@home/Downloads/" "#@home/Reference" 2>&1))
-        @maid.sync(@from, @to, :archive => true, :update => true, :delete => true, :verbose => true, :prune_empty => true, :exclude => '.git')
+        @maid.sync(@src_dir, @dst_dir, :archive => true, :update => true, :delete => true, :verbose => true, :prune_empty => true, :exclude => '.git')
       end
 
       it 'should add multiple exlcude options' do
         @maid.should_receive(:cmd).with(%(rsync -a -u --exclude=".git" --exclude=".rvmrc" "#@home/Downloads/" "#@home/Reference" 2>&1))
-        @maid.sync(@from, @to, :exclude => ['.git', '.rvmrc'])
+        @maid.sync(@src_dir, @dst_dir, :exclude => ['.git', '.rvmrc'])
       end
 
       it 'should add noop option' do
         @maid.file_options[:noop] = true
         @maid.should_receive(:cmd).with(%(rsync -a -u -n "#@home/Downloads/" "#@home/Reference" 2>&1))
-        @maid.sync(@from, @to)
+        @maid.sync(@src_dir, @dst_dir)
       end
     end
   end
