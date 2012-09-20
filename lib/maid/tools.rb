@@ -177,21 +177,24 @@ module Maid::Tools
   # [Rsync] Simple sync of two files/folders using rsync.
   # 
   # Options:
+  #
   # See rsync man page for a detailed description.
+  #
   # - :delete => boolean
   # - :verbose => boolean
   # - :archive => boolean (default true)
   # - :update => boolean (default true)
   # - :exclude => string EXE :exclude => ".git" or :exclude => [".git", ".rvmrc"]
   # - :prune_empty => boolean
+  #
   #   sync('~/music', '/backup/music')
-  def sync(from, to, options={})
+  def sync(from, to, options = {})
     # expand path removes trailing slash
     # cannot use str[-1] due to ruby 1.8.7 restriction
     from = File.expand_path(from) + (from.end_with?('/') ? '/' : '')
     to = File.expand_path(to) + (to.end_with?('/') ? '/' : '')
     # default options
-    options = {:archive => true, :update => true}.merge(options)
+    options = { :archive => true, :update => true }.merge(options)
     ops = []
     ops << '-a' if options[:archive]
     ops << '-v' if options[:verbose]

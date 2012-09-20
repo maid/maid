@@ -100,7 +100,7 @@ module Maid
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
         FileUtils.mkdir_p(@src_dir)
         FileUtils.touch(@src_file)
-        @src_file_expand_path = File.expand_path @src_file
+        @src_file_expand_path = File.expand_path(@src_file)
         @options = @maid.file_options
       end
 
@@ -115,13 +115,13 @@ module Maid
       end
 
       it 'should set the secure option' do
-        @options = @options.merge({:secure => true})
+        @options = @options.merge(:secure => true)
         FileUtils.should_receive(:rm_r).with(@src_file_expand_path, @options)
         @maid.remove(@src_file, :secure => true)
       end
 
       it 'should set the force option' do
-        @options = @options.merge({:force => true})
+        @options = @options.merge(:force => true)
         FileUtils.should_receive(:rm_r).with(@src_file_expand_path, @options)
         @maid.remove(@src_file, :force => true)
       end
@@ -145,13 +145,14 @@ module Maid
     end
 
     describe '#find' do
-      before(:each) do
+      before :each do
         @file = (@dir = '~/Source/') + (@file_name = 'foo.zip')
         FileUtils.mkdir_p(@dir)
         FileUtils.touch(@file)
         @dir_expand_path = File.expand_path(@dir)
         @file_expand_path = File.expand_path(@file)
       end
+
       it 'should delegate to Find.find with an expanded path' do
         f = lambda { }
         Find.should_receive(:find).with(@file_expand_path, &f)
@@ -172,7 +173,7 @@ module Maid
 
     describe '#downloaded_from' do
       it 'should determine the download site' do
-        @maid.should_receive(:cmd).and_return(%Q{(\n    "http://www.site.com/foo.zip",\n"http://www.site.com/"\n)})
+        @maid.should_receive(:cmd).and_return(%((\n    "http://www.site.com/foo.zip",\n"http://www.site.com/"\n)))
         @maid.downloaded_from('foo.zip').should == ['http://www.site.com/foo.zip', 'http://www.site.com/']
       end
     end
@@ -193,7 +194,7 @@ module Maid
 
     describe '#disk_usage' do
       it 'should give the disk usage of a file' do
-        @maid.should_receive(:cmd).and_return("136     foo.zip")
+        @maid.should_receive(:cmd).and_return('136     foo.zip')
         @maid.disk_usage('foo.zip').should == 136
       end
     end
@@ -208,7 +209,7 @@ module Maid
 
     describe '#git_piston' do
       it 'should pull and push the given git repository, logging the action' do
-        @maid.should_receive(:cmd).with(%Q{cd "#@home/code/projectname" && git pull && git push 2>&1})
+        @maid.should_receive(:cmd).with(%(cd "#@home/code/projectname" && git pull && git push 2>&1))
         @logger.should_receive(:info)
         @maid.git_piston('~/code/projectname')
       end
@@ -221,7 +222,7 @@ module Maid
       end
 
       it 'should sync the expanded paths, retaining backslash' do
-        @maid.should_receive(:cmd).with(%Q{rsync -a -u "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.should_receive(:cmd).with(%(rsync -a -u "#@home/Downloads/" "#@home/Reference" 2>&1))
         @maid.sync(@from, @to)
       end
 
@@ -231,23 +232,23 @@ module Maid
       end
 
       it 'should have no options' do
-        @maid.should_receive(:cmd).with(%Q{rsync  "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.should_receive(:cmd).with(%(rsync  "#@home/Downloads/" "#@home/Reference" 2>&1))
         @maid.sync(@from, @to, :archive => false, :update => false)
       end
 
       it 'should add all options' do
-        @maid.should_receive(:cmd).with(%Q{rsync -a -v -u -m --exclude=".git" --delete "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.should_receive(:cmd).with(%(rsync -a -v -u -m --exclude=".git" --delete "#@home/Downloads/" "#@home/Reference" 2>&1))
         @maid.sync(@from, @to, :archive => true, :update => true, :delete => true, :verbose => true, :prune_empty => true, :exclude => '.git')
       end
 
       it 'should add multiple exlcude options' do
-        @maid.should_receive(:cmd).with(%Q{rsync -a -u --exclude=".git" --exclude=".rvmrc" "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.should_receive(:cmd).with(%(rsync -a -u --exclude=".git" --exclude=".rvmrc" "#@home/Downloads/" "#@home/Reference" 2>&1))
         @maid.sync(@from, @to, :exclude => ['.git', '.rvmrc'])
       end
 
       it 'should add noop option' do
         @maid.file_options[:noop] = true
-        @maid.should_receive(:cmd).with(%Q{rsync -a -u -n "#@home/Downloads/" "#@home/Reference" 2>&1})
+        @maid.should_receive(:cmd).with(%(rsync -a -u -n "#@home/Downloads/" "#@home/Reference" 2>&1))
         @maid.sync(@from, @to)
       end
     end
