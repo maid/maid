@@ -60,6 +60,9 @@ module Maid
 
     describe '#trash' do
       before :each do
+        FileUtils.unstub!(:mv)
+        FileUtils.unstub!(:rm_r)
+
         @trash_path = @maid.trash_path
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
         FileUtils.mkdir_p(@src_dir)
@@ -92,6 +95,19 @@ module Maid
         second_trash_file = File.join(@trash_path, second_file_name)
         File.exist?(@trash_file).should be_true
         File.exist?(second_trash_file).should be_true
+      end
+
+	    it 'should remove files greater then the remove option size' do
+        @maid.stub!(:disk_usage).and_return(1025)
+        @maid.trash(@src_file, :remove_over => 1.mb)
+        File.exist?(@src_file).should_not be_true
+        File.exist?(@trash_file).should_not be_true
+      end
+
+      it 'should trash files less then the remove option size' do
+        @maid.stub!(:disk_usage).and_return(1023)
+        @maid.trash(@src_file, :remove_over => 1.mb)
+        File.exist?(@trash_file).should be_true
       end
     end
 
