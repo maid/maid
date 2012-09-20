@@ -40,12 +40,14 @@ module Maid::Tools
   # The path is moved if a file already exists in the trash with the same name.  However, the current date and time is appended to the filename.
   # 
   # Options:
-  #   :remove_over => int.SizeToKb (EXE 1.gigabyte, 1024.megabytes) If the size of a path is greater then the remove, 
-  #     remove it.  See Maid::NumericExtensions::SizeToKb
+  #
+  # - :remove_over => Fixnum (e.g. 1.gigabyte, 1024.megabytes)
+  #     Remove files over the given size rather than moving to the trash.
+  #     See also Maid::NumericExtensions::SizeToKb
   #
   #   trash('~/Downloads/foo.zip')
   # 
-  # This method can handle multiple paths.
+  # This method can also handle multiple paths.
   #
   #   trash(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
   #   trash(dir('~/Downloads/*.zip'))
@@ -68,11 +70,10 @@ module Maid::Tools
     end
   end
 
-  # Remove the given path.
-  #
   # Remove the given path recursively.
   # 
   # Options:
+  #
   # - :force => boolean
   # - :secure => boolean (See FileUtils.remove_entry_secure for further details)
   #
@@ -94,8 +95,6 @@ module Maid::Tools
 
   # Give all files matching the given glob.
   #
-  # Delgates to Dir.
-  #
   #   dir('~/Downloads/*.zip')
   def dir(glob)
     Dir[File.expand_path(glob)]
@@ -105,7 +104,7 @@ module Maid::Tools
   #
   # If no block is given, it will return an array.
   #
-  #   find '~/Downloads/'
+  #   find '~/Downloads/' # => [...]
   #
   # or delegates to Find.find.
   #
@@ -185,10 +184,10 @@ module Maid::Tools
   end
 
   # [Rsync] Simple sync of two files/folders using rsync.
-  # 
-  # Options:
   #
   # See rsync man page for a detailed description.
+  # 
+  # Options:
   #
   # - :delete => boolean
   # - :verbose => boolean
