@@ -1,3 +1,6 @@
+require 'deprecated'
+Deprecated.set_action(:warn)
+
 module Maid
   autoload :App, 'maid/app'
   autoload :Maid, 'maid/maid'

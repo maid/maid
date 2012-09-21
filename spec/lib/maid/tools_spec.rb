@@ -249,7 +249,7 @@ module Maid
       it 'should trigger deprecation warning when last_accessed is used, but still run' do
         time = Time.now
         File.should_receive(:atime).with("#@home/foo.zip").and_return(time)
-        @logger.should_receive(:warning)
+        @maid.should have_deprecated_method(:last_accessed)
         @maid.last_accessed('~/foo.zip').should == time
       end
     end

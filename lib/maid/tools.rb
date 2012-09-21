@@ -8,6 +8,8 @@ require 'time'
 #
 # Some methods are not available on all platforms.  An <tt>ArgumentError</tt> is raised when a command is not available.  See tags: [Mac OS X]
 module Maid::Tools
+  include Deprecated
+
   # Move from <tt>from</tt> to <tt>to</tt>.
   #
   # The path is not moved if a file already exists at the destination with the same name.  A warning is logged instead.
@@ -189,13 +191,8 @@ module Maid::Tools
     File.atime(File.expand_path(path))
   end
 
-  # In Unix speak, "atime". kept for backwards compatibility.
-  #
-  #   accessed_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
-  def last_accessed(path)
-    @logger.warning "last_accessed has been replaced by accessed_at."
-    accessed_at(path)
-  end
+  alias :last_accessed :accessed_at
+  deprecated :last_accessed, :accessed_at
 
   # In Unix speak, "mtime".
   #
