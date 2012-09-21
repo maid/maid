@@ -203,14 +203,18 @@ module Maid::Tools
 
   # Pulls and pushes the given git repository.
   #
-  # You might also be interested in SparkleShare (http://sparkleshare.org/), a great git-based file syncronization project.
+  # Since this is deprecated, you might also be interested in SparkleShare (http://sparkleshare.org/), a great git-based file syncronization project.
   #
   #   git_piston('~/code/projectname')
+  #
+  # @deprecated
   def git_piston(path)
     full_path = File.expand_path(path)
     stdout = cmd("cd #{full_path.inspect} && git pull && git push 2>&1")
     @logger.info "Fired git piston on #{full_path.inspect}.  STDOUT:\n\n#{stdout}"
   end
+
+  deprecated :git_piston, 'SparkleShare (http://sparkleshare.org/)'
 
   # [Rsync] Simple sync of two files/folders using rsync.
   #

@@ -272,6 +272,11 @@ module Maid
     end
 
     describe '#git_piston' do
+      it 'is deprecated' do
+        @maid.should have_deprecated_method(:git_piston)
+        @maid.git_piston('~/code/projectname')
+      end
+
       it 'should pull and push the given git repository, logging the action' do
         @maid.should_receive(:cmd).with(%(cd "#@home/code/projectname" && git pull && git push 2>&1))
         @logger.should_receive(:info)
