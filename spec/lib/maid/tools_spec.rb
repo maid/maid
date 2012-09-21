@@ -230,11 +230,14 @@ module Maid
       before do
         @path = "~/test.txt"
       end
+
       it 'should give the created time of the file' do
         time = Time.now
+
         Timecop.freeze(time) do
           FileUtils.touch(File.expand_path(@path))
         end
+
         @maid.created_at(@path).should == time
       end
     end
@@ -246,6 +249,7 @@ module Maid
         File.should_receive(:atime).with("#@home/foo.zip").and_return(time)
         @maid.accessed_at('~/foo.zip').should == time
       end
+
       it 'should trigger deprecation warning when last_accessed is used, but still run' do
         time = Time.now
         File.should_receive(:atime).with("#@home/foo.zip").and_return(time)
@@ -259,11 +263,14 @@ module Maid
         @path = "~/test.txt"
         FileUtils.touch(File.expand_path(@path))
       end
+
       it 'should give the modified time of the file' do
         time = Time.now
+
         Timecop.freeze(time) do
-          File.open(@path, 'w') {|f| f.write('Test') }
+          File.open(@path, 'w') { |f| f.write('Test') }
         end
+
         # use to_i to ignore milliseconds during test
         @maid.modified_at(@path).to_i.should == time.to_i
       end
