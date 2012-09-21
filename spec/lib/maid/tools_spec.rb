@@ -15,6 +15,7 @@ module Maid
 
       # Due to issues with log creation prior to setting log below, use an existing file.
       @maid = Maid.new(:log_device => STDOUT)
+      @maid.stub(:__deprecated_run_action__)
 
       # FIXME: Maid should really take the logger directly, rather than the device.
       logger = mock('Logger', :info => nil, :warn => nil)
