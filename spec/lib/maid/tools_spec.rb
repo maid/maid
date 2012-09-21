@@ -166,6 +166,13 @@ module Maid
       end
     end
 
+    describe '#mkdir' do
+      it 'should create a directory successfully' do
+        @maid.mkdir('~/Downloads/Music/Pink.Floyd')
+        File.exist?("#@home/Downloads/Music/Pink.Floyd").should be_true
+      end
+    end
+
     describe '#find' do
       before :each do
         @file = (@dir = '~/Source/') + (@file_name = 'foo.zip')
