@@ -9,6 +9,7 @@ module Maid
   describe Tools, :fakefs => true do
     before :each do
       @home = File.expand_path('~')
+      @now = Time.now
 
       Maid.ancestors.should include(Tools)
 
@@ -232,29 +233,25 @@ module Maid
       end
 
       it 'should give the created time of the file' do
-        time = Time.now
-
-        Timecop.freeze(time) do
+        Timecop.freeze(@now) do
           FileUtils.touch(File.expand_path(@path))
         end
 
-        @maid.created_at(@path).should == time
+        @maid.created_at(@path).should == @now
       end
     end
 
     describe '#accessed_at' do
       # FakeFS does not implement atime.
       it 'should give the last accessed time of the file' do
-        time = Time.now
-        File.should_receive(:atime).with("#@home/foo.zip").and_return(time)
-        @maid.accessed_at('~/foo.zip').should == time
+        File.should_receive(:atime).with("#@home/foo.zip").and_return(@now)
+        @maid.accessed_at('~/foo.zip').should == @now
       end
 
       it 'should trigger deprecation warning when last_accessed is used, but still run' do
-        time = Time.now
-        File.should_receive(:atime).with("#@home/foo.zip").and_return(time)
+        File.should_receive(:atime).with("#@home/foo.zip").and_return(@now)
         @maid.should have_deprecated_method(:last_accessed)
-        @maid.last_accessed('~/foo.zip').should == time
+        @maid.last_accessed('~/foo.zip').should == @now
       end
     end
 
@@ -265,14 +262,12 @@ module Maid
       end
 
       it 'should give the modified time of the file' do
-        time = Time.now
-
-        Timecop.freeze(time) do
+        Timecop.freeze(@now) do
           File.open(@path, 'w') { |f| f.write('Test') }
         end
 
         # use to_i to ignore milliseconds during test
-        @maid.modified_at(@path).to_i.should == time.to_i
+        @maid.modified_at(@path).to_i.should == @now.to_i
       end
     end
 
