@@ -3,8 +3,7 @@ require 'spec_helper'
 module Maid
   describe Maid do
     before :each do
-      @logger = mock('Logger')
-      @logger.stub!(:progname=)
+      @logger = double('Logger').as_null_object
       Logger.stub!(:new).and_return(@logger)
       FileUtils.stub(:mkdir_p)
     end
@@ -24,6 +23,12 @@ module Maid
       it 'should make the log directory in case it does not exist' do
         FileUtils.should_receive(:mkdir_p).with('/home/username/log')
         Maid.new(:log_device => '/home/username/log/maid.log')
+      end
+
+      it 'should take a logger object during intialization' do
+        Logger.unstub!(:new)
+        maid = Maid.new(:logger => @logger)
+        maid.logger.should == @logger
       end
 
       it 'should set the trash to the default path' do

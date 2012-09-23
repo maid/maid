@@ -11,7 +11,7 @@ class Maid::Maid
     :file_options => {:noop => false}, # for FileUtils
   }.freeze
 
-  attr_reader :file_options, :log_device, :rules, :rules_path, :trash_path
+  attr_reader :file_options, :logger, :rules, :rules_path, :trash_path
   include ::Maid::Tools
 
   # Make a new Maid, setting up paths for the log and trash.
@@ -23,10 +23,14 @@ class Maid::Maid
   def initialize(options = {})
     options = DEFAULTS.merge(options.reject { |k, v| v.nil? })
 
-    @log_device = options[:log_device]
-    FileUtils.mkdir_p(File.dirname(@log_device)) unless @log_device.kind_of?(IO)
+    @logger = unless options[:logger]
+      @log_device = options[:log_device]
+      FileUtils.mkdir_p(File.dirname(@log_device)) unless @log_device.kind_of?(IO)
+      Logger.new(@log_device)
+    else
+      options[:logger]
+    end
 
-    @logger = Logger.new(@log_device)
     @logger.progname  = options[:progname]
     @logger.formatter = options[:log_formatter] if options[:log_formatter]
 

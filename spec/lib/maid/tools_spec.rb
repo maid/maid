@@ -13,13 +13,8 @@ module Maid
 
       Maid.ancestors.should include(Tools)
 
-      # Due to issues with log creation prior to setting log below, use an existing file.
-      @maid = Maid.new(:log_device => STDOUT)
-
-      # FIXME: Maid should really take the logger directly, rather than the device.
-      logger = mock('Logger', :info => nil, :warn => nil)
-      @maid.instance_eval { @logger = logger }
-      @logger = logger
+      @logger = double('Logger').as_null_object
+      @maid = Maid.new(:logger => @logger)
 
       # For safety, stub `cmd` to prevent running commands:
       @maid.stub(:cmd)
@@ -280,6 +275,7 @@ module Maid
       it 'should pull and push the given git repository, logging the action' do
         @maid.should_receive(:cmd).with(%(cd "#@home/code/projectname" && git pull && git push 2>&1))
         @logger.should_receive(:info)
+        @maid.should have_deprecated_method(:git_piston)
         @maid.git_piston('~/code/projectname')
       end
     end
