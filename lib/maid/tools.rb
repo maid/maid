@@ -104,6 +104,18 @@ module Maid::Tools
     Dir[File.expand_path(glob)]
   end
 
+  # Creates a directory and all its parent directories.
+  #
+  # Options:
+  #
+  # - :mode,  the symbolic and absolute mode both can be used.
+  #           eg. 0700, 'u=wr,go=rr'
+  #
+  #   mkdir('~/Downloads/Music/Pink.Floyd/', :mode => 0644)
+  def mkdir(path, options = {})
+    FileUtils.mkdir_p(File.expand_path(path), options)
+  end
+
   # Find matching files, akin to the Unix utility <tt>find</tt>.
   #
   # If no block is given, it will return an array.

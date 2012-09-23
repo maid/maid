@@ -160,6 +160,13 @@ module Maid
       end
     end
 
+    describe '#mkdir' do
+      it 'should create a directory successfully' do
+        @maid.mkdir('~/Downloads/Music/Pink.Floyd')
+        File.exist?("#@home/Downloads/Music/Pink.Floyd").should be_true
+      end
+    end
+
     describe '#find' do
       before :each do
         @file = (@dir = '~/Source/') + (@file_name = 'foo.zip')
@@ -275,7 +282,6 @@ module Maid
       it 'should pull and push the given git repository, logging the action' do
         @maid.should_receive(:cmd).with(%(cd "#@home/code/projectname" && git pull && git push 2>&1))
         @logger.should_receive(:info)
-        @maid.should have_deprecated_method(:git_piston)
         @maid.git_piston('~/code/projectname')
       end
     end
