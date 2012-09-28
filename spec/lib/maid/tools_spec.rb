@@ -13,14 +13,11 @@ module Maid
 
       Maid.ancestors.should include(Tools)
 
-      # Due to issues with log creation prior to setting log below, use an existing file.
-      @maid = Maid.new(:log_device => STDOUT)
-      @maid.stub(:__deprecated_run_action__)
+      @logger = double('Logger').as_null_object
+      @maid = Maid.new(:logger => @logger)
 
-      # FIXME: Maid should really take the logger directly, rather than the device.
-      logger = mock('Logger', :info => nil, :warn => nil)
-      @maid.instance_eval { @logger = logger }
-      @logger = logger
+      # Prevent warnings from showing when testing deprecated methods:
+      @maid.stub(:__deprecated_run_action__)
 
       # For safety, stub `cmd` to prevent running commands:
       @maid.stub(:cmd)

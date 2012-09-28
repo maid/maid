@@ -47,6 +47,7 @@ class Maid::App < Thor
         h[:file_options] = {:noop => true}
 
         unless options['silent']
+          h[:logger] = false
           h[:log_device] = STDOUT
           h[:log_formatter] = lambda { |_, _, _, msg| "#{msg}\n" }
         end
