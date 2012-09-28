@@ -23,6 +23,7 @@ class Maid::Maid
   def initialize(options = {})
     options = DEFAULTS.merge(options.reject { |k, v| v.nil? })
 
+    # TODO: Refactor and simplify (see also https://github.com/benjaminoakes/maid/pull/48#discussion_r1683942)
     @logger = unless options[:logger]
       @log_device = options[:log_device]
       FileUtils.mkdir_p(File.dirname(@log_device)) unless @log_device.kind_of?(IO)
