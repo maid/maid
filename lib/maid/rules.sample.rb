@@ -63,7 +63,7 @@ Maid.rules do
   # NOTE: Currently, only Mac OS X supports `downloaded_from`.
   rule 'Old files downloaded while developing/testing' do
     dir('~/Downloads/*').each do |path|
-      if downloaded_from(path).any? {|u| u.match 'http://localhost' || u.match('http://staging.yourcompany.com') } && 1.week.since?(accessed_at(path))
+      if downloaded_from(path).any? { |u| u.match('http://localhost') || u.match('http://staging.yourcompany.com') } && 1.week.since?(accessed_at(path))
         trash(path)
       end
     end
