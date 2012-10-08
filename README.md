@@ -4,6 +4,8 @@
 
 Be lazy!  Let Maid clean up after you, based on rules you define.
 
+[Installation](https://github.com/benjaminoakes/maid#installation) | [Tutorial](https://github.com/benjaminoakes/maid#tutorial) | [Documentation](http://rubydoc.info/gems/maid/Maid/Tools)
+
 Maid keeps files from sitting around too long, untouched.  Many of the downloads and other files you collect can easily be categorized and handled appropriately by rules you define.  Let the maid in your computer take care of the easy stuff, so you can spend more of your time on what matters.
 
 Think of it like the email filters you might already have, but for files.  Worried about things happening that you don't expect?  Maid doesn't overwrite files and actions are logged so you can tell what happened.
@@ -76,7 +78,17 @@ If you decide you don't want Maid installed anymore, remove it:
 
 ## Tutorial
 
-Maid rules are defined using Ruby, with some common operations made easier with a small DSL (Domain Specific Language).  Here's a sample:
+In a nutshell, Maid uses "rules" to define how files are handled.  Once you have rules defined, you can either test what cleaning would do (`maid clean -n`) or actually clean (`maid clean`).
+
+To generate a sample rules file, run:
+
+```bash
+maid sample
+```
+
+Maid rules are defined using Ruby, with some common operations made easier with a small DSL (Domain Specific Language).
+
+For example, this is a rule:
 
 ```ruby
 Maid.rules do
@@ -128,7 +140,7 @@ Maid.rules do
 end
 ```
 
-This is the command to test, as well as some sample output:
+Then, this is the command to test, as well as some sample output:
 
     $ maid clean -nr some_rules.rb
     Rule: downloaded PDF books
@@ -136,7 +148,7 @@ This is the command to test, as well as some sample output:
     mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Books/"
     mv "/Users/ben/Downloads/spring2011newsletter.pdf" "/Users/ben/Books/"
 
-For more DSL helper methods, please see the documentation of [Maid::Tools](http://rubydoc.info/gems/maid/Maid/Tools).
+For help with command line usage, run `maid --help`.  For more DSL helper methods, please see the documentation of [Maid::Tools](http://rubydoc.info/gems/maid/Maid/Tools).
 
 ### Automation
 
@@ -154,12 +166,6 @@ Example for every day at 1am:
     0 1 * * * /bin/bash -li -c "maid clean --silent"
 
 Both Mac OS X and Ubuntu support callbacks when folders are changed, and that may be a forthcoming feature in Maid.  That said, I find `cron` to take care of most of my needs.
-
-## Sample
-
-For a sample rules file, run:
-
-    maid sample
 
 ## Warranty
 
