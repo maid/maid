@@ -36,10 +36,11 @@ Maid.rules do
   end
 
   rule 'Mac OS X applications in zip files' do
-    dir('~/Downloads/*.zip').select do |path|
-      candidates = zipfile_contents(path)
-      candidates.any? { |c| c.match(/\.app$/) }
-    end.each { |p| trash p }
+    found = dir('~/Downloads/*.zip').select { |path|
+      zipfile_contents(path).any? { |c| c.match(/\.app$/) }
+    }
+
+    trash(found)
   end
 
   rule 'Misc Screenshots' do
@@ -67,5 +68,4 @@ Maid.rules do
       end
     end
   end
-
 end
