@@ -11,7 +11,7 @@ class Maid::Maid
     :file_options => {:noop => false}, # for FileUtils
   }.freeze
 
-  attr_reader :file_options, :logger, :rules, :rules_path, :trash_path
+  attr_reader :file_options, :logger, :log_device, :rules, :rules_path, :trash_path
   include ::Maid::Tools
 
   # Make a new Maid, setting up paths for the log and trash.
