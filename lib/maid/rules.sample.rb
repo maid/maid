@@ -1,35 +1,27 @@
-# Sample Maid rules file -- a sampling to get you started.
+# Sample Maid rules file -- some ideas to get you started.
 #
-# To use, remove ".sample" from the filename.  Test using:
+# To use, remove ".sample" from the filename, and modify as desired.  Test using:
 #
-#     maid -n
+#     maid clean -n
+#
+# **NOTE:** It's recommended you just use this as a template; if you run these rules on your machine without knowing what they do, you might run into unwanted results!
+#
+# Don't forget, it's just Ruby!  You can define custom methods and use them below:
+# 
+#     def magic(*)
+#       # ...
+#     end
+# 
+# If you come up with some cool tools of your own, please send me a pull request on GitHub!
 #
 # For more help on Maid:
 #
-#   * Run `maid help`
-#   * Read the README at http://github.com/benjaminoakes/maid
-#   * For more DSL helper methods, please see the documentation of Maid::Tools at http://rubydoc.info/gems/maid/0.1.0/Maid/Tools
-#   * Come up with some cool tools of your own?  Fork, make your changes, and send me a pull request on GitHub!
-#   * Ask me a question over email (hello@benjaminoakes.com) or Twitter (@benjaminoakes)
-#
+# * Run `maid help`
+# * Read the README, tutorial, and documentation at https://github.com/benjaminoakes/maid#maid
+# * Ask me a question over email (hello@benjaminoakes.com) or Twitter (@benjaminoakes)
+
 Maid.rules do
-  # NOTE: Currently, only Mac OS X supports `duration_s`.
-  rule 'MP3s likely to be music' do
-    dir('~/Downloads/*.mp3').each do |path|
-      if duration_s(path) > 30.0
-        move(path, '~/Music/iTunes/iTunes Media/Automatically Add to iTunes/')
-      end
-    end
-  end
-  
-  # NOTE: Currently, only Mac OS X supports `downloaded_from`.
-  rule 'Old files downloaded while developing/testing' do
-    dir('~/Downloads/*').each do |path|
-      if downloaded_from(path).any? {|u| u.match 'http://localhost' || u.match('http://staging.yourcompany.com') } && 1.week.since?(accessed_at(path))
-        trash(path)
-      end
-    end
-  end
+  # **NOTE:** It's recommended you just use this as a template; if you run these rules on your machine without knowing what they do, you might run into unwanted results!
 
   rule 'Linux ISOs, etc' do
     trash(dir('~/Downloads/*.iso'))
@@ -58,5 +50,22 @@ Maid.rules do
     end
   end
 
-  # Add your own rules here.
+  # NOTE: Currently, only Mac OS X supports `duration_s`.
+  rule 'MP3s likely to be music' do
+    dir('~/Downloads/*.mp3').each do |path|
+      if duration_s(path) > 30.0
+        move(path, '~/Music/iTunes/iTunes Media/Automatically Add to iTunes/')
+      end
+    end
+  end
+  
+  # NOTE: Currently, only Mac OS X supports `downloaded_from`.
+  rule 'Old files downloaded while developing/testing' do
+    dir('~/Downloads/*').each do |path|
+      if downloaded_from(path).any? {|u| u.match 'http://localhost' || u.match('http://staging.yourcompany.com') } && 1.week.since?(accessed_at(path))
+        trash(path)
+      end
+    end
+  end
+
 end
