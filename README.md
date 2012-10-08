@@ -150,7 +150,7 @@ Then, this is the command to test, as well as some sample output:
     mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Books/"
     mv "/Users/ben/Downloads/spring2011newsletter.pdf" "/Users/ben/Books/"
 
-For help with command line usage, run `maid --help`.  For more DSL helper methods, please see the documentation of [Maid::Tools](http://rubydoc.info/gems/maid/Maid/Tools).
+For help with command line usage, run `maid help`.  For more DSL helper methods, please see the documentation of [Maid::Tools](http://rubydoc.info/gems/maid/Maid/Tools).
 
 ### Automation
 
