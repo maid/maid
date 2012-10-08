@@ -1,5 +1,7 @@
 # Maid
 
+[![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
+
 Be lazy!  Let Maid clean up after you, based on rules you define.
 
 [Installation](https://github.com/benjaminoakes/maid#installation) | [Tutorial](https://github.com/benjaminoakes/maid#tutorial) | [Documentation](http://rubydoc.info/gems/maid/Maid/Tools)
@@ -12,11 +14,9 @@ Maid is inspired by the Mac OS X shareware program [Hazel](http://www.noodlesoft
 
 Your rules are defined in Ruby, so easy rules are easy and difficult rules are possible.
 
-[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=benjaminoakes&url=https://github.com/benjaminoakes/maid&title=maid&language=en_GB&tags=github&category=software)
-
-[![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
-
 ## Want to help?
+
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=benjaminoakes&url=https://github.com/benjaminoakes/maid&title=maid&language=en_GB&tags=github&category=software)
 
 Users:
 
