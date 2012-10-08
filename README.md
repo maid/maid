@@ -18,7 +18,6 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=benjaminoakes&url=https://github.com/benjaminoakes/maid&title=maid&language=en_GB&tags=github&category=software)
 
-
 * Participate in [beta testing](https://github.com/benjaminoakes/maid/issues/10)
 * [Report an issue](https://github.com/benjaminoakes/maid/issues) (bug or feature request)
 * Read through the [wiki](https://github.com/benjaminoakes/maid/wiki)
@@ -34,10 +33,15 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 
 ## Buzz
 
-* [OneThingWell: Maid](http://onethingwell.org/post/30455088809/maid) - August 29th, 2012
-* [Ruby5 Podcast #302](http://ruby5.envylabs.com/episodes/306-episode-302-august-31st-2012) (at 2:45) - August 31st, 2012
+[![OneThingWell Logo](https://raw.github.com/benjaminoakes/maid/master/resources/OneThingWell.png)](http://onethingwell.org/)
 
-[More...](https://github.com/benjaminoakes/maid/wiki/In-the-Media) (tweets, etc)
+[Maid](http://onethingwell.org/post/30455088809/maid) - August 29th, 2012
+
+[![Ruby5 Logo](https://raw.github.com/benjaminoakes/maid/master/resources/ruby5.gif)](http://ruby5.envylabs.com/)
+
+[Podcast #302](http://ruby5.envylabs.com/episodes/306-episode-302-august-31st-2012) (at 2:45) - August 31st, 2012
+
+[More...](https://github.com/benjaminoakes/maid/wiki/In-the-Media)
 
 ## Installation
 
