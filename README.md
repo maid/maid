@@ -12,7 +12,7 @@ Maid is inspired by the Mac OS X shareware program [Hazel](http://www.noodlesoft
 
 Your rules are defined in Ruby, so easy rules are easy and difficult rules are possible.
 
-[![Build Status](http://travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
+[![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
 
 ## Want to help?
 
@@ -134,7 +134,7 @@ This is the command to test, as well as some sample output:
     mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Books/"
     mv "/Users/ben/Downloads/spring2011newsletter.pdf" "/Users/ben/Books/"
 
-For more DSL helper methods, please see the documentation of [Maid::Tools](http://rubydoc.info/gems/maid/0.1.0/Maid/Tools).
+For more DSL helper methods, please see the documentation of [Maid::Tools](http://rubydoc.info/gems/maid/Maid/Tools).
 
 ### Automation
 
