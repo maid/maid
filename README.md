@@ -84,7 +84,7 @@ If you decide you don't want Maid installed anymore, remove it:
 
 In a nutshell, Maid uses "rules" to define how files are handled.  Once you have rules defined, you can either test what cleaning would do (`maid clean -n`) or actually clean (`maid clean`).
 
-To generate a sample rules file, run:
+To generate a [sample rules file](https://github.com/benjaminoakes/maid/blob/master/lib/maid/rules.sample.rb), run:
 
 ```bash
 maid sample
