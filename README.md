@@ -35,7 +35,6 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 ## Buzz
 
 * [OneThingWell: Maid](http://onethingwell.org/post/30455088809/maid) - August 29th, 2012
-* [Maid – Paresseux mais ordonné!](http://korben.info/maid-ruby-script.html) (FR) - August 30th, 2012
 * [Ruby5 Podcast #302](http://ruby5.envylabs.com/episodes/306-episode-302-august-31st-2012) (at 2:45) - August 31st, 2012
 
 [More...](https://github.com/benjaminoakes/maid/wiki/In-the-Media) (tweets, etc)
