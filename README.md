@@ -1,7 +1,5 @@
 # Maid
 
-[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=benjaminoakes&url=https://github.com/benjaminoakes/maid&title=maid&language=en_GB&tags=github&category=software)
-
 Be lazy!  Let Maid clean up after you, based on rules you define.
 
 [Installation](https://github.com/benjaminoakes/maid#installation) | [Tutorial](https://github.com/benjaminoakes/maid#tutorial) | [Documentation](http://rubydoc.info/gems/maid/Maid/Tools)
@@ -13,6 +11,8 @@ Think of it like the email filters you might already have, but for files.  Worri
 Maid is inspired by the Mac OS X shareware program [Hazel](http://www.noodlesoft.com/hazel.php).  This tool was created on Mac OS X 10.6, but should be generally portable to other systems.  (Some of the more advanced features such as `downloaded_from` require OS X, however.)
 
 Your rules are defined in Ruby, so easy rules are easy and difficult rules are possible.
+
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=benjaminoakes&url=https://github.com/benjaminoakes/maid&title=maid&language=en_GB&tags=github&category=software)
 
 [![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
 
