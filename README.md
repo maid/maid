@@ -14,18 +14,19 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 
 ## Want to help?
 
+### For Users
+
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=benjaminoakes&url=https://github.com/benjaminoakes/maid&title=maid&language=en_GB&tags=github&category=software)
 
-Users:
 
 * Participate in [beta testing](https://github.com/benjaminoakes/maid/issues/10)
 * [Report an issue](https://github.com/benjaminoakes/maid/issues) (bug or feature request)
 * Read through the [wiki](https://github.com/benjaminoakes/maid/wiki)
 * Even just [share a link to Maid](https://twitter.com/intent/tweet?related=benjaminoakes&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fbenjaminoakes%2Fmaid) :)
 
-[![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
+### For Developers
 
-Developers:
+[![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
 
 * Complete an issue (easy ones [are labelled](https://github.com/benjaminoakes/maid/issues?labels=difficulty-1&page=1&state=open), and issues for future releases are [grouped by milestone](https://github.com/benjaminoakes/maid/issues/milestones)).
 * **Working on an issue?** Please leave a comment so others know.
