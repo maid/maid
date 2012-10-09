@@ -26,6 +26,7 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 ### For Developers
 
 [![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/benjaminoakes/maid)
 
 * Complete an issue (easy ones [are labelled](https://github.com/benjaminoakes/maid/issues?labels=difficulty-1&page=1&state=open), and issues for future releases are [grouped by milestone](https://github.com/benjaminoakes/maid/issues/milestones)).
 * **Working on an issue?** Please leave a comment so others know.
