@@ -10,7 +10,7 @@ Think of it like the email filters you might already have, but for files.  Worri
 
 Maid is inspired by the Mac OS X shareware program [Hazel](http://www.noodlesoft.com/hazel.php).  This tool was created on Mac OS X 10.6, but should be generally portable to other systems.  (Some of the more advanced features such as `downloaded_from` require OS X, however.)
 
-Your rules are defined in Ruby, so easy rules are easy and difficult rules are possible.
+Your rules are defined in Ruby, so easy rules are easy and difficult rules are possible.  This also makes Maid a great general-purpose **advanced file renaming tool**.
 
 ## Want to help?
 
@@ -26,6 +26,7 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 ### For Developers
 
 [![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/benjaminoakes/maid)
 
 * Complete an issue (easy ones [are labelled](https://github.com/benjaminoakes/maid/issues?labels=difficulty-1&page=1&state=open), and issues for future releases are [grouped by milestone](https://github.com/benjaminoakes/maid/issues/milestones)).
 * **Working on an issue?** Please leave a comment so others know.
