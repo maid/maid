@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
 require "maid/version"
+require "maid/platform"
 
 Gem::Specification.new do |s|
   s.name        = "maid"
@@ -16,12 +17,19 @@ Gem::Specification.new do |s|
 
   s.add_dependency('thor', '~> 0.16.0')
   s.add_dependency('deprecated', '~> 3.0.1')
-  s.add_dependency('xdg', '~> 2.2.2') # For Linux
+  s.add_dependency('xdg', '~> 2.2.2') # Only used on Linux, but still required/tested on OSX
+  s.add_development_dependency('guard', '~> 1.4.0')
+  s.add_development_dependency('guard-rspec', '~> 2.1.0')
   s.add_development_dependency('rake', '~> 0.9.2.2')
   s.add_development_dependency('rspec', '~> 2.11.0')
   s.add_development_dependency('timecop', '~> 0.5.2')
-  s.add_development_dependency('ZenTest', '~> 4.4.2')
   s.add_development_dependency('fakefs', '~> 0.4.0')
+
+  if Maid::Platform.linux?
+    s.add_development_dependency('rb-inotify', '~> 0.8.8')
+  elsif Maid::Platform.osx?
+    s.add_development_dependency('rb-fsevent', '~> 0.9.2')
+  end
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
