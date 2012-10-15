@@ -8,6 +8,7 @@ module Maid
   autoload :NumericExtensions, 'maid/numeric_extensions'
   autoload :Platform, 'maid/platform'
   autoload :Rule, 'maid/rule'
+  autoload :TrashMigration, 'maid/trash_migration'
   autoload :VERSION, 'maid/version'
 
   class << self
