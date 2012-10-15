@@ -15,11 +15,11 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "maid"
 
   s.add_dependency('thor', '~> 0.16.0')
-  s.add_dependency('deprecated', '~> 3.0.0')
+  s.add_dependency('deprecated', '~> 3.0.1')
   s.add_dependency('xdg', '~> 2.2.2') # For Linux
-  s.add_development_dependency('rake', '~> 0.8.7')
-  s.add_development_dependency('rspec', '~> 2.5.0')
-  s.add_development_dependency('timecop', '~> 0.3.5')
+  s.add_development_dependency('rake', '~> 0.9.2.2')
+  s.add_development_dependency('rspec', '~> 2.11.0')
+  s.add_development_dependency('timecop', '~> 0.5.2')
   s.add_development_dependency('ZenTest', '~> 4.4.2')
   s.add_development_dependency('fakefs', '~> 0.4.0')
 

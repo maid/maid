@@ -240,9 +240,8 @@ module Maid
       it 'should give the created time of the file' do
         Timecop.freeze(@now) do
           FileUtils.touch(File.expand_path(@path))
+          @maid.created_at(@path).should == Time.now
         end
-
-        @maid.created_at(@path).should == @now
       end
     end
 
