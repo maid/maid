@@ -5,7 +5,12 @@
 set -o errexit
 
 cd /vagrant
+
 sudo apt-get update
-sudo apt-get install -y ruby1.9.1 git-core
+# Dependencies:
+sudo apt-get install -y ruby1.9.1
+# Development dependencies:
+sudo apt-get install -y git-core
+
 sudo gem install bundler
 bundle install
