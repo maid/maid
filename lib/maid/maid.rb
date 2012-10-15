@@ -40,7 +40,8 @@ class Maid::Maid
     @trash_path   = options[:trash_path] || default_trash_path
     @file_options = options[:file_options]
 
-    # Just in case it isn't there...
+    # Just in case they aren't there...
+    FileUtils.mkdir_p(File.expand_path('~/.maid'))
     FileUtils.mkdir_p(@trash_path)
 
     @rules = []

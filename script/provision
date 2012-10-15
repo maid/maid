@@ -4,13 +4,19 @@
 # Documentation: [Shell Provisioner](http://vagrantup.com/v1/docs/provisioners/shell.html)
 set -o errexit
 
-cd /vagrant
-
 sudo apt-get update
-# Dependencies:
-sudo apt-get install -y ruby1.9.1
-# Development dependencies:
-sudo apt-get install -y git-core
 
+# ## Dependencies
+sudo apt-get install -y ruby1.9.1
+
+# ## Development dependencies
+#
+# For building `maid-x.y.z.gem`
+sudo apt-get install -y git-core
+# For building `ffi` for `guard`'s soft dependency on `rb-inotify`
+sudo apt-get install -y make ruby1.9.1-dev libffi-dev
+
+# ## RubyGems
+cd /vagrant
 sudo gem install bundler
 bundle install

@@ -47,6 +47,10 @@ module Maid
     end
 
     describe 'performing' do
+      before do
+        Logger.stub(:new) { mock('Logger').as_null_object }
+      end
+
       it 'moves files from the incorrect trash to the correct trash' do
         # This will only be performed on Linux, but we test on both platforms, so stub:
         subject.stub(:correct_trash) { File.expand_path('~/.local/share/Trash/files/') }
