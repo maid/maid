@@ -41,6 +41,8 @@ module Maid::Tools
   #
   # The path is moved if a file already exists in the trash with the same name.  However, the current date and time is appended to the filename.
   # 
+  # Note: the OS native "restore" or "put back" functionality for trashed files is not currently supported.  However, they can be restored manually, and the Maid log can help assist with this.
+  # 
   # Options:
   #
   # - :remove_over => Fixnum (e.g. 1.gigabyte, 1024.megabytes)
@@ -54,6 +56,16 @@ module Maid::Tools
   #   trash(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
   #   trash(dir('~/Downloads/*.zip'))
   def trash(paths, options = {})
+    # ## Implementation Notes
+    #
+    # Trashing files correctly is surprisingly hard.  What Maid ends up doing is one the easiest, most foolproof solutions:  moving the file.
+    #
+    # Unfortunately, that means it's not possile to restore files automatically in OSX or Ubuntu.  The previous location of the file is lost.
+    #
+    # OSX support depends on AppleScript or would require a not-yet-written C extension to interface with the OS.  The AppleScript solution is less than ideal: the user has to be logged in, Finder has to be running, and it makes the "trash can sound" every time a file is moved.
+    #
+    # Ubuntu makes it easy to implement, and there's a Python library for doing so (see `trash-cli`).  However, there's not a Ruby equivalent yet.
+
     Array(paths).each do |path|
       target = File.join(@trash_path, File.basename(path))
       safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
