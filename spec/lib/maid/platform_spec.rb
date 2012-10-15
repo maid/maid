@@ -6,6 +6,13 @@ module Maid
       RbConfig::CONFIG.stub(:[]).with('host_os') { value }
     end
 
+    describe 'determining the host OS' do
+      it 'delegates to RbConfig' do
+        stub_host_os('foo')
+        subject.host_os.should == 'foo'
+      end
+    end
+
     context 'when running on Ubuntu' do
       before do
         stub_host_os('linux-gnu')

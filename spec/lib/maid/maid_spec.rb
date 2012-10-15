@@ -31,16 +31,49 @@ module Maid
         maid.logger.should == @logger
       end
 
-      it 'should set the trash to the default path' do
-        trash_path = Maid::DEFAULTS[:trash_path]
-        FileUtils.should_receive(:mkdir_p).with(trash_path).once
-        maid = Maid.new
-        maid.trash_path.should_not be_nil
-        maid.trash_path.should == trash_path
+      describe 'platform-specific behavior' do
+        before do
+          Platform.stub(:linux?)
+          Platform.stub(:osx?)
+          @home = File.expand_path('~')
+        end
+
+        context 'when running on Linux' do
+          before do
+            Platform.stub(:linux?) { true }
+            XDG.stub(:[]).with('DATA_HOME') { "#{ @home }/.local/share" }
+          end
+
+          it 'should set the trash to the correct default path' do
+            trash_path = "#{ @home }/.local/share/Trash/files/"
+            FileUtils.should_receive(:mkdir_p).with(trash_path).once
+            maid = Maid.new
+            maid.trash_path.should == trash_path
+          end
+        end
+
+        context 'when running on OS X' do
+          before do
+            Platform.stub(:osx?) { true }
+          end
+
+          it 'should set the trash to the correct default path' do
+            trash_path = "#{ @home }/.Trash/"
+            FileUtils.should_receive(:mkdir_p).with(trash_path).once
+            maid = Maid.new
+            maid.trash_path.should == trash_path
+          end
+        end
+
+        context 'when running on an unsupported platform' do
+          it 'does not implement trashing files' do
+            lambda { Maid.new }.should raise_error(NotImplementedError)
+          end
+        end
       end
 
       it 'should set the trash to the given path, if provided' do
-        trash_path = '/home/username/.local/share/Trash/files/'
+        trash_path = '/home/username/tmp/my_trash/'
         FileUtils.should_receive(:mkdir_p).with(trash_path).once
         maid = Maid.new(:trash_path => trash_path)
         maid.trash_path.should_not be_nil

@@ -1,13 +1,14 @@
 require 'fileutils'
 require 'logger'
 
+require 'xdg'
+
 # Maid cleans up according to the given rules, logging what it does.
 class Maid::Maid
   DEFAULTS = {
     :progname     => 'Maid',
     :log_device   => File.expand_path('~/.maid/maid.log'),
     :rules_path   => File.expand_path('~/.maid/rules.rb'),
-    :trash_path   => File.expand_path('~/.Trash'),
     :file_options => {:noop => false}, # for FileUtils
   }.freeze
 
@@ -36,7 +37,7 @@ class Maid::Maid
     @logger.formatter = options[:log_formatter] if options[:log_formatter]
 
     @rules_path   = options[:rules_path]
-    @trash_path   = options[:trash_path]
+    @trash_path   = options[:trash_path] || default_trash_path
     @file_options = options[:file_options]
 
     # Just in case it isn't there...
@@ -105,5 +106,19 @@ private
     command_name = command.strip.split(/\s+/)[0]
     supported = @@supported_commands[command_name]
     @@supported_commands[command_name] = supported ? supported : !%x(which #{command_name}).empty?
+  end
+
+  def default_trash_path
+    # TODO: Refactor module declaration so this can be `Platform`
+    if Maid::Platform.linux?
+      # See the [FreeDesktop.org Trash specification](http://www.ramendik.ru/docs/trashspec.html)
+      path = "#{ XDG['DATA_HOME'] }/Trash/files"
+    elsif Maid::Platform.osx?
+      path = File.expand_path('~/.Trash')
+    else
+      raise NotImplementedError, "Unknown default trash path (unsupported host OS: #{ Maid::Platform.host_os.inspect })"
+    end
+
+    "#{ path }/"
   end
 end
