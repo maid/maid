@@ -6,6 +6,7 @@ module Maid
   autoload :Maid, 'maid/maid'
   autoload :Tools, 'maid/tools'
   autoload :NumericExtensions, 'maid/numeric_extensions'
+  autoload :Platform, 'maid/platform'
   autoload :Rule, 'maid/rule'
   autoload :VERSION, 'maid/version'
 
