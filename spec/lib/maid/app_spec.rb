@@ -26,6 +26,8 @@ module Maid
       @app.stub!(:maid_options)
       @app.stub!(:say)
 
+      TrashMigration.stub(:needed?) { false }
+
       # NOTE It's pretty important that this is stubbed, unless you want your rules to be run over and over when you test!
       @maid = mock('Maid')
       @maid.stub!(:clean)

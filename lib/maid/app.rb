@@ -17,6 +17,12 @@ class Maid::App < Thor
   method_option :silent, :type => :boolean, :aliases => %w[-s]
   def clean
     maid = Maid::Maid.new(maid_options(options))
+
+    if Maid::TrashMigration.needed?
+      migrate_trash
+      return
+    end
+
     unless options.silent? || options.noop?
       say "Logging actions to #{maid.log_device.inspect}"
     end
@@ -40,26 +46,70 @@ class Maid::App < Thor
     say "Sample rules created at #{path.inspect}", :green
   end
 
+  no_tasks do
+    def maid_options(options)
+      h = {}
+
+      if options['noop']
+        # You're testing, so a simple log goes to STDOUT and no actions are taken
+        h[:file_options] = {:noop => true}
+
+        unless options['silent']
+          h[:logger] = false
+          h[:log_device] = STDOUT
+          h[:log_formatter] = lambda { |_, _, _, msg| "#{msg}\n" }
+        end
+      end
+
+      if options['rules']
+        h[:rules_path] = options['rules']
+      end
+
+      h
+    end
+  end
+
   private
 
-  def maid_options(options)
-    h = {}
+  # Migrate trash to correct directory on Linux due to a configuration bug in previous releases.
+  def migrate_trash
+    migration = Maid::TrashMigration
+    banner('Trash Migration', :yellow)
 
-    if options['noop']
-      # You're testing, so a simple log goes to STDOUT and no actions are taken
-      h[:file_options] = {:noop => true}
+    say <<-EOF
 
-      unless options['silent']
-        h[:logger] = false
-        h[:log_device] = STDOUT
-        h[:log_formatter] = lambda { |_, _, _, msg| "#{msg}\n" }
-      end
+You are using Linux and have a "~/.Trash" directory.  If you used Maid 0.1.2 or earlier, that directory may exist because Maid incorrectly moved trash files there.
+
+But no worries.  Maid can migrate those files to the correct place.
+
+    EOF
+
+    response = ask("Would you like Maid to move the files in #{ migration.incorrect_trash.inspect } to #{ migration.correct_trash.inspect }?", :limited_to => %w(Y N))
+
+    case response
+    when 'Y'
+      say('')
+      say('Migrating trash...')
+
+      migration.perform
+
+      say('Migrated.  See the Maid log for details.')
+    when 'N'
+      say <<-EOF
+
+Running Maid again will continue to give this warning until #{ migration.incorrect_trash.inspect } no longer exists, or the environment variable MAID_NO_MIGRATE_TRASH has a value.
+
+Exiting...
+      EOF
+
+      exit -1
+    else
+      raise "Reached 'impossible' case (response: #{ response.inspect })"
     end
+  end
 
-    if options['rules']
-      h[:rules_path] = options['rules']
-    end
-
-    h
+  def banner(text, color = nil)
+    say(text, color)
+    say('-' * text.length, color)
   end
 end
