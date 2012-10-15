@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "maid"
 
-  s.add_dependency('thor', '~> 0.14.6')
+  s.add_dependency('thor', '~> 0.16.0')
   s.add_dependency('deprecated', '~> 3.0.0')
   s.add_dependency('xdg', '~> 2.2.2') # For Linux
   s.add_development_dependency('rake', '~> 0.8.7')
