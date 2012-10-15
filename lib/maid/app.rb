@@ -40,26 +40,26 @@ class Maid::App < Thor
     say "Sample rules created at #{path.inspect}", :green
   end
 
-  no_tasks do
-    def maid_options(options)
-      h = {}
+  private
 
-      if options['noop']
-        # You're testing, so a simple log goes to STDOUT and no actions are taken
-        h[:file_options] = {:noop => true}
+  def maid_options(options)
+    h = {}
 
-        unless options['silent']
-          h[:logger] = false
-          h[:log_device] = STDOUT
-          h[:log_formatter] = lambda { |_, _, _, msg| "#{msg}\n" }
-        end
+    if options['noop']
+      # You're testing, so a simple log goes to STDOUT and no actions are taken
+      h[:file_options] = {:noop => true}
+
+      unless options['silent']
+        h[:logger] = false
+        h[:log_device] = STDOUT
+        h[:log_formatter] = lambda { |_, _, _, msg| "#{msg}\n" }
       end
-
-      if options['rules']
-        h[:rules_path] = options['rules']
-      end
-
-      h
     end
+
+    if options['rules']
+      h[:rules_path] = options['rules']
+    end
+
+    h
   end
 end
