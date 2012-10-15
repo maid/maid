@@ -9,7 +9,7 @@ module Maid
       end
   
       def correct_trash
-        Maid.new.trash_path + '/'
+        Maid.new.trash_path
       end
 
       def needed?
