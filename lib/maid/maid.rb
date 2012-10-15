@@ -52,7 +52,6 @@ class Maid::Maid
       @logger.info 'Started'
     end
 
-    add_rules(@rules_path)
     follow_rules
 
     unless @log_device.kind_of?(IO)
@@ -60,8 +59,10 @@ class Maid::Maid
     end
   end
 
-  # Add the rules at path.
-  def add_rules(path)
+  # Add the rules at rules_path.
+  def load_rules
+    path = @rules_path
+
     Maid.with_instance(self) do
       # Using 'Kernel' here to help with testability
       # Kernel.load must be used for non-".rb" files to be required, it seems.

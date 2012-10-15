@@ -20,6 +20,8 @@ class Maid::App < Thor
     unless options.silent? || options.noop?
       say "Logging actions to #{maid.log_device.inspect}"
     end
+
+    maid.load_rules
     maid.clean
   end
 

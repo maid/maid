@@ -84,7 +84,6 @@ module Maid
     describe '#clean' do
       before :each do
         @maid = Maid.new
-        @maid.stub!(:add_rules)
         @logger.stub!(:info)
       end
 
@@ -94,19 +93,13 @@ module Maid
         @maid.clean
       end
 
-      it 'should process the default rules' do
-        @maid.should_receive(:add_rules).with(Maid::DEFAULTS[:rules_path])
-        @maid.clean
-      end
-
-      it 'should follow the given rules, if provided' do
-        @maid.should_receive(:add_rules)
+      it 'should follow the given rules' do
         @maid.should_receive(:follow_rules)
         @maid.clean
       end
     end
 
-    describe '#add_rules' do
+    describe '#load_rules' do
       before :each do
         Kernel.stub!(:load)
         @maid = Maid.new
@@ -114,19 +107,13 @@ module Maid
 
       it 'should set the Maid instance' do
         ::Maid.should_receive(:with_instance).with(@maid)
-        @maid.add_rules('path')
-      end
-
-      it 'should load the path' do
-        path = 'rules.rb'
-        Kernel.should_receive(:load).with(path)
-        @maid.add_rules(path)
+        @maid.load_rules
       end
 
       it 'should give an error on STDERR if there is a LoadError' do
         Kernel.stub!(:load).and_raise(LoadError)
         STDERR.should_receive(:puts)
-        @maid.add_rules('path')
+        @maid.load_rules
       end
     end
 

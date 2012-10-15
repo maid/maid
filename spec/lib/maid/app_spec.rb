@@ -30,6 +30,7 @@ module Maid
       @maid = mock('Maid')
       @maid.stub!(:clean)
       @maid.stub!(:log_device)
+      @maid.stub!(:load_rules)
       Maid.stub!(:new).and_return(@maid)
     end
 
