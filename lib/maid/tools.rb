@@ -67,6 +67,8 @@ module Maid::Tools
     # Ubuntu makes it easy to implement, and there's a Python library for doing so (see `trash-cli`).  However, there's not a Ruby equivalent yet.
 
     Array(paths).each do |path|
+      path = File.expand_path(path)
+
       target = File.join(@trash_path, File.basename(path))
       safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
 
