@@ -1,6 +1,28 @@
 maid (0.1.3.beta.2) unstable; urgency=low
 
-  * Fixed "XDG gives a warning about RbConfig vs Config" by using custom-built maid-xdg gem (Closes: #53)
   * Fixed "Trash does not expand paths" (Closes: #56)
+  * Fixed "XDG gives a warning about RbConfig vs Config" on Ubuntu by using custom-built maid-xdg gem (Closes: #53)
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  Wed, 21 Nov 2012 04:45:09 +0000
+
+maid (0.1.3.beta.1) unstable; urgency=low
+
+  * First release with official support for Ubuntu
+  * Fixed default trash path on Ubuntu (and possibly other Linux
+    distributions) (Closes: #6)
+  * An array of filenames can now be passed to "move", "trash". (Closes:
+    #16)
+  * New "remove" tool for deleting files, and secure deletion (Closes: #30)
+  * New "remove_over" option for "trash" which can delete files if they're
+    over a size threshold (Closes: #32)
+  * New "sync" tool for using rsync (Closes: #17)
+  * New "mkdir" tool for making directories ("folders") (Closes: #20)
+  * New "created_at" tool for looking up creation time (Closes: #21)
+  * New "modified_at" tool for looking up modification time (Closes: #13)
+  * Renamed "last_accessed" to "accessed_at", deprecated "last_accessed".
+    (Closes: #22)
+  * Deprecated "git_piston" in favor of SparkleShare (Closes: #18)
+  * Updated README and samples (Closes: #38)
+  * Updated dependencies (Closes: #5)
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Mon, 15 Oct 2012 04:45:09 +0000
