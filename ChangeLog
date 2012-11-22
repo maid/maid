@@ -1,28 +1,75 @@
 maid (0.1.3.beta.2) unstable; urgency=low
 
-  * Fixed "Trash does not expand paths" (Closes: #56)
-  * Fixed "XDG gives a warning about RbConfig vs Config" on Ubuntu by using custom-built maid-xdg gem (Closes: #53)
+  * Fixed "Trash does not expand paths". (Closes: #56)
+  * Fixed "XDG gives a warning about RbConfig vs Config" on Ubuntu by using
+    custom-built maid-xdg gem. (Closes: #53)
 
- -- Benjamin Oakes <hello@benjaminoakes.com>  Wed, 21 Nov 2012 04:45:09 +0000
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Wed, 21 Nov 2012 00:00:00 +0000
 
 maid (0.1.3.beta.1) unstable; urgency=low
 
-  * First release with official support for Ubuntu
+  * Started official support for Ubuntu.
   * Fixed default trash path on Ubuntu (and possibly other Linux
-    distributions) (Closes: #6)
-  * An array of filenames can now be passed to "move", "trash". (Closes:
+    distributions). (Closes: #6)
+  * Added ability to handle an array of filenames passed to "move", "trash". (Closes:
     #16)
-  * New "remove" tool for deleting files, and secure deletion (Closes: #30)
-  * New "remove_over" option for "trash" which can delete files if they're
-    over a size threshold (Closes: #32)
-  * New "sync" tool for using rsync (Closes: #17)
-  * New "mkdir" tool for making directories ("folders") (Closes: #20)
-  * New "created_at" tool for looking up creation time (Closes: #21)
-  * New "modified_at" tool for looking up modification time (Closes: #13)
+  * Added "remove" tool for deleting files, and secure deletion. (Closes: #30)
+  * Added "remove_over" option for "trash" which can delete files if they're
+    over a size threshold. (Closes: #32)
+  * Added "sync" tool for using rsync. (Closes: #17)
+  * Added "mkdir" tool for making directories ("folders"). (Closes: #20)
+  * Added "created_at" tool for looking up creation time. (Closes: #21)
+  * Added "modified_at" tool for looking up modification time. (Closes: #13)
   * Renamed "last_accessed" to "accessed_at", deprecated "last_accessed".
     (Closes: #22)
-  * Deprecated "git_piston" in favor of SparkleShare (Closes: #18)
-  * Updated README and samples (Closes: #38)
-  * Updated dependencies (Closes: #5)
+  * Deprecated "git_piston" in favor of SparkleShare. (Closes: #18)
+  * Updated README and samples. (Closes: #38)
+  * Updated dependencies. (Closes: #5)
 
- -- Benjamin Oakes <hello@benjaminoakes.com>  Mon, 15 Oct 2012 04:45:09 +0000
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Mon, 15 Oct 2012 00:00:00 +0000
+
+maid (0.1.2) stable; urgency=high
+
+  * Started official support for Ruby 1.9.3.
+  * Ended official support for Ruby 1.9.2.
+  * Updated README to clarify installation, updating, etc.
+  * Introduced new default behavior: "help" rather than "clean".
+  * Ensured the trash path exists as a directory before moving files.  This
+    helped prevent potential problems (unsupported) Linux users could have
+    experienced.
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Mon, 3 Sep 2012 00:00:00 +0000
+
+maid (0.1.1) stable; urgency=low
+
+  * Improved published documentation.
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Mon, 31 Aug 2012 00:00:00 +0000
+
+maid (0.1.0) stable; urgency=low
+
+  * Initial release (culmination of 4 prior beta releases).
+  * Started official support for Ruby 1.8.7, 1.9.2.
+  * Started official support for Mac OS X.
+  * Started Maid rules DSL format.
+  * Added "maid clean" command with "noop", "rules", and "silent" options.
+  * Added "maid help" commands.
+  * Added "maid sample" command.
+  * Added "maid version" command.
+  * Added "dir" tool.
+  * Added "find" tool.
+  * Added "move" tool.
+  * Added "trash" tool.
+  * Added "cmd" tool.
+  * Added "downloaded_from" tool.
+  * Added "duration_s" tool.
+  * Added "locate" tool.
+  * Added "zipfile_contents" tool.
+  * Added "disk_usage" tool.
+  * Added "git_piston" tool.
+  * Added "last_accessed" tool.
+  * Added logging.
+  * First iteration of tutorial and documentation.
+  * Possibly other misc changes/features in the first version.  :)
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Fri, 24 Jun 2011 00:00:00 +0000
