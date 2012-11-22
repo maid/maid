@@ -4,19 +4,44 @@
 # Documentation: [Shell Provisioner](http://vagrantup.com/v1/docs/provisioners/shell.html)
 set -o errexit
 
+# Set to '1.8.7' or '1.9.3'
+target_ruby_version='1.9.3'
+
+# Install the given package, no questions asked.
+function install-pkg {
+  sudo apt-get install -y "$1"
+}
+
+# Only install the given package if targeting the given Ruby version.
+function install-pkg-if-ruby {
+  local ruby_version="$1"
+  local package="$2"
+
+  if [ "$target_ruby_version" == "$ruby_version" ]; then
+    install-pkg "$package"
+  fi
+}
+
 sudo apt-get update
 
 # ## Dependencies
-sudo apt-get install -y ruby1.9.1
+install-pkg-if-ruby '1.8.7' 'ruby1.8'
+# Installs `ruby 1.9.3p0`
+install-pkg-if-ruby '1.9.3' 'ruby1.9.1'
 
 # ## Development dependencies
 #
 # For building `maid-x.y.z.gem`
-sudo apt-get install -y git-core
+install-pkg 'git-core'
 # For building `ffi` for `guard`'s soft dependency on `rb-inotify`
-sudo apt-get install -y make ruby1.9.1-dev libffi-dev
+install-pkg 'make'
+install-pkg 'libffi-dev'
+install-pkg-if-ruby '1.8.7' 'ruby1.8-dev'
+install-pkg-if-ruby '1.9.3' 'ruby1.9.1-dev'
 
 # ## RubyGems
 cd /vagrant
+# RubyGems is included in Ruby 1.9, but we need it installed in Ruby 1.8.
+install-pkg-if-ruby '1.8.7' 'rubygems'
 sudo gem install bundler
 bundle install
