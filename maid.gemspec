@@ -21,12 +21,12 @@ Gem::Specification.new do |s|
   # # After a new version with the Ruby 1.9 bugfix is released, change over to `xdg`
   # s.add_dependency('xdg', '~> 2.2.2')
   s.add_dependency('maid-xdg', '= 2.2.1.2')
-  s.add_development_dependency('guard', '~> 1.4.0')
-  s.add_development_dependency('guard-rspec', '~> 2.1.0')
-  s.add_development_dependency('rake', '~> 0.9.2.2')
-  s.add_development_dependency('rspec', '~> 2.11.0')
-  s.add_development_dependency('timecop', '~> 0.5.2')
-  s.add_development_dependency('fakefs', '~> 0.4.0')
+  s.add_development_dependency('guard', '~> 1.5.4')
+  s.add_development_dependency('guard-rspec', '~> 2.1.2')
+  s.add_development_dependency('rake', '~> 10.0.2')
+  s.add_development_dependency('rspec', '~> 2.12.0')
+  s.add_development_dependency('timecop', '~> 0.5.3')
+  s.add_development_dependency('fakefs', '~> 0.4.1')
 
   if Maid::Platform.linux?
     s.add_development_dependency('rb-inotify', '~> 0.8.8')
