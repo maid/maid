@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Run tests on a newly created Vagrant box.
+set -o errexit
+
+vagrant destroy --force
+vagrant up
+vagrant ssh --command 'cd /vagrant && rake'
