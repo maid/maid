@@ -1,4 +1,0 @@
-Maid.rules do
-  rule('documentation') { trash('doc') }
-  rule('built gems')    { trash('pkg') }
-end
