@@ -3,7 +3,7 @@ maid (0.1.3) stable; urgency=medium
   * First stable release with official support for Ubuntu.
   * Added new features, fixed bugs as listed for betas 1 and 2.
   * Minor development-only changes:
-      * Added ChangeLog (this file)
+      * Added CHANGELOG (this file)
       * Updated development dependencies to most recent versions
       * Scripted testing of supported Ruby and Ubuntu releases
 
