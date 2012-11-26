@@ -21,14 +21,14 @@ module Maid
       $stderr = STDERR
     end
 
-    before :each do
+    before do
       @app = App.new
       @app.stub!(:maid_options)
       @app.stub!(:say)
 
       TrashMigration.stub(:needed?) { false }
 
-      # NOTE It's pretty important that this is stubbed, unless you want your rules to be run over and over when you test!
+      # NOTE: It's pretty important that this is stubbed, unless you want your rules to be run over and over when you test!
       @maid = mock('Maid')
       @maid.stub!(:clean)
       @maid.stub!(:log_device)
@@ -37,7 +37,7 @@ module Maid
     end
 
     it 'should make a new Maid with the options' do
-      opts = {:foo => 'bar'}
+      opts = { :foo => 'bar' }
       @app.stub!(:maid_options).and_return(opts)
       Maid.should_receive(:new).with(opts).and_return(@maid)
       @app.clean
@@ -53,7 +53,7 @@ module Maid
     end
 
     it 'should be silent if given the --silent option' do
-      # TODO It might even make sense to wrap "maid.clean" in capture_stdout { }...
+      # TODO: It might even make sense to wrap `maid.clean` in `capture_stdout { ... }`
       capture_stdout { App.start(['clean', '--silent']) }.string.should == ''
     end
 
@@ -75,7 +75,7 @@ module Maid
   end
 
   describe App, '#maid_options' do
-    before :each do
+    before do
       @app = App.new
     end
 

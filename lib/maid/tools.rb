@@ -16,12 +16,12 @@ module Maid::Tools
   #
   # This method delegates to FileUtils.  The instance-level <tt>file_options</tt> hash is passed to control the <tt>:noop</tt> option.
   #
-  #   move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
+  #     move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
   # 
   # This method can handle multiple from paths.
   #
-  #   move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
-  #   move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
+  #     move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
+  #     move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
   def move(froms, to)
     Array(froms).each do |from|
       from = File.expand_path(from)
@@ -29,10 +29,10 @@ module Maid::Tools
       target = File.join(to, File.basename(from))
 
       unless File.exist?(target)
-        @logger.info "mv #{from.inspect} #{to.inspect}"
+        @logger.info("mv #{ from.inspect } #{ to.inspect }")
         FileUtils.mv(from, to, @file_options)
       else
-        @logger.warn "skipping #{from.inspect} because #{target.inspect} already exists"
+        @logger.warn("skipping #{ from.inspect } because #{ target.inspect } already exists")
       end
     end
   end
@@ -49,12 +49,12 @@ module Maid::Tools
   #     Remove files over the given size rather than moving to the trash.
   #     See also Maid::NumericExtensions::SizeToKb
   #
-  #   trash('~/Downloads/foo.zip')
+  #     trash('~/Downloads/foo.zip')
   # 
   # This method can also handle multiple paths.
   #
-  #   trash(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
-  #   trash(dir('~/Downloads/*.zip'))
+  #     trash(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
+  #     trash(dir('~/Downloads/*.zip'))
   def trash(paths, options = {})
     # ## Implementation Notes
     #
@@ -70,7 +70,7 @@ module Maid::Tools
       path = File.expand_path(path)
 
       target = File.join(@trash_path, File.basename(path))
-      safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
+      safe_trash_path = File.join(@trash_path, "#{ File.basename(path) } #{ Time.now.strftime('%Y-%m-%d-%H-%M-%S') }")
 
       if options[:remove_over] &&
           File.exist?(path) &&
@@ -95,25 +95,25 @@ module Maid::Tools
   # - :force => boolean
   # - :secure => boolean (See FileUtils.remove_entry_secure for further details)
   #
-  #   remove('~/Downloads/foo.zip')
+  #     remove('~/Downloads/foo.zip')
   #
   # This method can handle multiple remove paths.
   #
-  #   remove(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
-  #   remove(dir('~/Downloads/*.zip'))
+  #     remove(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
+  #     remove(dir('~/Downloads/*.zip'))
   def remove(paths, options = {})
     Array(paths).each do |path|
       path = File.expand_path(path)
       options = @file_options.merge(options)
 
-      @logger.info "Removing #{path.inspect}"
+      @logger.info("Removing #{ path.inspect }")
       FileUtils.rm_r(path,options)
     end
   end
 
   # Give all files matching the given glob.
   #
-  #   dir('~/Downloads/*.zip')
+  #     dir('~/Downloads/*.zip')
   def dir(glob)
     Dir[File.expand_path(glob)]
   end
@@ -125,7 +125,7 @@ module Maid::Tools
   # - :mode,  the symbolic and absolute mode both can be used.
   #           eg. 0700, 'u=wr,go=rr'
   #
-  #   mkdir('~/Downloads/Music/Pink.Floyd/', :mode => 0644)
+  #     mkdir('~/Downloads/Music/Pink.Floyd/', :mode => 0644)
   def mkdir(path, options = {})
     FileUtils.mkdir_p(File.expand_path(path), options)
   end
@@ -134,13 +134,13 @@ module Maid::Tools
   #
   # If no block is given, it will return an array.
   #
-  #   find '~/Downloads/' # => [...]
+  #     find '~/Downloads/' # => [...]
   #
   # or delegates to Find.find.
   #
-  #   find '~/Downloads/' do |path|
-  #     # ...
-  #   end
+  #     find '~/Downloads/' do |path|
+  #       # ...
+  #     end
   #
   def find(path, &block)
     expanded_path = File.expand_path(path)
@@ -156,34 +156,34 @@ module Maid::Tools
 
   # [Mac OS X] Use Spotlight to locate all files matching the given filename.
   #
-  #   locate('foo.zip') # => ['/a/foo.zip', '/b/foo.zip']
+  #     locate('foo.zip') # => ['/a/foo.zip', '/b/foo.zip']
   #--
   # TODO use `locate` elsewhere -- it isn't available by default on OS X starting with OS X Leopard.
   def locate(name)
-    cmd("mdfind -name #{name.inspect}").split("\n")
+    cmd("mdfind -name #{ name.inspect }").split("\n")
   end
 
   # [Mac OS X] Use Spotlight metadata to determine the site from which a file was downloaded.
   #
-  #   downloaded_from('foo.zip') # => ['http://www.site.com/foo.zip', 'http://www.site.com/']
+  #     downloaded_from('foo.zip') # => ['http://www.site.com/foo.zip', 'http://www.site.com/']
   def downloaded_from(path)
-    raw = cmd("mdls -raw -name kMDItemWhereFroms #{path.inspect}")
+    raw = cmd("mdls -raw -name kMDItemWhereFroms #{ path.inspect }")
     clean = raw[1, raw.length - 2]
     clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
   end
 
   # [Mac OS X] Use Spotlight metadata to determine audio length.
   #
-  #   duration_s('foo.mp3') # => 235.705
+  #     duration_s('foo.mp3') # => 235.705
   def duration_s(path)
-    cmd("mdls -raw -name kMDItemDurationSeconds #{path.inspect}").to_f
+    cmd("mdls -raw -name kMDItemDurationSeconds #{ path.inspect }").to_f
   end
 
   # Inspect the contents of a .zip file.
   #
-  #   zipfile_contents('foo.zip') # => ['foo/foo.exe', 'foo/README.txt']
+  #     zipfile_contents('foo.zip') # => ['foo/foo.exe', 'foo/README.txt']
   def zipfile_contents(path)
-    raw = cmd("unzip -Z1 #{path.inspect}")
+    raw = cmd("unzip -Z1 #{ path.inspect }")
     raw.split("\n")
   end
 
@@ -191,13 +191,13 @@ module Maid::Tools
   #
   # FIXME: This reports in kilobytes, but should probably report in bytes.
   #
-  #   disk_usage('foo.zip') # => 136
+  #     disk_usage('foo.zip') # => 136
   def disk_usage(path)
-    raw = cmd("du -s #{path.inspect}")
+    raw = cmd("du -s #{ path.inspect }")
     usage_kb = raw.split(/\s+/).first.to_i
    
     if usage_kb.zero?
-      raise "Stopping pessimistically because of unexpected value from du (#{raw.inspect})"
+      raise "Stopping pessimistically because of unexpected value from du (#{ raw.inspect })"
     else
       usage_kb
     end
@@ -205,14 +205,14 @@ module Maid::Tools
 
   # In Unix speak, "ctime".
   #
-  #   created_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
+  #     created_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
   def created_at(path)
     File.ctime(File.expand_path(path))
   end
 
   # In Unix speak, "atime".
   #
-  #   accessed_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
+  #     accessed_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
   def accessed_at(path)
     File.atime(File.expand_path(path))
   end
@@ -231,7 +231,7 @@ module Maid::Tools
   #
   # Since this is deprecated, you might also be interested in SparkleShare (http://sparkleshare.org/), a great git-based file syncronization project.
   #
-  #   git_piston('~/code/projectname')
+  #     git_piston('~/code/projectname')
   #
   # @deprecated
   def git_piston(path)
@@ -255,7 +255,7 @@ module Maid::Tools
   # - :exclude => string EXE :exclude => ".git" or :exclude => [".git", ".rvmrc"]
   # - :prune_empty => boolean
   #
-  #   sync('~/music', '/backup/music')
+  #     sync('~/music', '/backup/music')
   def sync(from, to, options = {})
     # expand path removes trailing slash
     # cannot use str[-1] due to ruby 1.8.7 restriction
@@ -271,11 +271,11 @@ module Maid::Tools
     ops << '-n' if @file_options[:noop]
 
     Array(options[:exclude]).each do |path|
-      ops << "--exclude=#{path.inspect}"
+      ops << "--exclude=#{ path.inspect }"
     end
 
     ops << '--delete' if options[:delete]
-    stdout = cmd("rsync #{ops.join(' ')} #{from.inspect} #{to.inspect} 2>&1")
-    @logger.info "Fired sync from #{from.inspect} to #{to.inspect}.  STDOUT:\n\n#{stdout}"
+    stdout = cmd("rsync #{ ops.join(' ') } #{ from.inspect } #{ to.inspect } 2>&1")
+    @logger.info("Fired sync from #{ from.inspect } to #{ to.inspect }.  STDOUT:\n\n#{ stdout }")
   end
 end

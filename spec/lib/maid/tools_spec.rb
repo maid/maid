@@ -7,7 +7,7 @@ module Maid
   #
   # * [FakeFS](https://github.com/defunkt/fakefs)
   describe Tools, :fakefs => true do
-    before :each do
+    before do
       @home = File.expand_path('~')
       @now = Time.now
 
@@ -24,7 +24,7 @@ module Maid
     end
 
     describe '#move' do
-      before :each do
+      before do
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
         FileUtils.mkdir_p(@src_dir)
         FileUtils.touch(@src_file)
@@ -60,7 +60,7 @@ module Maid
     end
 
     describe '#trash' do
-      before :each do
+      before do
         @trash_path = @maid.trash_path
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
         FileUtils.mkdir_p(@src_dir)
@@ -110,7 +110,7 @@ module Maid
     end
 
     describe '#remove' do
-      before :each do
+      before do
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
         FileUtils.mkdir_p(@src_dir)
         FileUtils.touch(@src_file)
@@ -152,7 +152,7 @@ module Maid
     end
 
     describe '#dir' do
-      before :each do
+      before do
         @file = (dir = "#@home/Downloads/") + 'foo.zip'
         FileUtils.mkdir_p(dir)
       end
@@ -171,7 +171,7 @@ module Maid
     end
 
     describe '#find' do
-      before :each do
+      before do
         @file = (@dir = '~/Source/') + (@file_name = 'foo.zip')
         FileUtils.mkdir_p(@dir)
         FileUtils.touch(@file)
@@ -261,7 +261,7 @@ module Maid
 
     describe '#modified_at' do
       before do
-        @path = "~/test.txt"
+        @path = '~/test.txt'
         FileUtils.touch(File.expand_path(@path))
       end
 
@@ -289,7 +289,7 @@ module Maid
     end
 
     describe '#sync' do
-      before :each do
+      before do
         @src_dir = '~/Downloads/'
         @dst_dir = '~/Reference'
       end

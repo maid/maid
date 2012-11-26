@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Maid
   describe Maid do
-    before :each do
+    before do
       @logger = double('Logger').as_null_object
       Logger.stub!(:new).and_return(@logger)
       FileUtils.stub(:mkdir_p)
@@ -95,8 +95,8 @@ module Maid
       end
 
       it 'should set the file options to the given options, if provided' do
-        maid = Maid.new(:file_options => {:verbose => true})
-        maid.file_options.should == {:verbose => true}
+        maid = Maid.new(:file_options => { :verbose => true })
+        maid.file_options.should == { :verbose => true }
       end
 
       it 'should set the rules path' do
@@ -115,7 +115,7 @@ module Maid
     end
 
     describe '#clean' do
-      before :each do
+      before do
         @maid = Maid.new
         @logger.stub!(:info)
       end
@@ -133,7 +133,7 @@ module Maid
     end
 
     describe '#load_rules' do
-      before :each do
+      before do
         Kernel.stub!(:load)
         @maid = Maid.new
       end
@@ -151,14 +151,14 @@ module Maid
     end
 
     describe '#rule' do
-      before :each do
+      before do
         @maid = Maid.new
       end
 
       it 'should add a rule to the list of rules' do
         @maid.rules.length.should == 0
 
-        @maid.rule 'description' do
+        @maid.rule('description') do
           'instructions'
         end
 
@@ -173,7 +173,7 @@ module Maid
         maid = Maid.new
         @logger.should_receive(:info).exactly(n).times
         rules = (1..n).map do |n|
-          mock = mock("rule ##{n}", :description => 'description')
+          mock = mock("rule ##{ n }", :description => 'description')
           mock.should_receive(:follow)
           mock
         end
@@ -184,7 +184,7 @@ module Maid
     end
 
     describe '#cmd' do
-      before :each do
+      before do
         @maid = Maid.new
       end
 
