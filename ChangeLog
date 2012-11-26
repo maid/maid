@@ -1,7 +1,17 @@
+maid (0.1.4-alpha.3) unstable; urgency=low
+
+  * (Development in progress)
+  * Start of semver.org-like version numbering.  Specific plans aren't clear
+    yet, but the next release may be Maid 1.0.0.
+  * Updated development dependencies.
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Mon, 26 Nov 2012 14:51:13 +0000
+
 maid (0.1.4.alpha.2) unstable; urgency=low
 
-  * Noted license in gemspec for RubyGems.org.  Was incorrect value in Alpha 1. (Closes: #61)
-  * Minor development-only changes for CONTRIBUTING and ChangeLog
+  * Noted license in gemspec.  Was incorrect value in alpha.1. Made an early
+    alpha release to test effect on RubyGems.org listing. (Closes: #61)
+  * Minor development-only documentation changes.
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  Sat, 24 Nov 2012 00:00:00 +0000
 

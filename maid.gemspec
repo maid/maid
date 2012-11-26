@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   # s.add_dependency('xdg', '~> 2.2.2')
   s.add_dependency('maid-xdg', '= 2.2.1.2')
   s.add_development_dependency('guard', '~> 1.5.4')
-  s.add_development_dependency('guard-rspec', '~> 2.1.2')
+  s.add_development_dependency('guard-rspec', '~> 2.2.0')
   s.add_development_dependency('rake', '~> 10.0.2')
   s.add_development_dependency('rspec', '~> 2.12.0')
   s.add_development_dependency('timecop', '~> 0.5.3')

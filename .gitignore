@@ -1,6 +1,6 @@
 *.gem
 .bundle
-.roboconf.sh
 .vagrant
 Gemfile.lock
+tmp/*
 doc/*
