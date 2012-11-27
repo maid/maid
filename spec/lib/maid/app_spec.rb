@@ -69,7 +69,9 @@ module Maid
   describe App, '#version' do
     it 'should print out the gem version' do
       app = App.new
-      app.should_receive(:say).with(VERSION)
+      ua = 'Maid/0.0.1'
+      UserAgent.stub(:value) { ua }
+      app.should_receive(:say).with(ua)
       app.version
     end
   end

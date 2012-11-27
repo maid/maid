@@ -31,9 +31,9 @@ class Maid::App < Thor
     maid.clean
   end
 
-  desc 'version', 'Print version number'
+  desc 'version', 'Print version number and sytem information'
   def version
-    say Maid::VERSION
+    say Maid::UserAgent.value
   end
 
   desc 'sample', "Create sample rules at #{ self.sample_rules_path }"

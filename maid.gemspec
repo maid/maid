@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   # # After a new version with the Ruby 1.9 bugfix is released, change over to `xdg`
   # s.add_dependency('xdg', '~> 2.2.2')
   s.add_dependency('maid-xdg', '= 2.2.1.2')
+  s.add_dependency('ohai', '~> 6.14.0')
   s.add_development_dependency('guard', '~> 1.5.4')
   s.add_development_dependency('guard-rspec', '~> 2.2.0')
   s.add_development_dependency('rake', '~> 10.0.2')
