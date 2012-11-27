@@ -9,5 +9,5 @@ Bundler::GemHelper.install_tasks
 RSpec::Core::RakeTask.new(:spec)
 
 task :console do
-  sh 'irb -I lib -r maid'
+  sh('irb -I lib -r maid')
 end
