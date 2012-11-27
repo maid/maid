@@ -5,7 +5,7 @@ require 'ohai'
 # This could potentially be a part of `Platform` or `VERSION` but both of those are used when building the gemspec, which can't depend on other gems.
 module Maid::UserAgent
   class << self
-	  # This used to be called `#to_s`, but that made things difficult when testing.
+    # This used to be called `#to_s`, but that made things difficult when testing.
     def value
       ohai = Ohai::System.new
       ohai.all_plugins
