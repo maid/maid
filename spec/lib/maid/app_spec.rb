@@ -67,12 +67,30 @@ module Maid
   end
 
   describe App, '#version' do
+    before do
+      @app = App.new
+    end
+
     it 'should print out the gem version' do
-      app = App.new
-      ua = 'Maid/0.0.1'
-      UserAgent.stub(:value) { ua }
-      app.should_receive(:say).with(ua)
-      app.version
+      @app.should_receive(:say).with(VERSION)
+      @app.version
+    end
+
+    context 'with the "long" option' do
+      before do
+        # FIXME: This is ugly.  Maybe use `Maid.start(%w(version --long))` instead.
+
+        # We can't simply stub `long?` because `options` is a frozen object.
+        options = mock('options', :long? => true)
+        @app.options = options
+      end
+
+      it 'should print out the gem version' do
+        ua = 'Maid/0.0.1'
+        UserAgent.stub(:value) { ua }
+        @app.should_receive(:say).with(ua)
+        @app.version
+      end
     end
   end
 
