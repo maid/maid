@@ -1,17 +1,20 @@
 require 'deprecated'
 Deprecated.set_action(:warn)
 
-module Maid
-  autoload :App, 'maid/app'
-  autoload :Maid, 'maid/maid'
-  autoload :Tools, 'maid/tools'
-  autoload :NumericExtensions, 'maid/numeric_extensions'
-  autoload :Platform, 'maid/platform'
-  autoload :Rule, 'maid/rule'
-  autoload :TrashMigration, 'maid/trash_migration'
-  autoload :UserAgent, 'maid/user_agent'
-  autoload :VERSION, 'maid/version'
+# Must be in this order:
+require 'maid/version'
+require 'maid/tools'
+require 'maid/maid'
 
+# Alphabetical:
+require 'maid/app'
+require 'maid/numeric_extensions'
+require 'maid/platform'
+require 'maid/rule'
+require 'maid/trash_migration'
+require 'maid/user_agent'
+
+module Maid
   class << self
     # Execute the block with the Maid instance set to <tt>instance</tt>.
     def with_instance(instance)
@@ -32,5 +35,3 @@ class Numeric
   include Maid::NumericExtensions::Time
   include Maid::NumericExtensions::SizeToKb
 end
-
-# TODO Is there a no-conflict way of including the extensions?
