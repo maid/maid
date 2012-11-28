@@ -10,10 +10,12 @@ describe 'Dependency expectations' do
   describe Ohai do
     before do
       @ohai = Ohai::System.new
-      @ohai.all_plugins
+      # FIXME: For some reason this is really slow when using `guard`
+      @ohai.require_plugin('os')
     end
   
     it 'has platform information' do
+      @ohai.require_plugin('platform')
       @ohai['platform'].should match(/[a-z]+/i)
       @ohai['platform_version'].should match(/[0-9]+/)
     end
@@ -27,9 +29,10 @@ describe 'Dependency expectations' do
 
   describe XDG do
     it 'has DATA_HOME' do
-      data_home = XDG['DATA_HOME'].to_s
-      data_home.should match(%r{^/})
-      data_home.should match(%r{/\.local/share$})
+      # FIXME: This test could be cleaner.  We can't depend on the directory to already exist, even on systems that use the XDG standard.  This seems safe enough for now.
+      #
+      # More info: [XDG Base Directory Specification](http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html)
+      XDG['DATA_HOME'].to_s.should match(%r{^/.*?/\.local/share$})
     end
   end
 end
