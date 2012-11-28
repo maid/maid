@@ -161,6 +161,12 @@ module Maid
         FileUtils.touch(@file)
         @maid.dir('~/Downloads/*.zip').should == [@file]
       end
+
+      it 'lists multiple files in alphabetical order' do
+        # It doesn't occur with `FakeFS` as far as I can tell, but Ubuntu (and possibly OS X) can give the results out of lexical order.  That makes using the `dry-run` output difficult to use.
+        Dir.stub(:[]) { %w(/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip) }
+        @maid.dir('~/Downloads/*.zip').should == %w(/home/foo/a.zip /home/foo/b.zip /home/foo/c.zip)
+      end
     end
 
     describe '#mkdir' do

@@ -115,7 +115,7 @@ module Maid::Tools
   #
   #     dir('~/Downloads/*.zip')
   def dir(glob)
-    Dir[File.expand_path(glob)]
+    Dir[File.expand_path(glob)].sort
   end
 
   # Creates a directory and all its parent directories.
