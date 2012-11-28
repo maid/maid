@@ -2,56 +2,67 @@ require 'fileutils'
 require 'find'
 require 'time'
 
-# Collection of utility methods included in Maid::Maid (and thus available in the rules DSL).
+# These "tools" are methods available in the Maid DSL.
 #
-# In general, all paths are automatically expanded (e.g. '~/Downloads/foo.zip' becomes '/home/username/Downloads/foo.zip').
+# In general, methods are expected to:
 #
-# Some methods are not available on all platforms.  An <tt>ArgumentError</tt> is raised when a command is not available.  See tags: [Mac OS X]
+# * Automatically expand paths (that is, `'~/Downloads/foo.zip'` becomes `'/home/username/Downloads/foo.zip'`)
+# * Respect the `noop` (`dry-run`) option if it is set
+#
+# Some methods are not available on all platforms.  An `ArgumentError` is raised when a command is not available.  See tags such as: [Mac OS X]
 module Maid::Tools
   include Deprecated
 
-  # Move from <tt>from</tt> to <tt>to</tt>.
+  # Move from `sources` to `destination`
   #
   # The path is not moved if a file already exists at the destination with the same name.  A warning is logged instead.
   #
-  # This method delegates to FileUtils.  The instance-level <tt>file_options</tt> hash is passed to control the <tt>:noop</tt> option.
+  # ## Examples
+  #
+  # Single path:
   #
   #     move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
   # 
-  # This method can handle multiple from paths.
+  # Multiple paths:
   #
   #     move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
   #     move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
-  def move(froms, to)
-    Array(froms).each do |from|
-      from = File.expand_path(from)
-      to = File.expand_path(to)
-      target = File.join(to, File.basename(from))
+  def move(sources, destination)
+    Array(sources).each do |source|
+      source = File.expand_path(source)
+      destination = File.expand_path(destination)
+      target = File.join(destination, File.basename(source))
 
       unless File.exist?(target)
-        @logger.info("mv #{ from.inspect } #{ to.inspect }")
-        FileUtils.mv(from, to, @file_options)
+        @logger.info("mv #{ source.inspect } #{ destination.inspect }")
+        FileUtils.mv(source, destination, @file_options)
       else
-        @logger.warn("skipping #{ from.inspect } because #{ target.inspect } already exists")
+        @logger.warn("skipping #{ source.inspect } because #{ target.inspect } already exists")
       end
     end
   end
 
-  # Move the given path to the trash (as set by <tt>trash_path</tt>).
+  # Move the given paths to the user's trash.
   #
-  # The path is moved if a file already exists in the trash with the same name.  However, the current date and time is appended to the filename.
+  # The path is still moved if a file already exists in the trash with the same name.  However, the current date and time is appended to the filename.
   # 
-  # Note: the OS native "restore" or "put back" functionality for trashed files is not currently supported.  However, they can be restored manually, and the Maid log can help assist with this.
+  # **Note:** the OS-native "restore" or "put back" functionality for trashed files is not currently supported.  (See [issue #63](https://github.com/benjaminoakes/maid/issues/63).)  However, they can be restored manually, and the Maid log can help assist with this.
   # 
-  # Options:
+  # ## Options
   #
-  # - :remove_over => Fixnum (e.g. 1.gigabyte, 1024.megabytes)
-  #     Remove files over the given size rather than moving to the trash.
-  #     See also Maid::NumericExtensions::SizeToKb
+  # `:remove_over => Fixnum` (e.g. `1.gigabyte`, `1024.megabytes`)
+  #
+  # Delete files over the given size rather than moving to the trash.
+  #
+  # See also `Maid::NumericExtensions::SizeToKb`
+  #
+  # ## Examples
+  #
+  # Single path:
   #
   #     trash('~/Downloads/foo.zip')
   # 
-  # This method can also handle multiple paths.
+  # Multiple paths:
   #
   #     trash(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
   #     trash(dir('~/Downloads/*.zip'))
@@ -88,16 +99,25 @@ module Maid::Tools
     end
   end
 
-  # Remove the given path recursively.
+  # Delete the files at the given path recursively.
   # 
-  # Options:
+  # ## Options
   #
-  # - :force => boolean
-  # - :secure => boolean (See FileUtils.remove_entry_secure for further details)
+  # `:force => boolean`
+  #
+  # Force deletion (no error is raised if the file does not exist).
+  #
+  # `:secure => boolean`
+  #
+  # Infrequently needed. See [`FileUtils.remove_entry_secure`](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/fileutils/rdoc/FileUtils.html#method-c-remove_entry_secure)
+  #
+  # ## Examples
+  #
+  # Single path:
   #
   #     remove('~/Downloads/foo.zip')
   #
-  # This method can handle multiple remove paths.
+  # Multiple path:
   #
   #     remove(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
   #     remove(dir('~/Downloads/*.zip'))
@@ -107,38 +127,47 @@ module Maid::Tools
       options = @file_options.merge(options)
 
       @logger.info("Removing #{ path.inspect }")
-      FileUtils.rm_r(path,options)
+      FileUtils.rm_r(path, options)
     end
   end
 
   # Give all files matching the given glob.
+  #
+  # ## Examples
   #
   #     dir('~/Downloads/*.zip')
   def dir(glob)
     Dir[File.expand_path(glob)].sort
   end
 
-  # Creates a directory and all its parent directories.
+  # Creates a directory and all of its parent directories.
   #
-  # Options:
+  # ## Options
   #
-  # - :mode,  the symbolic and absolute mode both can be used.
-  #           eg. 0700, 'u=wr,go=rr'
+  # `:mode`
+  #
+  # The symbolic and absolute mode can both be used, for example: `0700`, `'u=wr,go=rr'`
+  #
+  # ## Examples
   #
   #     mkdir('~/Downloads/Music/Pink.Floyd/', :mode => 0644)
   def mkdir(path, options = {})
     FileUtils.mkdir_p(File.expand_path(path), options)
   end
 
-  # Find matching files, akin to the Unix utility <tt>find</tt>.
+  # Find matching files, akin to the Unix utility `find`.
   #
-  # If no block is given, it will return an array.
+  # If no block is given, it will return an array.  Otherwise, it acts like `Find.find`.
   #
-  #     find '~/Downloads/' # => [...]
+  # ## Examples
   #
-  # or delegates to Find.find.
+  # Without a block:
   #
-  #     find '~/Downloads/' do |path|
+  #     find('~/Downloads/') # => [...]
+  #
+  # Recursing with a block:
+  #
+  #     find('~/Downloads/') do |path|
   #       # ...
   #     end
   #
@@ -156,14 +185,18 @@ module Maid::Tools
 
   # [Mac OS X] Use Spotlight to locate all files matching the given filename.
   #
+  # [Ubuntu] Not currently supported.  See [issue #67](https://github.com/benjaminoakes/maid/issues/67).
+  #
+  # ## Examples
+  #
   #     locate('foo.zip') # => ['/a/foo.zip', '/b/foo.zip']
-  #--
-  # TODO use `locate` elsewhere -- it isn't available by default on OS X starting with OS X Leopard.
   def locate(name)
     cmd("mdfind -name #{ name.inspect }").split("\n")
   end
 
   # [Mac OS X] Use Spotlight metadata to determine the site from which a file was downloaded.
+  #
+  # ## Examples
   #
   #     downloaded_from('foo.zip') # => ['http://www.site.com/foo.zip', 'http://www.site.com/']
   def downloaded_from(path)
@@ -174,12 +207,16 @@ module Maid::Tools
 
   # [Mac OS X] Use Spotlight metadata to determine audio length.
   #
+  # ## Examples
+  #
   #     duration_s('foo.mp3') # => 235.705
   def duration_s(path)
     cmd("mdls -raw -name kMDItemDurationSeconds #{ path.inspect }").to_f
   end
 
-  # Inspect the contents of a .zip file.
+  # List the contents of a zip file.
+  #
+  # ## Examples
   #
   #     zipfile_contents('foo.zip') # => ['foo/foo.exe', 'foo/README.txt']
   def zipfile_contents(path)
@@ -187,13 +224,16 @@ module Maid::Tools
     raw.split("\n")
   end
 
-  # Calculate disk usage of a given path.
+  # Calculate disk usage of a given path in kilobytes.
   #
-  # FIXME: This reports in kilobytes, but should probably report in bytes.
+  # See also: `Maid::NumericExtensions::SizeToKb`.
+  #
+  # ## Examples
   #
   #     disk_usage('foo.zip') # => 136
   def disk_usage(path)
     raw = cmd("du -s #{ path.inspect }")
+    # FIXME: This reports in kilobytes, but should probably report in bytes.
     usage_kb = raw.split(/\s+/).first.to_i
    
     if usage_kb.zero?
@@ -203,37 +243,57 @@ module Maid::Tools
     end
   end
 
-  # In Unix speak, "ctime".
+  # Get the creation time of a file.
+  #
+  # In Unix speak, `ctime`.
+  #
+  # ## Examples
   #
   #     created_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
   def created_at(path)
     File.ctime(File.expand_path(path))
   end
 
-  # In Unix speak, "atime".
+  # Get the time that a file was last accessed.
+  #
+  # In Unix speak, `atime`.
+  #
+  # ## Examples
   #
   #     accessed_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
   def accessed_at(path)
     File.atime(File.expand_path(path))
   end
 
-  alias :last_accessed :accessed_at
+  # @deprecated
+  #
+  # Alias of `accessed_at`.
+  def last_accessed(path)
+    # Not a normal `alias` so the deprecation notice shows in the docs.
+    accessed_at(path)
+  end
   deprecated :last_accessed, :accessed_at
 
-  # In Unix speak, "mtime".
+  # Get the modification time of a file.
   #
-  #   modified_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
+  # In Unix speak, `mtime`.
+  #
+  # ## Examples
+  #
+  #     modified_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
   def modified_at(path)
     File.mtime(File.expand_path(path))
   end
 
-  # Pulls and pushes the given git repository.
+  # @deprecated
   #
-  # Since this is deprecated, you might also be interested in SparkleShare (http://sparkleshare.org/), a great git-based file syncronization project.
+  # Pulls and pushes the `git` repository at the given path.
+  #
+  # Since this is deprecated, you might also be interested in [SparkleShare](http://sparkleshare.org/), a great `git`-based file syncronization project.
+  #
+  # ## Examples
   #
   #     git_piston('~/code/projectname')
-  #
-  # @deprecated
   def git_piston(path)
     full_path = File.expand_path(path)
     stdout = cmd("cd #{full_path.inspect} && git pull && git push 2>&1")
@@ -242,20 +302,34 @@ module Maid::Tools
 
   deprecated :git_piston, 'SparkleShare (http://sparkleshare.org/)'
 
-  # [Rsync] Simple sync of two files/folders using rsync.
+  # Simple sync of two files/folders using `rsync`.
   #
-  # See rsync man page for a detailed description.
+  # The host OS must provide `rsync`.  See the `rsync` man page for a detailed description.
+  #
+  #     man rsync
   # 
-  # Options:
+  # ## Options
   #
-  # - :delete => boolean
-  # - :verbose => boolean
-  # - :archive => boolean (default true)
-  # - :update => boolean (default true)
-  # - :exclude => string EXE :exclude => ".git" or :exclude => [".git", ".rvmrc"]
-  # - :prune_empty => boolean
+  # `:delete      => boolean`
+  # `:verbose     => boolean`
+  # `:archive     => boolean` (default `true`)
+  # `:update      => boolean` (default `true`)
+  # `:exclude     => string`
+  # `:prune_empty => boolean`
+  #
+  # ## Examples
+  #
+  # Syncing a directory to a backup:
   #
   #     sync('~/music', '/backup/music')
+  #
+  # Excluding a path:
+  #
+  #     sync('~/code', '/backup/code', :exclude => '.git')
+  #
+  # Excluding multiple paths:
+  #
+  #     sync('~/code', '/backup/code', :exclude => ['.git', '.rvmrc'])
   def sync(from, to, options = {})
     # expand path removes trailing slash
     # cannot use str[-1] due to ruby 1.8.7 restriction

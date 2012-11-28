@@ -15,7 +15,7 @@ YARD::Rake::YardocTask.new do |t|
     lib/maid/tools.rb
     lib/maid/numeric_extensions.rb
   )
-  t.options = %w(--no-private)
+  t.options = %w(--no-private --markup markdown)
 end
 
 task :console do
