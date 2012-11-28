@@ -1,9 +1,13 @@
-maid (0.1.4-alpha.3) unstable; urgency=low
+maid (0.2.0.alpha.1) unstable; urgency=low
 
-  * (Development in progress)
-  * Start of semver.org-like version numbering.  Specific plans aren't clear
-    yet, but the next release may be Maid 1.0.0.
+  * Started semver.org-like version numbering.  Total adoption is
+    forthcoming.  This forced v0.2.0 vs. v0.1.4.
+  * Changed "dir" tool to always sort. (Closes: #62)
+  * Added "version --long" command which gives information about the platform
+    version and Ruby version. (Closes: #65)
+  * Improved user documentation, now in Markdown.  (Closes: #66)
   * Updated development dependencies.
+  * Various minor internal changes.
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  Mon, 26 Nov 2012 14:51:13 +0000
 
