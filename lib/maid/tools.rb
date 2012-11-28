@@ -133,6 +133,8 @@ module Maid::Tools
 
   # Give all files matching the given glob.
   #
+  # The matches are sorted lexically to aid in readability when using `--dry-run`.
+  #
   # ## Examples
   #
   #     dir('~/Downloads/*.zip')
