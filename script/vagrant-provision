@@ -5,7 +5,7 @@
 set -o errexit
 
 # Set to '1.8.7' or '1.9.3'
-target_ruby_version='1.9.3'
+target_ruby_version="${1:-1.9.3}"
 
 # Install the given package, no questions asked.
 function install-pkg {

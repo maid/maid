@@ -34,7 +34,7 @@ Vagrant::Config.run do |config|
   # 
   # * [Vagrant Boxes List](http://www.vagrantbox.es/)
   # * [Contributing Guide](https://github.com/benjaminoakes/maid/wiki/Contributing)
-  config.vm.box = 'precise64'
+  config.vm.box = ENV['MAID_TARGET_BOX'] || 'precise64'
 
-  config.vm.provision(:shell, :path => 'script/vagrant-provision')
+  config.vm.provision(:shell, :path => 'script/vagrant-provision', :args => ENV['MAID_TARGET_RUBY'] || '1.9.3')
 end
