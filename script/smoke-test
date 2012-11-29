@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Check major functionality.
+set -o errexit
+
+maid version --long
+maid help
+maid sample

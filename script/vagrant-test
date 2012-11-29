@@ -4,4 +4,4 @@ set -o errexit
 
 vagrant destroy --force
 vagrant up
-vagrant ssh --command 'cd /vagrant && rake && sudo rake install && maid version --long && maid help && maid sample'
+vagrant ssh --command 'cd /vagrant && rake && sudo rake install && script/smoke-test'
