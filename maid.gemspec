@@ -33,11 +33,13 @@ Gem::Specification.new do |s|
   s.add_development_dependency('timecop', '~> 0.5.3')
   s.add_development_dependency('yard', '~> 0.8.3')
 
-  if Maid::Platform.linux?
-    s.add_development_dependency('rb-inotify', '~> 0.8.8')
-  elsif Maid::Platform.osx?
-    s.add_development_dependency('rb-fsevent', '~> 0.9.2')
-  end
+  # In Vagrant, polling won't cross over the OS boundary if you develop in the host OS but run your tests in the
+  # guest.  One way around this is to force polling instead:
+  #
+  #     bundle exec guard --force-polling
+  #
+  s.add_development_dependency('rb-inotify', '~> 0.8.8')
+  s.add_development_dependency('rb-fsevent', '~> 0.9.2')
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
