@@ -14,10 +14,18 @@ Vagrant::Config.run do |config|
   #
   # These older releases of Ubuntu don't provide a prebuilt package for Ruby 1.9.3.
   #
+  # Supported until 2013-04:
+  #
+  # * `hardy32`: https://raw.github.com/ndj/vagrant-hardy-box-php-5.2/master/hardy-32-php-52-basebox.box
+  #
   # Supported until 2015-04:
   #
   # * `lucid32`: http://files.vagrantup.com/lucid32.box
   # * `lucid64`: http://files.vagrantup.com/lucid64.box
+  #
+  # Supported until 2013-04:
+  #
+  # * `oneiric64`: https://github.com/shaftoe/vagrant-ubuntu-oneiric64/raw/master/oneiric64.box
   #
   # ### Releases preferred with Ruby 1.9.3
   #
