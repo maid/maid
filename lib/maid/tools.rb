@@ -28,9 +28,9 @@ module Maid::Tools
   #     move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
   #     move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
   def move(sources, destination)
-    Array(sources).each do |source|
-      source = File.expand_path(source)
-      destination = File.expand_path(destination)
+    destination = expand(destination)
+
+    expand_all(sources).each do |source|
       target = File.join(destination, File.basename(source))
 
       unless File.exist?(target)
@@ -77,9 +77,7 @@ module Maid::Tools
     #
     # Ubuntu makes it easy to implement, and there's a Python library for doing so (see `trash-cli`).  However, there's not a Ruby equivalent yet.
 
-    Array(paths).each do |path|
-      path = File.expand_path(path)
-
+    expand_all(paths).each do |path|
       target = File.join(@trash_path, File.basename(path))
       safe_trash_path = File.join(@trash_path, "#{ File.basename(path) } #{ Time.now.strftime('%Y-%m-%d-%H-%M-%S') }")
 
@@ -122,8 +120,7 @@ module Maid::Tools
   #     remove(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
   #     remove(dir('~/Downloads/*.zip'))
   def remove(paths, options = {})
-    Array(paths).each do |path|
-      path = File.expand_path(path)
+    expand_all(paths).each do |path|
       options = @file_options.merge(options)
 
       @logger.info("Removing #{ path.inspect }")
@@ -139,7 +136,7 @@ module Maid::Tools
   #
   #     dir('~/Downloads/*.zip')
   def dir(glob)
-    Dir[File.expand_path(glob)].sort
+    Dir[expand(glob)].sort
   end
 
   # Creates a directory and all of its parent directories.
@@ -154,7 +151,7 @@ module Maid::Tools
   #
   #     mkdir('~/Downloads/Music/Pink.Floyd/', :mode => 0644)
   def mkdir(path, options = {})
-    FileUtils.mkdir_p(File.expand_path(path), options)
+    FileUtils.mkdir_p(expand(path), options)
   end
 
   # Find matching files, akin to the Unix utility `find`.
@@ -174,7 +171,7 @@ module Maid::Tools
   #     end
   #
   def find(path, &block)
-    expanded_path = File.expand_path(path)
+    expanded_path = expand(path)
 
     if block.nil?
       files = []
@@ -253,7 +250,7 @@ module Maid::Tools
   #
   #     created_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
   def created_at(path)
-    File.ctime(File.expand_path(path))
+    File.ctime(expand(path))
   end
 
   # Get the time that a file was last accessed.
@@ -264,7 +261,7 @@ module Maid::Tools
   #
   #     accessed_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
   def accessed_at(path)
-    File.atime(File.expand_path(path))
+    File.atime(expand(path))
   end
 
   # @deprecated
@@ -284,7 +281,7 @@ module Maid::Tools
   #
   #     modified_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
   def modified_at(path)
-    File.mtime(File.expand_path(path))
+    File.mtime(expand(path))
   end
 
   # @deprecated
@@ -297,7 +294,7 @@ module Maid::Tools
   #
   #     git_piston('~/code/projectname')
   def git_piston(path)
-    full_path = File.expand_path(path)
+    full_path = expand(path)
     stdout = cmd("cd #{full_path.inspect} && git pull && git push 2>&1")
     @logger.info "Fired git piston on #{full_path.inspect}.  STDOUT:\n\n#{stdout}"
   end
@@ -333,10 +330,10 @@ module Maid::Tools
   #
   #     sync('~/code', '/backup/code', :exclude => ['.git', '.rvmrc'])
   def sync(from, to, options = {})
-    # expand path removes trailing slash
+    # expand removes trailing slash
     # cannot use str[-1] due to ruby 1.8.7 restriction
-    from = File.expand_path(from) + (from.end_with?('/') ? '/' : '')
-    to = File.expand_path(to) + (to.end_with?('/') ? '/' : '')
+    from = expand(from) + (from.end_with?('/') ? '/' : '')
+    to = expand(to) + (to.end_with?('/') ? '/' : '')
     # default options
     options = { :archive => true, :update => true }.merge(options)
     ops = []
@@ -353,5 +350,15 @@ module Maid::Tools
     ops << '--delete' if options[:delete]
     stdout = cmd("rsync #{ ops.join(' ') } #{ from.inspect } #{ to.inspect } 2>&1")
     @logger.info("Fired sync from #{ from.inspect } to #{ to.inspect }.  STDOUT:\n\n#{ stdout }")
+  end
+
+  private
+
+  def expand(path)
+    File.expand_path(path)
+  end
+
+  def expand_all(paths)
+    Array(paths).map { |path| expand(path) }
   end
 end
