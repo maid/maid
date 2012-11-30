@@ -174,6 +174,10 @@ module Maid
         @maid.mkdir('~/Downloads/Music/Pink.Floyd')
         File.exist?("#@home/Downloads/Music/Pink.Floyd").should be_true
       end
+
+      it 'returns the path of the created directory' do
+        @maid.mkdir('~/Reference/Foo').should == "#@home/Reference/Foo"
+      end
     end
 
     describe '#find' do

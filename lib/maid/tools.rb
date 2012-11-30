@@ -141,6 +141,8 @@ module Maid::Tools
 
   # Creates a directory and all of its parent directories.
   #
+  # The path of the created directory is returned, which allows for chaining (see examples).
+  #
   # ## Options
   #
   # `:mode`
@@ -149,9 +151,17 @@ module Maid::Tools
   #
   # ## Examples
   #
-  #     mkdir('~/Downloads/Music/Pink.Floyd/', :mode => 0644)
+  # Creating a directory with a specific mode:
+  #
+  #     mkdir('~/Music/Pink Floyd/', :mode => 0644)
+  #
+  # Ensuring a directory exists when moving:
+  #
+  #     move('~/Downloads/Pink Floyd*.mp3', mkdir('~/Music/Pink Floyd/'))
   def mkdir(path, options = {})
-    FileUtils.mkdir_p(expand(path), options)
+    path = expand(path)
+    FileUtils.mkdir_p(path, options)
+    path
   end
 
   # Find matching files, akin to the Unix utility `find`.
