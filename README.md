@@ -2,7 +2,7 @@
 
 Be lazy!  Let Maid clean up after you, based on rules you define.
 
-[Installation](https://github.com/benjaminoakes/maid#installation) | [Tutorial](https://github.com/benjaminoakes/maid#tutorial) | [Documentation](http://rubydoc.info/gems/maid/Maid/Tools) | [Change Log](https://github.com/benjaminoakes/maid/blob/master/ChangeLog)
+[Installation](https://github.com/benjaminoakes/maid#installation) | [Tutorial](https://github.com/benjaminoakes/maid#tutorial) | [Example](https://github.com/benjaminoakes/maid-example) | [Documentation](http://rubydoc.info/gems/maid/Maid/Tools) | [Change Log](https://github.com/benjaminoakes/maid/blob/master/ChangeLog)
 
 Maid keeps files from sitting around too long, untouched.  Many of the downloads and other files you collect can easily be categorized and handled appropriately by rules you define.  Let the maid in your computer take care of the easy stuff, so you can spend more of your time on what matters.
 
