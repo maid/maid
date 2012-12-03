@@ -1,6 +1,5 @@
 maid (0.2.0.beta.1) unstable; urgency=low
 
-  * (Development in progress)
   * Change "dir" to allow multiple paths (Closes: #64)
   * Change "mkdir" to return the path of the created directory (Closes: #69)
   * Various development improvements
