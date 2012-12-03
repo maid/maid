@@ -1,9 +1,18 @@
+maid (0.2.0.beta.1) unstable; urgency=low
+
+  * (Development in progress)
+  * Change "dir" to allow multiple paths (Closes: #64)
+  * Change "mkdir" to return the path of the created directory (Closes: #69)
+  * Various development improvements
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Sun, 2 Dec 2012 00:00:00 +0000
+
 maid (0.2.0.alpha.1) unstable; urgency=low
 
   * Started semver.org-like version numbering.  Total adoption is
     forthcoming.  This forced v0.2.0 vs. v0.1.4.
   * Changed "dir" tool to always sort. (Closes: #62)
-  * Added "version --long" command which gives information about the platform
+  * Added "version --long" ("-l") command which gives information about the platform
     version and Ruby version. (Closes: #65)
   * Improved user documentation, now in Markdown.  (Closes: #66)
   * Updated development dependencies.
