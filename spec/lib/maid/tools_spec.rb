@@ -153,8 +153,8 @@ module Maid
 
     describe '#dir' do
       before do
-        @file = (dir = "#@home/Downloads/") + 'foo.zip'
-        FileUtils.mkdir_p(dir)
+        @file = (@dir = "#@home/Downloads") + '/foo.zip'
+        FileUtils.mkdir_p(@dir)
       end
 
       it 'lists files in a directory' do
@@ -164,8 +164,24 @@ module Maid
 
       it 'lists multiple files in alphabetical order' do
         # It doesn't occur with `FakeFS` as far as I can tell, but Ubuntu (and possibly OS X) can give the results out of lexical order.  That makes using the `dry-run` output difficult to use.
-        Dir.stub(:[]) { %w(/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip) }
+        Dir.stub(:glob) { %w(/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip) }
         @maid.dir('~/Downloads/*.zip').should == %w(/home/foo/a.zip /home/foo/b.zip /home/foo/c.zip)
+      end
+
+      context 'with multiple files' do
+        before do
+          @other_file = "#@dir/qux.tgz"
+          FileUtils.touch(@file)
+          FileUtils.touch(@other_file)
+        end
+
+        it 'list files in all provided directories' do
+          @maid.dir(%w(~/Downloads/*.tgz ~/Downloads/*.zip)).should == [@file, @other_file]
+        end
+
+        it 'lists files when using regexp-like glob patterns' do
+          @maid.dir('~/Downloads/*.{tgz,zip}').should == [@file, @other_file]
+        end
       end
     end
 

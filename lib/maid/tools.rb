@@ -130,16 +130,33 @@ module Maid::Tools
 
   # Give all files matching the given glob.
   #
+  # Note that the globs are *not* regexps (they're closer to shell globs).  However, some regexp-like notation can be used, e.g. `?`, `[a-z]`, `{tgz,zip}`.  For more details, see Ruby's documentation on `Dir.glob`.
+  #
   # The matches are sorted lexically to aid in readability when using `--dry-run`.
   #
   # ## Examples
   #
+  # Single glob:
+  #
   #     dir('~/Downloads/*.zip')
-  def dir(glob)
-    Dir[expand(glob)].sort
+  #
+  # Specifying multiple extensions succinctly:
+  #
+  #     dir('~/Downloads/*.{exe,deb,dmg,pkg,rpm}')
+  #
+  # Multiple glob (both are equivalent):
+  #
+  #     dir(['~/Downloads/*.zip', '~/Dropbox/*.zip'])
+  #     dir(%w(~/Downloads/*.zip ~/Dropbox/*.zip))
+  #
+  def dir(globs)
+    expand_all(globs).
+      map { |glob| Dir.glob(glob) }.
+      flatten.
+      sort
   end
 
-  # Creates a directory and all of its parent directories.
+  # Create a directory and all of its parent directories.
   #
   # The path of the created directory is returned, which allows for chaining (see examples).
   #
@@ -296,7 +313,7 @@ module Maid::Tools
 
   # @deprecated
   #
-  # Pulls and pushes the `git` repository at the given path.
+  # Pull and push the `git` repository at the given path.
   #
   # Since this is deprecated, you might also be interested in [SparkleShare](http://sparkleshare.org/), a great `git`-based file syncronization project.
   #
@@ -311,7 +328,7 @@ module Maid::Tools
 
   deprecated :git_piston, 'SparkleShare (http://sparkleshare.org/)'
 
-  # Simple sync of two files/folders using `rsync`.
+  # Simple sync two files/folders using `rsync`.
   #
   # The host OS must provide `rsync`.  See the `rsync` man page for a detailed description.
   #
