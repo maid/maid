@@ -14,6 +14,11 @@ Your rules are defined in Ruby, so easy rules are easy and difficult rules are p
 
 ## Want to help?
 
+This project wouldn't be where it is today without its users and contributors.  Thank you!  See [AUTHORS][] and the [contributors graph][] for more info.
+
+  [authors]: https://github.com/benjaminoakes/maid/blob/master/AUTHORS.md
+  [contributors graph]: https://github.com/benjaminoakes/maid/graphs/contributors
+
 ### For Users
 
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=benjaminoakes&url=https://github.com/benjaminoakes/maid&title=maid&language=en_GB&tags=github&category=software)
