@@ -5,27 +5,29 @@ Be lazy!  Let Maid clean up after you, based on rules you define.
 [Installation](https://github.com/benjaminoakes/maid#installation)
 | [Tutorial](https://github.com/benjaminoakes/maid#tutorial)
 | [Example](https://github.com/benjaminoakes/maid-example)
-| [Documentation](http://rubydoc.info/gems/maid/Maid/Tools)
+| [Documentation][]
 | [Change Log](https://github.com/benjaminoakes/maid/blob/master/ChangeLog)
 
-Maid keeps files from sitting around too long, untouched.  Many of the downloads and other files you collect can easily
-be categorized and handled appropriately by rules you define.  Let the maid in your computer take care of the easy
-stuff, so you can spend more of your time on what matters.
+Maid keeps files from sitting around too long, untouched.  Many of the downloads and temporary files you collect can
+easily be categorized and handled appropriately by rules you define.  Let the `maid` in your computer take care of the
+easy stuff, so you can spend more of your time on what matters.
 
 Think of it like the email filters you might already have, but for files.  Worried about things happening that you don't
 expect?  Maid doesn't overwrite files and actions are logged so you can tell what happened.
 
-Maid is inspired by the Mac OS X shareware program [Hazel](http://www.noodlesoft.com/hazel.php).  This tool was created
-on Mac OS X 10.6, but should be generally portable to other systems.  (Some of the more advanced features such as
-`downloaded_from` require OS X, however.)
+Maid is inspired by the Mac OS X shareware program [Hazel](http://www.noodlesoft.com/hazel.php).  Think of Maid as
+**"Hazel for hackers"**.
 
-Your rules are defined in Ruby, so easy rules are easy and difficult rules are possible.  This also makes Maid a great
+Your rules are defined in Ruby, so simple rules are easy and difficult rules are possible.  This also makes Maid a great
 general-purpose **advanced file renaming tool**.
 
 ## Want to help?
 
 This project wouldn't be where it is today without its users and contributors.  Thank you!  See [AUTHORS][] and the
 [contributors graph][] for more info.
+
+  [authors]: https://github.com/benjaminoakes/maid/blob/master/AUTHORS.md
+  [contributors graph]: https://github.com/benjaminoakes/maid/graphs/contributors
 
 ### For Users
 
@@ -48,9 +50,6 @@ This project wouldn't be where it is today without its users and contributors.  
 * Complete an issue (easy ones [are labelled](https://github.com/benjaminoakes/maid/issues?labels=difficulty-1&page=1&state=open), and issues for future releases are [grouped by milestone](https://github.com/benjaminoakes/maid/issues/milestones)).
 * **Working on an issue?** Please leave a comment so others know.
 * See the [Contributing guide](https://github.com/benjaminoakes/maid/wiki/Contributing)
-
-  [authors]: https://github.com/benjaminoakes/maid/blob/master/AUTHORS.md
-  [contributors graph]: https://github.com/benjaminoakes/maid/graphs/contributors
 
 ## Buzz
 
@@ -77,7 +76,8 @@ This project wouldn't be where it is today without its users and contributors.  
 * **OS:** Mac OS X, Ubuntu
 * **Ruby:** 1.8.7, 1.9.3 (preferred)
 
-(Other Ruby versions and OSes may work, but are not officially supported.  Contributions are welcome, however.)
+Some features require OS X.  See the [documentation][] for more details.  Other Ruby versions and Linux distributions
+may work, but are not officially supported.  (Contributions are welcome, however.)
 
 ### Manual Installation
 
@@ -212,3 +212,5 @@ ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
 ## License
 
 GPLv2.  See LICENSE for a copy.
+
+  [documentation]: http://rubydoc.info/gems/maid/Maid/Tools
