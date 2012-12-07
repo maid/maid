@@ -1,4 +1,7 @@
+require 'logger'
 require 'ohai'
+require 'rbconfig'
+require 'stringio'
 require 'xdg'
 
 # > What is Dependency Testing?
@@ -8,6 +11,17 @@ require 'xdg'
 # >
 # > -- http://sqa.fyicenter.com/FAQ/Software-QA-Testing/What_is_Dependency_Testing_.html
 describe 'Dependency expectations' do
+  describe Logger do
+    # Depending on the situation, `Logger` might have been overwritten to have a different interface.  (I'm looking at you, Rails.)
+    it 'logs with the expected interface' do
+      io = StringIO.new
+      logger = Logger.new(io)
+      logger.info('my message')
+      logger.formatter = lambda { |_, _, _, msg| msg }
+      io.string.should match(/my message/)
+    end
+  end
+
   describe Ohai do
     before do
       @ohai = Ohai::System.new
@@ -25,6 +39,12 @@ describe 'Dependency expectations' do
       ruby = @ohai['languages']['ruby']
       ruby['version'].should match(/^[0-9\.]+$/i)
       ruby['platform'].should match(/[a-z0-9]+/i)
+    end
+  end
+
+  describe RbConfig do
+    it 'identifies the host operating system' do
+      RbConfig::CONFIG['host_os'].should match(/[a-z]+/)
     end
   end
 
