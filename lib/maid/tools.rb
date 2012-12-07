@@ -35,10 +35,10 @@ module Maid::Tools
       target = File.join(destination, File.basename(source))
 
       unless File.exist?(target)
-        @logger.info("mv #{ source.inspect } #{ destination.inspect }")
+        log("mv #{ source.inspect } #{ destination.inspect }")
         FileUtils.mv(source, destination, @file_options)
       else
-        @logger.warn("skipping #{ source.inspect } because #{ target.inspect } already exists")
+        warn("skipping #{ source.inspect } because #{ target.inspect } already exists")
       end
     end
   end
@@ -134,7 +134,7 @@ module Maid::Tools
     expand_all(paths).each do |path|
       options = @file_options.merge(options)
 
-      @logger.info("Removing #{ path.inspect }")
+      log("Removing #{ path.inspect }")
       FileUtils.rm_r(path, options)
     end
   end
@@ -336,7 +336,7 @@ module Maid::Tools
   def git_piston(path)
     full_path = expand(path)
     stdout = cmd("cd #{full_path.inspect} && git pull && git push 2>&1")
-    @logger.info "Fired git piston on #{full_path.inspect}.  STDOUT:\n\n#{stdout}"
+    log("Fired git piston on #{full_path.inspect}.  STDOUT:\n\n#{stdout}")
   end
 
   deprecated :git_piston, 'SparkleShare (http://sparkleshare.org/)'
@@ -389,10 +389,18 @@ module Maid::Tools
 
     ops << '--delete' if options[:delete]
     stdout = cmd("rsync #{ ops.join(' ') } #{ from.inspect } #{ to.inspect } 2>&1")
-    @logger.info("Fired sync from #{ from.inspect } to #{ to.inspect }.  STDOUT:\n\n#{ stdout }")
+    log("Fired sync from #{ from.inspect } to #{ to.inspect }.  STDOUT:\n\n#{ stdout }")
   end
 
   private
+
+  def log(message)
+    @logger.info(message)
+  end
+
+  def warn(message)
+    @logger.warn(message)
+  end
 
   def expand(path)
     File.expand_path(path)
