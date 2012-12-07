@@ -4,6 +4,9 @@ require 'logger'
 require 'xdg'
 
 # Maid cleans up according to the given rules, logging what it does.
+#
+# TODO: Rename to something less ambiguous, e.g. "cleaning agent", "cleaner", "vacuum", etc.  Having this class within
+# the `Maid` module makes things confusing.
 class Maid::Maid
   DEFAULTS = {
     :progname     => 'Maid',

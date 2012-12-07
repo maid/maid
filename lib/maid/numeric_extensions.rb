@@ -1,5 +1,6 @@
 module Maid::NumericExtensions
-  # From https://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/numeric/time.rb, with some modifications since active_support ruins Logger by overriding its functionality.
+  # From https://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/numeric/time.rb, with some
+  # modifications since `active_support` ruins `Logger` by overriding its functionality.
   module Time
     # Enables the use of time calculations and declarations, like 45.minutes + 2.hours + 4.years.
     #

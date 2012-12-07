@@ -3,7 +3,8 @@ require 'xdg'
 
 # > What is Dependency Testing?
 # >
-# > Examines an application's requirements for pre-existing software, initial states and configuration in order to maintain proper functionality.
+# > Examines an application's requirements for pre-existing software, initial states and configuration in order to
+# > maintain proper functionality.
 # >
 # > -- http://sqa.fyicenter.com/FAQ/Software-QA-Testing/What_is_Dependency_Testing_.html
 describe 'Dependency expectations' do
@@ -29,9 +30,12 @@ describe 'Dependency expectations' do
 
   describe XDG do
     it 'has DATA_HOME' do
-      # FIXME: This test could be cleaner.  We can't depend on the directory to already exist, even on systems that use the XDG standard.  This seems safe enough for now.
+      # FIXME: This test could be cleaner.  We can't depend on the directory to already exist, even on systems that use
+      # the XDG standard.  This seems safe enough for now.
       #
-      # More info: [XDG Base Directory Specification](http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html)
+      # More info:
+      #
+      # * [XDG Base Directory Specification](http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html)
       XDG['DATA_HOME'].to_s.should match(%r{^/.*?/\.local/share$})
     end
   end

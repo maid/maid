@@ -163,7 +163,8 @@ module Maid
       end
 
       it 'lists multiple files in alphabetical order' do
-        # It doesn't occur with `FakeFS` as far as I can tell, but Ubuntu (and possibly OS X) can give the results out of lexical order.  That makes using the `dry-run` output difficult to use.
+        # It doesn't occur with `FakeFS` as far as I can tell, but Ubuntu (and possibly OS X) can give the results out
+        # of lexical order.  That makes using the `dry-run` output difficult to use.
         Dir.stub(:glob) { %w(/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip) }
         @maid.dir('~/Downloads/*.zip').should == %w(/home/foo/a.zip /home/foo/b.zip /home/foo/c.zip)
       end
@@ -341,7 +342,9 @@ module Maid
       end
 
       it 'should add multiple exlcude options' do
-        @maid.should_receive(:cmd).with(%(rsync -a -u --exclude=".git" --exclude=".rvmrc" "#@home/Downloads/" "#@home/Reference" 2>&1))
+        @maid.
+          should_receive(:cmd).
+          with(%(rsync -a -u --exclude=".git" --exclude=".rvmrc" "#@home/Downloads/" "#@home/Reference" 2>&1))
         @maid.sync(@src_dir, @dst_dir, :exclude => ['.git', '.rvmrc'])
       end
 

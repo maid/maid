@@ -44,6 +44,7 @@ This project wouldn't be where it is today without its users and contributors.  
 [![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
 [![Dependency Status](https://gemnasium.com/benjaminoakes/maid.png)](https://gemnasium.com/benjaminoakes/maid)
 
+* Address a `TODO` or `FIXME` in the code.
 * Complete an issue (easy ones [are labelled](https://github.com/benjaminoakes/maid/issues?labels=difficulty-1&page=1&state=open), and issues for future releases are [grouped by milestone](https://github.com/benjaminoakes/maid/issues/milestones)).
 * **Working on an issue?** Please leave a comment so others know.
 * See the [Contributing guide](https://github.com/benjaminoakes/maid/wiki/Contributing)
