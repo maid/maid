@@ -107,6 +107,8 @@ module Maid::Tools
   end
 
   # Delete the files at the given path recursively.
+  #
+  # **NOTE**: In most cases, `trash` is a safer choice, since the files will be recoverable by retreiving them from the trash.  Once you delete a file using `remove`, it's gone!  Please use `trash` whenever possible and only use `remove` when necessary.
   # 
   # ## Options
   #
