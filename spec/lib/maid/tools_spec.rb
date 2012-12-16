@@ -192,6 +192,11 @@ module Maid
         File.exist?("#@home/Downloads/Music/Pink.Floyd").should be_true
       end
 
+      it 'should log the creation of the directory' do
+        @logger.should_receive(:info)
+        @maid.mkdir('~/Downlaods/Music/Pink.Floyd')
+      end
+
       it 'returns the path of the created directory' do
         @maid.mkdir('~/Reference/Foo').should == "#@home/Reference/Foo"
       end

@@ -191,6 +191,7 @@ module Maid::Tools
   #     move('~/Downloads/Pink Floyd*.mp3', mkdir('~/Music/Pink Floyd/'))
   def mkdir(path, options = {})
     path = expand(path)
+    log("mkdir -p #{ path.inspect }")
     FileUtils.mkdir_p(path, options) # @file_options.merge(options))
     path
   end
