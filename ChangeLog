@@ -1,3 +1,13 @@
+maid (0.2.0.beta.2) unstable; urgency=low
+
+  * Add more documentation to "find" and "remove" (Closes: #74)
+  * Add logging to `mkdir` (Closes: #75, #77)
+  * Updated README to include Hacker News post
+  * Updated AUTHORS to include new contributors
+  * Various development improvements
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Sun, 16 Dec 2012 00:00:00 +0000
+
 maid (0.2.0.beta.1) unstable; urgency=low
 
   * Change "dir" to allow multiple paths (Closes: #64)
