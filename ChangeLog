@@ -1,7 +1,14 @@
+maid (0.2.0.beta.3) unstable; urgency=low
+
+  * Use newly released "xdg" instead of custom "maid-xdg" dependency. (The new
+    release was found after Beta 2 was released.)
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Mon, 17 Dec 2012 00:00:00 +0000
+
 maid (0.2.0.beta.2) unstable; urgency=low
 
   * Add more documentation to "find" and "remove" (Closes: #74)
-  * Add logging to `mkdir` (Closes: #75, #77)
+  * Add logging to "mkdir" (Closes: #75, #77)
   * Updated README to include Hacker News post
   * Updated AUTHORS to include new contributors
   * Various development improvements
