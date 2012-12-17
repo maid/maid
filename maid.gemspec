@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = %w(hello@benjaminoakes.com)
   s.license     = 'GPLv2'
   s.homepage    = 'http://github.com/benjaminoakes/maid'
-  s.summary     = 'Be lazy.  Let Maid clean up after you, based on rules you define.'
+  s.summary     = 'Be lazy.  Let Maid clean up after you, based on rules you define.  Think of it as "Hazel for hackers".'
   s.description = s.summary
 
   s.rubyforge_project = 'maid'
