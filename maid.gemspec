@@ -18,11 +18,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency('thor', '~> 0.16.0')
   s.add_dependency('deprecated', '~> 3.0.1')
-  # Only used on Linux, but still required/tested on OSX
-  # # After a new version with the Ruby 1.9 bugfix is released, change over to `xdg`
-  # s.add_dependency('xdg', '~> 2.2.2')
-  s.add_dependency('maid-xdg', '= 2.2.1.2')
   s.add_dependency('ohai', '~> 6.14.0')
+  s.add_dependency('xdg', '~> 2.2.3')
   s.add_development_dependency('fakefs', '~> 0.4.1')
   s.add_development_dependency('guard', '~> 1.5.4')
   s.add_development_dependency('guard-rspec', '~> 2.3.0')
