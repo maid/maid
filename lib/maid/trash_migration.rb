@@ -1,6 +1,7 @@
 # Migrate trash to correct directory on Linux due to a configuration bug in previous releases.
 #
-# It used to be that the default trash path was the same on every platform, so everything used to go to `~/.Trash` regardless of OS.  (For what it's worth, that used to be the correct trash path on older releases of Ubuntu.)
+# It used to be that the default trash path was the same on every platform, so everything used to go to `~/.Trash`
+# regardless of OS.  (For what it's worth, that used to be the correct trash path on older releases of Ubuntu.)
 module Maid
   module TrashMigration
     class << self

@@ -9,7 +9,8 @@ require 'time'
 # * Automatically expand paths (that is, `'~/Downloads/foo.zip'` becomes `'/home/username/Downloads/foo.zip'`)
 # * Respect the `noop` (`dry-run`) option if it is set
 #
-# Some methods are not available on all platforms.  An `ArgumentError` is raised when a command is not available.  See tags such as: [Mac OS X]
+# Some methods are not available on all platforms.  An `ArgumentError` is raised when a command is not available.  See
+# tags such as: [Mac OS X]
 module Maid::Tools
   include Deprecated
 
@@ -34,19 +35,22 @@ module Maid::Tools
       target = File.join(destination, File.basename(source))
 
       unless File.exist?(target)
-        @logger.info("mv #{ source.inspect } #{ destination.inspect }")
+        log("mv #{ source.inspect } #{ destination.inspect }")
         FileUtils.mv(source, destination, @file_options)
       else
-        @logger.warn("skipping #{ source.inspect } because #{ target.inspect } already exists")
+        warn("skipping #{ source.inspect } because #{ target.inspect } already exists")
       end
     end
   end
 
   # Move the given paths to the user's trash.
   #
-  # The path is still moved if a file already exists in the trash with the same name.  However, the current date and time is appended to the filename.
+  # The path is still moved if a file already exists in the trash with the same name.  However, the current date and
+  # time is appended to the filename.
   # 
-  # **Note:** the OS-native "restore" or "put back" functionality for trashed files is not currently supported.  (See [issue #63](https://github.com/benjaminoakes/maid/issues/63).)  However, they can be restored manually, and the Maid log can help assist with this.
+  # **Note:** the OS-native "restore" or "put back" functionality for trashed files is not currently supported.  (See
+  # [issue #63](https://github.com/benjaminoakes/maid/issues/63).)  However, they can be restored manually, and the Maid
+  # log can help assist with this.
   # 
   # ## Options
   #
@@ -69,13 +73,18 @@ module Maid::Tools
   def trash(paths, options = {})
     # ## Implementation Notes
     #
-    # Trashing files correctly is surprisingly hard.  What Maid ends up doing is one the easiest, most foolproof solutions:  moving the file.
+    # Trashing files correctly is surprisingly hard.  What Maid ends up doing is one the easiest, most foolproof
+    # solutions:  moving the file.
     #
-    # Unfortunately, that means it's not possile to restore files automatically in OSX or Ubuntu.  The previous location of the file is lost.
+    # Unfortunately, that means it's not possile to restore files automatically in OSX or Ubuntu.  The previous location
+    # of the file is lost.
     #
-    # OSX support depends on AppleScript or would require a not-yet-written C extension to interface with the OS.  The AppleScript solution is less than ideal: the user has to be logged in, Finder has to be running, and it makes the "trash can sound" every time a file is moved.
+    # OSX support depends on AppleScript or would require a not-yet-written C extension to interface with the OS.  The
+    # AppleScript solution is less than ideal: the user has to be logged in, Finder has to be running, and it makes the
+    # "trash can sound" every time a file is moved.
     #
-    # Ubuntu makes it easy to implement, and there's a Python library for doing so (see `trash-cli`).  However, there's not a Ruby equivalent yet.
+    # Ubuntu makes it easy to implement, and there's a Python library for doing so (see `trash-cli`).  However, there's
+    # not a Ruby equivalent yet.
 
     expand_all(paths).each do |path|
       target = File.join(@trash_path, File.basename(path))
@@ -98,6 +107,8 @@ module Maid::Tools
   end
 
   # Delete the files at the given path recursively.
+  #
+  # **NOTE**: In most cases, `trash` is a safer choice, since the files will be recoverable by retreiving them from the trash.  Once you delete a file using `remove`, it's gone!  Please use `trash` whenever possible and only use `remove` when necessary.
   # 
   # ## Options
   #
@@ -107,7 +118,7 @@ module Maid::Tools
   #
   # `:secure => boolean`
   #
-  # Infrequently needed. See [`FileUtils.remove_entry_secure`](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/fileutils/rdoc/FileUtils.html#method-c-remove_entry_secure)
+  # Infrequently needed. See [`FileUtils.remove_entry_secure`][fures]
   #
   # ## Examples
   #
@@ -119,27 +130,47 @@ module Maid::Tools
   #
   #     remove(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
   #     remove(dir('~/Downloads/*.zip'))
+  #
+  #   [fures]: http://www.ruby-doc.org/stdlib-1.9.3/libdoc/fileutils/rdoc/FileUtils.html#method-c-remove_entry_secure
   def remove(paths, options = {})
     expand_all(paths).each do |path|
       options = @file_options.merge(options)
 
-      @logger.info("Removing #{ path.inspect }")
+      log("Removing #{ path.inspect }")
       FileUtils.rm_r(path, options)
     end
   end
 
   # Give all files matching the given glob.
   #
+  # Note that the globs are *not* regexps (they're closer to shell globs).  However, some regexp-like notation can be
+  # used, e.g. `?`, `[a-z]`, `{tgz,zip}`.  For more details, see Ruby's documentation on `Dir.glob`.
+  #
   # The matches are sorted lexically to aid in readability when using `--dry-run`.
   #
   # ## Examples
   #
+  # Single glob:
+  #
   #     dir('~/Downloads/*.zip')
-  def dir(glob)
-    Dir[expand(glob)].sort
+  #
+  # Specifying multiple extensions succinctly:
+  #
+  #     dir('~/Downloads/*.{exe,deb,dmg,pkg,rpm}')
+  #
+  # Multiple glob (both are equivalent):
+  #
+  #     dir(['~/Downloads/*.zip', '~/Dropbox/*.zip'])
+  #     dir(%w(~/Downloads/*.zip ~/Dropbox/*.zip))
+  #
+  def dir(globs)
+    expand_all(globs).
+      map { |glob| Dir.glob(glob) }.
+      flatten.
+      sort
   end
 
-  # Creates a directory and all of its parent directories.
+  # Create a directory and all of its parent directories.
   #
   # The path of the created directory is returned, which allows for chaining (see examples).
   #
@@ -160,7 +191,8 @@ module Maid::Tools
   #     move('~/Downloads/Pink Floyd*.mp3', mkdir('~/Music/Pink Floyd/'))
   def mkdir(path, options = {})
     path = expand(path)
-    FileUtils.mkdir_p(path, options)
+    log("mkdir -p #{ path.inspect }")
+    FileUtils.mkdir_p(path, options) # @file_options.merge(options))
     path
   end
 
@@ -296,9 +328,10 @@ module Maid::Tools
 
   # @deprecated
   #
-  # Pulls and pushes the `git` repository at the given path.
+  # Pull and push the `git` repository at the given path.
   #
-  # Since this is deprecated, you might also be interested in [SparkleShare](http://sparkleshare.org/), a great `git`-based file syncronization project.
+  # Since this is deprecated, you might also be interested in [SparkleShare](http://sparkleshare.org/), a great
+  # `git`-based file syncronization project.
   #
   # ## Examples
   #
@@ -306,12 +339,12 @@ module Maid::Tools
   def git_piston(path)
     full_path = expand(path)
     stdout = cmd("cd #{full_path.inspect} && git pull && git push 2>&1")
-    @logger.info "Fired git piston on #{full_path.inspect}.  STDOUT:\n\n#{stdout}"
+    log("Fired git piston on #{full_path.inspect}.  STDOUT:\n\n#{stdout}")
   end
 
   deprecated :git_piston, 'SparkleShare (http://sparkleshare.org/)'
 
-  # Simple sync of two files/folders using `rsync`.
+  # Simple sync two files/folders using `rsync`.
   #
   # The host OS must provide `rsync`.  See the `rsync` man page for a detailed description.
   #
@@ -359,10 +392,18 @@ module Maid::Tools
 
     ops << '--delete' if options[:delete]
     stdout = cmd("rsync #{ ops.join(' ') } #{ from.inspect } #{ to.inspect } 2>&1")
-    @logger.info("Fired sync from #{ from.inspect } to #{ to.inspect }.  STDOUT:\n\n#{ stdout }")
+    log("Fired sync from #{ from.inspect } to #{ to.inspect }.  STDOUT:\n\n#{ stdout }")
   end
 
   private
+
+  def log(message)
+    @logger.info(message)
+  end
+
+  def warn(message)
+    @logger.warn(message)
+  end
 
   def expand(path)
     File.expand_path(path)

@@ -4,7 +4,8 @@
 #
 #     maid clean -n
 #
-# **NOTE:** It's recommended you just use this as a template; if you run these rules on your machine without knowing what they do, you might run into unwanted results!
+# **NOTE:** It's recommended you just use this as a template; if you run these rules on your machine without knowing
+# what they do, you might run into unwanted results!
 #
 # Don't forget, it's just Ruby!  You can define custom methods and use them below:
 # 
@@ -21,7 +22,8 @@
 # * Ask me a question over email (hello@benjaminoakes.com) or Twitter (@benjaminoakes)
 
 Maid.rules do
-  # **NOTE:** It's recommended you just use this as a template; if you run these rules on your machine without knowing what they do, you might run into unwanted results!
+  # **NOTE:** It's recommended you just use this as a template; if you run these rules on your machine without knowing
+  # what they do, you might run into unwanted results!
 
   rule 'Linux ISOs, etc' do
     trash(dir('~/Downloads/*.iso'))
@@ -63,7 +65,8 @@ Maid.rules do
   # NOTE: Currently, only Mac OS X supports `downloaded_from`.
   rule 'Old files downloaded while developing/testing' do
     dir('~/Downloads/*').each do |path|
-      if downloaded_from(path).any? { |u| u.match('http://localhost') || u.match('http://staging.yourcompany.com') } && 1.week.since?(accessed_at(path))
+      if downloaded_from(path).any? { |u| u.match('http://localhost') || u.match('http://staging.yourcompany.com') } &&
+          1.week.since?(accessed_at(path))
         trash(path)
       end
     end
