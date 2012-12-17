@@ -54,6 +54,12 @@ This project wouldn't be where it is today without its users and contributors.  
 ## Buzz
 
 [
+![Hacker News Logo](https://raw.github.com/benjaminoakes/maid/master/resources/hacker-news.png)
+](http://news.ycombinator.com/)
+
+[Hazel for hackers](http://news.ycombinator.com/item?id=4928605) - December 16th, 2012 (peaked at #2)
+
+[
 ![OneThingWell Logo](https://raw.github.com/benjaminoakes/maid/master/resources/OneThingWell.png)
 ](http://onethingwell.org/)
 
