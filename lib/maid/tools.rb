@@ -206,6 +206,12 @@ module Maid::Tools
   #
   #     find('~/Downloads/') # => [...]
   #
+  # Recursing and filtering using a regular expression:
+  #
+  #     find('~/Downloads/').grep(/\.pdf$/)
+  #
+  # (**Note:** It's just Ruby, so any methods in `Array` and `Enumerable` can be used.)
+  #
   # Recursing with a block:
   #
   #     find('~/Downloads/') do |path|
