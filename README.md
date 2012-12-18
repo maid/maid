@@ -59,15 +59,15 @@ This project wouldn't be where it is today without its users and contributors.  
 
 [Hazel for hackers](http://news.ycombinator.com/item?id=4928605) - December 16th, 2012 (peaked at #2)
 
+[![Ruby5 Logo](https://raw.github.com/benjaminoakes/maid/master/resources/ruby5.gif)](http://ruby5.envylabs.com/)
+
+[Podcast #302](http://ruby5.envylabs.com/episodes/306-episode-302-august-31st-2012) (at 2:45) - August 31st, 2012
+
 [
 ![OneThingWell Logo](https://raw.github.com/benjaminoakes/maid/master/resources/OneThingWell.png)
 ](http://onethingwell.org/)
 
 [Maid](http://onethingwell.org/post/30455088809/maid) - August 29th, 2012
-
-[![Ruby5 Logo](https://raw.github.com/benjaminoakes/maid/master/resources/ruby5.gif)](http://ruby5.envylabs.com/)
-
-[Podcast #302](http://ruby5.envylabs.com/episodes/306-episode-302-august-31st-2012) (at 2:45) - August 31st, 2012
 
 [More...](https://github.com/benjaminoakes/maid/wiki/In-the-Media)
 
