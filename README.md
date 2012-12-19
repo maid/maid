@@ -204,7 +204,7 @@ Example for every day at 1am:
     # minute hour day_of_month month day_of_week command_to_execute
     0 1 * * * /bin/bash -li -c "maid clean --silent"
 
-Both Mac OS X and Ubuntu support callbacks when folders are changed (`fsevents`/`inotify`), and that may be a forthcoming feature in Maid.
+**Note:** Both Mac OS X and Ubuntu support callbacks when folders are changed (`fsevent`/`inotify`), and that may be a forthcoming feature in Maid.
 That said, I find `cron` to take care of most of my needs.  Pull requests are welcome, however.  :)
 
 ## Warranty
