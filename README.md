@@ -192,6 +192,9 @@ For help with command line usage, run `maid help`.  For more help, please see th
 Once you get a hang for what you can do with Maid, let it do its stuff automatically throughout the day.  You'll find
 your computer stays a little tidier with as you teach it how to handle your common files.
 
+**Note:** Both Mac OS X and Ubuntu support callbacks when folders are changed (`fsevent`/`inotify`), and that may be a forthcoming feature in Maid.
+That said, I find `cron` to take care of most of my needs.  Pull requests are welcome, however.  :)
+
 To do this, edit your crontab in your tool of choice:
 
     crontab -e
@@ -203,9 +206,6 @@ Example for every day at 1am:
 
     # minute hour day_of_month month day_of_week command_to_execute
     0 1 * * * /bin/bash -li -c "maid clean --silent"
-
-**Note:** Both Mac OS X and Ubuntu support callbacks when folders are changed (`fsevent`/`inotify`), and that may be a forthcoming feature in Maid.
-That said, I find `cron` to take care of most of my needs.  Pull requests are welcome, however.  :)
 
 ## Warranty
 
