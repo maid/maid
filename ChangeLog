@@ -1,3 +1,9 @@
+maid (0.2.0.rc.1) unstable; urgency=low
+
+  * More documentation for "dir".
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Wed, 19 Dec 2012 00:00:00 +0000
+
 maid (0.2.0.beta.3) unstable; urgency=low
 
   * Use newly released "xdg" instead of custom "maid-xdg" dependency. (The new
