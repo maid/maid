@@ -27,11 +27,7 @@ module Maid::Tools
   # Multiple paths:
   #
   #     move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
-  #     move( dir('~/{Documents,Desktop}/*.sh'), '~/Archive/scripts/')
-  #
   #     move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')    
-
-
   def move(sources, destination)
     destination = expand(destination)
 
@@ -162,12 +158,11 @@ module Maid::Tools
   #
   #     dir('~/Downloads/*.{exe,deb,dmg,pkg,rpm}')
   #
+  # Multiple glob (all are equivalent):
   #
-  # Multiple glob (both are equivalent):
-  #
-  #     dir( ['~/Downloads/*.zip', '~/Dropbox/*.zip'])
-  #     dir( %w(~/Downloads/*.zip ~/Dropbox/*.zip))
-  #     dir( '~/{Documents,Desktop}/*.sh')
+  #     dir(['~/Downloads/*.zip', '~/Dropbox/*.zip'])
+  #     dir(%w(~/Downloads/*.zip ~/Dropbox/*.zip))
+  #     dir('~/{Downloads,Dropbox}/*.zip')
   #
   def dir(globs)
     expand_all(globs).
