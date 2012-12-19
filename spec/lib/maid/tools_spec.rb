@@ -176,12 +176,25 @@ module Maid
           FileUtils.touch(@other_file)
         end
 
-        it 'list files in all provided directories' do
+        it 'list files in all provided globs' do
           @maid.dir(%w(~/Downloads/*.tgz ~/Downloads/*.zip)).should == [@file, @other_file]
         end
 
         it 'lists files when using regexp-like glob patterns' do
           @maid.dir('~/Downloads/*.{tgz,zip}').should == [@file, @other_file]
+        end
+      end
+
+      context 'with multiple directories' do
+        before do
+          @other_file = "#@home/Desktop/bar.zip"
+          FileUtils.touch(@file)
+          FileUtils.mkdir_p(File.dirname(@other_file))
+          FileUtils.touch(@other_file)
+        end
+
+        it 'lists files in directories when using regexp-like glob patterns' do
+          @maid.dir('~/{Desktop,Downloads}/*.zip').should == [@other_file, @file]
         end
       end
     end
