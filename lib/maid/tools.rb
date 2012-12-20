@@ -193,7 +193,7 @@ module Maid::Tools
   def mkdir(path, options = {})
     path = expand(path)
     log("mkdir -p #{ path.inspect }")
-    FileUtils.mkdir_p(path, options) # @file_options.merge(options))
+    FileUtils.mkdir_p(path, @file_options.merge(options))
     path
   end
 

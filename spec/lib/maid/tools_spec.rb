@@ -213,6 +213,13 @@ module Maid
       it 'returns the path of the created directory' do
         @maid.mkdir('~/Reference/Foo').should == "#@home/Reference/Foo"
       end
+
+      # FIXME: FakeFS doesn't seem to report `File.exist?` properly.  However, this has been tested manually.
+      #
+      #     it 'should respect the noop option' do
+      #       @maid.mkdir('~/downloads/music/pink.Floyd')
+      #       File.exist?("#@home/Downloads/Music/Pink.Floyd").should be_false
+      #     end
     end
 
     describe '#find' do
