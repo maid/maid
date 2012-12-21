@@ -265,9 +265,7 @@ module Maid::Tools
   #
   #     downloaded_from('foo.zip') # => ['http://www.site.com/foo.zip', 'http://www.site.com/']
   def downloaded_from(path)
-    raw = cmd("mdls -raw -name kMDItemWhereFroms #{ sh_escape(path) }")
-    clean = raw[1, raw.length - 2]
-    clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
+    mdls_to_array(path, 'kMDItemWhereFroms')
   end
 
   # Find all duplicate files in the given globs.
@@ -476,6 +474,15 @@ module Maid::Tools
     log("Fired sync from #{ sh_escape(from) } to #{ sh_escape(to) }.  STDOUT:\n\n#{ stdout }")
   end
 
+  # [Mac OS X] Use Spotlight metadata to determine which content types a file has.
+  #
+  # ## Examples
+  #
+  #     content_types('foo.zip') # => ['public.zip-archive', 'public.archive']
+  def content_types(path)
+    mdls_to_array(path, 'kMDItemContentTypeTree')
+  end
+
   private
 
   def sh_escape(array)
@@ -496,5 +503,11 @@ module Maid::Tools
 
   def expand_all(paths)
     Array(paths).map { |path| expand(path) }
+  end
+
+  def mdls_to_array(path, attribute)
+    raw = cmd("mdls -raw -name #{attribute} #{ sh_escape(path) }")
+    clean = raw[1, raw.length - 2]
+    clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
   end
 end
