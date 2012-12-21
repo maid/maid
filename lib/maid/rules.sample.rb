@@ -57,7 +57,16 @@ Maid.rules do
   rule 'MP3s likely to be music' do
     dir('~/Downloads/*.mp3').each do |path|
       if duration_s(path) > 30.0
+        # NOTE: OS X Mountain Lion's folder is called 'Automatically Add to iTunes.localized'.
+        # Moving files to a non-existent folder will just make a music file of that name, and
+        # hence destroy all but one music file in your downloads folder. This line will
+        # create a folder such that your music won't be destroyed, but won't be imported
+        # If your folder is called *.localized when you view it in `ls' output, comment-toggle
+        # the following three lines:
+        
+        mkdir('~/Music/iTunes/iTunes Media/Automatically Add to iTunes/')
         move(path, '~/Music/iTunes/iTunes Media/Automatically Add to iTunes/')
+        # move(path, '~/Music/iTunes/iTunes Media/Automatically Add to iTunes.localized/')
       end
     end
   end
