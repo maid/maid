@@ -478,9 +478,54 @@ module Maid::Tools
   #
   # ## Examples
   #
-  #     content_types('foo.zip') # => ['public.zip-archive', 'public.archive']
-  def content_types(path)
+  #     spotlight_content_types('foo.zip') # => ['public.zip-archive', 'public.archive']
+  def spotlight_content_types(path)
     mdls_to_array(path, 'kMDItemContentTypeTree')
+  end
+
+  # Get the content_types of a path
+  #
+  # Content types can be MIME types, internet media types or spotlight content types (OS X only)
+  #
+  # ## Examples
+  #
+  #     content_types('foo.zip') # => ["public.zip-archive", "com.pkware.zip-archive", "public.archive", "application/zip", "application"]
+  #     content_types('bar.jpg') # => ["public.jpeg", "public.image", "image/jpeg", "image"]
+  def content_types(path)
+    spotlight_content_types(path) << mime_type(path) << media_type(path)
+  end
+
+  # Get the MIME type of the file
+  #
+  # ## Examples
+  #
+  #     mime_type('bar.jpg') # => "image/jpeg"
+  def mime_type(path)
+    cmd("file -b --mime-type #{ path }").strip
+  end
+
+  # Get the iternet media type of the file
+  #
+  # The first part of the MIME type
+  #
+  # ## Examples
+  #
+  #     media_type('bar.jpg') # => "image"
+  def media_type(path)
+    mime_type(path).split('/').first
+  end
+
+  # Filter a directory by content_types
+  #
+  # Content types can be MIME types, internet media types or spotlight content types (OS X only)
+  #
+  # ## Examples
+  #
+  #     filter_by_content_type(dir('~/Downloads/*'), ['image', 'audio'])
+  #     filter_by_content_type(dir('~/Downloads/*'), public.image)
+  def filter_by_content_type(paths, filter_types)
+    filter_types = filter_types.is_a?(Array) ? filter_types : [filter_types] 
+    paths.select { |p| !(filter_types & content_types(p)).empty? }
   end
 
   private
@@ -506,8 +551,13 @@ module Maid::Tools
   end
 
   def mdls_to_array(path, attribute)
+    return [] unless os_x?
     raw = cmd("mdls -raw -name #{attribute} #{ sh_escape(path) }")
     clean = raw[1, raw.length - 2]
     clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
+  end
+
+  def os_x?
+    !cmd("which mdls").empty?
   end
 end
