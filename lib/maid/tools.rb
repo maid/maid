@@ -248,9 +248,7 @@ module Maid::Tools
   #
   #     downloaded_from('foo.zip') # => ['http://www.site.com/foo.zip', 'http://www.site.com/']
   def downloaded_from(path)
-    raw = cmd("mdls -raw -name kMDItemWhereFroms #{ path.inspect }")
-    clean = raw[1, raw.length - 2]
-    clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
+    mdls_to_array(path, 'kMDItemWhereFroms')
   end
 
   # [Mac OS X] Use Spotlight metadata to determine audio length.
@@ -402,6 +400,60 @@ module Maid::Tools
     log("Fired sync from #{ from.inspect } to #{ to.inspect }.  STDOUT:\n\n#{ stdout }")
   end
 
+  # [Mac OS X] Use Spotlight metadata to determine which content types a file has.
+  #
+  # ## Examples
+  #
+  #     spotlight_content_types('foo.zip') # => ['public.zip-archive', 'public.archive']
+  def spotlight_content_types(path)
+    mdls_to_array(path, 'kMDItemContentTypeTree')
+  end
+
+  # Get the content_types of a path
+  #
+  # Content types can be MIME types, internet media types or spotlight content types (OS X only)
+  #
+  # ## Examples
+  #
+  #     content_types('foo.zip') # => ["public.zip-archive", "com.pkware.zip-archive", "public.archive", "application/zip", "application"]
+  #     content_types('bar.jpg') # => ["public.jpeg", "public.image", "image/jpeg", "image"]
+  def content_types(path)
+    spotlight_content_types(path) << mime_type(path) << media_type(path)
+  end
+
+  # Get the MIME type of the file
+  #
+  # ## Examples
+  #
+  #     mime_type('bar.jpg') # => "image/jpeg"
+  def mime_type(path)
+    cmd("file -b --mime-type #{ path }").strip
+  end
+
+  # Get the iternet media type of the file
+  #
+  # The first part of the MIME type
+  #
+  # ## Examples
+  #
+  #     media_type('bar.jpg') # => "image"
+  def media_type(path)
+    mime_type(path).split('/').first
+  end
+
+  # Filter a directory by content_types
+  #
+  # Content types can be MIME types, internet media types or spotlight content types (OS X only)
+  #
+  # ## Examples
+  #
+  #     filter_by_content_type(dir('~/Downloads/*'), ['image', 'audio'])
+  #     filter_by_content_type(dir('~/Downloads/*'), public.image)
+  def filter_by_content_type(paths, filter_types)
+    filter_types = filter_types.is_a?(Array) ? filter_types : [filter_types] 
+    paths.select { |p| !(filter_types & content_types(p)).empty? }
+  end
+
   private
 
   def log(message)
@@ -418,5 +470,16 @@ module Maid::Tools
 
   def expand_all(paths)
     Array(paths).map { |path| expand(path) }
+  end
+
+  def mdls_to_array(path, attribute)
+    return [] unless os_x?
+    raw = cmd("mdls -raw -name #{attribute} #{ path }")
+    clean = raw[1, raw.length - 2]
+    clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
+  end
+
+  def os_x?
+    !cmd("which mdls").empty?
   end
 end
