@@ -217,7 +217,7 @@ module Maid
       # FIXME: FakeFS doesn't seem to report `File.exist?` properly.  However, this has been tested manually.
       #
       #     it 'should respect the noop option' do
-      #       @maid.mkdir('~/downloads/music/pink.Floyd')
+      #       @maid.mkdir('~/Downloads/Music/Pink.Floyd')
       #       File.exist?("#@home/Downloads/Music/Pink.Floyd").should be_false
       #     end
     end
