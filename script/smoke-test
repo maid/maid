@@ -2,6 +2,7 @@
 # Check major functionality.
 set -o errexit
 
+maid --version
 maid version --long
 maid help
 maid sample

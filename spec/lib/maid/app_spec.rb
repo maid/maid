@@ -76,6 +76,10 @@ module Maid
       @app.version
     end
 
+    it 'is mapped as --version' do
+      # TODO: Test via Rspec (it's only in the smoke test script for now)
+    end
+
     context 'with the "long" option' do
       before do
         # FIXME: This is ugly.  Maybe use `Maid.start(%w(version --long))` instead.

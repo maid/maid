@@ -40,6 +40,9 @@ class Maid::App < Thor
     end
   end
 
+  # Since this happens a lot by mistake
+  map '--version' => :version
+
   desc 'sample', "Create sample rules at #{ self.sample_rules_path }"
   def sample
     path = self.class.sample_rules_path
