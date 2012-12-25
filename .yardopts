@@ -1,0 +1,5 @@
+--no-private
+--markup markdown
+lib/maid/app.rb
+lib/maid/tools.rb
+lib/maid/numeric_extensions.rb
