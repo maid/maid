@@ -1,8 +1,16 @@
+maid (0.2.0) stable; urgency=low
+
+  * Includes all changes since the 0.1.3 release (including the short lived
+    0.1.4 version).  See below for details.
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Tue, 25 Dec 2012 00:00:00 +0000
+
 maid (0.2.0.rc.2) unstable; urgency=low
 
   * Change "maid --version" to be the same as "maid version"
 
- -- Benjamin Oakes <hello@benjaminoakes.com>  Wed, 24 Dec 2012 00:00:00 +0000
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Mon, 24 Dec 2012 00:00:00 +0000
+
 maid (0.2.0.rc.1) unstable; urgency=low
 
   * More documentation for "dir".
