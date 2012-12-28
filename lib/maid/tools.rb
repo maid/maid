@@ -12,6 +12,7 @@ require 'time'
 # Some methods are not available on all platforms.  An `ArgumentError` is raised when a command is not available.  See
 # tags such as: [Mac OS X]
 module Maid::Tools
+  # For showing deprecation notices
   include Deprecated
 
   # Move from `sources` to `destination`
