@@ -21,9 +21,8 @@ Gem::Specification.new do |s|
   s.add_dependency('ohai', '~> 6.14.0')
   s.add_dependency('xdg', '~> 2.2.3')
   s.add_development_dependency('fakefs', '~> 0.4.1')
-  s.add_development_dependency('guard', '~> 1.5.4')
+  s.add_development_dependency('guard', '~> 1.6.1')
   s.add_development_dependency('guard-rspec', '~> 2.3.0')
-  s.add_development_dependency('rb-readline', '~> 0.4.2') # To get guard file change detection working properly
   s.add_development_dependency('rake', '~> 10.0.2')
   s.add_development_dependency('redcarpet', '~> 2.2.2') # Soft dependency of `yard`
   s.add_development_dependency('rspec', '~> 2.12.0')
