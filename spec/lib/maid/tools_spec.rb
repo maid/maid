@@ -379,5 +379,42 @@ module Maid
         @maid.sync(@src_dir, @dst_dir)
       end
     end
+
+    describe '#copy' do
+      before do
+        @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
+        FileUtils.mkdir_p(@src_dir)
+        FileUtils.touch(@src_file)
+        FileUtils.mkdir_p(@dst_dir = '~/Destination/')
+      end
+
+      it 'should move expanded paths, passing file_options' do
+        @maid.copy(@src_file, @dst_dir)
+        File.exists?(@dst_dir + @file_name).should be_true
+      end
+
+      it 'should log the move' do
+        @logger.should_receive(:info)
+        @maid.copy(@src_file, @dst_dir)
+      end
+
+      it 'should not move if the target already exists' do
+        FileUtils.touch(@dst_dir + @file_name)
+        @logger.should_receive(:warn)
+
+        @maid.copy(@src_file, @dst_dir)
+      end
+
+      it 'should handle multiple from paths' do
+        second_src_file = @src_dir + (second_file_name = 'bar.zip')
+        FileUtils.touch(second_src_file)
+        src_files = [@src_file, second_src_file]
+
+        @maid.copy(src_files, @dst_dir)
+        p "Source files: #{src_files}, dst_dir: #{@dst_dir}"
+        File.exist?(@dst_dir + @file_name).should be_true
+        File.exist?(@dst_dir + second_file_name).should be_true
+      end
+    end
   end
 end
