@@ -165,6 +165,10 @@ module Maid::Tools
   #     dir(%w(~/Downloads/*.zip ~/Dropbox/*.zip))
   #     dir('~/{Downloads,Dropbox}/*.zip')
   #
+  # Recursing into subdirectories (see also: `find`):
+  #
+  #     dir('~/Music/**/*.m4a')
+  #
   def dir(globs)
     expand_all(globs).
       map { |glob| Dir.glob(glob) }.
