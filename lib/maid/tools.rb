@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'find'
 require 'time'
+require 'digest/md5'
 
 # These "tools" are methods available in the Maid DSL.
 #
@@ -341,6 +342,24 @@ module Maid::Tools
   #     modified_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
   def modified_at(path)
     File.mtime(expand(path))
+  end
+
+  # Get the size of a file.
+  #
+  # ## Examples
+  #
+  #     size_of('foo.zip') # => 2193
+  def size_of(path)
+    File.size(path)
+  end
+
+  # Get a checksum for a file.
+  #
+  # ## Examples
+  #
+  #     checksum_for('foo.zip') # => "ae8dbb203dfd560158083e5de90969c2"
+  def checksum_for(path)
+    Digest::MD5.hexdigest(File.read(path))
   end
 
   # @deprecated

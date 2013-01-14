@@ -377,6 +377,28 @@ module Maid
       end
     end
 
+    describe '#size_of' do
+      before do
+        @file = '~/foo.zip'
+      end
+
+      it 'should give the size of the file' do
+        File.should_receive(:size).with(@file).and_return(42)
+        @maid.size_of(@file).should == 42
+      end
+    end
+
+    describe '#checksum_for' do
+      before do
+        @file = '~/test.txt'
+      end
+
+      it 'should return the checksum for the file' do
+        File.should_receive(:read).with(@file).and_return('contents')
+        @maid.checksum_for(@file).should == Digest::MD5.hexdigest('contents')
+      end
+    end
+
     describe '#git_piston' do
       it 'is deprecated' do
         @maid.should have_deprecated_method(:git_piston)
