@@ -199,6 +199,56 @@ module Maid
       end
     end
 
+    describe '#files' do
+      before do
+        @file = (@dir = "#@home/Downloads") + '/foo.zip'
+        FileUtils.mkdir_p(@dir)
+        FileUtils.mkdir(@dir + '/notfile')
+      end
+
+      it 'lists only files in a directory' do
+        FileUtils.touch(@file)
+        @maid.files('~/Downloads/*.zip').should == [@file]
+      end
+
+      it 'lists multiple files in alphabetical order' do
+        # It doesn't occur with `FakeFS` as far as I can tell, but Ubuntu (and possibly OS X) can give the results out
+        # of lexical order.  That makes using the `dry-run` output difficult to use.
+        Dir.stub(:glob) { %w(/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip) }
+        @maid.dir('~/Downloads/*.zip').should == %w(/home/foo/a.zip /home/foo/b.zip /home/foo/c.zip)
+      end
+
+      context 'with multiple files' do
+        before do
+          @other_file = "#@dir/qux.tgz"
+          FileUtils.touch(@file)
+          FileUtils.touch(@other_file)
+        end
+
+        it 'list files in all provided globs' do
+          @maid.dir(%w(~/Downloads/*.tgz ~/Downloads/*.zip)).should == [@file, @other_file]
+        end
+
+        it 'lists files when using regexp-like glob patterns' do
+          @maid.dir('~/Downloads/*.{tgz,zip}').should == [@file, @other_file]
+        end
+      end
+
+      context 'with multiple directories' do
+        before do
+          @other_file = "#@home/Desktop/bar.zip"
+          FileUtils.touch(@file)
+          FileUtils.mkdir_p(File.dirname(@other_file))
+          FileUtils.mkdir(@home + '/Desktop/notfile')
+          FileUtils.touch(@other_file)
+        end
+
+        it 'lists files in directories when using regexp-like glob patterns' do
+          @maid.dir('~/{Desktop,Downloads}/*.zip').should == [@other_file, @file]
+        end
+      end
+    end
+
     describe '#mkdir' do
       it 'should create a directory successfully' do
         @maid.mkdir('~/Downloads/Music/Pink.Floyd')
@@ -324,6 +374,28 @@ module Maid
 
         # use to_i to ignore milliseconds during test
         @maid.modified_at(@path).to_i.should == @now.to_i
+      end
+    end
+
+    describe '#size_of' do
+      before do
+        @file = '~/foo.zip'
+      end
+
+      it 'should give the size of the file' do
+        File.should_receive(:size).with(@file).and_return(42)
+        @maid.size_of(@file).should == 42
+      end
+    end
+
+    describe '#checksum_for' do
+      before do
+        @file = '~/test.txt'
+      end
+
+      it 'should return the checksum for the file' do
+        File.should_receive(:read).with(@file).and_return('contents')
+        @maid.checksum_for(@file).should == Digest::MD5.hexdigest('contents')
       end
     end
 

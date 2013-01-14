@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'find'
 require 'time'
+require 'digest/md5'
 
 # These "tools" are methods available in the Maid DSL.
 #
@@ -172,6 +173,15 @@ module Maid::Tools
       sort
   end
 
+  # Give only files matching the given glob.
+  #
+  # This is the same as #dir but only includes actual files (no directories or symlinks).
+  #
+  def files(globs)
+    dir(globs).
+      select { |f| File.file?(f) }
+  end
+
   # Create a directory and all of its parent directories.
   #
   # The path of the created directory is returned, which allows for chaining (see examples).
@@ -254,6 +264,45 @@ module Maid::Tools
     clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
   end
 
+  # Find all duplicate files in the given globs.
+  #
+  # Globs are expanded as in #dir, then all non-files are filtered out. The remaining
+  # files are compared by size, and non-dupes are filtered out. The remaining candidates
+  # are then compared by checksum. Dupes are returned as an array of arrays.
+  #
+  # ## Examples
+  #
+  #     dupes_in('~/{Downloads,Desktop}/*') # => [
+  #                                                ['~/Downloads/foo.zip', '~/Downloads/foo (1).zip'],
+  #                                                ['~/Desktop/bar.txt', '~/Desktop/bar copy.txt']
+  #                                              ]
+  #
+  # Keep the dupe with the shortest name (ideal for `foo (1).zip` and `foo copy.zip` style dupes):
+  #
+  #     dupes_in('~/Downloads/*').each do |dupes|
+  #       trash dupes.sort_by { |p| File.basename(p).length }[1..-1]
+  #     end
+  #
+  # Keep the oldest dupe:
+  #
+  #     dupes_in('~/Desktop/*', '~/Downloads/*').each do |dupes|
+  #       trash dupes.sort_by { |p| File.mtime(p) }[1..-1]
+  #     end
+  #
+  def dupes_in(globs)
+    dupes = []
+    files(paths)                             # Start by filtering out non-files
+      .group_by { |f| size_of(f) }           # ... then grouping by size, since that's fast
+      .reject { |s, p| p.length < 2 }        # ... and filter out any non-dupes
+      .map do |size, candidates|
+        dupes += candidates
+          .group_by { |p| checksum_for(p) }  # Now group our candidates by a slower checksum calculation
+          .reject { |c, p| p.length < 2 }    # ... and filter out any non-dupes
+          .values
+      end
+    dupes
+  end
+
   # [Mac OS X] Use Spotlight metadata to determine audio length.
   #
   # ## Examples
@@ -332,6 +381,24 @@ module Maid::Tools
   #     modified_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
   def modified_at(path)
     File.mtime(expand(path))
+  end
+
+  # Get the size of a file.
+  #
+  # ## Examples
+  #
+  #     size_of('foo.zip') # => 2193
+  def size_of(path)
+    File.size(path)
+  end
+
+  # Get a checksum for a file.
+  #
+  # ## Examples
+  #
+  #     checksum_for('foo.zip') # => "ae8dbb203dfd560158083e5de90969c2"
+  def checksum_for(path)
+    Digest::MD5.hexdigest(File.read(path))
   end
 
   # @deprecated
