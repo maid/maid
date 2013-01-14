@@ -172,6 +172,15 @@ module Maid::Tools
       sort
   end
 
+  # Give only files matching the given glob.
+  #
+  # This is the same as #dir but only includes actual files (no directories or symlinks).
+  #
+  def files(globs)
+    dir(globs).
+      select { |f| File.file?(f) }
+  end
+
   # Create a directory and all of its parent directories.
   #
   # The path of the created directory is returned, which allows for chaining (see examples).
