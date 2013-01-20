@@ -475,6 +475,7 @@ module Maid::Tools
   def mdls_to_array(path, attribute)
     return [] unless os_x?
     raw = cmd("mdls -raw -name #{attribute} #{ path }")
+    return [] if raw.empty?
     clean = raw[1, raw.length - 2]
     clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
   end
