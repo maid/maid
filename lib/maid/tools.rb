@@ -427,7 +427,7 @@ module Maid::Tools
   #
   #     mime_type('bar.jpg') # => "image/jpeg"
   def mime_type(path)
-    cmd("file -b --mime-type #{ path }").strip
+    cmd("file -b --mime-type #{ path.inspect }").strip
   end
 
   # Get the iternet media type of the file
@@ -473,13 +473,10 @@ module Maid::Tools
   end
 
   def mdls_to_array(path, attribute)
-    return [] unless os_x?
-    raw = cmd("mdls -raw -name #{attribute} #{ path }")
+    return [] unless Maid::Platform.osx?
+    raw = cmd("mdls -raw -name #{attribute} #{ path.inspect }")
+    return [] if raw.empty?
     clean = raw[1, raw.length - 2]
     clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
-  end
-
-  def os_x?
-    !cmd("which mdls").empty?
   end
 end
