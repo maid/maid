@@ -2,8 +2,8 @@
 
 Be lazy!  Let Maid clean up after you, based on rules you define.
 
-[Installation](https://github.com/benjaminoakes/maid#installation)
-| [Tutorial](https://github.com/benjaminoakes/maid#tutorial)
+[Installation](#installation)
+| [Tutorial](#tutorial)
 | [Example](https://github.com/benjaminoakes/maid-example)
 | [User Community](https://github.com/benjaminoakes/maid/wiki)
 | [Documentation][]
