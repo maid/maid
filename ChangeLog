@@ -1,3 +1,10 @@
+maid (0.2.2) unstable; urgency=low
+
+  * (Work in Progress -- not yet released)
+  * Better documentation (Closes: #91)
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Tue, 15 Dec 2013 00:00:00 +0000
+
 maid (0.2.1) stable; urgency=low
 
   * Fix YARD generation for http://rubydoc.info/.  (Otherwise identical to

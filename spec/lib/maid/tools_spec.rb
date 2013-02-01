@@ -196,6 +196,10 @@ module Maid
         it 'lists files in directories when using regexp-like glob patterns' do
           @maid.dir('~/{Desktop,Downloads}/*.zip').should == [@other_file, @file]
         end
+
+        it 'lists files in directories when using recursive glob patterns' do
+          @maid.dir('~/**/*.zip').should == [@other_file, @file]
+        end
       end
     end
 
