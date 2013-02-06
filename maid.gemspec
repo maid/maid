@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rake', '~> 10.0.2')
   s.add_development_dependency('redcarpet', '~> 2.2.2') # Soft dependency of `yard`
   s.add_development_dependency('rspec', '~> 2.12.0')
-  s.add_development_dependency('timecop', '~> 0.5.3')
+  s.add_development_dependency('timecop', '~> 0.5.9.1')
   s.add_development_dependency('yard', '~> 0.8.3')
 
   # In Vagrant, polling won't cross over the OS boundary if you develop in the host OS but run your tests in the
