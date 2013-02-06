@@ -16,18 +16,21 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = 'maid'
 
+  # Strategy: ranges (so there are fewer chances of version conflicts)
   s.add_dependency('thor', '~> 0.16.0')
   s.add_dependency('deprecated', '~> 3.0.1')
   s.add_dependency('ohai', '~> 6.14.0')
   s.add_dependency('xdg', '~> 2.2.3')
-  s.add_development_dependency('fakefs', '~> 0.4.1')
-  s.add_development_dependency('guard', '~> 1.6.1')
-  s.add_development_dependency('guard-rspec', '~> 2.3.0')
-  s.add_development_dependency('rake', '~> 10.0.2')
+
+  # Strategy: specific versions (since they're just for development)
+  s.add_development_dependency('fakefs', '~> 0.4.2')
+  s.add_development_dependency('guard', '~> 1.6.2')
+  s.add_development_dependency('guard-rspec', '~> 2.4.0')
+  s.add_development_dependency('rake', '~> 10.0.3')
   s.add_development_dependency('redcarpet', '~> 2.2.2') # Soft dependency of `yard`
   s.add_development_dependency('rspec', '~> 2.12.0')
   s.add_development_dependency('timecop', '~> 0.5.9.1')
-  s.add_development_dependency('yard', '~> 0.8.3')
+  s.add_development_dependency('yard', '~> 0.8.4.1')
 
   # In Vagrant, polling won't cross over the OS boundary if you develop in the host OS but run your tests in the
   # guest.  One way around this is to force polling instead:
