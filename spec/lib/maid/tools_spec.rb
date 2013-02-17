@@ -338,7 +338,7 @@ module Maid
       end
 
       it 'should pull and push the given git repository, logging the action' do
-        @maid.should_receive(:cmd).with(%(cd "#@home/code/projectname" && git pull && git push 2>&1))
+        @maid.should_receive(:cmd).with(%(cd #@home/code/projectname && git pull && git push 2>&1))
         @logger.should_receive(:info)
         @maid.git_piston('~/code/projectname')
       end
@@ -351,7 +351,7 @@ module Maid
       end
 
       it 'should sync the expanded paths, retaining backslash' do
-        @maid.should_receive(:cmd).with(%(rsync -a -u "#@home/Downloads/" "#@home/Reference" 2>&1))
+        @maid.should_receive(:cmd).with(%(rsync -a -u #@home/Downloads/ #@home/Reference 2>&1))
         @maid.sync(@src_dir, @dst_dir)
       end
 
@@ -361,25 +361,25 @@ module Maid
       end
 
       it 'should have no options' do
-        @maid.should_receive(:cmd).with(%(rsync  "#@home/Downloads/" "#@home/Reference" 2>&1))
+        @maid.should_receive(:cmd).with(%(rsync  #@home/Downloads/ #@home/Reference 2>&1))
         @maid.sync(@src_dir, @dst_dir, :archive => false, :update => false)
       end
 
       it 'should add all options' do
-        @maid.should_receive(:cmd).with(%(rsync -a -v -u -m --exclude=".git" --delete "#@home/Downloads/" "#@home/Reference" 2>&1))
+        @maid.should_receive(:cmd).with(%(rsync -a -v -u -m --exclude=.git --delete #@home/Downloads/ #@home/Reference 2>&1))
         @maid.sync(@src_dir, @dst_dir, :archive => true, :update => true, :delete => true, :verbose => true, :prune_empty => true, :exclude => '.git')
       end
 
       it 'should add multiple exlcude options' do
         @maid.
           should_receive(:cmd).
-          with(%(rsync -a -u --exclude=".git" --exclude=".rvmrc" "#@home/Downloads/" "#@home/Reference" 2>&1))
+          with(%(rsync -a -u --exclude=.git --exclude=.rvmrc #@home/Downloads/ #@home/Reference 2>&1))
         @maid.sync(@src_dir, @dst_dir, :exclude => ['.git', '.rvmrc'])
       end
 
       it 'should add noop option' do
         @maid.file_options[:noop] = true
-        @maid.should_receive(:cmd).with(%(rsync -a -u -n "#@home/Downloads/" "#@home/Reference" 2>&1))
+        @maid.should_receive(:cmd).with(%(rsync -a -u -n #@home/Downloads/ #@home/Reference 2>&1))
         @maid.sync(@src_dir, @dst_dir)
       end
     end

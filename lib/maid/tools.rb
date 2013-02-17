@@ -36,10 +36,10 @@ module Maid::Tools
       target = File.join(destination, File.basename(source))
 
       unless File.exist?(target)
-        log("mv #{ source.inspect } #{ destination.inspect }")
+        log("mv #{ sh_escape(source) } #{ sh_escape(destination) }")
         FileUtils.mv(source, destination, @file_options)
       else
-        warn("skipping #{ source.inspect } because #{ target.inspect } already exists")
+        warn("skipping #{ sh_escape(source) } because #{ sh_escape(target) } already exists")
       end
     end
   end
@@ -137,7 +137,7 @@ module Maid::Tools
     expand_all(paths).each do |path|
       options = @file_options.merge(options)
 
-      log("Removing #{ path.inspect }")
+      log("Removing #{ sh_escape(path) }")
       FileUtils.rm_r(path, options)
     end
   end
@@ -197,7 +197,7 @@ module Maid::Tools
   #     move('~/Downloads/Pink Floyd*.mp3', mkdir('~/Music/Pink Floyd/'))
   def mkdir(path, options = {})
     path = expand(path)
-    log("mkdir -p #{ path.inspect }")
+    log("mkdir -p #{ sh_escape(path) }")
     FileUtils.mkdir_p(path, @file_options.merge(options))
     path
   end
@@ -244,7 +244,7 @@ module Maid::Tools
   #
   #     locate('foo.zip') # => ['/a/foo.zip', '/b/foo.zip']
   def locate(name)
-    cmd("mdfind -name #{ name.inspect }").split("\n")
+    cmd("mdfind -name #{ sh_escape(name) }").split("\n")
   end
 
   # [Mac OS X] Use Spotlight metadata to determine the site from which a file was downloaded.
@@ -253,7 +253,7 @@ module Maid::Tools
   #
   #     downloaded_from('foo.zip') # => ['http://www.site.com/foo.zip', 'http://www.site.com/']
   def downloaded_from(path)
-    raw = cmd("mdls -raw -name kMDItemWhereFroms #{ path.inspect }")
+    raw = cmd("mdls -raw -name kMDItemWhereFroms #{ sh_escape(path) }")
     clean = raw[1, raw.length - 2]
     clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
   end
@@ -264,7 +264,7 @@ module Maid::Tools
   #
   #     duration_s('foo.mp3') # => 235.705
   def duration_s(path)
-    cmd("mdls -raw -name kMDItemDurationSeconds #{ path.inspect }").to_f
+    cmd("mdls -raw -name kMDItemDurationSeconds #{ sh_escape(path) }").to_f
   end
 
   # List the contents of a zip file.
@@ -273,7 +273,7 @@ module Maid::Tools
   #
   #     zipfile_contents('foo.zip') # => ['foo/foo.exe', 'foo/README.txt']
   def zipfile_contents(path)
-    raw = cmd("unzip -Z1 #{ path.inspect }")
+    raw = cmd("unzip -Z1 #{ sh_escape(path) }")
     raw.split("\n")
   end
 
@@ -285,7 +285,7 @@ module Maid::Tools
   #
   #     disk_usage('foo.zip') # => 136
   def disk_usage(path)
-    raw = cmd("du -s #{ path.inspect }")
+    raw = cmd("du -s #{ sh_escape(path) }")
     # FIXME: This reports in kilobytes, but should probably report in bytes.
     usage_kb = raw.split(/\s+/).first.to_i
    
@@ -350,8 +350,8 @@ module Maid::Tools
   #     git_piston('~/code/projectname')
   def git_piston(path)
     full_path = expand(path)
-    stdout = cmd("cd #{full_path.inspect} && git pull && git push 2>&1")
-    log("Fired git piston on #{full_path.inspect}.  STDOUT:\n\n#{stdout}")
+    stdout = cmd("cd #{ sh_escape(full_path) } && git pull && git push 2>&1")
+    log("Fired git piston on #{ sh_escape(full_path) }.  STDOUT:\n\n#{ stdout }")
   end
 
   deprecated :git_piston, 'SparkleShare (http://sparkleshare.org/)'
@@ -399,15 +399,19 @@ module Maid::Tools
     ops << '-n' if @file_options[:noop]
 
     Array(options[:exclude]).each do |path|
-      ops << "--exclude=#{ path.inspect }"
+      ops << "--exclude=#{ sh_escape(path) }"
     end
 
     ops << '--delete' if options[:delete]
-    stdout = cmd("rsync #{ ops.join(' ') } #{ from.inspect } #{ to.inspect } 2>&1")
-    log("Fired sync from #{ from.inspect } to #{ to.inspect }.  STDOUT:\n\n#{ stdout }")
+    stdout = cmd("rsync #{ ops.join(' ') } #{ sh_escape(from) } #{ sh_escape(to) } 2>&1")
+    log("Fired sync from #{ sh_escape(from) } to #{ sh_escape(to) }.  STDOUT:\n\n#{ stdout }")
   end
 
   private
+
+  def sh_escape(array)
+    Escape.shell_command(Array(array))
+  end
 
   def log(message)
     @logger.info(message)

@@ -1,4 +1,5 @@
 require 'deprecated'
+require 'escape'
 Deprecated.set_action(:warn)
 
 # Must be in this order:
