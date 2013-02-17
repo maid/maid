@@ -37,7 +37,7 @@ Gem::Specification.new do |s|
   #
   #     bundle exec guard --force-polling
   #
-  s.add_development_dependency('rb-inotify', '~> 0.8.8')
+  s.add_development_dependency('rb-inotify', '~> 0.9.0')
   s.add_development_dependency('rb-fsevent', '~> 0.9.2')
 
   s.files         = `git ls-files`.split("\n")
