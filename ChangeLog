@@ -4,6 +4,8 @@ maid (0.2.3.alpha.1) unstable; urgency=low
   * Changed from ArgumentError to NotImplementedError when a command is
     unsupported on the host OS.
 
+ -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
+
 maid (0.2.2) stable; urgency=high
 
   * Stats!  { 'collaborators' => 11, 'downloads' => 5017, 'forks' => 36,
