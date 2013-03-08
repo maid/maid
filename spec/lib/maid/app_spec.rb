@@ -77,7 +77,7 @@ module Maid
     end
 
     it 'is mapped as --version' do
-      # TODO: Test via Rspec (it's only in the smoke test script for now)
+      App.start(['--version']).should == @app.version
     end
 
     context 'with the "long" option' do
