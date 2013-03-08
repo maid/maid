@@ -189,11 +189,11 @@ module Maid
       end
 
       it 'should report `not-a-real-command` as not being a supported command' do
-        lambda { @maid.cmd('not-a-real-command arg1 arg2') }.should raise_error(ArgumentError)
+        lambda { @maid.cmd('not-a-real-command arg1 arg2') }.should raise_error(NotImplementedError)
       end
 
       it 'should report `echo` as a real command' do
-        lambda { @maid.cmd('echo .') }.should_not raise_error(ArgumentError)
+        lambda { @maid.cmd('echo .') }.should_not raise_error(NotImplementedError)
       end
     end
   end

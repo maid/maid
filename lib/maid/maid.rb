@@ -98,7 +98,7 @@ class Maid::Maid
     if supported_command?(command)
       %x(#{ command })
     else
-      raise ArgumentError, "Unsupported system command: #{ command.inspect }"
+      raise NotImplementedError, "Unsupported system command: #{ command.inspect }"
     end
   end
 
