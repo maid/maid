@@ -244,7 +244,7 @@ module Maid::Tools
   #
   #     locate('foo.zip') # => ['/a/foo.zip', '/b/foo.zip']
   def locate(name)
-    cmd("#{Maid::Platform::Commands.os_platform_locate} #{ sh_escape(name) }").split("\n")
+    cmd("#{Maid::Platform::Commands.locate} #{ sh_escape(name) }").split("\n")
   end
 
   # [Mac OS X] Use Spotlight metadata to determine the site from which a file was downloaded.

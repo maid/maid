@@ -20,7 +20,7 @@ module Maid::Platform
   class Commands
     class << self
       # logicaly decides which locate command to use
-      def os_platform_locate
+      def locate
         Maid::Platform.linux? ? "locate" : "mdfind -name"
       end
     end

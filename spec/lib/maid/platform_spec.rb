@@ -27,7 +27,7 @@ module Maid
       end
 
       it 'locate is "locate"' do
-        Platform::Commands.os_platform_locate.should match(/locate/)
+        Platform::Commands.locate.should match(/locate/)
       end
     end
 
@@ -45,7 +45,7 @@ module Maid
       end
 
       it 'locate is "mdfind"' do
-        Platform::Commands.os_platform_locate.should match(/mdfind/)
+        Platform::Commands.locate.should match(/mdfind/)
       end
     end
   end
