@@ -1,3 +1,9 @@
+maid (0.2.3.alpha.1) unstable; urgency=low
+
+  * Mu Ye: Improve command line spec coverage (Closes: #97)
+  * Changed from ArgumentError to NotImplementedError when a command is
+    unsupported on the host OS.
+
 maid (0.2.2) stable; urgency=high
 
   * Stats!  { 'collaborators' => 11, 'downloads' => 5017, 'forks' => 36,
