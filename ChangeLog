@@ -1,5 +1,8 @@
 maid (0.2.3.alpha.1) unstable; urgency=low
 
+  * Stats!  { 'collaborators' => 13, 'downloads' => 5283, 'forks' => 37,
+    'open_issues' => 34, 'closed_issues' => 63, 'stars' => 661,
+    'users_sharing_rules' => 19 }
   * Mu Ye: Improve command line spec coverage (Closes: #97)
   * Changed from ArgumentError to NotImplementedError when a command is
     unsupported on the host OS.
