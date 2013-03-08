@@ -3,8 +3,9 @@ maid (0.2.3.alpha.1) unstable; urgency=low
   * Mu Ye: Improve command line spec coverage (Closes: #97)
   * Changed from ArgumentError to NotImplementedError when a command is
     unsupported on the host OS.
+  * Bradley Smith: Add locate support on Ubuntu (Closes: #67)
 
- -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Fri, 8 Mar 2013 00:00:00 +0000
 
 maid (0.2.2) stable; urgency=high
 
