@@ -43,22 +43,29 @@ module Maid
       @app.clean
     end
 
-    it 'should tell the Maid to clean' do
+    it 'should tell the Maid to clean' do      
       @maid.should_receive(:clean)
-      @app.clean
+      App.start(['clean', '--execute'])
+    end 
+
+    it 'should issue deprecation notice when called without option' do
+      capture_stdout { App.start(['clean']) }.string.should match(/deprecated/)
+      capture_stdout { App.start(['clean', '--silent']) }.string.should match(/deprecated/)
     end
 
     it 'should not be silent if not given the --silent option' do
-      capture_stdout { App.start(['clean']) }.string.should_not == ''
+      capture_stdout { App.start(['clean', '--execute']) }.string.should_not == ''
     end
 
     it 'should be silent if given the --silent option' do
       # TODO: It might even make sense to wrap `maid.clean` in `capture_stdout { ... }`
-      capture_stdout { App.start(['clean', '--silent']) }.string.should == ''
+      capture_stdout { App.start(['clean', '--noop', '--silent']) }.string.should == ''
+      capture_stdout { App.start(['clean', '--execute', '--silent']) }.string.should == ''
     end
 
     it 'should complain about a MISSPELLED option' do
       capture_stderr { App.start(['clean', '--slient']) }.string.should match(/Unknown/)
+      capture_stderr { App.start(['clean', '--noop', '--slient']) }.string.should match(/Unknown/)
     end
 
     it 'should complain about an undefined task' do
