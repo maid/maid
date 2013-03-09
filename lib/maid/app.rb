@@ -11,11 +11,24 @@ class Maid::App < Thor
   end
 
   desc 'clean', 'Clean based on rules'
-  method_option :rules,  :type => :string,  :aliases => %w(-r)
-  method_option :noop,   :type => :boolean, :aliases => %w(-n --dry-run)
-  method_option :silent, :type => :boolean, :aliases => %w(-s)
+  method_option :rules,   :type => :string,  :aliases => %w(-r)
+  method_option :noop,    :type => :boolean, :aliases => %w(-n --dry-run)
+  method_option :force,   :type => :boolean, :aliases => %w(-f -e --execute)
+  method_option :silent,  :type => :boolean, :aliases => %w(-s)
   def clean
     maid = Maid::Maid.new(maid_options(options))
+
+    unless options.noop? || options.force?
+      say <<-EOF
+NOTE: Running 'maid clean' without option is deprecated. This behavior will be removed in v1.0.0.
+
+Example usage:
+maid clean --noop   # See what would happen with defined rules
+maid clean --force  # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
+      EOF
+
+      return
+    end
 
     if Maid::TrashMigration.needed?
       migrate_trash
