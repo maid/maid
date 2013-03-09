@@ -43,10 +43,15 @@ module Maid
       @app.clean
     end
 
-    it 'should tell the Maid to clean' do      
+    it 'should clean when --execute is specified' do      
       @maid.should_receive(:clean)
       App.start(['clean', '--execute'])
     end 
+
+    it 'should not clean when --noop is specified' do
+      @maid.should_not_receive(:clean)
+      App.start(['clean', '--noop'])
+    end
 
     it 'should issue deprecation notice when called without option' do
       capture_stdout { App.start(['clean']) }.string.should match(/deprecated/)

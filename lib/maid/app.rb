@@ -18,11 +18,6 @@ class Maid::App < Thor
   def clean
     maid = Maid::Maid.new(maid_options(options))
 
-    if Maid::TrashMigration.needed?
-      migrate_trash
-      return
-    end
-
     unless options.noop? || options.execute?
       say <<-EOF
 NOTE: Running 'maid clean' without option is deprecated. This behavior will be removed in v1.0.0.
@@ -35,12 +30,19 @@ maid clean --execute  # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/ma
       return
     end
 
+    if Maid::TrashMigration.needed?
+      migrate_trash
+      return
+    end 
+
     unless options.silent? || options.noop?
       say "Logging actions to #{ maid.log_device.inspect }"
     end
 
-    maid.load_rules
-    maid.clean
+    if options.execute?
+      maid.load_rules
+      maid.clean
+    end
   end
 
   desc 'version', 'Print version information (optionally: system info)'
