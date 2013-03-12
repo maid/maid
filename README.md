@@ -5,7 +5,7 @@
 [![Dependency Status](https://gemnasium.com/benjaminoakes/maid.png)](https://gemnasium.com/benjaminoakes/maid)
 [![Code Climate](https://codeclimate.com/github/benjaminoakes/maid.png)](https://codeclimate.com/github/benjaminoakes/maid)
 
-Be lazy!  Let Maid clean up after you, based on rules you define.
+**Be lazy!**  Let Maid clean up after you, based on rules you define.
 
 [Installation](#installation)
 | [Tutorial](#tutorial)
