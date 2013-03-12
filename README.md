@@ -1,5 +1,10 @@
 # Maid
 
+[![Gem Version](https://badge.fury.io/rb/maid.png)](http://badge.fury.io/rb/maid)
+[![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
+[![Dependency Status](https://gemnasium.com/benjaminoakes/maid.png)](https://gemnasium.com/benjaminoakes/maid)
+[![Code Climate](https://codeclimate.com/github/benjaminoakes/maid.png)](https://codeclimate.com/github/benjaminoakes/maid)
+
 Be lazy!  Let Maid clean up after you, based on rules you define.
 
 [Installation](#installation)
@@ -42,10 +47,6 @@ This project wouldn't be where it is today without its users and contributors.  
 * Even just [share a link to Maid](https://twitter.com/intent/tweet?related=benjaminoakes&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fbenjaminoakes%2Fmaid) :)
 
 ### For Developers
-
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/benjaminoakes/maid)
-[![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
-[![Dependency Status](https://gemnasium.com/benjaminoakes/maid.png)](https://gemnasium.com/benjaminoakes/maid)
 
 * Address a `TODO` or `FIXME` in the code.
 * Complete an issue (easy ones [are labelled](https://github.com/benjaminoakes/maid/issues?labels=difficulty-1&page=1&state=open), and issues for future releases are [grouped by milestone](https://github.com/benjaminoakes/maid/issues/milestones)).
