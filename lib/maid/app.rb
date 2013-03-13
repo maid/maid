@@ -13,7 +13,7 @@ class Maid::App < Thor
   desc 'clean', 'Clean based on rules'
   method_option :rules,   :type => :string,  :aliases => %w(-r)
   method_option :noop,    :type => :boolean, :aliases => %w(-n --dry-run)
-  method_option :force,   :type => :boolean, :aliases => %w(-f -e --execute)
+  method_option :force,   :type => :boolean, :aliases => %w(-f)
   method_option :silent,  :type => :boolean, :aliases => %w(-s)
   def clean
     maid = Maid::Maid.new(maid_options(options))
