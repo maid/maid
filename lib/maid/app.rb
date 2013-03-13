@@ -19,15 +19,7 @@ class Maid::App < Thor
     maid = Maid::Maid.new(maid_options(options))
 
     unless options.noop? || options.force?
-      say <<-EOF
-NOTE: Running 'maid clean' without option is deprecated. This behavior will be removed in v1.0.0.
-
-Example usage:
-maid clean --noop   # See what would happen with defined rules
-maid clean --force  # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
-      EOF
-
-      return
+      warn 'Running "maid clean" without a flag is deprecated.  Please use "maid clean --noop" or "maid clean --force".'
     end
 
     if Maid::TrashMigration.needed?

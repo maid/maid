@@ -48,9 +48,10 @@ module Maid
       App.start(['clean', '--force'])
     end 
 
-    it 'should issue deprecation notice when called without option' do
-      capture_stdout { App.start(['clean']) }.string.should match(/deprecated/)
-      capture_stdout { App.start(['clean', '--silent']) }.string.should match(/deprecated/)
+    it 'should issue deprecation notice when called without option, but still clean' do
+      @maid.should_receive(:clean).twice
+      capture_stderr { App.start(['clean']) }.string.should match(/deprecated/)
+      capture_stderr { App.start(['clean', '--silent']) }.string.should match(/deprecated/)
     end
 
     it 'should not be silent if not given the --silent option' do
