@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'find'
 require 'time'
+require 'zip/zip'
 
 # These "tools" are methods available in the Maid DSL.
 #
@@ -271,10 +272,9 @@ module Maid::Tools
   #
   # ## Examples
   #
-  #     zipfile_contents('foo.zip') # => ['foo/foo.exe', 'foo/README.txt']
+  #     zipfile_contents('foo.zip') # => ['foo.exe', 'README.txt']
   def zipfile_contents(path)
-    raw = cmd("unzip -Z1 #{ sh_escape(path) }")
-    raw.split("\n")
+    Zip::ZipFile.foreach(path).map { |entry| entry.name }
   end
 
   # Calculate disk usage of a given path in kilobytes.
