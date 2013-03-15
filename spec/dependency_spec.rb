@@ -3,6 +3,7 @@ require 'ohai'
 require 'rbconfig'
 require 'stringio'
 require 'xdg'
+require 'zip/zip'
 
 # > What is Dependency Testing?
 # >
@@ -57,6 +58,23 @@ describe 'Dependency expectations' do
       #
       # * [XDG Base Directory Specification](http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html)
       XDG['DATA_HOME'].to_s.should match(%r{^/.*?/\.local/share$})
+    end
+  end
+
+  describe Zip::ZipFile do
+    before do
+      @file_fixtures_path = File.expand_path(File.dirname(__FILE__) + '/fixtures/files/')
+    end
+
+    it 'makes entries available with foreach' do
+      Zip::ZipFile.foreach("#@file_fixtures_path/foo.zip").map { |entry| entry.name }.
+        should == %w(foo.exe README.txt subdir/anything.txt)
+    end
+
+    it 'supports UTF-8 filenames' do
+      # Filename is a Japanese character
+      Zip::ZipFile.foreach("#@file_fixtures_path/\343\201\225.zip").map { |entry| entry.name }.
+        should == %w(anything.txt)
     end
   end
 end

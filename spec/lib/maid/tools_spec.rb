@@ -269,54 +269,12 @@ module Maid
     end
 
     describe '#zipfile_contents' do
-      before do
-        FakeFS.deactivate!
-        @dir_expand_path = File.expand_path(@dir = '~/Downloads/')
-        @file = @dir_expand_path + "/" + (@file_name = 'foo.zip')
-        @file_expand_path = File.expand_path(@file)
-        FileUtils.mkdir_p(@dir_expand_path)
-        @zip = FileUtils.copy(
-                        File.expand_path(File.dirname(__FILE__) + '/../../fixtures/files/foo.zip'),
-                        @file
-                        )
-      end
-
       it 'should inspect the contents of a .zip file' do
-        @maid.zipfile_contents(@file_expand_path).should == ['foo.exe', 'README.txt']
-      end
-
-      after do
-        FileUtils.rm(@file)
-        FakeFS.activate!
-      end
-    end
-
-    describe '#utf8 support' do
-      before do
-        FakeFS.deactivate!
-        @dir_expand_path = File.expand_path(@dir = '~/Downloads/')
-        @file = @dir_expand_path + "/" + (@file_name = 'さ.zip')
-        @file_expand_path = File.expand_path(@file)
-        FileUtils.mkdir_p(@dir_expand_path)
-        @zip = FileUtils.copy(
-                        File.expand_path(File.dirname(__FILE__) + '/../../fixtures/files/さ.zip'),
-                        @file
-                        )
-      end
-
-      it '#lists files with utf8 filenames in a directory' do
-        @maid.dir('~/Downloads/*.zip').should == [@file]
-      end
-
-      describe '#zipfile_contents' do
-        it 'should inspect utf8 contents of a .zip file' do
-          @maid.zipfile_contents(@file_expand_path).should == ['anything.txt']
+        Zip::ZipFile.stub(:foreach) do
+          [mock(:name => 'foo.exe'), mock(:name => 'README.txt')]
         end
-      end
 
-      after do
-        FileUtils.rm(@file)
-        FakeFS.activate!
+        @maid.zipfile_contents('foo.zip').should == ['foo.exe', 'README.txt']
       end
     end
 
