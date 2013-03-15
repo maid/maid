@@ -271,10 +271,10 @@ module Maid
     describe '#zipfile_contents' do
       it 'should inspect the contents of a .zip file' do
         Zip::ZipFile.stub(:foreach) do
-          [mock(:name => 'foo.exe'), mock(:name => 'README.txt')]
+          [mock(:name => 'foo.exe'), mock(:name => 'README.txt'), mock(:name => 'subdir/anything.txt')]
         end
 
-        @maid.zipfile_contents('foo.zip').should == ['foo.exe', 'README.txt']
+        @maid.zipfile_contents('foo.zip').should == ['README.txt', 'foo.exe', 'subdir/anything.txt']
       end
     end
 

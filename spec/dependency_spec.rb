@@ -67,8 +67,8 @@ describe 'Dependency expectations' do
     end
 
     it 'makes entries available with foreach' do
-      Zip::ZipFile.foreach("#@file_fixtures_path/foo.zip").map { |entry| entry.name }.
-        should == %w(foo.exe README.txt subdir/anything.txt)
+      Zip::ZipFile.foreach("#@file_fixtures_path/foo.zip").map { |entry| entry.name }.sort.
+        should == %w(README.txt foo.exe subdir/anything.txt)
     end
 
     it 'supports UTF-8 filenames' do

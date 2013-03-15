@@ -275,7 +275,7 @@ module Maid::Tools
   #     zipfile_contents('foo.zip') # => ['foo.exe', 'README.txt', 'subdir/anything.txt']
   def zipfile_contents(path)
     # It might be nice to use `glob` from `Zip::ZipFileSystem`, but it seems buggy.  (Subdirectories aren't included.)
-    Zip::ZipFile.foreach(path).map { |entry| entry.name }
+    Zip::ZipFile.foreach(path).map { |entry| entry.name }.sort
   end
 
   # Calculate disk usage of a given path in kilobytes.
