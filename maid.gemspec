@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency('thor', '>= 0.14.0', '< 0.18.0')
   s.add_dependency('deprecated', '~> 3.0.0')
   s.add_dependency('ohai', '>= 6.14.0', '< 6.17.0')
-  s.add_dependency('rubyzip', '~> 0.9.9')
+  s.add_dependency('rubyzip', '>= 0.5.7', '< 0.10.0')
   s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs
 
   # Strategy: specific versions (since they're just for development)
