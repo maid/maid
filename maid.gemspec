@@ -42,6 +42,11 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rb-inotify', '~> 0.9.0')
   s.add_development_dependency('rb-fsevent', '~> 0.9.2')
 
+  # FIXME:
+  # maid at /vagrant did not have a valid gemspec.
+  # This prevents bundler from installing bins or native extensions, but that may not affect its functionality.
+  # The validation message from Rubygems was:
+  #   [""spec/fixtures/files/\343\201\225.zip""] are not files
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
