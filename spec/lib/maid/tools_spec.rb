@@ -418,8 +418,14 @@ module Maid
         FakeFS.activate!
       end
 
-      it 'should list duplicate files' do
-        @maid.dupes_in("#{ file_fixtures_path }/*").should == [%w(/vagrant/spec/fixtures/files/bar.zip /vagrant/spec/fixtures/files/foo.zip)]
+      it 'should list duplicate files in arrays' do
+        glob = "#{ file_fixtures_path }/*"
+
+        dupes = @maid.dupes_in(glob)
+        dupes.first.should be_kind_of(Array)
+
+        basenames = dupes.flatten.map { |p| File.basename(p) }
+        basenames.should == %w(bar.zip foo.zip)
       end
     end
 
