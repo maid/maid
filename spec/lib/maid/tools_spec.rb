@@ -410,13 +410,16 @@ module Maid
     end
 
     describe '#dupes_in' do
+      before do
+        FakeFS.deactivate!
+      end
+
+      after do
+        FakeFS.activate!
+      end
+
       it 'should list duplicate files' do
-        begin
-          FakeFS.deactivate!
-          @maid.dupes_in("#{ file_fixtures_path }/*").should == [%w(/vagrant/spec/fixtures/files/bar.zip /vagrant/spec/fixtures/files/foo.zip)]
-        ensure
-          FakeFS.deactivate!
-        end
+        @maid.dupes_in("#{ file_fixtures_path }/*").should == [%w(/vagrant/spec/fixtures/files/bar.zip /vagrant/spec/fixtures/files/foo.zip)]
       end
     end
 
