@@ -8,6 +8,8 @@ module Maid
   #
   # * [FakeFS](https://github.com/defunkt/fakefs)
   describe Tools, :fakefs => true do
+    let(:file_fixtures_path) { File.expand_path(File.dirname(__FILE__) + '../../../fixtures/files/') }
+
     before do
       @home = File.expand_path('~')
       @now = Time.now
@@ -404,6 +406,17 @@ module Maid
       it 'should return the checksum for the file' do
         File.should_receive(:read).with(@file).and_return('contents')
         @maid.checksum_for(@file).should == Digest::MD5.hexdigest('contents')
+      end
+    end
+
+    describe '#dupes_in' do
+      it 'should list duplicate files' do
+        begin
+          FakeFS.deactivate!
+          @maid.dupes_in("#{ file_fixtures_path }/*").should == [%w(/vagrant/spec/fixtures/files/bar.zip /vagrant/spec/fixtures/files/foo.zip)]
+        ensure
+          FakeFS.deactivate!
+        end
       end
     end
 

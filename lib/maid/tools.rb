@@ -297,7 +297,7 @@ module Maid::Tools
   #
   def dupes_in(globs)
     dupes = []
-    files(paths)                             # Start by filtering out non-files
+    files(globs)                             # Start by filtering out non-files
       .group_by { |f| size_of(f) }           # ... then grouping by size, since that's fast
       .reject { |s, p| p.length < 2 }        # ... and filter out any non-dupes
       .map do |size, candidates|
