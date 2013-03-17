@@ -1,8 +1,9 @@
-require 'fileutils'
-require 'find'
-require 'time'
-require 'zip/zip'
 require 'digest/md5'
+require 'find'
+require 'fileutils'
+require 'time'
+
+require 'zip/zip'
 
 # These "tools" are methods available in the Maid DSL.
 #
