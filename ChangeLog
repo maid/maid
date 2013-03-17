@@ -4,6 +4,7 @@ maid (TODO) unstable; urgency=low
   * Given behavior changes, v0.2.3 is becoming v0.3.0 per semver.
   * Mu Ye: Require option to cause real cleaning to take place (Closes: #78)
   * Graham Siener: Add UTF-8 support for zipfile_contents tool (Closes: #35)
+  * Justin Hileman: Add ability to list duplicate files (Closes: #15)
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
