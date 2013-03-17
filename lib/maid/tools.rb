@@ -297,14 +297,14 @@ module Maid::Tools
   #
   def dupes_in(globs)
     dupes = []
-    files(globs)                             # Start by filtering out non-files
-      .group_by { |f| size_of(f) }           # ... then grouping by size, since that's fast
-      .reject { |s, p| p.length < 2 }        # ... and filter out any non-dupes
-      .map do |size, candidates|
-        dupes += candidates
-          .group_by { |p| checksum_for(p) }  # Now group our candidates by a slower checksum calculation
-          .reject { |c, p| p.length < 2 }    # ... and filter out any non-dupes
-          .values
+    files(globs).                           # Start by filtering out non-files
+      group_by { |f| size_of(f) }.          # ... then grouping by size, since that's fast
+      reject { |s, p| p.length < 2 }.       # ... and filter out any non-dupes
+      map do |size, candidates|
+        dupes += candidates.
+          group_by { |p| checksum_for(p) }. # Now group our candidates by a slower checksum calculation
+          reject { |c, p| p.length < 2 }.   # ... and filter out any non-dupes
+          values
       end
     dupes
   end
