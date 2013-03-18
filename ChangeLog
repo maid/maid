@@ -6,7 +6,7 @@ maid (TODO) unstable; urgency=low
   * Graham Siener: Add UTF-8 support for zipfile_contents tool (Closes: #35)
   * Justin Hileman: Add ability to list duplicate files (Closes: #15)
   * Mikael Hultgren: Rotate log file
-  * John Colvin: Add filetype detection (Closes: #51)
+  * John Colvin: Add filetype detection and filtering (Closes: #51)
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
