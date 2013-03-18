@@ -1,4 +1,5 @@
 require 'logger'
+require 'mime/types'
 require 'ohai'
 require 'rbconfig'
 require 'stringio'
@@ -12,6 +13,10 @@ require 'zip/zip'
 # >
 # > -- http://sqa.fyicenter.com/FAQ/Software-QA-Testing/What_is_Dependency_Testing_.html
 describe 'Dependency expectations' do
+  before do
+    @file_fixtures_path = File.expand_path(File.dirname(__FILE__) + '/fixtures/files/')
+  end
+
   describe Logger do
     # Depending on the situation, `Logger` might have been overwritten to have a different interface.  (I'm looking at you, Rails.)
     it 'logs with the expected interface' do
@@ -20,6 +25,16 @@ describe 'Dependency expectations' do
       logger.info('my message')
       logger.formatter = lambda { |_, _, _, msg| msg }
       io.string.should match(/my message/)
+    end
+  end
+
+  describe MIME::Types do
+    it 'reports media types and sub types when given a path' do
+      types = MIME::Types.type_for('anything.jpg')
+      types.length.should == 1
+      type = types[0]
+      type.media_type.should == 'image'
+      type.sub_type.should == 'jpeg'
     end
   end
 
@@ -62,10 +77,6 @@ describe 'Dependency expectations' do
   end
 
   describe Zip::ZipFile do
-    before do
-      @file_fixtures_path = File.expand_path(File.dirname(__FILE__) + '/fixtures/files/')
-    end
-
     it 'makes entries available with foreach' do
       Zip::ZipFile.foreach("#@file_fixtures_path/foo.zip").map { |entry| entry.name }.sort.
         should == %w(README.txt foo.exe subdir/anything.txt)

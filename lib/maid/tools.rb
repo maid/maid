@@ -3,6 +3,7 @@ require 'find'
 require 'fileutils'
 require 'time'
 
+require 'mime/types'
 require 'zip/zip'
 
 # These "tools" are methods available in the Maid DSL.
@@ -265,9 +266,7 @@ module Maid::Tools
   #
   #     downloaded_from('foo.zip') # => ['http://www.site.com/foo.zip', 'http://www.site.com/']
   def downloaded_from(path)
-    raw = cmd("mdls -raw -name kMDItemWhereFroms #{ sh_escape(path) }")
-    clean = raw[1, raw.length - 2]
-    clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
+    mdls_to_array(path, 'kMDItemWhereFroms')
   end
 
   # Find all duplicate files in the given globs.
@@ -476,6 +475,75 @@ module Maid::Tools
     log("Fired sync from #{ sh_escape(from) } to #{ sh_escape(to) }.  STDOUT:\n\n#{ stdout }")
   end
 
+  # [Mac OS X] Use Spotlight metadata to determine which content types a file has.
+  #
+  # ## Examples
+  #
+  #     spotlight_content_types('foo.zip') # => ['public.zip-archive', 'public.archive']
+  def spotlight_content_types(path)
+    mdls_to_array(path, 'kMDItemContentTypeTree')
+  end
+
+  # Get the content types of a path.
+  #
+  # Content types can be MIME types, Internet media types or Spotlight content types (OS X only).
+  #
+  # ## Examples
+  #
+  #     content_types('foo.zip') # => ["public.zip-archive", "com.pkware.zip-archive", "public.archive", "application/zip", "application"]
+  #     content_types('bar.jpg') # => ["public.jpeg", "public.image", "image/jpeg", "image"]
+  def content_types(path)
+    [spotlight_content_types(path), mime_type(path), media_type(path)].flatten
+  end
+
+  # Get the MIME type of the file.
+  #
+  # ## Examples
+  #
+  #     mime_type('bar.jpg') # => "image/jpeg"
+  def mime_type(path)
+    type = MIME::Types.type_for(path)[0]
+    [type.media_type, type.sub_type].join('/')
+  end
+
+  # Get the Internet media type of the file.
+  #
+  # In other words, the first part of `mime_type`.
+  #
+  # ## Examples
+  #
+  #     media_type('bar.jpg') # => "image"
+  def media_type(path)
+    MIME::Types.type_for(path)[0].media_type
+  end
+
+  # Filter an array by content types.
+  #
+  # Content types can be MIME types, internet media types or Spotlight content types (OS X only).
+  #
+  # If you need your rules to work on multiple platforms, it's recommended to avoid using Spotlight content types.
+  #
+  # ## Examples
+  #
+  # ### Using media types
+  #
+  #     where_content_type(dir('~/Downloads/*'), 'video')
+  #     where_content_type(dir('~/Downloads/*'), ['image', 'audio'])
+  #
+  # ### Using MIME types
+  #
+  #     where_content_type(dir('~/Downloads/*'), 'image/jpeg')
+  #
+  # ### Using Spotlight content types
+  # 
+  # Less portable, but richer data in some cases.
+  #
+  #     where_content_type(dir('~/Downloads/*'), 'public.image')
+  def where_content_type(paths, filter_types)
+    filter_types = Array(filter_types)
+    Array(paths).select { |p| !(filter_types & content_types(p)).empty? }
+  end
+
   private
 
   def sh_escape(array)
@@ -496,5 +564,13 @@ module Maid::Tools
 
   def expand_all(paths)
     Array(paths).map { |path| expand(path) }
+  end
+
+  def mdls_to_array(path, attribute)
+    return [] unless Maid::Platform.osx?
+    raw = cmd("mdls -raw -name #{attribute} #{ sh_escape(path) }")
+    return [] if raw.empty?
+    clean = raw[1, raw.length - 2]
+    clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
   end
 end

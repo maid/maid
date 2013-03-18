@@ -305,6 +305,10 @@ module Maid
     end
 
     describe '#downloaded_from' do
+      before do
+        Platform.stub(:osx?) { true }
+      end
+
       it 'should determine the download site' do
         @maid.should_receive(:cmd).and_return(%((\n    "http://www.site.com/foo.zip",\n"http://www.site.com/"\n)))
         @maid.downloaded_from('foo.zip').should == ['http://www.site.com/foo.zip', 'http://www.site.com/']
@@ -463,6 +467,8 @@ module Maid
 
   describe Tools, :fakefs => false do
     let(:file_fixtures_path) { File.expand_path(File.dirname(__FILE__) + '../../../fixtures/files/') }
+    let(:file_fixtures_glob) { "#{ file_fixtures_path }/*" }
+    let(:image_path) { File.join(file_fixtures_path, 'ruby.jpg') }
 
     before do
       @logger = double('Logger').as_null_object
@@ -471,13 +477,38 @@ module Maid
 
     describe '#dupes_in' do
       it 'should list duplicate files in arrays' do
-        glob = "#{ file_fixtures_path }/*"
-
-        dupes = @maid.dupes_in(glob)
+        dupes = @maid.dupes_in(file_fixtures_glob)
         dupes.first.should be_kind_of(Array)
 
         basenames = dupes.flatten.map { |p| File.basename(p) }
         basenames.should == %w(bar.zip foo.zip)
+      end
+    end
+
+    describe '#mime_type' do
+      context 'given a JPEG image' do
+        it 'reports "image/jpeg"' do
+          @maid.mime_type(image_path).should == 'image/jpeg'
+        end
+      end
+    end
+
+    describe '#media_type' do
+      context 'given a JPEG image' do
+        it 'reports "image"' do
+          @maid.media_type(image_path).should == 'image'
+        end
+      end
+    end
+
+    describe '#where_content_type' do
+      context 'given "image"' do
+        it 'only lists the fixture JPEG' do
+          matches = @maid.where_content_type(@maid.dir(file_fixtures_glob), 'image')
+
+          matches.length.should == 1
+          matches.first.should end_with('spec/fixtures/files/ruby.jpg')
+        end
       end
     end
   end
