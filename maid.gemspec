@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path('../lib', __FILE__)
 require 'maid/version'
-require 'maid/platform'
 
 Gem::Specification.new do |s|
   s.name        = 'maid'
