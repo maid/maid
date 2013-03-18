@@ -492,7 +492,9 @@ module Maid::Tools
   #     content_types('foo.zip') # => ["public.zip-archive", "com.pkware.zip-archive", "public.archive", "application/zip", "application"]
   #     content_types('bar.jpg') # => ["public.jpeg", "public.image", "image/jpeg", "image"]
   def content_types(path)
-    spotlight_content_types(path) << mime_type(path) << media_type(path)
+    [spotlight_content_types(path),
+     mime_type(path),
+     media_type(path)].flatten
   end
 
   # Get the MIME type of the file.
