@@ -305,6 +305,10 @@ module Maid
     end
 
     describe '#downloaded_from' do
+      before do
+        Platform.stub(:osx?) { true }
+      end
+
       it 'should determine the download site' do
         @maid.should_receive(:cmd).and_return(%((\n    "http://www.site.com/foo.zip",\n"http://www.site.com/"\n)))
         @maid.downloaded_from('foo.zip').should == ['http://www.site.com/foo.zip', 'http://www.site.com/']
