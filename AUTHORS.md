@@ -8,4 +8,5 @@ In alphabetical order:
 * Lewis O'Driscoll (@loddy1234)
 * Lloyd Philbrook (@phoolish)
 * Mark Jaquith (@markjaquith)
+* Mikael Hultgren (@blomma)
 * Mu Ye (@yemutex)
