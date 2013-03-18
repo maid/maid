@@ -16,26 +16,29 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = 'maid'
 
-  s.add_dependency('thor', '~> 0.16.0')
-  s.add_dependency('deprecated', '~> 3.0.1')
-  s.add_dependency('ohai', '~> 6.14.0')
-  s.add_dependency('xdg', '~> 2.2.3')
-  s.add_development_dependency('fakefs', '~> 0.4.1')
-  s.add_development_dependency('guard', '~> 1.5.4')
-  s.add_development_dependency('guard-rspec', '~> 2.3.0')
-  s.add_development_dependency('rb-readline', '~> 0.4.2') # To get guard file change detection working properly
-  s.add_development_dependency('rake', '~> 10.0.2')
+  # Strategy: if possible, use ranges (so there are fewer chances of version conflicts)
+  s.add_dependency('escape', '>= 0.0.1', '< 0.1.0') # Used for better Ruby 1.8.7 support
+  s.add_dependency('thor', '>= 0.14.0', '< 0.18.0')
+  s.add_dependency('deprecated', '~> 3.0.0')
+  s.add_dependency('ohai', '>= 6.14.0', '< 6.17.0')
+  s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs
+
+  # Strategy: specific versions (since they're just for development)
+  s.add_development_dependency('fakefs', '~> 0.4.2')
+  s.add_development_dependency('guard', '~> 1.6.2')
+  s.add_development_dependency('guard-rspec', '~> 2.4.0')
+  s.add_development_dependency('rake', '~> 10.0.3')
   s.add_development_dependency('redcarpet', '~> 2.2.2') # Soft dependency of `yard`
   s.add_development_dependency('rspec', '~> 2.12.0')
-  s.add_development_dependency('timecop', '~> 0.5.3')
-  s.add_development_dependency('yard', '~> 0.8.3')
+  s.add_development_dependency('timecop', '~> 0.5.9.1')
+  s.add_development_dependency('yard', '~> 0.8.4')
 
   # In Vagrant, polling won't cross over the OS boundary if you develop in the host OS but run your tests in the
   # guest.  One way around this is to force polling instead:
   #
   #     bundle exec guard --force-polling
   #
-  s.add_development_dependency('rb-inotify', '~> 0.8.8')
+  s.add_development_dependency('rb-inotify', '~> 0.9.0')
   s.add_development_dependency('rb-fsevent', '~> 0.9.2')
 
   s.files         = `git ls-files`.split("\n")
