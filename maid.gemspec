@@ -20,9 +20,14 @@ Gem::Specification.new do |s|
   s.add_dependency('escape', '>= 0.0.1', '< 0.1.0') # Used for better Ruby 1.8.7 support
   s.add_dependency('thor', '>= 0.14.0', '< 0.18.0')
   s.add_dependency('deprecated', '~> 3.0.0')
+  s.add_dependency('mime-types', '~> 1.21')
   s.add_dependency('ohai', '>= 6.14.0', '< 6.17.0')
   s.add_dependency('rubyzip', '>= 0.5.7', '< 0.10.0')
   s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs
+  # TODO: use one of these two gems instead of `mdfind`.  **But** They have to work on Linux as well.
+  #
+  #     s.add_dependency('mac-spotlight', '~> 0.0.4')
+  #     s.add_dependency('spotlight', '~> 0.0.6')
 
   # Strategy: specific versions (since they're just for development)
   s.add_development_dependency('fakefs', '~> 0.4.2')
