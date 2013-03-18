@@ -3,6 +3,7 @@ require 'find'
 require 'fileutils'
 require 'time'
 
+require 'mime/types'
 require 'zip/zip'
 
 # These "tools" are methods available in the Maid DSL.
@@ -501,18 +502,19 @@ module Maid::Tools
   #
   #     mime_type('bar.jpg') # => "image/jpeg"
   def mime_type(path)
-    cmd("file -b --mime-type #{ sh_escape(path) }").strip
+    type = MIME::Types.type_for(path)[0]
+    [type.media_type, type.sub_type].join('/')
   end
 
   # Get the Internet media type of the file.
   #
-  # In other words, the first part of the MIME type.
+  # In other words, the first part of `mime_type`.
   #
   # ## Examples
   #
   #     media_type('bar.jpg') # => "image"
   def media_type(path)
-    mime_type(path).split('/').first
+    MIME::Types.type_for(path)[0].media_type
   end
 
   # Filter a directory by content types.
