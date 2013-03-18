@@ -41,13 +41,6 @@ module Maid
         @maid.move(@src_file, @dst_dir)
       end
 
-      it 'should not move if the target already exists' do
-        FileUtils.touch(@dst_dir + @file_name)
-        @logger.should_receive(:warn)
-
-        @maid.move(@src_file, @dst_dir)
-      end
-
       it 'should handle multiple from paths' do
         second_src_file = @src_dir + (second_file_name = 'bar.zip')
         FileUtils.touch(second_src_file)
@@ -56,6 +49,15 @@ module Maid
         @maid.move(src_files, @dst_dir)
         File.exist?(@dst_dir + @file_name).should be_true
         File.exist?(@dst_dir + second_file_name).should be_true
+      end
+
+      context 'given the target already exists' do
+        it 'should not move' do
+          FileUtils.touch(@dst_dir + @file_name)
+          @logger.should_receive(:warn)
+
+          @maid.move(@src_file, @dst_dir)
+        end
       end
     end
 
