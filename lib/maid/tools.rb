@@ -483,9 +483,9 @@ module Maid::Tools
     mdls_to_array(path, 'kMDItemContentTypeTree')
   end
 
-  # Get the content_types of a path
+  # Get the content types of a path.
   #
-  # Content types can be MIME types, internet media types or spotlight content types (OS X only)
+  # Content types can be MIME types, Internet media types or Spotlight content types (OS X only).
   #
   # ## Examples
   #
@@ -495,7 +495,7 @@ module Maid::Tools
     spotlight_content_types(path) << mime_type(path) << media_type(path)
   end
 
-  # Get the MIME type of the file
+  # Get the MIME type of the file.
   #
   # ## Examples
   #
@@ -504,9 +504,9 @@ module Maid::Tools
     cmd("file -b --mime-type #{ sh_escape(path) }").strip
   end
 
-  # Get the iternet media type of the file
+  # Get the Internet media type of the file.
   #
-  # The first part of the MIME type
+  # In other words, the first part of the MIME type.
   #
   # ## Examples
   #
@@ -515,17 +515,31 @@ module Maid::Tools
     mime_type(path).split('/').first
   end
 
-  # Filter a directory by content_types
+  # Filter a directory by content types.
   #
-  # Content types can be MIME types, internet media types or spotlight content types (OS X only)
+  # Content types can be MIME types, internet media types or Spotlight content types (OS X only).
+  #
+  # If you need your rules to work on multiple platforms, it's recommended to avoid using Spotlight content types.
   #
   # ## Examples
   #
+  # ### Using media types
+  #
+  #     filter_by_content_type(dir('~/Downloads/*'), 'video')
   #     filter_by_content_type(dir('~/Downloads/*'), ['image', 'audio'])
-  #     filter_by_content_type(dir('~/Downloads/*'), public.image)
+  #
+  # ### Using MIME types
+  #
+  #     filter_by_content_type(dir('~/Downloads/*'), 'image/jpeg')
+  #
+  # ### Using Spotlight content types
+  # 
+  # Less portable, but richer data in some cases.
+  #
+  #     filter_by_content_type(dir('~/Downloads/*'), 'public.image')
   def filter_by_content_type(paths, filter_types)
     filter_types = Array(filter_types)
-    paths.select { |p| !(filter_types & content_types(p)).empty? }
+    Array(paths).select { |p| !(filter_types & content_types(p)).empty? }
   end
 
   private
