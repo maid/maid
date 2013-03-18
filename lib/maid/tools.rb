@@ -33,13 +33,11 @@ module Maid::Tools
     destination = expand(destination)
 
     expand_all(sources).each do |source|
-      target = File.join(destination, File.basename(source))
-
-      unless File.exist?(target)
+      if File.exist?(destination)
+        warn("skipping #{ sh_escape(source) } because #{ sh_escape(destination) } already exists")
+      else
         log("mv #{ sh_escape(source) } #{ sh_escape(destination) }")
         FileUtils.mv(source, destination, @file_options)
-      else
-        warn("skipping #{ sh_escape(source) } because #{ sh_escape(target) } already exists")
       end
     end
   end

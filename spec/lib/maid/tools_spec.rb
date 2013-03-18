@@ -52,11 +52,32 @@ module Maid
       end
 
       context 'given the target already exists' do
-        it 'should not move' do
+        before do
           FileUtils.touch(@dst_dir + @file_name)
+        end
+
+        it 'should not move' do
           @logger.should_receive(:warn)
 
           @maid.move(@src_file, @dst_dir)
+        end
+      end
+
+      context 'given the destination directory does not exist' do
+        before do
+          FileUtils.rmdir(@dst_dir)
+        end
+
+        it 'should not overwrite when moving' do
+          FileUtils.should_receive(:mv).once
+          @logger.should_receive(:warn).once
+
+          @maid.move(@src_file, @dst_dir)
+
+          another_file = "#@src_file.1"
+          # FakeFS isn't taking care of this, but this should be the case.
+          File.stub(:exist?) { true }
+          @maid.move(another_file, @dst_dir)
         end
       end
     end
