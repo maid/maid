@@ -8,8 +8,6 @@ module Maid
   #
   # * [FakeFS](https://github.com/defunkt/fakefs)
   describe Tools, :fakefs => true do
-    let(:file_fixtures_path) { File.expand_path(File.dirname(__FILE__) + '../../../fixtures/files/') }
-
     before do
       @home = File.expand_path('~')
       @now = Time.now
@@ -409,26 +407,6 @@ module Maid
       end
     end
 
-    describe '#dupes_in' do
-      before do
-        FakeFS.deactivate!
-      end
-
-      after do
-        FakeFS.activate!
-      end
-
-      it 'should list duplicate files in arrays' do
-        glob = "#{ file_fixtures_path }/*"
-
-        dupes = @maid.dupes_in(glob)
-        dupes.first.should be_kind_of(Array)
-
-        basenames = dupes.flatten.map { |p| File.basename(p) }
-        basenames.should == %w(bar.zip foo.zip)
-      end
-    end
-
     describe '#git_piston' do
       it 'is deprecated' do
         @maid.should have_deprecated_method(:git_piston)
@@ -479,6 +457,27 @@ module Maid
         @maid.file_options[:noop] = true
         @maid.should_receive(:cmd).with(%(rsync -a -u -n #@home/Downloads/ #@home/Reference 2>&1))
         @maid.sync(@src_dir, @dst_dir)
+      end
+    end
+  end
+
+  describe Tools, :fakefs => false do
+    let(:file_fixtures_path) { File.expand_path(File.dirname(__FILE__) + '../../../fixtures/files/') }
+
+    before do
+      @logger = double('Logger').as_null_object
+      @maid = Maid.new(:logger => @logger)
+    end
+
+    describe '#dupes_in' do
+      it 'should list duplicate files in arrays' do
+        glob = "#{ file_fixtures_path }/*"
+
+        dupes = @maid.dupes_in(glob)
+        dupes.first.should be_kind_of(Array)
+
+        basenames = dupes.flatten.map { |p| File.basename(p) }
+        basenames.should == %w(bar.zip foo.zip)
       end
     end
   end
