@@ -501,7 +501,7 @@ module Maid::Tools
   #
   #     mime_type('bar.jpg') # => "image/jpeg"
   def mime_type(path)
-    cmd("file -b --mime-type #{ path.inspect }").strip
+    cmd("file -b --mime-type #{ sh_escape(path) }").strip
   end
 
   # Get the iternet media type of the file
