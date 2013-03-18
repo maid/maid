@@ -400,14 +400,14 @@ module Maid
       end
     end
 
-    describe '#checksum_for' do
+    describe '#checksum_of' do
       before do
         @file = '~/test.txt'
       end
 
-      it 'should return the checksum for the file' do
+      it 'should return the checksum of the file' do
         File.should_receive(:read).with(@file).and_return('contents')
-        @maid.checksum_for(@file).should == Digest::MD5.hexdigest('contents')
+        @maid.checksum_of(@file).should == Digest::MD5.hexdigest('contents')
       end
     end
 

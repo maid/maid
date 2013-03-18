@@ -301,7 +301,7 @@ module Maid::Tools
       reject { |s, p| p.length < 2 }.       # ... and filter out any non-dupes
       map do |size, candidates|
         dupes += candidates.
-          group_by { |p| checksum_for(p) }. # Now group our candidates by a slower checksum calculation
+          group_by { |p| checksum_of(p) }. # Now group our candidates by a slower checksum calculation
           reject { |c, p| p.length < 2 }.   # ... and filter out any non-dupes
           values
       end
@@ -401,8 +401,8 @@ module Maid::Tools
   #
   # ## Examples
   #
-  #     checksum_for('foo.zip') # => "ae8dbb203dfd560158083e5de90969c2"
-  def checksum_for(path)
+  #     checksum_of('foo.zip') # => "ae8dbb203dfd560158083e5de90969c2"
+  def checksum_of(path)
     Digest::MD5.hexdigest(File.read(path))
   end
 
