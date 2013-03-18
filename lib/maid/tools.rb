@@ -517,7 +517,7 @@ module Maid::Tools
     MIME::Types.type_for(path)[0].media_type
   end
 
-  # Filter a directory by content types.
+  # Filter an array by content types.
   #
   # Content types can be MIME types, internet media types or Spotlight content types (OS X only).
   #
@@ -527,19 +527,19 @@ module Maid::Tools
   #
   # ### Using media types
   #
-  #     filter_by_content_type(dir('~/Downloads/*'), 'video')
-  #     filter_by_content_type(dir('~/Downloads/*'), ['image', 'audio'])
+  #     where_content_type(dir('~/Downloads/*'), 'video')
+  #     where_content_type(dir('~/Downloads/*'), ['image', 'audio'])
   #
   # ### Using MIME types
   #
-  #     filter_by_content_type(dir('~/Downloads/*'), 'image/jpeg')
+  #     where_content_type(dir('~/Downloads/*'), 'image/jpeg')
   #
   # ### Using Spotlight content types
   # 
   # Less portable, but richer data in some cases.
   #
-  #     filter_by_content_type(dir('~/Downloads/*'), 'public.image')
-  def filter_by_content_type(paths, filter_types)
+  #     where_content_type(dir('~/Downloads/*'), 'public.image')
+  def where_content_type(paths, filter_types)
     filter_types = Array(filter_types)
     Array(paths).select { |p| !(filter_types & content_types(p)).empty? }
   end

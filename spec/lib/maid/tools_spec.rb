@@ -501,10 +501,10 @@ module Maid
       end
     end
 
-    describe '#filter_by_content_type' do
+    describe '#where_content_type' do
       context 'given "image"' do
         it 'only lists the fixture JPEG' do
-          matches = @maid.filter_by_content_type(@maid.dir(file_fixtures_glob), 'image')
+          matches = @maid.where_content_type(@maid.dir(file_fixtures_glob), 'image')
 
           matches.length.should == 1
           matches.first.should end_with('spec/fixtures/files/ruby.jpg')
