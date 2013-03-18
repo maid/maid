@@ -250,7 +250,7 @@ module Maid::Tools
 
   # [Mac OS X] Use Spotlight to locate all files matching the given filename.
   #
-  # [Ubuntu] Not currently supported.  See [issue #67](https://github.com/benjaminoakes/maid/issues/67).
+  # [Ubuntu] Use `locate` to locate all files matching the given filename.
   #
   # ## Examples
   #
