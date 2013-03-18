@@ -524,7 +524,7 @@ module Maid::Tools
   #     filter_by_content_type(dir('~/Downloads/*'), ['image', 'audio'])
   #     filter_by_content_type(dir('~/Downloads/*'), public.image)
   def filter_by_content_type(paths, filter_types)
-    filter_types = filter_types.is_a?(Array) ? filter_types : [filter_types] 
+    filter_types = Array(filter_types)
     paths.select { |p| !(filter_types & content_types(p)).empty? }
   end
 
