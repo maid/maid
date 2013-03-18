@@ -142,7 +142,7 @@ module Maid
       end
 
       it 'should handle multiple paths' do
-        second_src_file = @src_dir + (second_file_name = 'bar.zip')
+        second_src_file = "#@src_dir/bar.zip"
         FileUtils.touch(second_src_file)
         @src_files = [@src_file, second_src_file]
 
