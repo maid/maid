@@ -140,17 +140,19 @@ maid (0.1.3.beta.1) unstable; urgency=low
   * Started official support for Ubuntu.
   * Fixed default trash path on Ubuntu (and possibly other Linux
     distributions). (Closes: #6)
-  * Added ability to handle an array of filenames passed to "move", "trash". (Closes:
-    #16)
-  * Added "remove" tool for deleting files, and secure deletion. (Closes: #30)
-  * Added "remove_over" option for "trash" which can delete files if they're
-    over a size threshold. (Closes: #32)
-  * Added "sync" tool for using rsync. (Closes: #17)
-  * Added "mkdir" tool for making directories ("folders"). (Closes: #20)
+  * Lloyd Philbrook: Added ability to handle an array of filenames passed to
+    "move", "trash". (Closes: #16)
+  * Lloyd Philbrook: Added "remove" tool for deleting files, and secure deletion.
+    (Closes: #30)
+  * Lloyd Philbrook: Added "remove_over" option for "trash" which can delete
+    files if they're over a size threshold. (Closes: #32)
+  * Lloyd Philbrook: Added "sync" tool for using rsync. (Closes: #17)
+  * Larry Lv: Added "mkdir" tool for making directories ("folders"). (Closes: #20)
+  * Larry Lv: The "find" tool acts like "dir" when no block is given. (Closes: #27)
   * Added "created_at" tool for looking up creation time. (Closes: #21)
   * Added "modified_at" tool for looking up modification time. (Closes: #13)
-  * Renamed "last_accessed" to "accessed_at", deprecated "last_accessed".
-    (Closes: #22)
+  * Lloyd Philbrook: Renamed "last_accessed" to "accessed_at", deprecated
+    "last_accessed".  (Closes: #22)
   * Deprecated "git_piston" in favor of SparkleShare. (Closes: #18)
   * Updated README and samples. (Closes: #38)
   * Updated dependencies. (Closes: #5)
