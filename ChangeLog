@@ -1,26 +1,27 @@
-maid (TODO) unstable; urgency=low
+maid (v0.3.0) unstable; urgency=low
 
   * (Work in progress)
-  * Given behavior changes, v0.2.3 is becoming v0.3.0 per semver.
   * Mu Ye: Require option to cause real cleaning to take place (Closes: #78)
   * Graham Siener: Add UTF-8 support for zipfile_contents tool (Closes: #35)
   * Justin Hileman: Add ability to list duplicate files (Closes: #15)
   * Mikael Hultgren: Rotate log file
   * John Colvin: Add filetype detection and filtering (Closes: #51)
-
- -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
-
-maid (0.2.3.alpha.1) unstable; urgency=low
-
-  * Stats!  { 'collaborators' => 13, 'downloads' => 5283, 'forks' => 37,
-    'open_issues' => 34, 'closed_issues' => 63, 'stars' => 661,
-    'users_sharing_rules' => 19 }
   * Mu Ye: Improve command line spec coverage (Closes: #97)
   * Changed from ArgumentError to NotImplementedError when a command is
     unsupported on the host OS.
   * Bradley Smith: Add locate support on Ubuntu (Closes: #67)
+  * NOTE: A previous alpha of v0.3.0 was released as v0.2.3.alpha.1. 
 
- -- Benjamin Oakes <hello@benjaminoakes.com>  Fri, 8 Mar 2013 00:00:00 +0000
+ -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
+
+maid (0.2.3) unstable; urgency=high
+
+  * (Work in progress)
+  * Only allow "move" to move to existing directories.  Renaming files
+    can be accomplished with the new "rename" tool.  This fixes a bug in
+    overwrite warnings.  (Closes: #87)
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
 maid (0.2.2) stable; urgency=high
 
