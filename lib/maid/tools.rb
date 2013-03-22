@@ -15,9 +15,9 @@ module Maid::Tools
   # For showing deprecation notices
   include Deprecated
 
-  # Move from `sources` to `destination`
+  # Move `sources` to a `destination` directory.
   #
-  # The path is not moved if a file already exists at the destination with the same name.  A warning is logged instead.
+  # Movement is only allowed to directories that already exist.  If your intention is to rename, see the `rename` method.
   #
   # ## Examples
   #
@@ -32,13 +32,47 @@ module Maid::Tools
   def move(sources, destination)
     destination = expand(destination)
 
-    expand_all(sources).each do |source|
-      if File.exist?(destination)
-        warn("skipping #{ sh_escape(source) } because #{ sh_escape(destination) } already exists")
-      else
-        log("mv #{ sh_escape(source) } #{ sh_escape(destination) }")
+    if File.directory?(destination)
+      expand_all(sources).each do |source|
+        log("move #{ sh_escape(source) } #{ sh_escape(destination) }")
         FileUtils.mv(source, destination, @file_options)
       end
+    else
+      # Unix `mv` warns about the target not being a directory with multiple sources.  Maid checks the same.
+      warn("skipping move because #{ sh_escape(destination) } is not a directory (use 'mkdir' to create first, or use 'rename')")
+    end
+  end
+
+  # Rename a single file.
+  #
+  # Any directories needed in order to complete the rename are made automatically.
+  #
+  # Overwriting is not allowed; it logs a warning.  If overwriting is desired, use `remove` to delete the file first, then use `rename`.
+  #
+  # ## Examples
+  #
+  # Simple rename:
+  #
+  #     rename('foo.zip', 'baz.zip') # "foo.zip" becomes "baz.zip"
+  #
+  # Rename needing directories:
+  #
+  #     rename('foo.zip', 'bar/baz.zip') # "bar" is created, "foo.zip" becomes "baz.zip" within "bar"
+  #
+  # Attempting to overwrite:
+  #
+  #     rename('foo.zip', 'existing.zip') # "skipping move of..."
+  def rename(source, destination)
+    source = expand(source)
+    destination = expand(destination)
+
+    mkdir(File.dirname(destination))
+
+    if File.exist?(destination)
+      warn("skipping rename of #{ sh_escape(source) } to #{ sh_escape(destination) } because it would overwrite")
+    else
+      log("rename #{ sh_escape(source) } #{ sh_escape(destination) }")
+      FileUtils.mv(source, destination, @file_options)
     end
   end
 
@@ -97,7 +131,7 @@ module Maid::Tools
 
       if File.exist?(path)
         if File.exist?(target)
-          move(path, safe_trash_path)
+          rename(path, safe_trash_path)
         else
           move(path, @trash_path)
         end
