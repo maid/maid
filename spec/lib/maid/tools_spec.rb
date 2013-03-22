@@ -41,13 +41,6 @@ module Maid
         @maid.move(@src_file, @dst_dir)
       end
 
-      it 'should not move if the target already exists' do
-        FileUtils.touch(@dst_dir + @file_name)
-        @logger.should_receive(:warn)
-
-        @maid.move(@src_file, @dst_dir)
-      end
-
       it 'should handle multiple from paths' do
         second_src_file = @src_dir + (second_file_name = 'bar.zip')
         FileUtils.touch(second_src_file)
@@ -56,6 +49,60 @@ module Maid
         @maid.move(src_files, @dst_dir)
         File.exist?(@dst_dir + @file_name).should be_true
         File.exist?(@dst_dir + second_file_name).should be_true
+      end
+
+      context 'given the destination directory does not exist' do
+        before do
+          FileUtils.rmdir(@dst_dir)
+        end
+
+        it 'does not overwrite when moving' do
+          FileUtils.should_not_receive(:mv)
+          @logger.should_receive(:warn).once
+
+          another_file = "#@src_file.1"
+          @maid.move([@src_file, another_file], @dst_dir)
+        end
+      end
+    end
+
+    describe '#rename' do
+      before do
+        @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
+        FileUtils.mkdir_p(@src_dir)
+        FileUtils.touch(@src_file)
+        @expanded_src_name = "#@home/Source/foo.zip"
+
+        @dst_name = '~/Destination/bar.zip'
+        @expanded_dst_dir = "#@home/Destination/"
+        @expanded_dst_name = "#@home/Destination/bar.zip"
+      end
+
+      it 'creates needed directories' do
+        File.directory?(@expanded_dst_dir).should be_false
+        @maid.rename(@src_file, @dst_name)
+        File.directory?(@expanded_dst_dir).should be_true
+      end
+
+      it 'moves the file from the source to the destination' do
+        File.exists?(@expanded_src_name).should be_true
+        File.exists?(@expanded_dst_name).should be_false
+        @maid.rename(@src_file, @dst_name)
+        File.exists?(@expanded_src_name).should be_false
+        File.exists?(@expanded_dst_name).should be_true
+      end
+
+      context 'given the target already exists' do
+        before do
+          FileUtils.mkdir_p(@expanded_dst_dir)
+          FileUtils.touch(@expanded_dst_name)
+        end
+
+        it 'does not move' do
+          @logger.should_receive(:warn)
+
+          @maid.rename(@src_file, @dst_name)
+        end
       end
     end
 
