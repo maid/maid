@@ -1,4 +1,4 @@
-maid (v0.3.0) unstable; urgency=low
+maid (0.3.0) unstable; urgency=low
 
   * (Work in progress)
   * Mu Ye: Require option to cause real cleaning to take place (Closes: #78)
@@ -29,21 +29,12 @@ maid (0.2.2) stable; urgency=high
     'open_issues' => 35, 'closed_issues' => 60, 'stars' => 654,
     'users_sharing_rules' => 19 }
   * "urgency=high" because of security related change in #70
-  * Includes all changes since the 0.2.1 release
-
- -- Benjamin Oakes <hello@benjaminoakes.com>  Wed, 27 Feb 2013 00:00:00 +0000
-
-maid (0.2.2.beta.1) unstable; urgency=low
-
-  * Stats!  { 'collaborators' => 11, 'downloads' => 4788, 'forks' => 36,
-    'open_issues' => 36, 'closed_issues' => 59, 'stars' => 649,
-    'users_sharing_rules' => 18 }
   * Added better documentation (Closes: #91)
   * Safely escape shell commands (Closes: #70)
   * Made gem version dependencies less strict
   * Started experimental Ruby 2.0 support
 
- -- Benjamin Oakes <hello@benjaminoakes.com>  Sun, 17 Feb 2013 00:00:00 +0000
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Wed, 27 Feb 2013 00:00:00 +0000
 
 maid (0.2.1) stable; urgency=low
 
@@ -54,92 +45,31 @@ maid (0.2.1) stable; urgency=low
 
 maid (0.2.0) stable; urgency=low
 
-  * Includes all changes since the 0.1.3 release (including the short lived
-    0.1.4 version).  See below for details.
-
- -- Benjamin Oakes <hello@benjaminoakes.com>  Tue, 25 Dec 2012 00:00:00 +0000
-
-maid (0.2.0.rc.2) unstable; urgency=low
-
-  * Change "maid --version" to be the same as "maid version"
-
- -- Benjamin Oakes <hello@benjaminoakes.com>  Mon, 24 Dec 2012 00:00:00 +0000
-
-maid (0.2.0.rc.1) unstable; urgency=low
-
-  * More documentation for "dir".
-
- -- Benjamin Oakes <hello@benjaminoakes.com>  Wed, 19 Dec 2012 00:00:00 +0000
-
-maid (0.2.0.beta.3) unstable; urgency=low
-
-  * Use newly released "xdg" instead of custom "maid-xdg" dependency. (The new
-    release was found after Beta 2 was released.)
-
- -- Benjamin Oakes <hello@benjaminoakes.com>  Mon, 17 Dec 2012 00:00:00 +0000
-
-maid (0.2.0.beta.2) unstable; urgency=low
-
+  * Started semver.org-like version numbering.
+  * Improved user documentation, now in Markdown.  (Closes: #66)
   * Add more documentation to "find" and "remove" (Closes: #74)
-  * Lewis O'Driscoll: Add logging to "mkdir" (Closes: #75, #77)
-  * Updated README to include Hacker News post
-  * Updated AUTHORS to include new contributors
-  * Various development improvements
-
- -- Benjamin Oakes <hello@benjaminoakes.com>  Sun, 16 Dec 2012 00:00:00 +0000
-
-maid (0.2.0.beta.1) unstable; urgency=low
-
+  * Add more documentation for "dir".
   * Change "dir" to allow multiple paths (Closes: #64)
-  * Change "mkdir" to return the path of the created directory (Closes: #69)
-  * Various development improvements
-
- -- Benjamin Oakes <hello@benjaminoakes.com>  Sun, 2 Dec 2012 00:00:00 +0000
-
-maid (0.2.0.alpha.1) unstable; urgency=low
-
-  * Started semver.org-like version numbering.  Total adoption is
-    forthcoming.  This forced v0.2.0 vs. v0.1.4.
   * Changed "dir" tool to always sort. (Closes: #62)
+  * Lewis O'Driscoll: Add logging to "mkdir" (Closes: #75, #77)
+  * Change "mkdir" to return the path of the created directory (Closes: #69)
+  * Use newly released "xdg" instead of custom "maid-xdg" dependency.
+  * Change "maid --version" to be the same as "maid version"
   * Added "version --long" ("-l") command which gives information about the platform
     version and Ruby version. (Closes: #65)
-  * Improved user documentation, now in Markdown.  (Closes: #66)
   * Updated development dependencies.
-  * Various minor internal changes.
-
- -- Benjamin Oakes <hello@benjaminoakes.com>  Tue, 27 Nov 2012 00:00:00 +0000
-
-maid (0.1.4.alpha.2) unstable; urgency=low
-
+  * Updated README to include Hacker News post
+  * Updated AUTHORS to include new contributors
   * Noted license in gemspec.  Was incorrect value in alpha.1. Made an early
     alpha release to test effect on RubyGems.org listing. (Closes: #61)
-  * Minor development-only documentation changes.
+  * Various development improvements
 
- -- Benjamin Oakes <hello@benjaminoakes.com>  Sat, 24 Nov 2012 00:00:00 +0000
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Tue, 25 Dec 2012 00:00:00 +0000
 
 maid (0.1.3) stable; urgency=medium
 
   * Stats!  { 'stars' => 192 }
   * First stable release with official support for Ubuntu.
-  * Added new features, fixed bugs as listed for betas 1 and 2.
-  * Minor development-only changes:
-      * Added ChangeLog (this file)
-      * Updated development dependencies to most recent versions
-      * Scripted testing of supported Ruby and Ubuntu releases
-
- -- Benjamin Oakes <hello@benjaminoakes.com>  Fri, 23 Nov 2012 00:00:00 +0000
-
-maid (0.1.3.beta.2) unstable; urgency=low
-
-  * Fixed "Trash does not expand paths". (Closes: #56)
-  * Fixed "XDG gives a warning about RbConfig vs Config" on Ubuntu by using
-    custom-built maid-xdg gem. (Closes: #53)
-
- -- Benjamin Oakes <hello@benjaminoakes.com>  Wed, 21 Nov 2012 00:00:00 +0000
-
-maid (0.1.3.beta.1) unstable; urgency=low
-
-  * Started official support for Ubuntu.
   * Fixed default trash path on Ubuntu (and possibly other Linux
     distributions). (Closes: #6)
   * Lloyd Philbrook: Added ability to handle an array of filenames passed to
@@ -158,6 +88,13 @@ maid (0.1.3.beta.1) unstable; urgency=low
   * Deprecated "git_piston" in favor of SparkleShare. (Closes: #18)
   * Updated README and samples. (Closes: #38)
   * Updated dependencies. (Closes: #5)
+  * Fixed "Trash does not expand paths". (Closes: #56)
+  * Fixed "XDG gives a warning about RbConfig vs Config" on Ubuntu by using
+    custom-built maid-xdg gem. (Closes: #53)
+  * Minor development-only changes:
+      * Added ChangeLog (this file)
+      * Updated development dependencies to most recent versions
+      * Scripted testing of supported Ruby and Ubuntu releases
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  Mon, 15 Oct 2012 00:00:00 +0000
 
