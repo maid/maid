@@ -1,4 +1,4 @@
-maid (0.2.3.beta.1) unstable; urgency=high
+maid (0.3.0.beta.1) unstable; urgency=high
 
   * Only allow "move" to move to existing directories.  Renaming files
     can be accomplished with the new "rename" tool.  This fixes a bug in
