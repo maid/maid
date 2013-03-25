@@ -1,4 +1,4 @@
-maid (0.3.0) unstable; urgency=low
+maid (0.4.0) unstable; urgency=low
 
   * (Work in progress)
   * NOTE: A previous alpha of v0.3.0 was released as v0.2.3.alpha.1. 
@@ -14,7 +14,7 @@ maid (0.3.0) unstable; urgency=low
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
-maid (0.2.3.beta.1) unstable; urgency=high
+maid (0.3.0.beta.1) unstable; urgency=high
 
   * Only allow "move" to move to existing directories.  Renaming files
     can be accomplished with the new "rename" tool.  This fixes a bug in
