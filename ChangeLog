@@ -1,6 +1,7 @@
 maid (0.3.0) unstable; urgency=low
 
   * (Work in progress)
+  * NOTE: A previous alpha of v0.3.0 was released as v0.2.3.alpha.1. 
   * Mu Ye: Require option to cause real cleaning to take place (Closes: #78)
   * Graham Siener: Add UTF-8 support for zipfile_contents tool (Closes: #35)
   * Justin Hileman: Add ability to list duplicate files (Closes: #15)
@@ -10,18 +11,16 @@ maid (0.3.0) unstable; urgency=low
   * Changed from ArgumentError to NotImplementedError when a command is
     unsupported on the host OS.
   * Bradley Smith: Add locate support on Ubuntu (Closes: #67)
-  * NOTE: A previous alpha of v0.3.0 was released as v0.2.3.alpha.1. 
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
-maid (0.2.3) unstable; urgency=high
+maid (0.2.3.beta.1) unstable; urgency=high
 
-  * (Work in progress)
   * Only allow "move" to move to existing directories.  Renaming files
     can be accomplished with the new "rename" tool.  This fixes a bug in
     overwrite warnings.  (Closes: #87)
 
- -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Sun, 24 Feb 2013 00:00:00 +0000
 
 maid (0.2.2) stable; urgency=high
 
