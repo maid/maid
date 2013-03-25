@@ -1,11 +1,10 @@
-maid (0.2.3) unstable; urgency=high
+maid (0.2.3.beta.1) unstable; urgency=high
 
-  * (Work in progress)
   * Only allow "move" to move to existing directories.  Renaming files
     can be accomplished with the new "rename" tool.  This fixes a bug in
     overwrite warnings.  (Closes: #87)
 
- -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Sun, 24 Feb 2013 00:00:00 +0000
 
 maid (0.2.2) stable; urgency=high
 
