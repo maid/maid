@@ -14,13 +14,16 @@ maid (0.4.0) unstable; urgency=low
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
-maid (0.3.0.beta.1) unstable; urgency=high
+maid (0.3.0) stable; urgency=high
 
+  * Stats!  { 'collaborators' => 11, 'downloads' => 5664, 'forks' => 36,
+    'open_issues' => 29, 'closed_issues' => 73, 'stars' => 672,
+    'users_sharing_rules' => 21 }
   * Only allow "move" to move to existing directories.  Renaming files
     can be accomplished with the new "rename" tool.  This fixes a bug in
     overwrite warnings.  (Closes: #87)
 
- -- Benjamin Oakes <hello@benjaminoakes.com>  Sun, 24 Mar 2013 00:00:00 +0000
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Wed, 03 Apr 2013 00:00:00 +0000
 
 maid (0.2.2) stable; urgency=high
 
