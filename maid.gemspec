@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   # Strategy: if possible, use ranges (so there are fewer chances of version conflicts)
   s.add_dependency('escape', '>= 0.0.1', '< 0.1.0') # Used for better Ruby 1.8.7 support
-  s.add_dependency('thor', '>= 0.14.0', '< 0.18.0')
+  s.add_dependency('thor', '>= 0.14.0', '< 0.19.0')
   s.add_dependency('deprecated', '~> 3.0.0')
   s.add_dependency('mime-types', '~> 1.21') # TODO: loosen version restrictions based on testing
   s.add_dependency('ohai', '>= 6.14.0', '< 6.17.0')
