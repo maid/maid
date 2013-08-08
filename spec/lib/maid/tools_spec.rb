@@ -301,6 +301,12 @@ module Maid
       end
     end
 
+    describe '#escape_glob' do
+      it 'escapes characters that have special meanings in globs' do
+        @maid.escape_glob('test [tmp]').should == 'test \\[tmp\\]'
+      end
+    end
+
     describe '#mkdir' do
       it 'should create a directory successfully' do
         @maid.mkdir('~/Downloads/Music/Pink.Floyd')
