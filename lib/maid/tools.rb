@@ -605,4 +605,15 @@ module Maid::Tools
     clean = raw[1, raw.length - 2]
     clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
   end
+  
+  # Escape characters that have special meaning as a part of path global patterns.
+  #
+  # Useful when using `dir` with file names that may contain `{ } [ ]` characters.
+  # 
+  # ## Example
+  #
+  #     escape_glob('test [tmp]') # => 'test \\[tmp\\]'
+  def escape_glob(s)
+    s.gsub(/[\{\}\[\]]/) { |x| "\\"+x }
+  end
 end
