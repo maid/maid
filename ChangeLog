@@ -11,6 +11,8 @@ maid (0.4.0) unstable; urgency=low
   * Changed from ArgumentError to NotImplementedError when a command is
     unsupported on the host OS.
   * Bradley Smith: Add locate support on Ubuntu (Closes: #67)
+  * Vladimir Agafonkin: Add escape_glob method for escaping brackets in paths
+    that will be passed to dir (Closes: #104)
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 

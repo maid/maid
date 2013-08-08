@@ -11,3 +11,4 @@ In alphabetical order:
 * Mark Jaquith (@markjaquith)
 * Mikael Hultgren (@blomma)
 * Mu Ye (@yemutex)
+* Vladimir Agafonkin (@mourner)
