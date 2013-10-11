@@ -222,3 +222,7 @@ ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
 GPLv2.  See LICENSE for a copy.
 
   [documentation]: http://rubydoc.info/gems/maid/Maid/Tools
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/benjaminoakes/maid/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
