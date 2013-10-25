@@ -48,7 +48,7 @@ module Maid
 
     describe 'performing' do
       before do
-        Logger.stub(:new) { mock('Logger').as_null_object }
+        Logger.stub(:new) { double('Logger').as_null_object }
       end
 
       it 'moves files from the incorrect trash to the correct trash' do

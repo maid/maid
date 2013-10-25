@@ -144,14 +144,14 @@ module Maid
       end
 
       it 'should remove files greater then the remove option size' do
-        @maid.stub!(:disk_usage).and_return(1025)
+        @maid.stub(:disk_usage) { 1025 }
         @maid.trash(@src_file, :remove_over => 1.mb)
         File.exist?(@src_file).should_not be_true
         File.exist?(@trash_file).should_not be_true
       end
 
       it 'should trash files less then the remove option size' do
-        @maid.stub!(:disk_usage).and_return(1023)
+        @maid.stub(:disk_usage) { 1023 }
         @maid.trash(@src_file, :remove_over => 1.mb)
         File.exist?(@trash_file).should be_true
       end
@@ -377,7 +377,7 @@ module Maid
 
     describe '#zipfile_contents' do
       it 'should inspect the contents of a .zip file' do
-        entries = [mock(:name => 'foo.exe'), mock(:name => 'README.txt'), mock(:name => 'subdir/anything.txt')]
+        entries = [double(:name => 'foo.exe'), double(:name => 'README.txt'), double(:name => 'subdir/anything.txt')]
         Zip::File.stub(:open).and_yield(entries)
 
         @maid.zipfile_contents('foo.zip').should == ['README.txt', 'foo.exe', 'subdir/anything.txt']

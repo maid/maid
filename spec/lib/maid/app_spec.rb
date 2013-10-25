@@ -23,22 +23,22 @@ module Maid
 
     before do
       @app = App.new
-      @app.stub!(:maid_options)
-      @app.stub!(:say)
+      @app.stub(:maid_options)
+      @app.stub(:say)
 
       TrashMigration.stub(:needed?) { false }
 
       # NOTE: It's pretty important that this is stubbed, unless you want your rules to be run over and over when you test!
-      @maid = mock('Maid')
-      @maid.stub!(:clean)
-      @maid.stub!(:log_device)
-      @maid.stub!(:load_rules)
-      Maid.stub!(:new).and_return(@maid)
+      @maid = double('Maid')
+      @maid.stub(:clean)
+      @maid.stub(:log_device)
+      @maid.stub(:load_rules)
+      Maid.stub(:new) { @maid }
     end
 
     it 'should make a new Maid with the options' do
       opts = { :foo => 'bar' }
-      @app.stub!(:maid_options).and_return(opts)
+      @app.stub(:maid_options).and_return(opts)
       Maid.should_receive(:new).with(opts).and_return(@maid)
       @app.clean
     end
@@ -93,7 +93,7 @@ module Maid
         # FIXME: This is ugly.  Maybe use `Maid.start(%w(version --long))` instead.
 
         # We can't simply stub `long?` because `options` is a frozen object.
-        options = mock('options', :long? => true)
+        options = double('options', :long? => true)
         @app.options = options
       end
 

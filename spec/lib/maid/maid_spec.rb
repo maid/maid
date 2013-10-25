@@ -4,7 +4,7 @@ module Maid
   describe Maid do
     before do
       @logger = double('Logger').as_null_object
-      Logger.stub!(:new).and_return(@logger)
+      Logger.stub(:new) { @logger }
       FileUtils.stub(:mkdir_p)
     end
 
@@ -36,7 +36,7 @@ module Maid
       end
 
       it 'should take a logger object during intialization' do
-        Logger.unstub!(:new)
+        Logger.unstub(:new)
         maid = Maid.new(:logger => @logger)
         maid.logger.should == @logger
       end
@@ -127,7 +127,7 @@ module Maid
     describe '#clean' do
       before do
         @maid = Maid.new
-        @logger.stub!(:info)
+        @logger.stub(:info)
       end
 
       it 'should log start and finish' do
@@ -144,7 +144,7 @@ module Maid
 
     describe '#load_rules' do
       before do
-        Kernel.stub!(:load)
+        Kernel.stub(:load)
         @maid = Maid.new
       end
 
@@ -154,7 +154,7 @@ module Maid
       end
 
       it 'should give an error on STDERR if there is a LoadError' do
-        Kernel.stub!(:load).and_raise(LoadError)
+        Kernel.stub(:load).and_raise(LoadError)
         STDERR.should_receive(:puts)
         @maid.load_rules
       end
@@ -183,9 +183,9 @@ module Maid
         maid = Maid.new
         @logger.should_receive(:info).exactly(n).times
         rules = (1..n).map do |n|
-          mock = mock("rule ##{ n }", :description => 'description')
-          mock.should_receive(:follow)
-          mock
+          d = double("rule ##{ n }", :description => 'description')
+          d.should_receive(:follow)
+          d
         end
         maid.instance_eval { @rules = rules }
 
@@ -203,7 +203,7 @@ module Maid
       end
 
       it 'should report `echo` as a real command' do
-        lambda { @maid.cmd('echo .') }.should_not raise_error(NotImplementedError)
+        lambda { @maid.cmd('echo .') }.should_not raise_error
       end
     end
   end
