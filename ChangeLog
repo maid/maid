@@ -1,6 +1,7 @@
 maid (0.4.0) unstable; urgency=low
 
   * (Work in progress)
+  * Ended official support for Ruby 1.8.7 (Closes: #108)
   * NOTE: A previous alpha of v0.3.0 was released as v0.2.3.alpha.1. 
   * Mu Ye: Require option to cause real cleaning to take place (Closes: #78)
   * Graham Siener: Add UTF-8 support for zipfile_contents tool (Closes: #35)

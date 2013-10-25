@@ -4,7 +4,7 @@
 # Documentation: [Shell Provisioner](http://vagrantup.com/v1/docs/provisioners/shell.html)
 set -o errexit
 
-# Set to '1.8.7' or '1.9.3'
+# Set to '1.9.3', 'jruby'
 target_ruby_version="${1:-1.9.3}"
 
 # Install the given package, no questions asked.
@@ -25,9 +25,9 @@ function install-pkg-if-ruby {
 sudo apt-get update
 
 # ## Dependencies
-install-pkg-if-ruby '1.8.7' 'ruby1.8'
 # Installs `ruby 1.9.3p0`
 install-pkg-if-ruby '1.9.3' 'ruby1.9.1'
+install-pkg-if-ruby 'jruby' 'jruby'
 
 # ## Development dependencies
 #
@@ -36,19 +36,7 @@ install-pkg 'git-core'
 # For building `ffi` for `guard`'s soft dependency on `rb-inotify`
 install-pkg 'make'
 install-pkg 'libffi-dev'
-install-pkg-if-ruby '1.8.7' 'ruby1.8-dev'
 install-pkg-if-ruby '1.9.3' 'ruby1.9.1-dev'
-
-# ## RubyGems
-
-# RubyGems is included in Ruby 1.9, but we need it installed in Ruby 1.8.
-install-pkg-if-ruby '1.8.7' 'rubygems'
-
-# That RubyGems package is 1.3.5 (at least on Ubuntu 10.04), and we need to update it to at least 1.3.6 for Bundler.
-if [ "$target_ruby_version" == '1.8.7' ]; then
-  sudo gem install rubygems-update
-  sudo /var/lib/gems/1.8/bin/update_rubygems
-fi
 
 sudo gem install bundler
 cd /vagrant

@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = 'maid'
 
-  s.required_ruby_version = Gem::Requirement.new('>= 1.8.7')
+  s.required_ruby_version = Gem::Requirement.new('>= 1.9.2')
 
   # Strategy: if possible, use ranges (so there are fewer chances of version conflicts)
   s.add_dependency('escape', '>= 0.0.1', '< 0.1.0') # Used for better Ruby 1.8.7 support
