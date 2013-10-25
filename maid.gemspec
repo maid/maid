@@ -37,7 +37,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rake', '~> 10.0.3')
   s.add_development_dependency('redcarpet', '~> 2.2.2') # Soft dependency of `yard`
   s.add_development_dependency('rspec', '~> 2.13.0')
-  s.add_development_dependency('timecop', '= 0.6.1') # v0.6.2.2 requires Ruby 1.9.2, but we need to support 1.8.7
+  s.add_development_dependency('timecop', '~> 0.6.3')
   s.add_development_dependency('yard', '~> 0.8.4')
 
   # In Vagrant, polling won't cross over the OS boundary if you develop in the host OS but run your tests in the
