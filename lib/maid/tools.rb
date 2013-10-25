@@ -4,7 +4,7 @@ require 'fileutils'
 require 'time'
 
 require 'mime/types'
-require 'zip/zip'
+require 'zip'
 
 # These "tools" are methods available in the Maid DSL.
 #
@@ -366,8 +366,10 @@ module Maid::Tools
   #
   #     zipfile_contents('foo.zip') # => ['foo.exe', 'README.txt', 'subdir/anything.txt']
   def zipfile_contents(path)
-    # It might be nice to use `glob` from `Zip::ZipFileSystem`, but it seems buggy.  (Subdirectories aren't included.)
-    Zip::ZipFile.foreach(path).map { |entry| entry.name }.sort
+    # It might be nice to use `glob` from `Zip::FileSystem`, but it seems buggy.  (Subdirectories aren't included.)
+    Zip::File.open(path) do |zip_file|
+      zip_file.entries.map { |entry| entry.name }.sort
+    end
   end
 
   # Calculate disk usage of a given path in kilobytes.

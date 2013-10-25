@@ -4,7 +4,7 @@ require 'ohai'
 require 'rbconfig'
 require 'stringio'
 require 'xdg'
-require 'zip/zip'
+require 'zip'
 
 # > What is Dependency Testing?
 # >
@@ -76,16 +76,18 @@ describe 'Dependency expectations' do
     end
   end
 
-  describe Zip::ZipFile do
-    it 'makes entries available with foreach' do
-      Zip::ZipFile.foreach("#@file_fixtures_path/foo.zip").map { |entry| entry.name }.sort.
-        should == %w(README.txt foo.exe subdir/anything.txt)
+  describe Zip::File do
+    it 'makes entries available with #entries' do
+      Zip::File.open("#@file_fixtures_path/foo.zip") do |zip_file|
+        zip_file.entries.map { |entry| entry.name }.sort.should == %w(README.txt foo.exe subdir/anything.txt)
+      end
     end
 
     it 'supports UTF-8 filenames' do
       # Filename is a Japanese character
-      Zip::ZipFile.foreach("#@file_fixtures_path/\343\201\225.zip").map { |entry| entry.name }.
-        should == %w(anything.txt)
+      Zip::File.open("#@file_fixtures_path/\343\201\225.zip") do |zip_file|
+        zip_file.entries.map { |entry| entry.name }.should == %w(anything.txt)
+      end
     end
   end
 end
