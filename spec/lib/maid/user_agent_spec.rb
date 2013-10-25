@@ -7,17 +7,13 @@ module Maid
         system = {
           'platform' => 'Unix',
           'platform_version' => '1.0',
-          'languages' => {
-            'ruby' => {
-              'version' => '1.8.8',
-              'platform' => 'pdp7',
-            }
-          }
         }
 
         system.stub(:all_plugins)
 
         Ohai::System.stub(:new) { system }
+        stub_const('RUBY_VERSION', '1.8.8')
+        stub_const('RUBY_PLATFORM', 'pdp7')
         ::Maid.stub(:const_get).with(:VERSION) { '0.0.1' }
 
         UserAgent.value.should == 'Maid/0.0.1 (Unix/1.0; Ruby/1.8.8 pdp7)'

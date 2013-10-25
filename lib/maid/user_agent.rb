@@ -10,11 +10,10 @@ module Maid::UserAgent
     def value
       ohai = Ohai::System.new
       ohai.all_plugins
-      ohai_rb = ohai['languages']['ruby']
 
       maid     = "Maid/#{ ::Maid.const_get(:VERSION) }"
       platform = "#{ ohai['platform'] }/#{ ohai['platform_version'] }"
-      ruby     = "Ruby/#{ ohai_rb['version'] } #{ ohai_rb['platform'] }"
+      ruby     = "Ruby/#{ RUBY_VERSION } #{ RUBY_PLATFORM }"
       
       "#{ maid } (#{ platform }; #{ ruby })"
     end

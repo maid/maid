@@ -50,12 +50,6 @@ describe 'Dependency expectations' do
       @ohai['platform'].should match(/[a-z]+/i)
       @ohai['platform_version'].should match(/[0-9]+/)
     end
-  
-    it 'has Ruby information' do
-      ruby = @ohai['languages']['ruby']
-      ruby['version'].should match(/^[0-9\.]+$/i)
-      ruby['platform'].should match(/[a-z0-9]+/i)
-    end
   end
 
   describe RbConfig do
