@@ -4,6 +4,7 @@
 [![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
 [![Dependency Status](https://gemnasium.com/benjaminoakes/maid.png)](https://gemnasium.com/benjaminoakes/maid)
 [![Code Climate](https://codeclimate.com/github/benjaminoakes/maid.png)](https://codeclimate.com/github/benjaminoakes/maid)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/benjaminoakes/maid/trend.png)](https://bitdeli.com/free)
 
 **Be lazy!**  Let Maid clean up after you, based on rules you define.
 
@@ -75,25 +76,28 @@ This project wouldn't be where it is today without its users and contributors.  
 
 ## Installation
 
-[
-![Download for Ubuntu](https://github.com/benjaminoakes/maid/raw/master/resources/download-for-ubuntu.png)
-](https://github.com/benjaminoakes/maid/issues/3)
+Maid is a gem, so just `gem install maid` like normal.  Please see below for details.
 
-#### Offically supported:
+#### Requirements
+
+Modern Ruby versions and Unix-like operating systems should work, but only OS X and Ubuntu are tested regularly.
+
+Offically supported:
 
 * **OS:** Mac OS X, Ubuntu
-* **Ruby:** 1.8.7, 1.9.3 (preferred)
+* **Ruby:** 1.9.2+ (2.0.0  preferred)
 
-Some features require OS X.  See the [documentation][] for more details.  Other Ruby versions and Linux distributions
-may work, but are not officially supported.  (Contributions are welcome, however.)
+Some features require OS X.  See the [documentation][] for more details.
 
 ### Manual Installation
 
 First, you need Ruby:
 
-* **Mac OS X:** Ruby 1.8.7 comes preinstalled.
-* **Ubuntu:** Ruby is not preinstalled.  To install Ruby 1.9.3: `sudo apt-get install ruby1.9.1 # (sic)`
+* **Mac OS X:** Ruby 2.0.0 comes preinstalled in OS X 10.9.
+* **Ubuntu:** Ruby is not preinstalled.  To install Ruby 1.9.3: `sudo apt-get install ruby1.9.1` (sic)
   ([Interested in a package?](https://github.com/benjaminoakes/maid/issues/3))
+
+Consider `rbenv` or `rvm` if only Ruby 1.8.7 is available (e.g. if you are using an older version of OS X).
 
 Then, you can install via RubyGems.  Open a terminal and run:
 
@@ -108,13 +112,6 @@ If you decide you don't want Maid installed anymore, remove it:
     sudo gem uninstall maid
 
 **NOTE:** This does not remove any files under `~/.maid` or crontab entries.  Please remove them at your convenience.
-
-### Troubleshooting
-
-* Having multiple Ruby versions installed can confuse things.  If you're a Ruby developer, you may prefer to just
-  `gem install maid` with your preferred setup.  Ruby 1.9.3 is recommended.
-* Older packages of Ruby for Ubuntu may not automatically add the RubyGems `bin` directory to your `$PATH`.  Double
-  check your settings.
 
 ## Tutorial
 
@@ -222,7 +219,3 @@ ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
 GPLv2.  See LICENSE for a copy.
 
   [documentation]: http://rubydoc.info/gems/maid/Maid/Tools
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/benjaminoakes/maid/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
