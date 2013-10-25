@@ -34,8 +34,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency('fakefs', '~> 0.4.2')
   s.add_development_dependency('guard', '~> 2.2.2')
   s.add_development_dependency('guard-rspec', '~> 4.0.3')
-  s.add_development_dependency('rake', '~> 10.0.3')
-  s.add_development_dependency('redcarpet', '~> 2.2.2') # Soft dependency of `yard`
+  s.add_development_dependency('rake', '~> 10.1.0')
+  s.add_development_dependency('redcarpet', '~> 3.0.0') # Soft dependency of `yard`
   s.add_development_dependency('rspec', '~> 2.14.1')
   s.add_development_dependency('timecop', '~> 0.6.3')
   s.add_development_dependency('yard', '~> 0.8.4')
