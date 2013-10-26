@@ -76,7 +76,7 @@ This project wouldn't be where it is today without its users and contributors.  
 
 ## Installation
 
-Maid is a gem, so just `gem install maid` like normal.  Please see below for details.
+Maid is a gem, so just `gem install maid` like normal.  If you're unfamiliar with Ruby, please see below for details.
 
 #### Requirements
 
@@ -85,38 +85,42 @@ Modern Ruby versions and Unix-like operating systems should work, but only OS X 
 Offically supported:
 
 * **OS:** Mac OS X, Ubuntu
-* **Ruby:** 1.9.3+ (2.0.0  preferred)
+* **Ruby:** 1.9.3+ (2.0.0 preferred)
 
 Some features require OS X.  See the [documentation][] for more details.
 
 ### Manual Installation
 
-First, you need Ruby:
+First, you need Ruby.
+
+Consider `rbenv` or `rvm`, especially if only Ruby 1.8.7 is available (e.g. if you are using an older version of OS X).
+
+System Ruby works fine too, though:
 
 * **Mac OS X:** Ruby 2.0.0 comes preinstalled in OS X 10.9.
 * **Ubuntu:** Ruby is not preinstalled.  To install Ruby 1.9.3: `sudo apt-get install ruby1.9.1` (sic)
   ([Interested in a package?](https://github.com/benjaminoakes/maid/issues/3))
 
-Consider `rbenv` or `rvm` if only Ruby 1.8.7 is available (e.g. if you are using an older version of OS X).
-
 Then, you can install via RubyGems.  Open a terminal and run:
 
-    sudo gem install maid
+    gem install maid
+
+(Use `sudo` if using system Ruby.)
 
 At a later date, you can update by running:
 
-    sudo gem update maid
+    gem update maid
 
 If you decide you don't want Maid installed anymore, remove it:
 
-    sudo gem uninstall maid
+    gem uninstall maid
 
 **NOTE:** This does not remove any files under `~/.maid` or crontab entries.  Please remove them at your convenience.
 
 ## Tutorial
 
 In a nutshell, Maid uses "rules" to define how files are handled.  Once you have rules defined, you can either test what
-cleaning would do (`maid clean -n`) or actually clean (`maid clean`).
+cleaning would do (`maid clean -n`) or actually clean (`maid clean -f`).
 
 To generate a [sample rules file](https://github.com/benjaminoakes/maid/blob/master/lib/maid/rules.sample.rb), run:
 
@@ -162,8 +166,8 @@ maid clean --dry-run # Synonyms: -n, --noop
 To run your rules on demand, you can run `maid` manually:
 
 ```bash
-maid clean                    # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
-maid clean -r some_rules.rb   # Run the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
+maid clean -f                 # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
+maid clean -fr some_rules.rb  # Run the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
 ```
 
 So, for example, if this is `some_rules.rb`:
@@ -198,13 +202,13 @@ To do this, edit your crontab in your tool of choice:
 
     crontab -e
 
-...and have it invoke the `maid clean` command.  The `--silent` option is provided to keep this from emailing you, if
+...and have it invoke the `maid clean -f` command.  The `--silent` option is provided to keep this from emailing you, if
 desired.  A log of the actions taken is kept at `~/.maid/maid.log`.
 
 Example for every day at 1am:
 
     # minute hour day_of_month month day_of_week command_to_execute
-    0 1 * * * /bin/bash -li -c "maid clean --silent"
+    0 1 * * * /bin/bash -li -c "maid clean --force --silent"
 
 ## Warranty
 
