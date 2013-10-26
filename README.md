@@ -39,7 +39,7 @@ This project wouldn't be where it is today without its users and contributors.  
 ### For Users
 
 [
-[Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)
+![Flattr this git repo](https://api.flattr.com/button/flattr-badge-large.png)
 ](https://flattr.com/submit/auto?user_id=benjaminoakes&url=https://github.com/benjaminoakes/maid&title=maid&language=en_GB&tags=github&category=software)
 
 * Participate in [beta testing](https://github.com/benjaminoakes/maid/issues/10)
