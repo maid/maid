@@ -1,6 +1,5 @@
 require 'logger'
 require 'mime/types'
-require 'ohai'
 require 'rbconfig'
 require 'stringio'
 require 'xdg'
@@ -35,20 +34,6 @@ describe 'Dependency expectations' do
       type = types[0]
       type.media_type.should == 'image'
       type.sub_type.should == 'jpeg'
-    end
-  end
-
-  describe Ohai do
-    before do
-      @ohai = Ohai::System.new
-      # FIXME: For some reason this is really slow when using `guard`
-      @ohai.require_plugin('os')
-    end
-  
-    it 'has platform information' do
-      @ohai.require_plugin('platform')
-      @ohai['platform'].should match(/[a-z]+/i)
-      @ohai['platform_version'].should match(/[0-9]+/)
     end
   end
 

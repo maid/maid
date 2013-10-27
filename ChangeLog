@@ -5,6 +5,7 @@ maid (0.4.0) unstable; urgency=low
     "spotlight_content_types", "where_content_type"
   * Ended official support for Ruby 1.8.7 and 1.9.2 (Closes: #108)
   * Update to rubyzip 1.0.0 (Closes: #109)
+  * Remove "ohai" dependency which required native extensions (Closes: #112)
   * Updated other dependencies (Closes: #111)
   * Mu Ye: Require "--force" option to cause real cleaning to take place (Closes: #78)
   * Graham Siener: Add UTF-8 support for "zipfile_contents" tool (Closes: #35)

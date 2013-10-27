@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency('thor', '>= 0.14.0', '< 0.19.0')
   s.add_dependency('deprecated', '~> 3.0.0')
   s.add_dependency('mime-types', '~> 1.21') # TODO: loosen version restrictions based on testing
-  s.add_dependency('ohai', '>= 6.14.0', '~> 6.18.0')
   s.add_dependency('rubyzip', '~> 1.0.0')
   s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs
   # TODO: use one of these two gems instead of `mdfind`.  **But** They have to work on Linux as well.
