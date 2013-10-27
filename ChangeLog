@@ -1,20 +1,22 @@
 maid (0.4.0) unstable; urgency=low
 
-  * (Work in progress)
+  * New methods: "checksum_of", "content_types", "dupes_in",
+    "escape_glob", "files", "media_type", "mime_type",
+    "spotlight_content_types", "where_content_type"
   * Ended official support for Ruby 1.8.7 and 1.9.2 (Closes: #108)
   * Update to rubyzip 1.0.0 (Closes: #109)
   * Updated other dependencies (Closes: #111)
-  * Mu Ye: Require option to cause real cleaning to take place (Closes: #78)
-  * Graham Siener: Add UTF-8 support for zipfile_contents tool (Closes: #35)
+  * Mu Ye: Require "--force" option to cause real cleaning to take place (Closes: #78)
+  * Graham Siener: Add UTF-8 support for "zipfile_contents" tool (Closes: #35)
   * Justin Hileman: Add ability to list duplicate files (Closes: #15)
   * Mikael Hultgren: Rotate log file
   * John Colvin: Add filetype detection and filtering (Closes: #51)
   * Mu Ye: Improve command line spec coverage (Closes: #97)
+  * Bradley Smith: Add "locate" support on Ubuntu (Closes: #67)
+  * Vladimir Agafonkin: Add "escape_glob" method for escaping brackets in paths
+    that will be passed to "dir" (Closes: #104)
   * Changed from ArgumentError to NotImplementedError when a command is
     unsupported on the host OS.
-  * Bradley Smith: Add locate support on Ubuntu (Closes: #67)
-  * Vladimir Agafonkin: Add escape_glob method for escaping brackets in paths
-    that will be passed to dir (Closes: #104)
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
