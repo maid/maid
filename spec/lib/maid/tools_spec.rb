@@ -521,6 +521,7 @@ module Maid
     let(:file_fixtures_path) { File.expand_path(File.dirname(__FILE__) + '../../../fixtures/files/') }
     let(:file_fixtures_glob) { "#{ file_fixtures_path }/*" }
     let(:image_path) { File.join(file_fixtures_path, 'ruby.jpg') }
+    let(:unknown_path) { File.join(file_fixtures_path, 'unknown.foo') }
 
     before do
       @logger = double('Logger').as_null_object
@@ -564,12 +565,24 @@ module Maid
           @maid.mime_type(image_path).should == 'image/jpeg'
         end
       end
+
+      context 'given an unknown type' do
+        it 'returns nil' do
+          @maid.mime_type(unknown_path).should be_nil
+        end
+      end
     end
 
     describe '#media_type' do
       context 'given a JPEG image' do
         it 'reports "image"' do
           @maid.media_type(image_path).should == 'image'
+        end
+      end
+
+      context 'given an unknown type' do
+        it 'returns nil' do
+          @maid.media_type(unknown_path).should be_nil
         end
       end
     end

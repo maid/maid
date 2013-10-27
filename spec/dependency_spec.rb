@@ -35,6 +35,14 @@ describe 'Dependency expectations' do
       type.media_type.should == 'image'
       type.sub_type.should == 'jpeg'
     end
+
+    context 'when the type is unknown' do
+      it 'returns []' do
+        types = MIME::Types.type_for('unknown.foo')
+        types.length.should == 0
+        types[0].should be_nil
+      end
+    end
   end
 
   describe RbConfig do

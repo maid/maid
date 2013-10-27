@@ -576,7 +576,10 @@ module Maid::Tools
   #     mime_type('bar.jpg') # => "image/jpeg"
   def mime_type(path)
     type = MIME::Types.type_for(path)[0]
-    [type.media_type, type.sub_type].join('/')
+
+    if type
+      [type.media_type, type.sub_type].join('/')
+    end
   end
 
   # Get the Internet media type of the file.
@@ -587,7 +590,11 @@ module Maid::Tools
   #
   #     media_type('bar.jpg') # => "image"
   def media_type(path)
-    MIME::Types.type_for(path)[0].media_type
+    type = MIME::Types.type_for(path)[0]
+    
+    if type
+      type.media_type
+    end
   end
 
   # Filter an array by content types.
