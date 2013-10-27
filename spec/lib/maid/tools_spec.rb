@@ -533,7 +533,28 @@ module Maid
         dupes.first.should be_kind_of(Array)
 
         basenames = dupes.flatten.map { |p| File.basename(p) }
+        basenames.should == %w(1.zip bar.zip foo.zip)
+      end
+    end
+
+    describe '#verbose_dupes_in' do
+      it 'should list all but the shortest-named dupe' do
+        dupes = @maid.verbose_dupes_in(file_fixtures_glob)
+
+        basenames = dupes.flatten.map { |p| File.basename(p) }
         basenames.should == %w(bar.zip foo.zip)
+      end
+    end
+
+    describe '#newest_dupes_in' do
+      it 'should list all but the shortest-named dupe' do
+        oldest_path = "#{file_fixtures_path}/foo.zip"
+        FileUtils.touch(oldest_path, :mtime => Time.new(1970, 1, 1))
+
+        dupes = @maid.newest_dupes_in(file_fixtures_glob)
+
+        basenames = dupes.flatten.map { |p| File.basename(p) }
+        basenames.should == %w(bar.zip 1.zip)
       end
     end
 

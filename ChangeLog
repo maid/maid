@@ -1,7 +1,9 @@
 maid (0.4.0) unstable; urgency=low
 
-  * New methods: "checksum_of", "content_types", "dupes_in",
-    "escape_glob", "files", "media_type", "mime_type",
+  * New utility methods: "checksum_of", "escape_glob", "files"
+  * New duplicate detection methods: "dupes_in", "newest_dupes_in",
+    "verbose_dupes_in"
+  * New filetype methods: "media_type", "mime_type",
     "spotlight_content_types", "where_content_type"
   * Ended official support for Ruby 1.8.7 and 1.9.2 (Closes: #108)
   * Update to rubyzip 1.0.0 (Closes: #109)

@@ -314,9 +314,13 @@ module Maid::Tools
 
   # Find all duplicate files in the given globs.
   #
-  # Globs are expanded as in `dir`, then all non-files are filtered out. The remaining
-  # files are compared by size, and non-dupes are filtered out. The remaining candidates
-  # are then compared by checksum. Dupes are returned as an array of arrays.
+  # More often than not, you'll want to use `newest_dupes_in` or
+  # `verbose_dupes_in` instead of using this method directly.
+  #
+  # Globs are expanded as in `dir`, then all non-files are filtered out. The
+  # remaining files are compared by size, and non-dupes are filtered out. The
+  # remaining candidates are then compared by checksum. Dupes are returned as
+  # an array of arrays.
   #
   # ## Examples
   #
@@ -325,16 +329,10 @@ module Maid::Tools
   #                                                ['~/Desktop/bar.txt', '~/Desktop/bar copy.txt']
   #                                              ]
   #
-  # Keep the dupe with the shortest name (ideal for `foo (1).zip` and `foo copy.zip` style dupes):
-  #
-  #     dupes_in('~/Downloads/*').each do |dupes|
-  #       trash dupes.sort_by { |p| File.basename(p).length }[1..-1]
-  #     end
-  #
-  # Keep the oldest dupe:
+  # Keep the newest dupe:
   #
   #     dupes_in('~/Desktop/*', '~/Downloads/*').each do |dupes|
-  #       trash dupes.sort_by { |p| File.mtime(p) }[1..-1]
+  #       trash dupes.sort_by { |p| File.mtime(p) }[0..-2]
   #     end
   #
   def dupes_in(globs)
@@ -349,6 +347,36 @@ module Maid::Tools
           values
       end
     dupes
+  end
+
+  # Convenience method that is like `dupes_in` but excludes the oldest dupe.
+  #
+  # ## Example
+  #
+  # Keep the oldest dupe (trash the others):
+  #
+  #     trash newest_dupes_in('~/Downloads/*')
+  #
+  def newest_dupes_in(globs)
+    dupes_in(globs).
+      map { |dupes| dupes.sort_by { |p| File.mtime(p) }[1..-1] }.
+      flatten
+  end
+
+  # Convenience method for `dupes_in` that excludes the dupe with the shortest name.
+  #
+  # This is ideal for dupes like `foo.zip`, `foo (1).zip`, `foo copy.zip`.
+  #
+  # ## Example
+  #
+  # Keep the dupe with the shortest name (trash the others):
+  #
+  #     trash verbose_dupes_in('~/Downloads/*')
+  #
+  def verbose_dupes_in(globs)
+    dupes_in(globs).
+      map { |dupes| dupes.sort_by { |p| File.basename(p).length }[1..-1] }.
+      flatten
   end
 
   # [Mac OS X] Use Spotlight metadata to determine audio length.
