@@ -214,7 +214,7 @@ module Maid::Tools
 
   # Give only files matching the given glob.
   #
-  # This is the same as #dir but only includes actual files (no directories or symlinks).
+  # This is the same as `dir` but only includes actual files (no directories or symlinks).
   #
   def files(globs)
     dir(globs).
