@@ -314,7 +314,7 @@ module Maid::Tools
 
   # Find all duplicate files in the given globs.
   #
-  # Globs are expanded as in #dir, then all non-files are filtered out. The remaining
+  # Globs are expanded as in `dir`, then all non-files are filtered out. The remaining
   # files are compared by size, and non-dupes are filtered out. The remaining candidates
   # are then compared by checksum. Dupes are returned as an array of arrays.
   #
@@ -344,7 +344,7 @@ module Maid::Tools
       reject { |s, p| p.length < 2 }.       # ... and filter out any non-dupes
       map do |size, candidates|
         dupes += candidates.
-          group_by { |p| checksum_of(p) }. # Now group our candidates by a slower checksum calculation
+          group_by { |p| checksum_of(p) }.  # Now group our candidates by a slower checksum calculation
           reject { |c, p| p.length < 2 }.   # ... and filter out any non-dupes
           values
       end
