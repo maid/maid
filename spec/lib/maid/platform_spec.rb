@@ -25,6 +25,10 @@ module Maid
       it 'is not identified as OS X' do
         subject.osx?.should be_false
       end
+
+      it 'locate is "locate"' do
+        Platform::Commands.locate.should match(/locate/)
+      end
     end
 
     context 'when running on Mac OS X' do
@@ -38,6 +42,10 @@ module Maid
 
       it 'is identified as OS X' do
         subject.osx?.should be_true
+      end
+
+      it 'locate is "mdfind"' do
+        Platform::Commands.locate.should match(/mdfind/)
       end
     end
   end

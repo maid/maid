@@ -1,6 +1,12 @@
 # Maid
 
-Be lazy!  Let Maid clean up after you, based on rules you define.
+[![Gem Version](https://badge.fury.io/rb/maid.png)](http://badge.fury.io/rb/maid)
+[![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
+[![Dependency Status](https://gemnasium.com/benjaminoakes/maid.png)](https://gemnasium.com/benjaminoakes/maid)
+[![Code Climate](https://codeclimate.com/github/benjaminoakes/maid.png)](https://codeclimate.com/github/benjaminoakes/maid)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/benjaminoakes/maid/trend.png)](https://bitdeli.com/free)
+
+**Be lazy!**  Let Maid clean up after you, based on rules you define.
 
 [Installation](#installation)
 | [Tutorial](#tutorial)
@@ -33,7 +39,7 @@ This project wouldn't be where it is today without its users and contributors.  
 ### For Users
 
 [
-[Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)
+![Flattr this git repo](https://api.flattr.com/button/flattr-badge-large.png)
 ](https://flattr.com/submit/auto?user_id=benjaminoakes&url=https://github.com/benjaminoakes/maid&title=maid&language=en_GB&tags=github&category=software)
 
 * Participate in [beta testing](https://github.com/benjaminoakes/maid/issues/10)
@@ -42,10 +48,6 @@ This project wouldn't be where it is today without its users and contributors.  
 * Even just [share a link to Maid](https://twitter.com/intent/tweet?related=benjaminoakes&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fbenjaminoakes%2Fmaid) :)
 
 ### For Developers
-
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/benjaminoakes/maid)
-[![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
-[![Dependency Status](https://gemnasium.com/benjaminoakes/maid.png)](https://gemnasium.com/benjaminoakes/maid)
 
 * Address a `TODO` or `FIXME` in the code.
 * Complete an issue (easy ones [are labelled](https://github.com/benjaminoakes/maid/issues?labels=difficulty-1&page=1&state=open), and issues for future releases are [grouped by milestone](https://github.com/benjaminoakes/maid/issues/milestones)).
@@ -74,51 +76,51 @@ This project wouldn't be where it is today without its users and contributors.  
 
 ## Installation
 
-[
-![Download for Ubuntu](https://github.com/benjaminoakes/maid/raw/master/resources/download-for-ubuntu.png)
-](https://github.com/benjaminoakes/maid/issues/3)
+Maid is a gem, so just `gem install maid` like normal.  If you're unfamiliar with Ruby, please see below for details.
 
-#### Offically supported:
+#### Requirements
+
+Modern Ruby versions and Unix-like operating systems should work, but only OS X and Ubuntu are tested regularly.
+
+Offically supported:
 
 * **OS:** Mac OS X, Ubuntu
-* **Ruby:** 1.8.7, 1.9.3 (preferred)
+* **Ruby:** 1.9.3+ (2.0.0 preferred)
 
-Some features require OS X.  See the [documentation][] for more details.  Other Ruby versions and Linux distributions
-may work, but are not officially supported.  (Contributions are welcome, however.)
+Some features require OS X.  See the [documentation][] for more details.
 
 ### Manual Installation
 
-First, you need Ruby:
+First, you need Ruby.
 
-* **Mac OS X:** Ruby 1.8.7 comes preinstalled.
-* **Ubuntu:** Ruby is not preinstalled.  To install Ruby 1.9.3: `sudo apt-get install ruby1.9.1 # (sic)`
+Consider `rbenv` or `rvm`, especially if only Ruby 1.8.7 is available (e.g. if you are using an older version of OS X).
+
+System Ruby works fine too, though:
+
+* **Mac OS X:** Ruby 2.0.0 comes preinstalled in OS X 10.9.
+* **Ubuntu:** Ruby is not preinstalled.  To install Ruby 1.9.3: `sudo apt-get install ruby1.9.1` (sic)
   ([Interested in a package?](https://github.com/benjaminoakes/maid/issues/3))
 
 Then, you can install via RubyGems.  Open a terminal and run:
 
-    sudo gem install maid
+    gem install maid
+
+(Use `sudo` if using system Ruby.)
 
 At a later date, you can update by running:
 
-    sudo gem update maid
+    gem update maid
 
 If you decide you don't want Maid installed anymore, remove it:
 
-    sudo gem uninstall maid
+    gem uninstall maid
 
 **NOTE:** This does not remove any files under `~/.maid` or crontab entries.  Please remove them at your convenience.
-
-### Troubleshooting
-
-* Having multiple Ruby versions installed can confuse things.  If you're a Ruby developer, you may prefer to just
-  `gem install maid` with your preferred setup.  Ruby 1.9.3 is recommended.
-* Older packages of Ruby for Ubuntu may not automatically add the RubyGems `bin` directory to your `$PATH`.  Double
-  check your settings.
 
 ## Tutorial
 
 In a nutshell, Maid uses "rules" to define how files are handled.  Once you have rules defined, you can either test what
-cleaning would do (`maid clean -n`) or actually clean (`maid clean`).
+cleaning would do (`maid clean -n`) or actually clean (`maid clean -f`).
 
 To generate a [sample rules file](https://github.com/benjaminoakes/maid/blob/master/lib/maid/rules.sample.rb), run:
 
@@ -164,8 +166,8 @@ maid clean --dry-run # Synonyms: -n, --noop
 To run your rules on demand, you can run `maid` manually:
 
 ```bash
-maid clean                    # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
-maid clean -r some_rules.rb   # Run the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
+maid clean -f                 # Run the rules at ~/.maid/rules.rb, logging to ~/.maid/maid.log
+maid clean -fr some_rules.rb  # Run the rules in the file 'some_rules.rb', logging to ~/.maid/maid.log
 ```
 
 So, for example, if this is `some_rules.rb`:
@@ -200,13 +202,13 @@ To do this, edit your crontab in your tool of choice:
 
     crontab -e
 
-...and have it invoke the `maid clean` command.  The `--silent` option is provided to keep this from emailing you, if
+...and have it invoke the `maid clean -f` command.  The `--silent` option is provided to keep this from emailing you, if
 desired.  A log of the actions taken is kept at `~/.maid/maid.log`.
 
 Example for every day at 1am:
 
     # minute hour day_of_month month day_of_week command_to_execute
-    0 1 * * * /bin/bash -li -c "maid clean --silent"
+    0 1 * * * /bin/bash -li -c "maid clean --force --silent"
 
 ## Warranty
 

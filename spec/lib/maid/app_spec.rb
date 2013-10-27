@@ -23,42 +23,50 @@ module Maid
 
     before do
       @app = App.new
-      @app.stub!(:maid_options)
-      @app.stub!(:say)
+      @app.stub(:maid_options)
+      @app.stub(:say)
 
       TrashMigration.stub(:needed?) { false }
 
       # NOTE: It's pretty important that this is stubbed, unless you want your rules to be run over and over when you test!
-      @maid = mock('Maid')
-      @maid.stub!(:clean)
-      @maid.stub!(:log_device)
-      @maid.stub!(:load_rules)
-      Maid.stub!(:new).and_return(@maid)
+      @maid = double('Maid')
+      @maid.stub(:clean)
+      @maid.stub(:log_device)
+      @maid.stub(:load_rules)
+      Maid.stub(:new) { @maid }
     end
 
     it 'should make a new Maid with the options' do
       opts = { :foo => 'bar' }
-      @app.stub!(:maid_options).and_return(opts)
+      @app.stub(:maid_options).and_return(opts)
       Maid.should_receive(:new).with(opts).and_return(@maid)
       @app.clean
     end
 
-    it 'should tell the Maid to clean' do
+    it 'should clean when --force is specified' do      
       @maid.should_receive(:clean)
-      @app.clean
+      App.start(['clean', '--force'])
+    end 
+
+    it 'should issue deprecation notice when called without option, but still clean' do
+      @maid.should_receive(:clean).twice
+      capture_stderr { App.start(['clean']) }.string.should match(/deprecated/)
+      capture_stderr { App.start(['clean', '--silent']) }.string.should match(/deprecated/)
     end
 
     it 'should not be silent if not given the --silent option' do
-      capture_stdout { App.start(['clean']) }.string.should_not == ''
+      capture_stdout { App.start(['clean', '--force']) }.string.should_not == ''
     end
 
     it 'should be silent if given the --silent option' do
       # TODO: It might even make sense to wrap `maid.clean` in `capture_stdout { ... }`
-      capture_stdout { App.start(['clean', '--silent']) }.string.should == ''
+      capture_stdout { App.start(['clean', '--noop', '--silent']) }.string.should == ''
+      capture_stdout { App.start(['clean', '--force', '--silent']) }.string.should == ''
     end
 
     it 'should complain about a MISSPELLED option' do
       capture_stderr { App.start(['clean', '--slient']) }.string.should match(/Unknown/)
+      capture_stderr { App.start(['clean', '--noop', '--slient']) }.string.should match(/Unknown/)
     end
 
     it 'should complain about an undefined task' do
@@ -77,7 +85,7 @@ module Maid
     end
 
     it 'is mapped as --version' do
-      # TODO: Test via Rspec (it's only in the smoke test script for now)
+      App.start(['--version']).should == @app.version
     end
 
     context 'with the "long" option' do
@@ -85,7 +93,7 @@ module Maid
         # FIXME: This is ugly.  Maybe use `Maid.start(%w(version --long))` instead.
 
         # We can't simply stub `long?` because `options` is a frozen object.
-        options = mock('options', :long? => true)
+        options = double('options', :long? => true)
         @app.options = options
       end
 

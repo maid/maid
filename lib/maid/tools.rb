@@ -1,6 +1,10 @@
-require 'fileutils'
+require 'digest/md5'
 require 'find'
+require 'fileutils'
 require 'time'
+
+require 'mime/types'
+require 'zip'
 
 # These "tools" are methods available in the Maid DSL.
 #
@@ -208,6 +212,26 @@ module Maid::Tools
       sort
   end
 
+  # Give only files matching the given glob.
+  #
+  # This is the same as `dir` but only includes actual files (no directories or symlinks).
+  #
+  def files(globs)
+    dir(globs).
+      select { |f| File.file?(f) }
+  end
+  
+  # Escape characters that have special meaning as a part of path global patterns.
+  #
+  # Useful when using `dir` with file names that may contain `{ } [ ]` characters.
+  # 
+  # ## Example
+  #
+  #     escape_glob('test [tmp]') # => 'test \\[tmp\\]'
+  def escape_glob(glob)
+    glob.gsub(/[\{\}\[\]]/) { |s| '\\' + s }
+  end
+
   # Create a directory and all of its parent directories.
   #
   # The path of the created directory is returned, which allows for chaining (see examples).
@@ -270,13 +294,13 @@ module Maid::Tools
 
   # [Mac OS X] Use Spotlight to locate all files matching the given filename.
   #
-  # [Ubuntu] Not currently supported.  See [issue #67](https://github.com/benjaminoakes/maid/issues/67).
+  # [Ubuntu] Use `locate` to locate all files matching the given filename.
   #
   # ## Examples
   #
   #     locate('foo.zip') # => ['/a/foo.zip', '/b/foo.zip']
   def locate(name)
-    cmd("mdfind -name #{ sh_escape(name) }").split("\n")
+    cmd("#{Maid::Platform::Commands.locate} #{ sh_escape(name) }").split("\n")
   end
 
   # [Mac OS X] Use Spotlight metadata to determine the site from which a file was downloaded.
@@ -285,9 +309,74 @@ module Maid::Tools
   #
   #     downloaded_from('foo.zip') # => ['http://www.site.com/foo.zip', 'http://www.site.com/']
   def downloaded_from(path)
-    raw = cmd("mdls -raw -name kMDItemWhereFroms #{ sh_escape(path) }")
-    clean = raw[1, raw.length - 2]
-    clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
+    mdls_to_array(path, 'kMDItemWhereFroms')
+  end
+
+  # Find all duplicate files in the given globs.
+  #
+  # More often than not, you'll want to use `newest_dupes_in` or
+  # `verbose_dupes_in` instead of using this method directly.
+  #
+  # Globs are expanded as in `dir`, then all non-files are filtered out. The
+  # remaining files are compared by size, and non-dupes are filtered out. The
+  # remaining candidates are then compared by checksum. Dupes are returned as
+  # an array of arrays.
+  #
+  # ## Examples
+  #
+  #     dupes_in('~/{Downloads,Desktop}/*') # => [
+  #                                                ['~/Downloads/foo.zip', '~/Downloads/foo (1).zip'],
+  #                                                ['~/Desktop/bar.txt', '~/Desktop/bar copy.txt']
+  #                                              ]
+  #
+  # Keep the newest dupe:
+  #
+  #     dupes_in('~/Desktop/*', '~/Downloads/*').each do |dupes|
+  #       trash dupes.sort_by { |p| File.mtime(p) }[0..-2]
+  #     end
+  #
+  def dupes_in(globs)
+    dupes = []
+    files(globs).                           # Start by filtering out non-files
+      group_by { |f| size_of(f) }.          # ... then grouping by size, since that's fast
+      reject { |s, p| p.length < 2 }.       # ... and filter out any non-dupes
+      map do |size, candidates|
+        dupes += candidates.
+          group_by { |p| checksum_of(p) }.  # Now group our candidates by a slower checksum calculation
+          reject { |c, p| p.length < 2 }.   # ... and filter out any non-dupes
+          values
+      end
+    dupes
+  end
+
+  # Convenience method that is like `dupes_in` but excludes the oldest dupe.
+  #
+  # ## Example
+  #
+  # Keep the oldest dupe (trash the others):
+  #
+  #     trash newest_dupes_in('~/Downloads/*')
+  #
+  def newest_dupes_in(globs)
+    dupes_in(globs).
+      map { |dupes| dupes.sort_by { |p| File.mtime(p) }[1..-1] }.
+      flatten
+  end
+
+  # Convenience method for `dupes_in` that excludes the dupe with the shortest name.
+  #
+  # This is ideal for dupes like `foo.zip`, `foo (1).zip`, `foo copy.zip`.
+  #
+  # ## Example
+  #
+  # Keep the dupe with the shortest name (trash the others):
+  #
+  #     trash verbose_dupes_in('~/Downloads/*')
+  #
+  def verbose_dupes_in(globs)
+    dupes_in(globs).
+      map { |dupes| dupes.sort_by { |p| File.basename(p).length }[1..-1] }.
+      flatten
   end
 
   # [Mac OS X] Use Spotlight metadata to determine audio length.
@@ -303,10 +392,12 @@ module Maid::Tools
   #
   # ## Examples
   #
-  #     zipfile_contents('foo.zip') # => ['foo/foo.exe', 'foo/README.txt']
+  #     zipfile_contents('foo.zip') # => ['foo.exe', 'README.txt', 'subdir/anything.txt']
   def zipfile_contents(path)
-    raw = cmd("unzip -Z1 #{ sh_escape(path) }")
-    raw.split("\n")
+    # It might be nice to use `glob` from `Zip::FileSystem`, but it seems buggy.  (Subdirectories aren't included.)
+    Zip::File.open(path) do |zip_file|
+      zip_file.entries.map { |entry| entry.name }.sort
+    end
   end
 
   # Calculate disk usage of a given path in kilobytes.
@@ -368,6 +459,24 @@ module Maid::Tools
   #     modified_at('foo.zip') # => Sat Apr 09 10:50:01 -0400 2011
   def modified_at(path)
     File.mtime(expand(path))
+  end
+
+  # Get the size of a file.
+  #
+  # ## Examples
+  #
+  #     size_of('foo.zip') # => 2193
+  def size_of(path)
+    File.size(path)
+  end
+
+  # Get a checksum for a file.
+  #
+  # ## Examples
+  #
+  #     checksum_of('foo.zip') # => "ae8dbb203dfd560158083e5de90969c2"
+  def checksum_of(path)
+    Digest::MD5.hexdigest(File.read(path))
   end
 
   # @deprecated
@@ -439,6 +548,82 @@ module Maid::Tools
     log("Fired sync from #{ sh_escape(from) } to #{ sh_escape(to) }.  STDOUT:\n\n#{ stdout }")
   end
 
+  # [Mac OS X] Use Spotlight metadata to determine which content types a file has.
+  #
+  # ## Examples
+  #
+  #     spotlight_content_types('foo.zip') # => ['public.zip-archive', 'public.archive']
+  def spotlight_content_types(path)
+    mdls_to_array(path, 'kMDItemContentTypeTree')
+  end
+
+  # Get the content types of a path.
+  #
+  # Content types can be MIME types, Internet media types or Spotlight content types (OS X only).
+  #
+  # ## Examples
+  #
+  #     content_types('foo.zip') # => ["public.zip-archive", "com.pkware.zip-archive", "public.archive", "application/zip", "application"]
+  #     content_types('bar.jpg') # => ["public.jpeg", "public.image", "image/jpeg", "image"]
+  def content_types(path)
+    [spotlight_content_types(path), mime_type(path), media_type(path)].flatten
+  end
+
+  # Get the MIME type of the file.
+  #
+  # ## Examples
+  #
+  #     mime_type('bar.jpg') # => "image/jpeg"
+  def mime_type(path)
+    type = MIME::Types.type_for(path)[0]
+
+    if type
+      [type.media_type, type.sub_type].join('/')
+    end
+  end
+
+  # Get the Internet media type of the file.
+  #
+  # In other words, the first part of `mime_type`.
+  #
+  # ## Examples
+  #
+  #     media_type('bar.jpg') # => "image"
+  def media_type(path)
+    type = MIME::Types.type_for(path)[0]
+    
+    if type
+      type.media_type
+    end
+  end
+
+  # Filter an array by content types.
+  #
+  # Content types can be MIME types, internet media types or Spotlight content types (OS X only).
+  #
+  # If you need your rules to work on multiple platforms, it's recommended to avoid using Spotlight content types.
+  #
+  # ## Examples
+  #
+  # ### Using media types
+  #
+  #     where_content_type(dir('~/Downloads/*'), 'video')
+  #     where_content_type(dir('~/Downloads/*'), ['image', 'audio'])
+  #
+  # ### Using MIME types
+  #
+  #     where_content_type(dir('~/Downloads/*'), 'image/jpeg')
+  #
+  # ### Using Spotlight content types
+  # 
+  # Less portable, but richer data in some cases.
+  #
+  #     where_content_type(dir('~/Downloads/*'), 'public.image')
+  def where_content_type(paths, filter_types)
+    filter_types = Array(filter_types)
+    Array(paths).select { |p| !(filter_types & content_types(p)).empty? }
+  end
+
   private
 
   def sh_escape(array)
@@ -459,5 +644,13 @@ module Maid::Tools
 
   def expand_all(paths)
     Array(paths).map { |path| expand(path) }
+  end
+
+  def mdls_to_array(path, attribute)
+    return [] unless Maid::Platform.osx?
+    raw = cmd("mdls -raw -name #{attribute} #{ sh_escape(path) }")
+    return [] if raw.empty?
+    clean = raw[1, raw.length - 2]
+    clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
   end
 end

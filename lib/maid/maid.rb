@@ -10,7 +10,12 @@ require 'xdg'
 class Maid::Maid
   DEFAULTS = {
     :progname     => 'Maid',
+
     :log_device   => File.expand_path('~/.maid/maid.log'),
+    # We don't want the log files to grow without check, but 50 MB doesn't seem too bad.  (We're going with a larger size just for safety right now.)
+    :log_shift_age  => 5,
+    :log_shift_size => 10 * 1_048_576, # 10 * 1 MB
+
     :rules_path   => File.expand_path('~/.maid/rules.rb'),
     :file_options => { :noop => false }, # for `FileUtils`
   }.freeze
@@ -31,7 +36,7 @@ class Maid::Maid
     @logger = unless options[:logger]
       @log_device = options[:log_device]
       FileUtils.mkdir_p(File.dirname(@log_device)) unless @log_device.kind_of?(IO)
-      Logger.new(@log_device)
+      @logger = Logger.new(@log_device, options[:log_shift_age], options[:log_shift_size])
     else
       options[:logger]
     end
@@ -98,7 +103,7 @@ class Maid::Maid
     if supported_command?(command)
       %x(#{ command })
     else
-      raise ArgumentError, "Unsupported system command: #{ command.inspect }"
+      raise NotImplementedError, "Unsupported system command: #{ command.inspect }"
     end
   end
 

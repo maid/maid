@@ -11,11 +11,16 @@ class Maid::App < Thor
   end
 
   desc 'clean', 'Clean based on rules'
-  method_option :rules,  :type => :string,  :aliases => %w(-r)
-  method_option :noop,   :type => :boolean, :aliases => %w(-n --dry-run)
-  method_option :silent, :type => :boolean, :aliases => %w(-s)
+  method_option :rules,   :type => :string,  :aliases => %w(-r)
+  method_option :noop,    :type => :boolean, :aliases => %w(-n --dry-run)
+  method_option :force,   :type => :boolean, :aliases => %w(-f)
+  method_option :silent,  :type => :boolean, :aliases => %w(-s)
   def clean
     maid = Maid::Maid.new(maid_options(options))
+
+    unless options.noop? || options.force?
+      warn 'Running "maid clean" without a flag is deprecated.  Please use "maid clean --noop" or "maid clean --force".'
+    end
 
     if Maid::TrashMigration.needed?
       migrate_trash
