@@ -1,6 +1,7 @@
 maid (0.5.0) unstable; urgency=low
 
   * New utility methods: "dir_safe", "downloading?"
+  * Updated dependencies: "mime-types"
   * Shiro Hazuki: Implementations of "dir_safe" and "downloading?" released
     into the public domain (Closes: #107)
 
