@@ -368,6 +368,20 @@ module Maid
       end
     end
 
+    describe '#downloading?' do
+      it 'detects a normal file as not being downloaded' do
+        @maid.downloading?('foo.zip').should be_false
+      end
+
+      it 'detects when downloading in Firefox' do
+        @maid.downloading?('foo.zip.part').should be_true
+      end
+
+      it 'detects when downloading in Chrome' do
+        @maid.downloading?('foo.zip.crdownload').should be_true
+      end
+    end
+
     describe '#duration_s' do
       it 'should determine audio length' do
         @maid.should_receive(:cmd).and_return('235.705')

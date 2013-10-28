@@ -212,13 +212,18 @@ module Maid::Tools
       sort
   end
 
-  # Same as `Maid::tools#dir`, but without listing files that are (possibly)
-  # being downloaded.
-  def dir_safe(expression)
-  
-    dir(expression).select do |file|
-      not downloading?(file)
-    end
+  # Same as `dir`, but excludes files that are (possibly) being
+  # downloaded.
+  #
+  # ## Example
+  #
+  # Move Debian/Ubuntu packages that are finished downloading into a software directory.
+  #
+  #     move dir_safe('~/Downloads/*.deb'), '~/Archive/Software'
+  #
+  def dir_safe(globs)
+    dir(globs).
+      reject { |path| downloading?(path) }
   end
 
   # Give only files matching the given glob.
@@ -321,28 +326,11 @@ module Maid::Tools
     mdls_to_array(path, 'kMDItemWhereFroms')
   end
 
-  def downloading?(file)
-    
-    # Firefox
-    return true if file =~ /\.part$/
-    return true if File.exist?("#{file}.part")
-  
-    # Chrom*
-    return true if file =~ /\.crdownload$/
-  
-    base_dir, name = File.split file
-  
-    # I usually save links in files named 'pending', 'pending-pics'... and
-    # download 'em using `wget -ci`
-    dir("#{base_dir}/pending*").any? do |links_file|
-      
-      File.readlines(links_file).any? do |link|
-        link_filename = File.basename(link).strip
-        
-        name == CGI::unescape(link_filename)
-      end
-      
-    end
+  # Detect whether the path is currently being downloaded in Chrome or Firefox.
+  #
+  # See also: `dir_safe`
+  def downloading?(path)
+    chrome_downloading?(path) || firefox_downloading?(path)
   end
 
   # Find all duplicate files in the given globs.
@@ -658,6 +646,15 @@ module Maid::Tools
   end
 
   private
+
+  def firefox_downloading?(path)
+    path =~ /\.part$/ ||
+      File.exist?("#{path}.part")
+  end
+
+  def chrome_downloading?(path)
+    path =~ /\.crdownload$/
+  end
 
   def sh_escape(array)
     Escape.shell_command(Array(array))
