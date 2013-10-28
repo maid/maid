@@ -212,6 +212,15 @@ module Maid::Tools
       sort
   end
 
+  # Same as `Maid::tools#dir`, but without listing files that are (possibly)
+  # being downloaded.
+  def dir_safe(expression)
+  
+    dir(expression).select do |file|
+      not downloading?(file)
+    end
+  end
+
   # Give only files matching the given glob.
   #
   # This is the same as `dir` but only includes actual files (no directories or symlinks).
@@ -310,6 +319,30 @@ module Maid::Tools
   #     downloaded_from('foo.zip') # => ['http://www.site.com/foo.zip', 'http://www.site.com/']
   def downloaded_from(path)
     mdls_to_array(path, 'kMDItemWhereFroms')
+  end
+
+  def downloading?(file)
+    
+    # Firefox
+    return true if file =~ /\.part$/
+    return true if File.exist?("#{file}.part")
+  
+    # Chrom*
+    return true if file =~ /\.crdownload$/
+  
+    base_dir, name = File.split file
+  
+    # I usually save links in files named 'pending', 'pending-pics'... and
+    # download 'em using `wget -ci`
+    dir("#{base_dir}/pending*").any? do |links_file|
+      
+      File.readlines(links_file).any? do |link|
+        link_filename = File.basename(link).strip
+        
+        name == CGI::unescape(link_filename)
+      end
+      
+    end
   end
 
   # Find all duplicate files in the given globs.
