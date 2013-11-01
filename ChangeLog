@@ -6,6 +6,12 @@ maid (0.5.0) unstable; urgency=low
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
+maid (0.4.2) stable; urgency=low
+
+  * Updated dependencies: "rubyzip"
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Fri, 1 Nov 2013 00:00:00 +0000
+
 maid (0.4.1) stable; urgency=low
 
   * Updated dependencies: "mime-types"
