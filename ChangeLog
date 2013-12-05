@@ -1,5 +1,6 @@
 maid (0.5.0) unstable; urgency=low
 
+  * Started experimental Ruby 2.1.0 support, as of preview2 (Closes: #114)
   * New utility methods: "dir_safe", "downloading?"
   * Shiro Hazuki: Implementations of "dir_safe" and "downloading?" released
     into the public domain (Closes: #107)
