@@ -298,9 +298,7 @@ module Maid::Tools
     expanded_path = expand(path)
 
     if block.nil?
-      files = []
-      Find.find(expanded_path) { |file_path| files << file_path }
-      files
+      Find.find(expanded_path).to_a
     else
       Find.find(expanded_path, &block)
     end
