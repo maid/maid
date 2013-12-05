@@ -1,6 +1,19 @@
 # encoding: utf-8
 require 'spec_helper'
 
+# Workaround for Ruby 2.1.0
+if RUBY_VERSION == '2.1.0'
+  module FakeFS
+    class Dir
+      def self.entries(dirname, opts = {})
+        _check_for_valid_file(dirname)
+
+        Dir.new(dirname).map { |file| File.basename(file) }
+      end
+    end
+  end
+end
+
 module Maid
   # NOTE: Please use FakeFS instead of mocking and stubbing specific calls which happen to modify the filesystem.
   #
