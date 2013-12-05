@@ -563,8 +563,13 @@ module Maid
 
     describe '#newest_dupes_in' do
       it 'should list all but the oldest dupe' do
-        oldest_path = "#{file_fixtures_path}/foo.zip"
-        FileUtils.touch(oldest_path, :mtime => Time.new(1970, 1, 1))
+        # FIXME: Broken on Ruby 2.1.0-preview2, maybe because of FakeFS
+        #
+        #     oldest_path = "#{file_fixtures_path}/foo.zip"
+        #     FileUtils.touch(oldest_path, :mtime => Time.new(1970, 1, 1))
+
+        FileUtils.touch("#{file_fixtures_path}/bar.zip")
+        FileUtils.touch("#{file_fixtures_path}/1.zip")
 
         dupes = @maid.newest_dupes_in(file_fixtures_glob)
 
