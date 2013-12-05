@@ -315,7 +315,7 @@ module Maid
 
       it 'should log the creation of the directory' do
         @logger.should_receive(:info)
-        @maid.mkdir('~/Downlaods/Music/Pink.Floyd')
+        @maid.mkdir('~/Downloads/Music/Pink.Floyd')
       end
 
       it 'returns the path of the created directory' do
@@ -562,7 +562,7 @@ module Maid
     end
 
     describe '#newest_dupes_in' do
-      it 'should list all but the shortest-named dupe' do
+      it 'should list all but the oldest dupe' do
         oldest_path = "#{file_fixtures_path}/foo.zip"
         FileUtils.touch(oldest_path, :mtime => Time.new(1970, 1, 1))
 
