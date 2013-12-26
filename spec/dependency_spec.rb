@@ -66,7 +66,7 @@ describe 'Dependency expectations' do
   describe Zip::File do
     it 'makes entries available with #entries' do
       Zip::File.open("#@file_fixtures_path/foo.zip") do |zip_file|
-        expect(zip_file.entries.map { |entry| entry.name }.sort).to eq(%w(README.txt foo.exe subdir/anything.txt))
+        expect(zip_file.entries.map { |entry| entry.name }).to match_array(%w(README.txt foo.exe subdir/anything.txt))
       end
     end
 
