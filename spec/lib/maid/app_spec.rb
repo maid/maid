@@ -7,7 +7,7 @@ module Maid
       out = StringIO.new
       $stdout = out
       yield
-      return out
+      out.string
     ensure
       $stdout = STDOUT
     end
@@ -16,7 +16,7 @@ module Maid
       out = StringIO.new
       $stderr = out
       yield
-      return out
+      out.string
     ensure
       $stderr = STDERR
     end
@@ -50,27 +50,27 @@ module Maid
 
     it 'issues deprecation notice when called without option, but still clean' do
       expect(@maid).to receive(:clean).twice
-      expect(capture_stderr { App.start(['clean']) }.string).to match(/deprecated/)
-      expect(capture_stderr { App.start(['clean', '--silent']) }.string).to match(/deprecated/)
+      expect(capture_stderr { App.start(['clean']) }).to match(/deprecated/)
+      expect(capture_stderr { App.start(['clean', '--silent']) }).to match(/deprecated/)
     end
 
     it 'is not silent if not given the --silent option' do
-      expect(capture_stdout { App.start(['clean', '--force']) }.string).not_to eq('')
+      expect(capture_stdout { App.start(['clean', '--force']) }).not_to eq('')
     end
 
     it 'is silent if given the --silent option' do
       # TODO: It might even make sense to wrap `maid.clean` in `capture_stdout { ... }`
-      expect(capture_stdout { App.start(['clean', '--noop', '--silent']) }.string).to eq('')
-      expect(capture_stdout { App.start(['clean', '--force', '--silent']) }.string).to eq('')
+      expect(capture_stdout { App.start(['clean', '--noop', '--silent']) }).to eq('')
+      expect(capture_stdout { App.start(['clean', '--force', '--silent']) }).to eq('')
     end
 
     it 'complains about a MISSPELLED option' do
-      expect(capture_stderr { App.start(['clean', '--slient']) }.string).to match(/Unknown/)
-      expect(capture_stderr { App.start(['clean', '--noop', '--slient']) }.string).to match(/Unknown/)
+      expect(capture_stderr { App.start(['clean', '--slient']) }).to match(/Unknown/)
+      expect(capture_stderr { App.start(['clean', '--noop', '--slient']) }).to match(/Unknown/)
     end
 
     it 'complains about an undefined task' do
-      expect(capture_stderr { App.start(['rules.rb']) }.string).to match(/Could not find/)
+      expect(capture_stderr { App.start(['rules.rb']) }).to match(/Could not find/)
     end
   end
 
