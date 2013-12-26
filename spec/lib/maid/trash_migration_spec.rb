@@ -11,7 +11,7 @@ module Maid
 
       context 'and the incorrect trash path does not exist' do
         it 'is not needed' do
-          subject.needed?.should be_false
+          subject.needed?.should be(false)
         end
       end
 
@@ -21,7 +21,7 @@ module Maid
         end
 
         it 'is needed' do
-          subject.needed?.should be_true
+          subject.needed?.should be(true)
         end
 
         context 'and the kill switch is activated' do
@@ -30,7 +30,7 @@ module Maid
           end
 
           it 'is not needed' do
-            subject.needed?.should be_false
+            subject.needed?.should be(false)
           end
         end
       end
@@ -42,7 +42,7 @@ module Maid
       end
 
       it 'is not needed' do
-        subject.needed?.should be_false
+        subject.needed?.should be(false)
       end
     end
 

@@ -113,8 +113,8 @@ module Maid
 
     it 'should log to STDOUT for testing purposes when given noop' do
       opts = @app.maid_options('noop' => true)
-      opts[:file_options][:noop].should be_true
-      opts[:logger].should be_false
+      opts[:file_options][:noop].should be(true)
+      opts[:logger].should be(false)
       opts[:log_device].should == STDOUT
       opts[:log_formatter].call(nil, nil, nil, 'hello').should == "hello\n"
     end

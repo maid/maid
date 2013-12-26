@@ -19,11 +19,11 @@ module Maid
       end
 
       it 'is identified as Linux' do
-        subject.linux?.should be_true
+        subject.linux?.should be(true)
       end
 
       it 'is not identified as OS X' do
-        subject.osx?.should be_false
+        subject.osx?.should be(false)
       end
 
       it 'locate is "locate"' do
@@ -37,11 +37,11 @@ module Maid
       end
 
       it 'is not identified as Linux' do
-        subject.linux?.should be_false
+        subject.linux?.should be(false)
       end
 
       it 'is identified as OS X' do
-        subject.osx?.should be_true
+        subject.osx?.should be(true)
       end
 
       it 'locate is "mdfind"' do

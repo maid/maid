@@ -5,9 +5,12 @@ require 'fakefs/spec_helpers'
 
 require 'maid'
 
-RSpec.configure do |c|
-  c.mock_with(:rspec)
-  c.include(FakeFS::SpecHelpers, :fakefs => true)
+RSpec.configure do |config|
+  config.mock_with(:rspec) do |mock_config|
+    mock_config.syntax = [:should, :expect]
+  end
+
+  config.include(FakeFS::SpecHelpers, :fakefs => true)
 end
 
 RSpec::Matchers.define :have_deprecated_method do |expected|

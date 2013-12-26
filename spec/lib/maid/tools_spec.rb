@@ -47,7 +47,7 @@ module Maid
 
       it 'should move expanded paths, passing file_options' do
         @maid.move(@src_file, @dst_dir)
-        File.exists?(@dst_dir + @file_name).should be_true
+        File.exists?(@dst_dir + @file_name).should be(true)
       end
 
       it 'should log the move' do
@@ -61,8 +61,8 @@ module Maid
         src_files = [@src_file, second_src_file]
 
         @maid.move(src_files, @dst_dir)
-        File.exist?(@dst_dir + @file_name).should be_true
-        File.exist?(@dst_dir + second_file_name).should be_true
+        File.exist?(@dst_dir + @file_name).should be(true)
+        File.exist?(@dst_dir + second_file_name).should be(true)
       end
 
       context 'given the destination directory does not exist' do
@@ -93,17 +93,17 @@ module Maid
       end
 
       it 'creates needed directories' do
-        File.directory?(@expanded_dst_dir).should be_false
+        File.directory?(@expanded_dst_dir).should be(false)
         @maid.rename(@src_file, @dst_name)
-        File.directory?(@expanded_dst_dir).should be_true
+        File.directory?(@expanded_dst_dir).should be(true)
       end
 
       it 'moves the file from the source to the destination' do
-        File.exists?(@expanded_src_name).should be_true
-        File.exists?(@expanded_dst_name).should be_false
+        File.exists?(@expanded_src_name).should be(true)
+        File.exists?(@expanded_dst_name).should be(false)
         @maid.rename(@src_file, @dst_name)
-        File.exists?(@expanded_src_name).should be_false
-        File.exists?(@expanded_dst_name).should be_true
+        File.exists?(@expanded_src_name).should be(false)
+        File.exists?(@expanded_dst_name).should be(true)
       end
 
       context 'given the target already exists' do
@@ -132,7 +132,7 @@ module Maid
 
       it 'should move the path to the trash' do
         @maid.trash(@src_file)
-        File.exist?(@trash_file).should be_true
+        File.exist?(@trash_file).should be(true)
       end
 
       it 'should use a safe path if the target exists' do
@@ -141,7 +141,7 @@ module Maid
           FileUtils.touch(@trash_file)
           @maid.trash(@src_file)
           new_trash_file = File.join(@trash_path, @file_name + ' 2011-05-22-16-53-52')
-          File.exist?(new_trash_file).should be_true
+          File.exist?(new_trash_file).should be(true)
         end
       end
 
@@ -152,21 +152,21 @@ module Maid
         @maid.trash(@src_files)
 
         second_trash_file = File.join(@trash_path, second_file_name)
-        File.exist?(@trash_file).should be_true
-        File.exist?(second_trash_file).should be_true
+        File.exist?(@trash_file).should be(true)
+        File.exist?(second_trash_file).should be(true)
       end
 
       it 'should remove files greater then the remove option size' do
         @maid.stub(:disk_usage) { 1025 }
         @maid.trash(@src_file, :remove_over => 1.mb)
-        File.exist?(@src_file).should_not be_true
-        File.exist?(@trash_file).should_not be_true
+        File.exist?(@src_file).should_not be(true)
+        File.exist?(@trash_file).should_not be(true)
       end
 
       it 'should trash files less then the remove option size' do
         @maid.stub(:disk_usage) { 1023 }
         @maid.trash(@src_file, :remove_over => 1.mb)
-        File.exist?(@trash_file).should be_true
+        File.exist?(@trash_file).should be(true)
       end
     end
 
@@ -181,7 +181,7 @@ module Maid
 
       it 'should remove expanded paths, passing options' do
         @maid.remove(@src_file)
-        File.exist?(@src_file).should be_false
+        File.exist?(@src_file).should be(false)
       end
 
       it 'should log the remove' do
@@ -207,8 +207,8 @@ module Maid
         @src_files = [@src_file, second_src_file]
 
         @maid.remove(@src_files)
-        File.exist?(@src_file).should be_false
-        File.exist?(second_src_file).should be_false
+        File.exist?(@src_file).should be(false)
+        File.exist?(second_src_file).should be(false)
       end
     end
 
@@ -323,7 +323,7 @@ module Maid
     describe '#mkdir' do
       it 'should create a directory successfully' do
         @maid.mkdir('~/Downloads/Music/Pink.Floyd')
-        File.exist?("#@home/Downloads/Music/Pink.Floyd").should be_true
+        File.exist?("#@home/Downloads/Music/Pink.Floyd").should be(true)
       end
 
       it 'should log the creation of the directory' do
@@ -339,7 +339,7 @@ module Maid
       #
       #     it 'should respect the noop option' do
       #       @maid.mkdir('~/Downloads/Music/Pink.Floyd')
-      #       File.exist?("#@home/Downloads/Music/Pink.Floyd").should be_false
+      #       File.exist?("#@home/Downloads/Music/Pink.Floyd").should be(false)
       #     end
     end
 
@@ -353,7 +353,7 @@ module Maid
       end
 
       it 'should delegate to Find.find with an expanded path' do
-        f = lambda { }
+        f = lambda { |arg| }
         Find.should_receive(:find).with(@file_expand_path, &f)
         @maid.find(@file, &f)
       end
@@ -383,15 +383,15 @@ module Maid
 
     describe '#downloading?' do
       it 'detects a normal file as not being downloaded' do
-        @maid.downloading?('foo.zip').should be_false
+        @maid.downloading?('foo.zip').should be(false)
       end
 
       it 'detects when downloading in Firefox' do
-        @maid.downloading?('foo.zip.part').should be_true
+        @maid.downloading?('foo.zip.part').should be(true)
       end
 
       it 'detects when downloading in Chrome' do
-        @maid.downloading?('foo.zip.crdownload').should be_true
+        @maid.downloading?('foo.zip.crdownload').should be(true)
       end
     end
 
