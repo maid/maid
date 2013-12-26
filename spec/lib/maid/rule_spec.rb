@@ -2,9 +2,9 @@ require 'spec_helper'
 
 module Maid
   describe Rule do
-    it 'should be able to be followed' do
+    it 'is able to be followed' do
       rule = Rule.new('my rule', lambda { 1 + 2 })
-      rule.follow.should == 3
+      expect(rule.follow).to eq(3)
     end
   end
 end

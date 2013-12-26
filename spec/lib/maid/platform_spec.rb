@@ -9,7 +9,7 @@ module Maid
     describe 'determining the host OS' do
       it 'delegates to RbConfig' do
         stub_host_os('foo')
-        subject.host_os.should == 'foo'
+        expect(subject.host_os).to eq('foo')
       end
     end
 
@@ -19,15 +19,15 @@ module Maid
       end
 
       it 'is identified as Linux' do
-        subject.linux?.should be(true)
+        expect(subject.linux?).to be(true)
       end
 
       it 'is not identified as OS X' do
-        subject.osx?.should be(false)
+        expect(subject.osx?).to be(false)
       end
 
       it 'locate is "locate"' do
-        Platform::Commands.locate.should match(/locate/)
+        expect(Platform::Commands.locate).to match(/locate/)
       end
     end
 
@@ -37,15 +37,15 @@ module Maid
       end
 
       it 'is not identified as Linux' do
-        subject.linux?.should be(false)
+        expect(subject.linux?).to be(false)
       end
 
       it 'is identified as OS X' do
-        subject.osx?.should be(true)
+        expect(subject.osx?).to be(true)
       end
 
       it 'locate is "mdfind"' do
-        Platform::Commands.locate.should match(/mdfind/)
+        expect(Platform::Commands.locate).to match(/mdfind/)
       end
     end
   end

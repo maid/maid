@@ -36,41 +36,41 @@ module Maid
       Maid.stub(:new) { @maid }
     end
 
-    it 'should make a new Maid with the options' do
+    it 'makes a new Maid with the options' do
       opts = { :foo => 'bar' }
       @app.stub(:maid_options).and_return(opts)
-      Maid.should_receive(:new).with(opts).and_return(@maid)
+      expect(Maid).to receive(:new).with(opts).and_return(@maid)
       @app.clean
     end
 
-    it 'should clean when --force is specified' do      
-      @maid.should_receive(:clean)
+    it 'cleans when --force is specified' do      
+      expect(@maid).to receive(:clean)
       App.start(['clean', '--force'])
     end 
 
-    it 'should issue deprecation notice when called without option, but still clean' do
-      @maid.should_receive(:clean).twice
-      capture_stderr { App.start(['clean']) }.string.should match(/deprecated/)
-      capture_stderr { App.start(['clean', '--silent']) }.string.should match(/deprecated/)
+    it 'issues deprecation notice when called without option, but still clean' do
+      expect(@maid).to receive(:clean).twice
+      expect(capture_stderr { App.start(['clean']) }.string).to match(/deprecated/)
+      expect(capture_stderr { App.start(['clean', '--silent']) }.string).to match(/deprecated/)
     end
 
-    it 'should not be silent if not given the --silent option' do
-      capture_stdout { App.start(['clean', '--force']) }.string.should_not == ''
+    it 'is not silent if not given the --silent option' do
+      expect(capture_stdout { App.start(['clean', '--force']) }.string).not_to eq('')
     end
 
-    it 'should be silent if given the --silent option' do
+    it 'is silent if given the --silent option' do
       # TODO: It might even make sense to wrap `maid.clean` in `capture_stdout { ... }`
-      capture_stdout { App.start(['clean', '--noop', '--silent']) }.string.should == ''
-      capture_stdout { App.start(['clean', '--force', '--silent']) }.string.should == ''
+      expect(capture_stdout { App.start(['clean', '--noop', '--silent']) }.string).to eq('')
+      expect(capture_stdout { App.start(['clean', '--force', '--silent']) }.string).to eq('')
     end
 
-    it 'should complain about a MISSPELLED option' do
-      capture_stderr { App.start(['clean', '--slient']) }.string.should match(/Unknown/)
-      capture_stderr { App.start(['clean', '--noop', '--slient']) }.string.should match(/Unknown/)
+    it 'complains about a MISSPELLED option' do
+      expect(capture_stderr { App.start(['clean', '--slient']) }.string).to match(/Unknown/)
+      expect(capture_stderr { App.start(['clean', '--noop', '--slient']) }.string).to match(/Unknown/)
     end
 
-    it 'should complain about an undefined task' do
-      capture_stderr { App.start(['rules.rb']) }.string.should match(/Could not find/)
+    it 'complains about an undefined task' do
+      expect(capture_stderr { App.start(['rules.rb']) }.string).to match(/Could not find/)
     end
   end
 
@@ -79,13 +79,13 @@ module Maid
       @app = App.new
     end
 
-    it 'should print out the gem version' do
-      @app.should_receive(:say).with(VERSION)
+    it 'prints out the gem version' do
+      expect(@app).to receive(:say).with(VERSION)
       @app.version
     end
 
     it 'is mapped as --version' do
-      App.start(['--version']).should == @app.version
+      expect(App.start(['--version'])).to eq(@app.version)
     end
 
     context 'with the "long" option' do
@@ -97,10 +97,10 @@ module Maid
         @app.options = options
       end
 
-      it 'should print out the gem version' do
+      it 'prints out the gem version' do
         ua = 'Maid/0.0.1'
         UserAgent.stub(:value) { ua }
-        @app.should_receive(:say).with(ua)
+        expect(@app).to receive(:say).with(ua)
         @app.version
       end
     end
@@ -111,17 +111,17 @@ module Maid
       @app = App.new
     end
 
-    it 'should log to STDOUT for testing purposes when given noop' do
+    it 'logs to STDOUT for testing purposes when given noop' do
       opts = @app.maid_options('noop' => true)
-      opts[:file_options][:noop].should be(true)
-      opts[:logger].should be(false)
-      opts[:log_device].should == STDOUT
-      opts[:log_formatter].call(nil, nil, nil, 'hello').should == "hello\n"
+      expect(opts[:file_options][:noop]).to be(true)
+      expect(opts[:logger]).to be(false)
+      expect(opts[:log_device]).to eq(STDOUT)
+      expect(opts[:log_formatter].call(nil, nil, nil, 'hello')).to eq("hello\n")
     end
 
-    it 'should set the rules path when given rules' do
+    it 'sets the rules path when given rules' do
       opts = @app.maid_options('rules' => 'maid_rules.rb')
-      opts[:rules_path].should match(/maid_rules.rb$/)
+      expect(opts[:rules_path]).to match(/maid_rules.rb$/)
     end
   end
 end
