@@ -1,5 +1,8 @@
 maid (0.5.0) stable; urgency=low
 
+  * Stats! { 'collaborators' => 13, 'downloads' => 9570, 'forks' => 38,
+    'open_issues' => 28, 'closed_issues' => 86, 'stars' => 722,
+    'users_sharing_rules' => 25 }
   * Started official support Ruby 2.1.0 (Closes: #114)
   * Shiro Hazuki (public domain code): New utility methods: "dir_safe",
     "downloading?" (Closes: #107)
