@@ -1,4 +1,4 @@
-require 'digest/md5'
+require 'digest/sha1'
 require 'find'
 require 'fileutils'
 require 'time'
@@ -493,9 +493,9 @@ module Maid::Tools
   #
   # ## Examples
   #
-  #     checksum_of('foo.zip') # => "ae8dbb203dfd560158083e5de90969c2"
+  #     checksum_of('foo.zip') # => "67258d750ca654d5d3c7b06bd2a1c792ced2003e"
   def checksum_of(path)
-    Digest::MD5.hexdigest(File.read(path))
+    Digest::SHA1.hexdigest(File.read(path))
   end
 
   # @deprecated

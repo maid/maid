@@ -486,7 +486,7 @@ module Maid
 
       it 'returns the checksum of the file' do
         expect(File).to receive(:read).with(@file).and_return('contents')
-        expect(@maid.checksum_of(@file)).to eq(Digest::MD5.hexdigest('contents'))
+        expect(@maid.checksum_of(@file)).to eq(Digest::SHA1.hexdigest('contents'))
       end
     end
 
