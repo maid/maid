@@ -176,6 +176,40 @@ module Maid
         expect(@maid.rules.first.description).to eq('description')
       end
     end
+    
+    describe '#watch' do
+      before do
+        @maid = Maid.new
+      end
+
+      it 'adds a watch to the list of watches' do
+        expect(@maid.watches.length).to eq(0)
+        
+        @maid.watch('watch_dir') do
+          'instructions'
+        end
+
+        expect(@maid.watches.length).to eq(1)
+        expect(@maid.watches.first.path).to eq(File.expand_path('watch_dir'))
+      end
+    end
+    
+    describe '#repeat' do
+      before do
+        @maid = Maid.new
+      end
+
+      it 'adds a repeat to the list of repeats' do
+        expect(@maid.repeats.length).to eq(0)
+        
+        @maid.repeat('1s') do
+          'instructions'
+        end
+
+        expect(@maid.repeats.length).to eq(1)
+        expect(@maid.repeats.first.timestring).to eq('1s')
+      end
+    end
 
     describe '#follow_rules' do
       it 'follows each rule' do
