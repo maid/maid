@@ -19,6 +19,6 @@ class Maid::Repeat
   end
   
   def stop
-    @scheduler.shutdown
+    @scheduler.shutdown(:join) # Join the work threads
   end
 end
