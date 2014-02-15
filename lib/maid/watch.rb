@@ -13,9 +13,15 @@ class Maid::Watch
 
   def run
     unless rules.empty?
-      @listener = Listen.to(path) { follow_rules }
+      @listener = Listen.to(path) do |modified, added, removed|
+        follow_rules(modified, added, removed)
+      end
       @listener.start
     end
+  end
+  
+  def stop
+    @listener.stop
   end
   
   def join

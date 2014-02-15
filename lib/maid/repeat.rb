@@ -18,7 +18,7 @@ class Maid::Repeat
     end
   end
   
-  def join
-    @scheduler.join
+  def stop
+    @scheduler.shutdown
   end
 end

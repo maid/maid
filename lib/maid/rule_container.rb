@@ -13,10 +13,10 @@ module Maid::RuleContainer
   end
   
   # Follow all registered rules.
-  def follow_rules
+  def follow_rules(*args)
     @rules.each do |rule|
       @logger.info("Rule: #{ rule.description }") unless @logger.nil?
-      rule.follow
+      rule.follow(*args)
     end
   end
 end

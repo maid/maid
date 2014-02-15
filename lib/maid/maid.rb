@@ -101,7 +101,11 @@ class Maid::Maid
     else
       all = @watches + @repeats
       all.each(&:run)
-      all.each(&:join)
+      trap("SIGINT") do
+        all.each(&:stop)
+        exit!
+      end
+      sleep
     end
   end
   
