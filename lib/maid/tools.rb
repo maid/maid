@@ -28,11 +28,11 @@ module Maid::Tools
   # Single path:
   #
   #     move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
-  # 
+  #
   # Multiple paths:
   #
   #     move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
-  #     move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')    
+  #     move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
   def move(sources, destination)
     destination = expand(destination)
 
@@ -84,11 +84,11 @@ module Maid::Tools
   #
   # The path is still moved if a file already exists in the trash with the same name.  However, the current date and
   # time is appended to the filename.
-  # 
+  #
   # **Note:** the OS-native "restore" or "put back" functionality for trashed files is not currently supported.  (See
   # [issue #63](https://github.com/benjaminoakes/maid/issues/63).)  However, they can be restored manually, and the Maid
   # log can help assist with this.
-  # 
+  #
   # ## Options
   #
   # `:remove_over => Fixnum` (e.g. `1.gigabyte`, `1024.megabytes`)
@@ -102,7 +102,7 @@ module Maid::Tools
   # Single path:
   #
   #     trash('~/Downloads/foo.zip')
-  # 
+  #
   # Multiple paths:
   #
   #     trash(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
@@ -146,7 +146,7 @@ module Maid::Tools
   # Delete the files at the given path recursively.
   #
   # **NOTE**: In most cases, `trash` is a safer choice, since the files will be recoverable by retreiving them from the trash.  Once you delete a file using `remove`, it's gone!  Please use `trash` whenever possible and only use `remove` when necessary.
-  # 
+  #
   # ## Options
   #
   # `:force => boolean`
@@ -234,11 +234,11 @@ module Maid::Tools
     dir(globs).
       select { |f| File.file?(f) }
   end
-  
+
   # Escape characters that have special meaning as a part of path global patterns.
   #
   # Useful when using `dir` with file names that may contain `{ } [ ]` characters.
-  # 
+  #
   # ## Example
   #
   #     escape_glob('test [tmp]') # => 'test \\[tmp\\]'
@@ -430,7 +430,7 @@ module Maid::Tools
     raw = cmd("du -s #{ sh_escape(path) }")
     # FIXME: This reports in kilobytes, but should probably report in bytes.
     usage_kb = raw.split(/\s+/).first.to_i
-   
+
     if usage_kb.zero?
       raise "Stopping pessimistically because of unexpected value from du (#{ raw.inspect })"
     else
@@ -521,7 +521,7 @@ module Maid::Tools
   # The host OS must provide `rsync`.  See the `rsync` man page for a detailed description.
   #
   #     man rsync
-  # 
+  #
   # ## Options
   #
   # `:delete      => boolean`
@@ -610,7 +610,7 @@ module Maid::Tools
   #     media_type('bar.jpg') # => "image"
   def media_type(path)
     type = MIME::Types.type_for(path)[0]
-    
+
     if type
       type.media_type
     end
@@ -634,7 +634,7 @@ module Maid::Tools
   #     where_content_type(dir('~/Downloads/*'), 'image/jpeg')
   #
   # ### Using Spotlight content types
-  # 
+  #
   # Less portable, but richer data in some cases.
   #
   #     where_content_type(dir('~/Downloads/*'), 'public.image')
