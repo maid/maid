@@ -1,3 +1,9 @@
+maid (0.5.1) unstable; urgency=low
+
+  * Jayson Rhynas: Add Safari download detection to "downloading?" (Closes: #121)
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
+
 maid (0.5.0) stable; urgency=low
 
   * Stats! { 'collaborators' => 13, 'downloads' => 9570, 'forks' => 38,
