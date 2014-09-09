@@ -328,7 +328,7 @@ module Maid::Tools
   #
   # See also: `dir_safe`
   def downloading?(path)
-    !!(chrome_downloading?(path) || firefox_downloading?(path))
+    !!(chrome_downloading?(path) || firefox_downloading?(path) || safari_downloading?(path))
   end
 
   # Find all duplicate files in the given globs.
@@ -652,6 +652,10 @@ module Maid::Tools
 
   def chrome_downloading?(path)
     path =~ /\.crdownload$/
+  end
+
+  def safari_downloading?(path)
+    path =~ /\.download$/
   end
 
   def sh_escape(array)
