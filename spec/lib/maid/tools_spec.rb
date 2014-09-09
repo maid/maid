@@ -393,6 +393,10 @@ module Maid
       it 'detects when downloading in Chrome' do
         expect(@maid.downloading?('foo.zip.crdownload')).to be(true)
       end
+
+      it 'detects when downloading in Safari' do
+        expect(@maid.downloading?('foo.zip.download')).to be (true)
+      end
     end
 
     describe '#duration_s' do
