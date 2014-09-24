@@ -23,6 +23,12 @@ module Maid
         end
         self
       end
+
+      class << self
+        def perform(name, task)
+          new(name, task).define.clean
+        end
+      end
     end
   end
 end

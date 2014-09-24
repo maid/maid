@@ -60,6 +60,34 @@ module Maid
         end
       end
 
+      describe '.perform' do
+        subject(:perform) { described_class.perform name, task }
+        let(:name)        { double(:name) }
+        let(:task)        { Proc.new {} }
+
+        it 'creates an instance' do
+          expect(described_class)
+            .to receive(:new)
+            .with(name, task)
+            .and_call_original
+          perform
+        end
+
+        describe 'instance methods calling' do
+          let(:instance) { double(:single_rule).as_null_object }
+
+          before do
+            allow(described_class).to receive(:new).and_return(instance)
+          end
+
+          it 'calls #define and #clean on instance' do
+            expect(instance).to receive(:define)
+            expect(instance).to receive(:clean)
+            perform
+          end
+        end
+      end
+
     end
   end
 end
