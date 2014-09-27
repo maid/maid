@@ -1,5 +1,4 @@
 require 'bundler'
-require 'maid'
 require 'rake'
 require 'rspec/core/rake_task'
 require 'yard'
@@ -14,7 +13,9 @@ task :console do
   sh('irb -I lib -r maid')
 end
 
-Maid::Rake::Task.new :clean do
+require 'maid'
+
+Maid::Rake::Task.new(:clean) do
   # Clean up Rubinius-compilied Ruby
   trash(dir('**/*.rbc'))
 
