@@ -359,7 +359,7 @@ module Maid
       end
 
       it "returns an array of all the files' names when no block is given" do
-        expect(@maid.find(@dir).sort).to eq([@dir_expand_path, @file_expand_path].sort)
+        expect(@maid.find(@dir)).to match_array([@dir_expand_path, @file_expand_path])
       end
     end
 
@@ -590,7 +590,7 @@ module Maid
         dupes = @maid.newest_dupes_in(file_fixtures_glob)
 
         basenames = dupes.flatten.map { |p| File.basename(p) }
-        expect(basenames.sort).to eq(%w(bar.zip 1.zip).sort)
+        expect(basenames).to match_array(%w(bar.zip 1.zip))
       end
     end
 
