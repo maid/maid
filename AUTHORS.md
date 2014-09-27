@@ -3,6 +3,7 @@ In alphabetical order:
 * Benjamin Oakes (@benjaminoakes)
 * Bradley Smith (@bradleyd)
 * Graham Siener (@gsiener)
+* Jayson Rhynas (@jayrhynas)
 * John Colvin (@JohnColvin)
 * Justin Hileman (@bobthecow)
 * Larry Lv (@larrylv)
