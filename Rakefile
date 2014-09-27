@@ -18,7 +18,8 @@ Maid::Rake::Task.new :clean do
   # Clean up Rubinius-compilied Ruby
   trash(dir('**/*.rbc'))
 
-  # Get rid of old rubygems packages
+  # Get rid of generated files
+  trash('doc')
   trash('pkg')
-  mkdir('pkg')
+  trash('tmp')
 end
