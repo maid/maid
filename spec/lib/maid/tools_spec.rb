@@ -359,7 +359,7 @@ module Maid
       end
 
       it "returns an array of all the files' names when no block is given" do
-        expect(@maid.find(@dir)).to eq([@dir_expand_path, @file_expand_path])
+        expect(@maid.find(@dir).sort).to eq([@dir_expand_path, @file_expand_path].sort)
       end
     end
 
