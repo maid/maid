@@ -590,7 +590,7 @@ module Maid
         dupes = @maid.newest_dupes_in(file_fixtures_glob)
 
         basenames = dupes.flatten.map { |p| File.basename(p) }
-        expect(basenames).to eq(%w(bar.zip 1.zip))
+        expect(basenames.sort).to eq(%w(bar.zip 1.zip).sort)
       end
     end
 
