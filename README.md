@@ -210,6 +210,30 @@ Example for every day at 1am:
     # minute hour day_of_month month day_of_week command_to_execute
     0 1 * * * /bin/bash -li -c "maid clean --force --silent"
 
+### Rake Tasks
+
+Maid includes helpers that make file managment easier.  You may find them useful if you need to automate tasks in your Ruby projects.  This is available via support for Maid-based Rake tasks:
+
+```ruby
+# File: Rakefile
+require 'maid'
+
+Maid::Rake::Task.new :clean do
+  # Clean up Rubinius-compilied Ruby
+  trash(dir('**/*.rbc'))
+end
+```
+
+In fact, the Maid project uses Maid in [its Rakefile](https://github.com/benjaminoakes/maid/blob/master/Rakefile).
+
+You can also provide a custom description:
+
+```ruby
+Maid::Rake::Task.new clean_torrents: [:dependency], description: 'Clean Torrents' do
+  trash(dir('~/Downloads/*.torrent'))
+end
+```
+
 ## Warranty
 
 THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING
