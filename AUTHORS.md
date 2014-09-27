@@ -12,5 +12,6 @@ In alphabetical order:
 * Mark Jaquith (@markjaquith)
 * Mikael Hultgren (@blomma)
 * Mu Ye (@yemutex)
+* Pedro Lambert (@p-lambert)
 * Shiro Hazuki (@HazukiShiro)
 * Vladimir Agafonkin (@mourner)

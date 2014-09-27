@@ -1,6 +1,7 @@
-maid (0.5.1) unstable; urgency=low
+maid (0.6.0) unstable; urgency=low
 
   * Jayson Rhynas: Add Safari download detection to "downloading?" (Closes: #121)
+  * Pedro Lambert: Add support for Rake tasks defined by Maid (Closes: #68, #123)
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
