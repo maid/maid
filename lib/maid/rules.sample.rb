@@ -72,6 +72,22 @@ Maid.rules do
     end
   end
   
+  require 'fileutils'
+  
+  #Copy files, rather than move, from directory into iTunes.
+    rule 'Move Downloaded Music to iTunes' do
+      FileUtils.cp_r('/Users/jesiegel2000/Movies/Torrents/Music/.', 
+      '/Users/jesiegel2000/Music/iTunes/iTunes Media/Automatically Add to iTunes/',
+      :remove_destination => true)
+  end
+  
+  #This will remove duplicates within iTunes due to above copy.
+  #This will NOT remove metadata from within iTunes.
+   rule 'Trash duplicate iTunes Songs' do
+      trash verbose_dupes_in('~/Music/iTunes/iTunes Media/Music/**/*')
+  end
+  
+  
   # NOTE: Currently, only Mac OS X supports `downloaded_from`.
   rule 'Old files downloaded while developing/testing' do
     dir('~/Downloads/*').each do |path|
