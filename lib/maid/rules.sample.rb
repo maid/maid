@@ -76,8 +76,8 @@ Maid.rules do
   
   #Copy files, rather than move, from directory into iTunes.
     rule 'Move Downloaded Music to iTunes' do
-      FileUtils.cp_r('/Users/jesiegel2000/Movies/Torrents/Music/.', 
-      '/Users/jesiegel2000/Music/iTunes/iTunes Media/Automatically Add to iTunes/',
+      FileUtils.cp_r('/Users/.../Movies/.../Music/.', 
+      '/Users/.../Music/iTunes/iTunes Media/Automatically Add to iTunes/',
       :remove_destination => true)
   end
   
