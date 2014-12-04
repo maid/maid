@@ -1,6 +1,5 @@
 require 'fileutils'
 require 'logger'
-
 require 'xdg'
 
 # Maid cleans up according to the given rules, logging what it does.
@@ -8,6 +7,7 @@ require 'xdg'
 # TODO: Rename to something less ambiguous, e.g. "cleaning agent", "cleaner", "vacuum", etc.  Having this class within
 # the `Maid` module makes things confusing.
 class Maid::Maid
+  include Maid::RuleContainer
   DEFAULTS = {
     :progname     => 'Maid',
 
@@ -20,7 +20,7 @@ class Maid::Maid
     :file_options => { :noop => false }, # for `FileUtils`
   }.freeze
 
-  attr_reader :file_options, :logger, :log_device, :rules, :rules_path, :trash_path
+  attr_reader :file_options, :logger, :log_device, :rules_path, :trash_path, :watches, :repeats
   include ::Maid::Tools
 
   # Make a new Maid, setting up paths for the log and trash.
@@ -52,6 +52,8 @@ class Maid::Maid
     FileUtils.mkdir_p(File.expand_path('~/.maid'))
     FileUtils.mkdir_p(@trash_path)
 
+    @watches = []
+    @repeats = []
     @rules = []
   end
   
@@ -82,20 +84,31 @@ class Maid::Maid
   rescue LoadError => e
     STDERR.puts e.message
   end
-
-  # Register a rule with a description and instructions (lambda function).
-  def rule(description, &instructions)
-    @rules << ::Maid::Rule.new(description, instructions)
+  
+  def watch(path, &rules)
+    @watches << ::Maid::Watch.new(self, path, &rules)
   end
-
-  # Follow all registered rules.
-  def follow_rules
-    @rules.each do |rule|
-      @logger.info("Rule: #{ rule.description }")
-      rule.follow
+  
+  def repeat(timestring, &rules)
+    @repeats << ::Maid::Repeat.new(self, timestring, &rules)
+  end
+  
+  # Daemonizes the process by starting all watches and repeats and joining
+  # the threads of the schedulers/watchers
+  def daemonize
+    if @watches.empty? && @repeats.empty?
+      STDERR.puts 'Cannot run daemon. Nothing to watch or repeat.'
+    else
+      all = @watches + @repeats
+      all.each(&:run)
+      trap("SIGINT") do
+        all.each(&:stop)
+        exit!
+      end
+      sleep
     end
   end
-
+  
   # Run a shell command.
   #--
   # Delegates to `Kernel.\``.  Made primarily for testing other commands and some error handling.
