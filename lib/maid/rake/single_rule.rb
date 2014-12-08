@@ -18,9 +18,7 @@ module Maid
       end
 
       def define
-        maid_instance.rule name do
-          maid_instance.instance_eval(&task)
-        end
+        maid_instance.rule(name, &task)
         self
       end
 
