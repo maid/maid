@@ -4,7 +4,7 @@ maid (0.6.0) unstable; urgency=low
     for Ruby 2.2.0.
   * Jayson Rhynas: Add Safari download detection to "downloading?" (Closes: #121)
   * Pedro Lambert: Add support for Rake tasks defined by Maid (Closes: #68, #123)
-  * Jurriaan Pruis: Add daemon mode and repeat support (Closes: #126)
+  * Jurriaan Pruis: Add daemon mode and repeat support (Closes: #126, #131)
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
