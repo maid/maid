@@ -24,11 +24,11 @@ class Maid::Maid
   include ::Maid::Tools
 
   # Make a new Maid, setting up paths for the log and trash.
-  # 
+  #
   # Sane defaults for a log and trash path are set for Mac OS X, but they can easily be overridden like so:
-  # 
+  #
   #     Maid::Maid.new(:log_device => '/home/username/log/maid.log', :trash_path => '/home/username/my_trash')
-  # 
+  #
   def initialize(options = {})
     options = DEFAULTS.merge(options.reject { |k, v| v.nil? })
 
@@ -56,7 +56,7 @@ class Maid::Maid
     @repeats = []
     @rules = []
   end
-  
+
   # Start cleaning, based on the rules defined at rules_path.
   def clean
     unless @log_device.kind_of?(IO)
@@ -84,15 +84,15 @@ class Maid::Maid
   rescue LoadError => e
     STDERR.puts e.message
   end
-  
+
   def watch(path, &rules)
     @watches << ::Maid::Watch.new(self, path, &rules)
   end
-  
+
   def repeat(timestring, &rules)
     @repeats << ::Maid::Repeat.new(self, timestring, &rules)
   end
-  
+
   # Daemonizes the process by starting all watches and repeats and joining
   # the threads of the schedulers/watchers
   def daemonize
@@ -102,13 +102,16 @@ class Maid::Maid
       all = @watches + @repeats
       all.each(&:run)
       trap("SIGINT") do
-        all.each(&:stop)
-        exit!
+        # Running in a thread fixes celluloid ThreadError
+        Thread.new do
+          all.each(&:stop)
+          exit!
+        end.join
       end
       sleep
     end
   end
-  
+
   # Run a shell command.
   #--
   # Delegates to `Kernel.\``.  Made primarily for testing other commands and some error handling.
