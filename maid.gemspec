@@ -34,11 +34,11 @@ Gem::Specification.new do |s|
 
   # Strategy: specific versions (since they're just for development)
   s.add_development_dependency('fakefs', '~> 0.4.2')
-  s.add_development_dependency('guard', '~> 2.6.1')
-  s.add_development_dependency('guard-rspec', '~> 4.3.1')
+  s.add_development_dependency('guard', '~> 2.10.4')
+  s.add_development_dependency('guard-rspec', '~> 4.5.0')
   s.add_development_dependency('rake', '~> 10.3.2')
   s.add_development_dependency('redcarpet', '~> 3.1.2') # Soft dependency of `yard`
-  s.add_development_dependency('rspec', '>= 2.14', '< 3.0')
+  s.add_development_dependency('rspec', '~> 3.1.0')
   s.add_development_dependency('timecop', '~> 0.7.0')
   s.add_development_dependency('yard', '~> 0.8.4')
 

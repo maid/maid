@@ -8,8 +8,13 @@ module Maid
       let(:task)            { Proc.new {} }
 
       describe '#initialize' do
-        its(:name) { should eq(name) }
-        its(:task) { should eq(task) }
+        it 'has a name' do
+          expect(single_rule.name). to eq(name)
+        end
+
+        it 'has a task' do
+          expect(single_rule.task). to eq(task)
+        end
       end
 
       describe '#clean' do
