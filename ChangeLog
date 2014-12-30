@@ -1,10 +1,10 @@
 maid (0.6.0) unstable; urgency=low
 
-  * Started official support for Ruby 2.1.1, 2.1.2, 2.1.3.  Tentative support
-    for Ruby 2.2.0.
+  * Started official support for Ruby 2.1.1, 2.1.2, 2.1.3, 2.2.0.
   * Jayson Rhynas: Add Safari download detection to "downloading?" (Closes: #121)
   * Pedro Lambert: Add support for Rake tasks defined by Maid (Closes: #68, #123)
   * Jurriaan Pruis: Add daemon mode and repeat support (Closes: #126, #131)
+  * Jurriaan Pruis: Add "ignore" option support for "watch" (Closes: #132)
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
