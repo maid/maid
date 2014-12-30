@@ -211,9 +211,11 @@ Example for every day at 1am:
     0 1 * * * /bin/bash -li -c "maid clean --force --silent"
     
 ### Running as a daemon
+
 To run Maid as a daemon you first have to specify watch/repeat rules.
 
 They are defined like this:
+
 ```ruby
 repeat '1s' do
   rule 'This rule will run every second' do
