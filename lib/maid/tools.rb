@@ -657,7 +657,6 @@ module Maid::Tools
   #
   #     copy(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
   #     copy(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')    
-
   def copy(sources, destination, options = {})
     destination = expand(destination)
 
