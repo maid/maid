@@ -85,8 +85,8 @@ class Maid::Maid
     STDERR.puts e.message
   end
 
-  def watch(path, &rules)
-    @watches << ::Maid::Watch.new(self, path, &rules)
+  def watch(path, options = {}, &rules)
+    @watches << ::Maid::Watch.new(self, path, options, &rules)
   end
 
   def repeat(timestring, &rules)

@@ -176,15 +176,17 @@ module Maid
         expect(@maid.rules.first.description).to eq('description')
       end
     end
-    
+
     describe '#watch' do
       before do
+        Listen.stub(:to)
+        Listen.stub(:start)
         @maid = Maid.new
       end
 
       it 'adds a watch to the list of watches' do
         expect(@maid.watches.length).to eq(0)
-        
+
         @maid.watch('watch_dir') do
           'instructions'
         end
@@ -192,8 +194,28 @@ module Maid
         expect(@maid.watches.length).to eq(1)
         expect(@maid.watches.first.path).to eq(File.expand_path('watch_dir'))
       end
+
+      it 'accepts a hash of options and passes them to Listen' do
+        hash = { :some => :options }
+        @maid.watch('some_dir', hash) do
+          rule 'test' do
+          end
+        end
+
+        listener = double('listener')
+
+        expect(Listen).to receive(:to) do |dir, opts|
+          expect(dir).to eq File.expand_path('some_dir')
+          expect(opts).to eq(hash)
+          listener
+        end
+
+        expect(listener).to receive(:start)
+
+        @maid.watches.last.run
+      end
     end
-    
+
     describe '#repeat' do
       before do
         @maid = Maid.new
@@ -201,7 +223,7 @@ module Maid
 
       it 'adds a repeat to the list of repeats' do
         expect(@maid.repeats.length).to eq(0)
-        
+
         @maid.repeat('1s') do
           'instructions'
         end
@@ -216,8 +238,8 @@ module Maid
         n = 3
         maid = Maid.new
         expect(@logger).to receive(:info).exactly(n).times
-        rules = (1..n).map do |n|
-          d = double("rule ##{ n }", :description => 'description')
+        rules = (1..n).map do |i|
+          d = double("rule ##{ i }", :description => 'description')
           expect(d).to receive(:follow)
           d
         end
