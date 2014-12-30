@@ -1,3 +1,3 @@
 module Maid
-  VERSION = '0.6.0.alpha.4'
+  VERSION = '0.6.0.alpha.5'
 end
