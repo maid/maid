@@ -5,6 +5,7 @@ maid (0.6.0) unstable; urgency=low
   * Pedro Lambert: Add support for Rake tasks defined by Maid (Closes: #68, #123)
   * Jurriaan Pruis: Add daemon mode and repeat support (Closes: #126, #131)
   * Jurriaan Pruis: Add "ignore" option support for "watch" (Closes: #132)
+  * Nico Ritschel: Add "copy" tool (Closes: #72, #133)
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
