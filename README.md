@@ -228,6 +228,10 @@ watch '/home/user/Downloads' do
     # another task
   end
 end
+
+watch '~/Desktop', ignore: /some_directory/ do
+  # rules in here
+end
 ```
 
 To run the daemon run `maid daemon`
