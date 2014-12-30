@@ -643,6 +643,36 @@ module Maid::Tools
     Array(paths).select { |p| !(filter_types & content_types(p)).empty? }
   end
 
+  # Copy from `sources` to `destination`
+  #
+  # The path is not copied if a file already exists at the destination with the same name.  A warning is logged instead.
+  # Note: Similar functionality is provided by the sync tool, but this requires installation of the `rsync` binary
+  # ## Examples
+  #
+  # Single path:
+  #
+  #     copy('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
+  # 
+  # Multiple paths:
+  #
+  #     copy(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
+  #     copy(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')    
+
+  def copy(sources, destination, options = {})
+    destination = expand(destination)
+
+    expand_all(sources).each do |source|
+        target = File.join(destination, File.basename(source))
+
+      unless File.exist?(target)
+        log("cp #{ source.inspect } #{ destination.inspect }")
+        FileUtils.cp(source, destination )
+      else
+        warn("skipping #{ source.inspect } because #{ target.inspect } already exists")
+      end
+    end
+  end
+
   private
 
   def firefox_downloading?(path)
