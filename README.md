@@ -217,20 +217,22 @@ To run Maid as a daemon you first have to specify watch/repeat rules.
 They are defined like this:
 
 ```ruby
-repeat '1s' do
-  rule 'This rule will run every second' do
-    # some task
+Maid.rules do
+  repeat '1s' do
+    rule 'This rule will run every second' do
+      # some task
+    end
   end
-end
 
-watch '/home/user/Downloads' do
-  rule 'This rule will run on every change to the downloads directory' do
-    # another task
+  watch '/home/user/Downloads' do
+    rule 'This rule will run on every change to the downloads directory' do
+      # another task
+    end
   end
-end
 
-watch '~/Desktop', ignore: /some_directory/ do
-  # rules in here
+  watch '~/Desktop', ignore: /some_directory/ do
+    # rules in here
+  end
 end
 ```
 
