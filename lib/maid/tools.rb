@@ -406,6 +406,8 @@ module Maid::Tools
   # ## Examples
   #
   #     dimensions_px('image.jpg') # => [1024, 768]
+  #     width, height = dimensions_px('image.jpg')
+  #     dimensions_px('image.jpg').join('x') # => "1024x768"
   def dimensions_px(path)
     Dimensions.dimensions(path)
   end
