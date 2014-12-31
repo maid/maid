@@ -195,8 +195,7 @@ For help with command line usage, run `maid help`.  For more help, please see th
 Once you get a hang for what you can do with Maid, let it do its stuff automatically throughout the day.  You'll find
 your computer stays a little tidier with as you teach it how to handle your common files.
 
-**Note:** Both Mac OS X and Ubuntu support callbacks when folders are changed (`fsevent`/`inotify`), and that may be a forthcoming feature in Maid.
-That said, I find `cron` to take care of most of my needs.  Pull requests are welcome, however.  :)
+**Note:** Daemon support (using `fsevent`/`inotify`) was recently added.  That said, `cron` takes care of the needs of many users.
 
 To do this, edit your crontab in your tool of choice:
 
