@@ -1,4 +1,4 @@
-maid (0.6.0) unstable; urgency=low
+maid (0.6.0) stable; urgency=low
 
   * Stats! { 'collaborators' => 17, 'downloads' => 16684, 'forks' => 48,
     'open_issues' => 35, 'closed_issues' => 98, 'stars' => 1045,
@@ -13,7 +13,7 @@ maid (0.6.0) unstable; urgency=low
   * Add maid introduction and links (Closes: #128)
   * Add "dimensions_px" tool, inspired by Coby Chapple's rules
 
- -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Wed, 31 Dec 2014 20:54:00 +0000
 
 maid (0.5.0) stable; urgency=low
 
