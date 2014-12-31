@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency('escape', '>= 0.0.1', '< 0.1.0') # Used for better Ruby 1.8.7 support, could be replaced with `Shellwords`
   s.add_dependency('thor', '>= 0.14.0', '< 1.0.0')
   s.add_dependency('deprecated', '~> 3.0.0')
+  s.add_dependency('dimensions', '>= 1.0.0', '< 2.0')
   s.add_dependency('mime-types', '~> 2.0')
   s.add_dependency('rubyzip', '~> 1.1.0')
   s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs

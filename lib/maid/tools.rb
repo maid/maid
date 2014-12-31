@@ -4,6 +4,7 @@ require 'fileutils'
 require 'time'
 
 require 'mime/types'
+require 'dimensions'
 require 'zip'
 
 # These "tools" are methods available in the Maid DSL.
@@ -396,6 +397,17 @@ module Maid::Tools
     dupes_in(globs).
       map { |dupes| dupes.sort_by { |p| File.basename(p).length }[1..-1] }.
       flatten
+  end
+
+  # Determine the dimensions of GIF, PNG, JPEG, or TIFF images.
+  #
+  # Value returned is [width, height].
+  #
+  # ## Examples
+  #
+  #     dimensions_px('image.jpg') # => [1024, 768]
+  def dimensions_px(path)
+    Dimensions.dimensions(path)
   end
 
   # [Mac OS X] Use Spotlight metadata to determine audio length.

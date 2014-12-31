@@ -11,6 +11,7 @@ maid (0.6.0) unstable; urgency=low
   * Jurriaan Pruis: Add "ignore" option support for "watch" (Closes: #132)
   * Nico Ritschel: Add "copy" tool (Closes: #72, #133)
   * Add maid introduction and links (Closes: #128)
+  * Add "dimensions_px" tool, inspired by Coby Chapple's rules
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 

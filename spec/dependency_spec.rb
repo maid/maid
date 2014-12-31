@@ -1,3 +1,4 @@
+require 'dimensions'
 require 'logger'
 require 'mime/types'
 require 'rbconfig'
@@ -75,6 +76,12 @@ describe 'Dependency expectations' do
       Zip::File.open("#@file_fixtures_path/\343\201\225.zip") do |zip_file|
         expect(zip_file.entries.map { |entry| entry.name }).to eq(%w(anything.txt))
       end
+    end
+  end
+
+  describe Dimensions do
+    it 'returns dimensions as an array' do
+      expect(Dimensions.dimensions("#@file_fixtures_path/283x240.jpg")).to eq([283, 240])
     end
   end
 end

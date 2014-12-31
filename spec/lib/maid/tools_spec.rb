@@ -630,6 +630,20 @@ module Maid
       end
     end
 
+    describe '#dimensions_px' do
+      context 'given a JPEG image' do
+        it 'reports the known size' do
+          expect(@maid.dimensions_px(image_path)).to eq([32, 32])
+        end
+      end
+
+      context 'given an unknown type' do
+        it 'returns nil' do
+          expect(@maid.dimensions_px(unknown_path)).to be_nil
+        end
+      end
+    end
+
     describe '#mime_type' do
       context 'given a JPEG image' do
         it 'reports "image/jpeg"' do
@@ -660,11 +674,12 @@ module Maid
 
     describe '#where_content_type' do
       context 'given "image"' do
-        it 'only lists the fixture JPEG' do
+        it 'only lists the fixture JPEGs' do
           matches = @maid.where_content_type(@maid.dir(file_fixtures_glob), 'image')
 
-          expect(matches.length).to eq(1)
-          expect(matches.first).to end_with('spec/fixtures/files/ruby.jpg')
+          expect(matches.length).to eq(2)
+          expect(matches.first).to end_with('spec/fixtures/files/283x240.jpg')
+          expect(matches.last).to end_with('spec/fixtures/files/ruby.jpg')
         end
       end
     end
