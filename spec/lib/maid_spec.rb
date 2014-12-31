@@ -1,26 +1,27 @@
 require 'spec_helper'
 
 describe Maid do
-  it 'should include Maid::NumericExtensions::Time' do
-    1.minute.should == 60
+  it 'includes Maid::NumericExtensions::Time' do
+    expect(1.minute).to eq(60)
   end
-  it 'should include Maid::NumericExtensions::SizeToKb' do
-    1.megabyte.should == 1024
+
+  it 'includes Maid::NumericExtensions::SizeToKb' do
+    expect(1.megabyte).to eq(1024)
   end
 end
 
 describe Maid, '.with_instance' do
-  it 'should temporarily set the instance to the given argument and execute the block' do
+  it 'temporarily sets the instance to the given argument and execute the block' do
     instance = double('instance')
-    Maid.with_instance(instance) { 0 }.should == 0
-    Maid.instance_eval { @instance }.should be_nil
+    expect(Maid.with_instance(instance) { 0 }).to eq(0)
+    expect(Maid.instance_eval { @instance }).to be(nil)
   end
 end
 
 describe Maid, '.rules' do
-  it 'should run in the context of the Maid::Maid instance' do
+  it 'runs in the context of the Maid::Maid instance' do
     instance = double('instance')
-    instance.should_receive(:foo)
+    expect(instance).to receive(:foo)
 
     Maid.with_instance(instance) do
       Maid.rules { foo }

@@ -5,15 +5,20 @@ Deprecated.set_action(:warn)
 # Must be in this order:
 require 'maid/version'
 require 'maid/tools'
+require 'maid/rule_container'
 require 'maid/maid'
 
 # Alphabetical:
 require 'maid/app'
 require 'maid/numeric_extensions'
 require 'maid/platform'
+require 'maid/rake/single_rule'
+require 'maid/rake/task'
 require 'maid/rule'
 require 'maid/trash_migration'
 require 'maid/user_agent'
+require 'maid/watch'
+require 'maid/repeat'
 
 module Maid
   class << self
@@ -27,7 +32,7 @@ module Maid
 
     # Define rules for the Maid instance.
     def rules(&block)
-      @instance.instance_eval(&block)
+      @instance.instance_exec(&block)
     end
   end
 end

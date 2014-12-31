@@ -1,9 +1,10 @@
-require 'digest/md5'
+require 'digest/sha1'
 require 'find'
 require 'fileutils'
 require 'time'
 
 require 'mime/types'
+require 'dimensions'
 require 'zip'
 
 # These "tools" are methods available in the Maid DSL.
@@ -28,11 +29,11 @@ module Maid::Tools
   # Single path:
   #
   #     move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
-  # 
+  #
   # Multiple paths:
   #
   #     move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
-  #     move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')    
+  #     move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
   def move(sources, destination)
     destination = expand(destination)
 
@@ -84,11 +85,11 @@ module Maid::Tools
   #
   # The path is still moved if a file already exists in the trash with the same name.  However, the current date and
   # time is appended to the filename.
-  # 
+  #
   # **Note:** the OS-native "restore" or "put back" functionality for trashed files is not currently supported.  (See
   # [issue #63](https://github.com/benjaminoakes/maid/issues/63).)  However, they can be restored manually, and the Maid
   # log can help assist with this.
-  # 
+  #
   # ## Options
   #
   # `:remove_over => Fixnum` (e.g. `1.gigabyte`, `1024.megabytes`)
@@ -102,7 +103,7 @@ module Maid::Tools
   # Single path:
   #
   #     trash('~/Downloads/foo.zip')
-  # 
+  #
   # Multiple paths:
   #
   #     trash(['~/Downloads/foo.zip', '~/Downloads/bar.zip'])
@@ -143,10 +144,39 @@ module Maid::Tools
     end
   end
 
+  # Copy from `sources` to `destination`
+  #
+  # The path is not copied if a file already exists at the destination with the same name.  A warning is logged instead.
+  # Note: Similar functionality is provided by the sync tool, but this requires installation of the `rsync` binary
+  # ## Examples
+  #
+  # Single path:
+  #
+  #     copy('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
+  # 
+  # Multiple paths:
+  #
+  #     copy(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
+  #     copy(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')    
+  def copy(sources, destination, options = {})
+    destination = expand(destination)
+
+    expand_all(sources).each do |source|
+        target = File.join(destination, File.basename(source))
+
+      unless File.exist?(target)
+        log("cp #{ source.inspect } #{ destination.inspect }")
+        FileUtils.cp(source, destination )
+      else
+        warn("skipping #{ source.inspect } because #{ target.inspect } already exists")
+      end
+    end
+  end
+
   # Delete the files at the given path recursively.
   #
   # **NOTE**: In most cases, `trash` is a safer choice, since the files will be recoverable by retreiving them from the trash.  Once you delete a file using `remove`, it's gone!  Please use `trash` whenever possible and only use `remove` when necessary.
-  # 
+  #
   # ## Options
   #
   # `:force => boolean`
@@ -234,11 +264,11 @@ module Maid::Tools
     dir(globs).
       select { |f| File.file?(f) }
   end
-  
+
   # Escape characters that have special meaning as a part of path global patterns.
   #
   # Useful when using `dir` with file names that may contain `{ } [ ]` characters.
-  # 
+  #
   # ## Example
   #
   #     escape_glob('test [tmp]') # => 'test \\[tmp\\]'
@@ -328,7 +358,7 @@ module Maid::Tools
   #
   # See also: `dir_safe`
   def downloading?(path)
-    chrome_downloading?(path) || firefox_downloading?(path)
+    !!(chrome_downloading?(path) || firefox_downloading?(path) || safari_downloading?(path))
   end
 
   # Find all duplicate files in the given globs.
@@ -398,6 +428,19 @@ module Maid::Tools
       flatten
   end
 
+  # Determine the dimensions of GIF, PNG, JPEG, or TIFF images.
+  #
+  # Value returned is [width, height].
+  #
+  # ## Examples
+  #
+  #     dimensions_px('image.jpg') # => [1024, 768]
+  #     width, height = dimensions_px('image.jpg')
+  #     dimensions_px('image.jpg').join('x') # => "1024x768"
+  def dimensions_px(path)
+    Dimensions.dimensions(path)
+  end
+
   # [Mac OS X] Use Spotlight metadata to determine audio length.
   #
   # ## Examples
@@ -430,7 +473,7 @@ module Maid::Tools
     raw = cmd("du -s #{ sh_escape(path) }")
     # FIXME: This reports in kilobytes, but should probably report in bytes.
     usage_kb = raw.split(/\s+/).first.to_i
-   
+
     if usage_kb.zero?
       raise "Stopping pessimistically because of unexpected value from du (#{ raw.inspect })"
     else
@@ -493,9 +536,9 @@ module Maid::Tools
   #
   # ## Examples
   #
-  #     checksum_of('foo.zip') # => "ae8dbb203dfd560158083e5de90969c2"
+  #     checksum_of('foo.zip') # => "67258d750ca654d5d3c7b06bd2a1c792ced2003e"
   def checksum_of(path)
-    Digest::MD5.hexdigest(File.read(path))
+    Digest::SHA1.hexdigest(File.read(path))
   end
 
   # @deprecated
@@ -521,7 +564,7 @@ module Maid::Tools
   # The host OS must provide `rsync`.  See the `rsync` man page for a detailed description.
   #
   #     man rsync
-  # 
+  #
   # ## Options
   #
   # `:delete      => boolean`
@@ -610,7 +653,7 @@ module Maid::Tools
   #     media_type('bar.jpg') # => "image"
   def media_type(path)
     type = MIME::Types.type_for(path)[0]
-    
+
     if type
       type.media_type
     end
@@ -634,7 +677,7 @@ module Maid::Tools
   #     where_content_type(dir('~/Downloads/*'), 'image/jpeg')
   #
   # ### Using Spotlight content types
-  # 
+  #
   # Less portable, but richer data in some cases.
   #
   #     where_content_type(dir('~/Downloads/*'), 'public.image')
@@ -652,6 +695,10 @@ module Maid::Tools
 
   def chrome_downloading?(path)
     path =~ /\.crdownload$/
+  end
+
+  def safari_downloading?(path)
+    path =~ /\.download$/
   end
 
   def sh_escape(array)

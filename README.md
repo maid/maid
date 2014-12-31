@@ -85,7 +85,7 @@ Modern Ruby versions and Unix-like operating systems should work, but only OS X 
 Offically supported:
 
 * **OS:** Mac OS X, Ubuntu
-* **Ruby:** 1.9.3+ (2.0.0 or 2.1.0 are preferred)
+* **Ruby:** 1.9.3+ (2.0.x or 2.1.x are preferred)
 
 Some features require OS X.  See the [documentation][] for more details.
 
@@ -195,8 +195,7 @@ For help with command line usage, run `maid help`.  For more help, please see th
 Once you get a hang for what you can do with Maid, let it do its stuff automatically throughout the day.  You'll find
 your computer stays a little tidier with as you teach it how to handle your common files.
 
-**Note:** Both Mac OS X and Ubuntu support callbacks when folders are changed (`fsevent`/`inotify`), and that may be a forthcoming feature in Maid.
-That said, I find `cron` to take care of most of my needs.  Pull requests are welcome, however.  :)
+**Note:** Daemon support (using `fsevent`/`inotify`) was recently added.  That said, `cron` takes care of the needs of many users.
 
 To do this, edit your crontab in your tool of choice:
 
@@ -209,6 +208,73 @@ Example for every day at 1am:
 
     # minute hour day_of_month month day_of_week command_to_execute
     0 1 * * * /bin/bash -li -c "maid clean --force --silent"
+    
+### Running as a daemon
+
+To run Maid as a daemon you first have to specify watch/repeat rules.
+
+They are defined like this:
+
+```ruby
+Maid.rules do
+  repeat '1s' do
+    rule 'This rule will run every second' do
+      # some task
+    end
+  end
+
+  watch '/home/user/Downloads' do
+    rule 'This rule will run on every change to the downloads directory' do
+      # another task
+    end
+  end
+
+  watch '~/Desktop', ignore: /some_directory/ do
+    # rules in here
+  end
+end
+```
+
+Here's a simple "watch" rule that organizes images by dimensions as soon as they're added to `~/Pictures`:
+
+```ruby
+Maid.rules do
+  watch '~/Pictures' do
+    rule 'organize images by dimensions' do
+      where_content_type(dir('~/Pictures/*'), 'image').each do |image|
+        width, height = dimensions_px(image)
+        move(image, mkdir("~/Pictures/#{width}x#{height}"))
+      end
+    end
+  end
+end
+```
+
+The command to run the daemon is `maid daemon`.  Starting the daemon on login depends on the platform.  On Ubuntu for example, you can run `maid daemon` as a normal startup application (Power/Gear Menu -> Startup Applications... -> Add).
+
+### Rake Tasks
+
+Maid includes helpers that make file managment easier.  You may find them useful if you need to automate tasks in your Ruby projects.  This is available via support for Maid-based Rake tasks:
+
+```ruby
+# File: Rakefile
+require 'maid'
+
+Maid::Rake::Task.new :clean do
+  # Clean up Rubinius-compilied Ruby
+  trash(dir('**/*.rbc'))
+end
+```
+
+In fact, the Maid project uses Maid in [its Rakefile](https://github.com/benjaminoakes/maid/blob/master/Rakefile).
+
+You can also provide a custom description:
+
+```ruby
+Maid::Rake::Task.new clean_torrents: [:dependency], description: 'Clean Torrents' do
+  trash(dir('~/Downloads/*.torrent'))
+end
+```
 
 ## Warranty
 
@@ -222,4 +288,4 @@ ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
 
 GPLv2.  See LICENSE for a copy.
 
-  [documentation]: http://rubydoc.info/github/benjaminoakes/maid/master/frames
+  [documentation]: http://www.rubydoc.info/github/benjaminoakes/maid/master/Maid/Tools

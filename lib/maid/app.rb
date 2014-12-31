@@ -4,7 +4,23 @@ require 'thor'
 
 class Maid::App < Thor
   check_unknown_options!
-  default_task 'help'
+  default_task 'introduction'
+
+  desc 'introduction', 'Become aquainted with maid'
+  def introduction
+    say <<EOF
+#{Maid::UserAgent.short}
+#{'=' * Maid::UserAgent.short.length}
+
+#{Maid::SUMMARY}
+
+  * Tutorial: https://github.com/benjaminoakes/maid#tutorial
+  * Community & examples: https://github.com/benjaminoakes/maid/wiki
+  * Documentation: http://www.rubydoc.info/github/benjaminoakes/maid/master/Maid/Tools
+
+For more information, run "maid help".
+EOF
+  end
 
   def self.sample_rules_path
     File.join(File.dirname(Maid::Maid::DEFAULTS[:rules_path]), 'rules.sample.rb')
@@ -56,6 +72,25 @@ class Maid::App < Thor
     File.open(path, 'w').puts(File.read(File.join(File.dirname(__FILE__), 'rules.sample.rb')))
 
     say "Sample rules created at #{ path.inspect }", :green
+  end
+  
+  desc 'daemon', 'Runs the watch/repeat rules in a daemon'
+  method_option :rules,   :type => :string,  :aliases => %w(-r)
+  method_option :silent,  :type => :boolean, :aliases => %w(-s)
+  def daemon
+    maid = Maid::Maid.new(maid_options(options))
+    
+    if Maid::TrashMigration.needed?
+      migrate_trash
+      return
+    end
+
+    unless options.silent?
+      say "Logging actions to #{ maid.log_device.inspect }"
+    end
+    
+    maid.load_rules
+    maid.daemonize
   end
 
   no_tasks do

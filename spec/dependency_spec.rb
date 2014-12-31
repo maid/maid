@@ -1,3 +1,4 @@
+require 'dimensions'
 require 'logger'
 require 'mime/types'
 require 'rbconfig'
@@ -23,31 +24,31 @@ describe 'Dependency expectations' do
       logger = Logger.new(io)
       logger.info('my message')
       logger.formatter = lambda { |_, _, _, msg| msg }
-      io.string.should match(/my message/)
+      expect(io.string).to match(/my message/)
     end
   end
 
   describe MIME::Types do
     it 'reports media types and sub types when given a path' do
       types = MIME::Types.type_for('anything.jpg')
-      types.length.should == 1
+      expect(types.length).to eq(1)
       type = types[0]
-      type.media_type.should == 'image'
-      type.sub_type.should == 'jpeg'
+      expect(type.media_type).to eq('image')
+      expect(type.sub_type).to eq('jpeg')
     end
 
     context 'when the type is unknown' do
       it 'returns []' do
         types = MIME::Types.type_for('unknown.foo')
-        types.length.should == 0
-        types[0].should be_nil
+        expect(types.length).to eq(0)
+        expect(types[0]).to be_nil
       end
     end
   end
 
   describe RbConfig do
     it 'identifies the host operating system' do
-      RbConfig::CONFIG['host_os'].should match(/[a-z]+/)
+      expect(RbConfig::CONFIG['host_os']).to match(/[a-z]+/)
     end
   end
 
@@ -59,22 +60,28 @@ describe 'Dependency expectations' do
       # More info:
       #
       # * [XDG Base Directory Specification](http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html)
-      XDG['DATA_HOME'].to_s.should match(%r{^/.*?/\.local/share$})
+      expect(XDG['DATA_HOME'].to_s).to match(%r{^/.*?/\.local/share$})
     end
   end
 
   describe Zip::File do
     it 'makes entries available with #entries' do
       Zip::File.open("#@file_fixtures_path/foo.zip") do |zip_file|
-        zip_file.entries.map { |entry| entry.name }.sort.should == %w(README.txt foo.exe subdir/anything.txt)
+        expect(zip_file.entries.map { |entry| entry.name }).to match_array(%w(README.txt foo.exe subdir/anything.txt))
       end
     end
 
     it 'supports UTF-8 filenames' do
       # Filename is a Japanese character
       Zip::File.open("#@file_fixtures_path/\343\201\225.zip") do |zip_file|
-        zip_file.entries.map { |entry| entry.name }.should == %w(anything.txt)
+        expect(zip_file.entries.map { |entry| entry.name }).to eq(%w(anything.txt))
       end
+    end
+  end
+
+  describe Dimensions do
+    it 'returns dimensions as an array' do
+      expect(Dimensions.dimensions("#@file_fixtures_path/283x240.jpg")).to eq([283, 240])
     end
   end
 end

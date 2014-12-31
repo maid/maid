@@ -11,7 +11,7 @@ module Maid
 
       context 'and the incorrect trash path does not exist' do
         it 'is not needed' do
-          subject.needed?.should be_false
+          expect(subject.needed?).to be(false)
         end
       end
 
@@ -21,7 +21,7 @@ module Maid
         end
 
         it 'is needed' do
-          subject.needed?.should be_true
+          expect(subject.needed?).to be(true)
         end
 
         context 'and the kill switch is activated' do
@@ -30,7 +30,7 @@ module Maid
           end
 
           it 'is not needed' do
-            subject.needed?.should be_false
+            expect(subject.needed?).to be(false)
           end
         end
       end
@@ -42,7 +42,7 @@ module Maid
       end
 
       it 'is not needed' do
-        subject.needed?.should be_false
+        expect(subject.needed?).to be(false)
       end
     end
 
@@ -60,16 +60,16 @@ module Maid
         FileUtils.touch(subject.incorrect_trash + filename)
 
         FileUtils.mkdir_p(subject.correct_trash)
-        Dir["#{ subject.correct_trash }/*"].should be_empty
+        expect(Dir["#{ subject.correct_trash }/*"]).to be_empty
 
         subject.perform
 
         # For some reason (perhaps a bug in fakefs), `File.exists?` wasn't giving the results I expected, but `Dir[]` did.
-        Dir[subject.incorrect_trash].should be_empty
+        expect(Dir[subject.incorrect_trash]).to be_empty
         trash_contents = Dir["#{ subject.correct_trash }/*"]
-        trash_contents.length.should == 2
-        trash_contents[0].should match(/files\/\.Trash$/)
-        trash_contents[1].should match(/files\/foo.txt$/)
+        expect(trash_contents.length).to eq(2)
+        expect(trash_contents[0]).to match(/files\/\.Trash$/)
+        expect(trash_contents[1]).to match(/files\/foo.txt$/)
       end
     end
   end
