@@ -4,7 +4,6 @@
 [![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
 [![Dependency Status](https://gemnasium.com/benjaminoakes/maid.png)](https://gemnasium.com/benjaminoakes/maid)
 [![Code Climate](https://codeclimate.com/github/benjaminoakes/maid.png)](https://codeclimate.com/github/benjaminoakes/maid)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/benjaminoakes/maid/trend.png)](https://bitdeli.com/free)
 
 **Be lazy!**  Let Maid clean up after you, based on rules you define.
 
