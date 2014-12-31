@@ -235,7 +235,22 @@ Maid.rules do
 end
 ```
 
-To run the daemon run `maid daemon`
+Here's a simple "watch" rule that organizes images by dimensions as soon as they're added to `~/Pictures`:
+
+```ruby
+Maid.rules do
+  watch '~/Pictures' do
+    rule 'organize images by width' do
+      where_content_type(dir('~/Pictures/*'), 'image').each do |image|
+        width, height = dimensions_px(image)
+        move(image, mkdir("~/Pictures/#{width}x#{height}"))
+      end
+    end
+  end
+end
+```
+
+The command to run the daemon is `maid daemon`.  Starting the daemon on login depends on the platform.  On Ubuntu for example, you can run `maid daemon` as a normal startup application (Power/Gear Menu -> Startup Applications... -> Add).
 
 ### Rake Tasks
 
