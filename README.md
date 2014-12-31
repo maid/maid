@@ -240,7 +240,7 @@ Here's a simple "watch" rule that organizes images by dimensions as soon as they
 ```ruby
 Maid.rules do
   watch '~/Pictures' do
-    rule 'organize images by width' do
+    rule 'organize images by dimensions' do
       where_content_type(dir('~/Pictures/*'), 'image').each do |image|
         width, height = dimensions_px(image)
         move(image, mkdir("~/Pictures/#{width}x#{height}"))
