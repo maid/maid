@@ -4,7 +4,23 @@ require 'thor'
 
 class Maid::App < Thor
   check_unknown_options!
-  default_task 'help'
+  default_task 'introduction'
+
+  desc 'introduction', 'Become aquainted with maid'
+  def introduction
+    say <<EOF
+#{Maid::UserAgent.short}
+#{'=' * Maid::UserAgent.short.length}
+
+#{Maid::SUMMARY}
+
+  * Tutorial: https://github.com/benjaminoakes/maid#tutorial
+  * Community & examples: https://github.com/benjaminoakes/maid/wiki
+  * Documentation: http://www.rubydoc.info/github/benjaminoakes/maid/master/Maid/Tools
+
+For more information, run "maid help".
+EOF
+  end
 
   def self.sample_rules_path
     File.join(File.dirname(Maid::Maid::DEFAULTS[:rules_path]), 'rules.sample.rb')
