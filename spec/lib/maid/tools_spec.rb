@@ -554,32 +554,31 @@ module Maid
         FileUtils.mkdir_p(@dst_dir = '~/Destination/')
       end
 
-      it 'should move expanded paths, passing file_options' do
+      it 'copies expanded paths, passing file_options' do
         @maid.copy(@src_file, @dst_dir)
-        File.exists?(@dst_dir + @file_name).should be_truthy
+        expect(File.exists?(@dst_dir + @file_name)).to be_truthy
       end
 
-      it 'should log the move' do
-        @logger.should_receive(:info)
+      it 'logs the copy' do
+        expect(@logger).to receive(:info)
         @maid.copy(@src_file, @dst_dir)
       end
 
-      it 'should not move if the target already exists' do
+      it 'does not copy if the target already exists' do
         FileUtils.touch(@dst_dir + @file_name)
-        @logger.should_receive(:warn)
+        expect(@logger).to receive(:warn)
 
         @maid.copy(@src_file, @dst_dir)
       end
 
-      it 'should handle multiple from paths' do
+      it 'handle multiple from paths' do
         second_src_file = @src_dir + (second_file_name = 'bar.zip')
         FileUtils.touch(second_src_file)
         src_files = [@src_file, second_src_file]
 
         @maid.copy(src_files, @dst_dir)
-        p "Source files: #{src_files}, dst_dir: #{@dst_dir}"
-        File.exist?(@dst_dir + @file_name).should be_truthy
-        File.exist?(@dst_dir + second_file_name).should be_truthy
+        expect(File.exist?(@dst_dir + @file_name)).to be_truthy
+        expect(File.exist?(@dst_dir + second_file_name)).to be_truthy
       end
     end
   end
