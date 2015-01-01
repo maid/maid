@@ -249,7 +249,15 @@ Maid.rules do
 end
 ```
 
-The command to run the daemon is `maid daemon`.  Starting the daemon on login depends on the platform.  On Ubuntu for example, you can run `maid daemon` as a normal startup application (Power/Gear Menu -> Startup Applications... -> Add).
+The command to run the daemon is `maid daemon`.  Starting the daemon on login depends on the platform.
+
+#### Ubuntu
+
+You can run `maid daemon` as a normal startup application (Power/Gear Menu -> Startup Applications... -> Add).
+
+#### OSX
+
+Please see Jurriaan Pruis' blog post, [Maid as a Daemon on OS X](http://jurriaan.ninja/2015/01/01/maid-on-os-x.html).  (Automating this setup would be welcome as a pull request!)
 
 ### Rake Tasks
 
