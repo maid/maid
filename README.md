@@ -257,7 +257,7 @@ You can run `maid daemon` as a normal startup application (Power/Gear Menu -> St
 
 #### OSX
 
-Please see Jurriaan Pruis' blog post, [Maid as a Daemon on OS X](http://jurriaan.ninja/2015/01/01/maid-on-os-x.html).  (Automating this setup would be welcome as a pull request!)
+Please see Jurriaan Pruis' blog post, [Maid as a Daemon on OS X](http://jurriaan.ninja/2015/01/01/maid-on-os-x.html).  ([Automating this setup would be welcome as a pull request!](https://github.com/benjaminoakes/maid/issues/136))
 
 ### Rake Tasks
 
