@@ -354,7 +354,7 @@ module Maid::Tools
     mdls_to_array(path, 'kMDItemWhereFroms')
   end
 
-  # Detect whether the path is currently being downloaded in Chrome or Firefox.
+  # Detect whether the path is currently being downloaded in Chrome, Firefox or Safari.
   #
   # See also: `dir_safe`
   def downloading?(path)
