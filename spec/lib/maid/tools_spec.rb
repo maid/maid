@@ -644,6 +644,21 @@ module Maid
       end
     end
 
+    describe '#location_city' do
+      context 'given a JPEG image' do
+        it 'reports the known location' do
+          sydney_path = File.join(file_fixtures_path, 'sydney.jpg')
+          expect(@maid.location_city(sydney_path)).to eq('Sydney, New South Wales, AU')
+        end
+      end
+
+      context 'given an unknown type' do
+        it 'returns nil' do
+          expect(@maid.location_city(unknown_path)).to be_nil
+        end
+      end
+    end
+
     describe '#mime_type' do
       context 'given a JPEG image' do
         it 'reports "image/jpeg"' do
@@ -678,8 +693,8 @@ module Maid
           matches = @maid.where_content_type(@maid.dir(file_fixtures_glob), 'image')
 
           expect(matches.length).to eq(2)
-          expect(matches.first).to end_with('spec/fixtures/files/283x240.jpg')
-          expect(matches.last).to end_with('spec/fixtures/files/ruby.jpg')
+          expect(matches.first).to end_with('spec/fixtures/files/ruby.jpg')
+          expect(matches.last).to end_with('spec/fixtures/files/sydney.jpg')
         end
       end
     end

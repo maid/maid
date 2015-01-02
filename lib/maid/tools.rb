@@ -3,6 +3,8 @@ require 'find'
 require 'fileutils'
 require 'time'
 
+require 'exifr'
+require 'geocoder'
 require 'mime/types'
 require 'dimensions'
 require 'zip'
@@ -439,6 +441,21 @@ module Maid::Tools
   #     dimensions_px('image.jpg').join('x') # => "1024x768"
   def dimensions_px(path)
     Dimensions.dimensions(path)
+  end
+
+  # Determine the city of the given JPEG image.
+  #
+  # ## Examples
+  #
+  #     loation_city('old_capitol.jpg') # => "Iowa City, IA, US"
+  def location_city(path)
+    case mime_type(path)
+    when 'image/jpeg'
+      gps = EXIFR::JPEG.new(path).gps
+      coordinates_string = [gps.latitude, gps.longitude]
+      location = Geocoder.search(coordinates_string).first
+      [location.city, location.province, location.country_code].join(', ')
+    end
   end
 
   # [Mac OS X] Use Spotlight metadata to determine audio length.

@@ -1,3 +1,10 @@
+maid (0.7.0) unstable; urgency=low
+
+  * Add dependencies: "exifr", "geocoder"
+  * Add "location_city" tool
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
+
 maid (0.6.1) stable; urgency=low
 
   * Brandon Pittman, Benjamin Oakes: Improve documentation.  (Closes: #135)
