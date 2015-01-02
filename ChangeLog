@@ -1,3 +1,10 @@
+maid (0.6.1) unstable; urgency=low
+
+  * Brandon Pittman, Benjamin Oakes: Improve documentation.  (Closes: #135)
+  * Link to gem-specific documentation in "maid introduction" 
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
+
 maid (0.6.0) stable; urgency=low
 
   * Stats! { 'collaborators' => 17, 'downloads' => 16684, 'forks' => 48,
