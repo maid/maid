@@ -2,6 +2,7 @@ In alphabetical order:
 
 * Benjamin Oakes (@benjaminoakes)
 * Bradley Smith (@bradleyd)
+* Brandon Pittman (@brandonpittman)
 * Graham Siener (@gsiener)
 * Jayson Rhynas (@jayrhynas)
 * John Colvin (@JohnColvin)

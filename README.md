@@ -4,7 +4,6 @@
 [![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
 [![Dependency Status](https://gemnasium.com/benjaminoakes/maid.png)](https://gemnasium.com/benjaminoakes/maid)
 [![Code Climate](https://codeclimate.com/github/benjaminoakes/maid.png)](https://codeclimate.com/github/benjaminoakes/maid)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/benjaminoakes/maid/trend.png)](https://bitdeli.com/free)
 
 **Be lazy!**  Let Maid clean up after you, based on rules you define.
 
@@ -250,7 +249,15 @@ Maid.rules do
 end
 ```
 
-The command to run the daemon is `maid daemon`.  Starting the daemon on login depends on the platform.  On Ubuntu for example, you can run `maid daemon` as a normal startup application (Power/Gear Menu -> Startup Applications... -> Add).
+The command to run the daemon is `maid daemon`.  Starting the daemon on login depends on the platform.
+
+#### Ubuntu
+
+You can run `maid daemon` as a normal startup application (Power/Gear Menu -> Startup Applications... -> Add).
+
+#### OSX
+
+Please see Jurriaan Pruis' blog post, [Maid as a Daemon on OS X](http://jurriaan.ninja/2015/01/01/maid-on-os-x.html).  ([Automating this setup would be welcome as a pull request!](https://github.com/benjaminoakes/maid/issues/136))
 
 ### Rake Tasks
 

@@ -1,4 +1,11 @@
-maid (0.6.0) unstable; urgency=low
+maid (0.6.1) stable; urgency=low
+
+  * Brandon Pittman, Benjamin Oakes: Improve documentation.  (Closes: #135)
+  * Link to gem-specific documentation in "maid introduction" 
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Fri, 2 Jan 2015 22:20:00 +0000
+
+maid (0.6.0) stable; urgency=low
 
   * Stats! { 'collaborators' => 17, 'downloads' => 16684, 'forks' => 48,
     'open_issues' => 35, 'closed_issues' => 98, 'stars' => 1045,
@@ -7,13 +14,13 @@ maid (0.6.0) unstable; urgency=low
   * Updated dependencies: "thor", "listen", "rufus-scheduler"
   * Jayson Rhynas: Add Safari download detection to "downloading?" (Closes: #121)
   * Pedro Lambert: Add support for Rake tasks defined by Maid (Closes: #68, #123)
-  * Jurriaan Pruis: Add daemon mode and repeat support (Closes: #126, #131)
+  * Jurriaan Pruis: Add daemon mode and repeat support (Closes: #116, #126, #131)
   * Jurriaan Pruis: Add "ignore" option support for "watch" (Closes: #132)
   * Nico Ritschel: Add "copy" tool (Closes: #72, #133)
   * Add maid introduction and links (Closes: #128)
   * Add "dimensions_px" tool, inspired by Coby Chapple's rules
 
- -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
+ -- Benjamin Oakes <hello@benjaminoakes.com>  Wed, 31 Dec 2014 20:54:00 +0000
 
 maid (0.5.0) stable; urgency=low
 

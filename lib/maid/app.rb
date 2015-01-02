@@ -16,7 +16,7 @@ class Maid::App < Thor
 
   * Tutorial: https://github.com/benjaminoakes/maid#tutorial
   * Community & examples: https://github.com/benjaminoakes/maid/wiki
-  * Documentation: http://www.rubydoc.info/github/benjaminoakes/maid/master/Maid/Tools
+  * Documentation: http://www.rubydoc.info/gems/maid/#{Maid::VERSION}/Maid/Tools
 
 For more information, run "maid help".
 EOF
