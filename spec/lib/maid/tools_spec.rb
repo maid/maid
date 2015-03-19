@@ -698,5 +698,32 @@ module Maid
         end
       end
     end
+
+    describe '#tree_empty?' do
+      before do
+        @root = '~/Source'
+        @empty_dir = (@parent_of_empty_dir = @root + '/empty-parent') + '/empty'
+        @file = (@non_empty_dir = @root + '/non-empty') + '/file.txt'
+        FileUtils.mkdir_p(@empty_dir)
+        FileUtils.mkdir_p(@non_empty_dir)
+        FileUtils.touch(@file)
+      end
+
+      it 'returns false for non-empty directories' do
+        expect(@maid.tree_empty?(@non_empty_dir)).to be(false)
+      end
+
+      it 'returns true for empty directories' do
+        expect(@maid.tree_empty?(@empty_dir)).to be(true)
+      end
+
+      it 'returns true for directories with empty subdirectories' do
+        expect(@maid.tree_empty?(@parent_of_empty_dir)).to be(true)
+      end
+
+      it 'returns false for directories with non-empty subdirectories' do
+        expect(@maid.tree_empty?(@root)).to be(false)
+      end
+    end
   end
 end
