@@ -740,6 +740,20 @@ module Maid::Tools
     }.length == 0
   end
 
+  # Given an array of directories, return a new array without any child
+  # directories whose parent is already present in that array.
+  #
+  # ## Example
+  #
+  #     ignore_child_dirs(["foo", "foo/a", "foo/b", "bar"]) # => ["foo", "bar"]
+  def ignore_child_dirs(arr)
+    arr.sort { |x, y|
+      y.count('/') - x.count('/')
+    }.select { |d|
+      not arr.include?(File.dirname(d))
+    }
+  end
+
   private
 
   def firefox_downloading?(path)

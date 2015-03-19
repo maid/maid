@@ -725,5 +725,42 @@ module Maid
         expect(@maid.tree_empty?(@root)).to be(false)
       end
     end
+
+    describe '#ignore_child_dirs' do
+      it 'filters out any child directory' do
+        src = [
+          "a",
+          "b",
+          "b/x",
+          "c",
+          "c/x",
+          "c/y",
+          "d/x",
+          "d/y",
+          "e/x/y",
+          "e/x/y/z",
+          "f/x/y/z",
+          "g/x/y",
+          "g/x/z",
+          "g/y/a/b",
+          "g/y/a/c",
+        ]
+        expected = [
+          "a", # no child directories
+          "b", # ignore b/x
+          "c", # ignore c/x and c/y
+          "d/x", # no child directories
+          "d/y", # no child directories
+          "e/x/y", # ignore e/x/y/z
+          "f/x/y/z", # no empty parents
+          "g/x/y", # g/x isn't empty
+          "g/x/z",
+          "g/y/a/b", # g/y/a isn't empty
+          "g/y/a/c",
+        ].sort
+
+        expect(@maid.ignore_child_dirs(src).sort).to eq(expected)
+      end
+    end
   end
 end
