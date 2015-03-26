@@ -703,6 +703,57 @@ module Maid::Tools
     Array(paths).select { |p| !(filter_types & content_types(p)).empty? }
   end
 
+  # Test whether a directory is either empty, or contains only empty
+  # directories/subdirectories.
+  #
+  # ## Example
+  #
+  #     if tree_empty? dir('~/Downloads/foo')
+  #       trash '~/Downloads/foo'
+  #     end
+  def tree_empty?(root)
+    return nil if File.file? root
+    return true if Dir.glob(root + '/*').length == 0
+
+    ignore = []
+
+    # Look for files.
+    return false if Dir.glob(root + '/*').select { |f| File.file? f }.length > 0
+
+    empty_dirs = Dir.glob(root + '/**/*').select { |d|
+      File.directory?(d)
+    }.reverse.select { |d|
+      # `.reverse` sorts deeper directories first.
+
+      # If the directory is empty, its parent should ignore it.
+      should_ignore = Dir.glob(d + '/*').select { |n|
+        not ignore.include? n
+      }.length == 0
+
+      ignore << d if should_ignore
+
+      should_ignore
+    }
+
+    Dir.glob(root + '/*').select { |n|
+      not empty_dirs.include? n
+    }.length == 0
+  end
+
+  # Given an array of directories, return a new array without any child
+  # directories whose parent is already present in that array.
+  #
+  # ## Example
+  #
+  #     ignore_child_dirs(["foo", "foo/a", "foo/b", "bar"]) # => ["foo", "bar"]
+  def ignore_child_dirs(arr)
+    arr.sort { |x, y|
+      y.count('/') - x.count('/')
+    }.select { |d|
+      not arr.include?(File.dirname(d))
+    }
+  end
+
   private
 
   def firefox_downloading?(path)
