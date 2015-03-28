@@ -167,10 +167,10 @@ module Maid::Tools
         target = File.join(destination, File.basename(source))
 
       unless File.exist?(target)
-        log("cp #{ source.inspect } #{ destination.inspect }")
+        log("cp #{ sh_escape(source) } #{ sh_escape(destination) }")
         FileUtils.cp(source, destination )
       else
-        warn("skipping #{ source.inspect } because #{ target.inspect } already exists")
+        warn("skipping copy because #{ sh_escape(source) } because #{ sh_escape(target) } already exists")
       end
     end
   end
