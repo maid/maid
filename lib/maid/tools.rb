@@ -3,6 +3,8 @@ require 'find'
 require 'fileutils'
 require 'time'
 
+require 'exifr'
+require 'geocoder'
 require 'mime/types'
 require 'dimensions'
 require 'zip'
@@ -158,17 +160,17 @@ module Maid::Tools
   #
   #     copy(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
   #     copy(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')    
-  def copy(sources, destination, options = {})
+  def copy(sources, destination)
     destination = expand(destination)
 
     expand_all(sources).each do |source|
         target = File.join(destination, File.basename(source))
 
       unless File.exist?(target)
-        log("cp #{ source.inspect } #{ destination.inspect }")
-        FileUtils.cp(source, destination )
+        log("cp #{ sh_escape(source) } #{ sh_escape(destination) }")
+        FileUtils.cp(source, destination, @file_options)
       else
-        warn("skipping #{ source.inspect } because #{ target.inspect } already exists")
+        warn("skipping copy because #{ sh_escape(source) } because #{ sh_escape(target) } already exists")
       end
     end
   end
@@ -441,6 +443,21 @@ module Maid::Tools
     Dimensions.dimensions(path)
   end
 
+  # Determine the city of the given JPEG image.
+  #
+  # ## Examples
+  #
+  #     loation_city('old_capitol.jpg') # => "Iowa City, IA, US"
+  def location_city(path)
+    case mime_type(path)
+    when 'image/jpeg'
+      gps = EXIFR::JPEG.new(path).gps
+      coordinates_string = [gps.latitude, gps.longitude]
+      location = Geocoder.search(coordinates_string).first
+      [location.city, location.province, location.country_code].join(', ')
+    end
+  end
+
   # [Mac OS X] Use Spotlight metadata to determine audio length.
   #
   # ## Examples
@@ -684,6 +701,57 @@ module Maid::Tools
   def where_content_type(paths, filter_types)
     filter_types = Array(filter_types)
     Array(paths).select { |p| !(filter_types & content_types(p)).empty? }
+  end
+
+  # Test whether a directory is either empty, or contains only empty
+  # directories/subdirectories.
+  #
+  # ## Example
+  #
+  #     if tree_empty?(dir('~/Downloads/foo'))
+  #       trash('~/Downloads/foo')
+  #     end
+  def tree_empty?(root)
+    return nil if File.file?(root)
+    return true if Dir.glob(root + '/*').length == 0
+
+    ignore = []
+
+    # Look for files.
+    return false if Dir.glob(root + '/*').select { |f| File.file?(f) }.length > 0
+
+    empty_dirs = Dir.glob(root + '/**/*').select { |d|
+      File.directory?(d)
+    }.reverse.select { |d|
+      # `.reverse` sorts deeper directories first.
+
+      # If the directory is empty, its parent should ignore it.
+      should_ignore = Dir.glob(d + '/*').select { |n|
+        !ignore.include?(n)
+      }.length == 0
+
+      ignore << d if should_ignore
+
+      should_ignore
+    }
+
+    Dir.glob(root + '/*').select { |n|
+      !empty_dirs.include?(n)
+    }.length == 0
+  end
+
+  # Given an array of directories, return a new array without any child
+  # directories whose parent is already present in that array.
+  #
+  # ## Example
+  #
+  #     ignore_child_dirs(["foo", "foo/a", "foo/b", "bar"]) # => ["foo", "bar"]
+  def ignore_child_dirs(arr)
+    arr.sort { |x, y|
+      y.count('/') - x.count('/')
+    }.select { |d|
+      !arr.include?(File.dirname(d))
+    }
   end
 
   private

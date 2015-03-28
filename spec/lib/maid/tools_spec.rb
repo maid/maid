@@ -14,6 +14,15 @@ if RUBY_VERSION =~ /2\.[12]\.\d/
   end
 end
 
+# Workaround for broken `cp` implementation; remove after upgrading FakeFS
+module FakeFS
+  module FileUtils
+    def self.cp(src, dest, options = {})
+      copy(src, dest)
+    end
+  end
+end
+
 module Maid
   # NOTE: Please use FakeFS instead of mocking and stubbing specific calls which happen to modify the filesystem.
   #
@@ -644,6 +653,21 @@ module Maid
       end
     end
 
+    describe '#location_city' do
+      context 'given a JPEG image' do
+        it 'reports the known location' do
+          sydney_path = File.join(file_fixtures_path, 'sydney.jpg')
+          expect(@maid.location_city(sydney_path)).to eq('Sydney, New South Wales, AU')
+        end
+      end
+
+      context 'given an unknown type' do
+        it 'returns nil' do
+          expect(@maid.location_city(unknown_path)).to be_nil
+        end
+      end
+    end
+
     describe '#mime_type' do
       context 'given a JPEG image' do
         it 'reports "image/jpeg"' do
@@ -678,9 +702,73 @@ module Maid
           matches = @maid.where_content_type(@maid.dir(file_fixtures_glob), 'image')
 
           expect(matches.length).to eq(2)
-          expect(matches.first).to end_with('spec/fixtures/files/283x240.jpg')
-          expect(matches.last).to end_with('spec/fixtures/files/ruby.jpg')
+          expect(matches.first).to end_with('spec/fixtures/files/ruby.jpg')
+          expect(matches.last).to end_with('spec/fixtures/files/sydney.jpg')
         end
+      end
+    end
+
+    describe '#tree_empty?' do
+      before do
+        @root = '~/Source'
+        @empty_dir = (@parent_of_empty_dir = @root + '/empty-parent') + '/empty'
+        @file = (@non_empty_dir = @root + '/non-empty') + '/file.txt'
+        FileUtils.mkdir_p(@empty_dir)
+        FileUtils.mkdir_p(@non_empty_dir)
+        FileUtils.touch(@file)
+      end
+
+      it 'returns false for non-empty directories' do
+        expect(@maid.tree_empty?(@non_empty_dir)).to be(false)
+      end
+
+      it 'returns true for empty directories' do
+        expect(@maid.tree_empty?(@empty_dir)).to be(true)
+      end
+
+      it 'returns true for directories with empty subdirectories' do
+        expect(@maid.tree_empty?(@parent_of_empty_dir)).to be(true)
+      end
+
+      it 'returns false for directories with non-empty subdirectories' do
+        expect(@maid.tree_empty?(@root)).to be(false)
+      end
+    end
+
+    describe '#ignore_child_dirs' do
+      it 'filters out any child directory' do
+        src = [
+          'a',
+          'b',
+          'b/x',
+          'c',
+          'c/x',
+          'c/y',
+          'd/x',
+          'd/y',
+          'e/x/y',
+          'e/x/y/z',
+          'f/x/y/z',
+          'g/x/y',
+          'g/x/z',
+          'g/y/a/b',
+          'g/y/a/c',
+        ]
+        expected = [
+          'a', # no child directories
+          'b', # ignore b/x
+          'c', # ignore c/x and c/y
+          'd/x', # no child directories
+          'd/y', # no child directories
+          'e/x/y', # ignore e/x/y/z
+          'f/x/y/z', # no empty parents
+          'g/x/y', # g/x isn't empty
+          'g/x/z',
+          'g/y/a/b', # g/y/a isn't empty
+          'g/y/a/c',
+        ].sort
+
+        expect(@maid.ignore_child_dirs(src).sort).to eq(expected)
       end
     end
   end

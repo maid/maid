@@ -1,5 +1,7 @@
 require 'dimensions'
+require 'exifr'
 require 'logger'
+require 'geocoder'
 require 'mime/types'
 require 'rbconfig'
 require 'stringio'
@@ -81,7 +83,21 @@ describe 'Dependency expectations' do
 
   describe Dimensions do
     it 'returns dimensions as an array' do
-      expect(Dimensions.dimensions("#@file_fixtures_path/283x240.jpg")).to eq([283, 240])
+      expect(Dimensions.dimensions("#@file_fixtures_path/sydney.jpg")).to eq([100, 75])
+    end
+  end
+
+  describe EXIFR::JPEG do
+    it 'returns latitude and longitude' do
+      gps = EXIFR::JPEG.new("#@file_fixtures_path/sydney.jpg").gps
+      expect([gps.latitude, gps.longitude]).to eq([-33.85608611111111, 151.219925])
+    end
+  end
+
+  describe Geocoder do
+    it 'translates latitude and longitude into street addresses' do
+      city = Geocoder.search('-33.85608611111111,151.219925').map { |location| location.city }.uniq.compact
+      expect(city).to eq(['Sydney'])
     end
   end
 end
