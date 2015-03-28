@@ -2,6 +2,7 @@ maid (0.7.0) unstable; urgency=low
 
   * Started official support for Ruby 2.2.1.
   * Updated dependencies: "listen"
+  * Updated development dependencies, except for FakeFS (help appreciated!).
   * Add dependencies: "exifr", "geocoder"
   * Add "location_city" tool
   * Itsuki Kurokawa: Add "ignore_child_dirs", "tree_empty?" tools.  (Closes: #144, #145)
