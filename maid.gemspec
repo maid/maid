@@ -37,7 +37,7 @@ Gem::Specification.new do |s|
 
   # Strategy: specific versions (since they're just for development)
   s.add_development_dependency('fakefs', '~> 0.4.3')
-  s.add_development_dependency('guard', '~> 2.10.4')
+  s.add_development_dependency('guard', '~> 2.12.5')
   s.add_development_dependency('guard-rspec', '~> 4.5.0')
   s.add_development_dependency('rake', '~> 10.4.2')
   s.add_development_dependency('redcarpet', '~> 3.2.2') # Soft dependency of `yard`
