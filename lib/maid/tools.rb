@@ -708,17 +708,17 @@ module Maid::Tools
   #
   # ## Example
   #
-  #     if tree_empty? dir('~/Downloads/foo')
-  #       trash '~/Downloads/foo'
+  #     if tree_empty?(dir('~/Downloads/foo'))
+  #       trash('~/Downloads/foo')
   #     end
   def tree_empty?(root)
-    return nil if File.file? root
+    return nil if File.file?(root)
     return true if Dir.glob(root + '/*').length == 0
 
     ignore = []
 
     # Look for files.
-    return false if Dir.glob(root + '/*').select { |f| File.file? f }.length > 0
+    return false if Dir.glob(root + '/*').select { |f| File.file?(f) }.length > 0
 
     empty_dirs = Dir.glob(root + '/**/*').select { |d|
       File.directory?(d)
@@ -727,7 +727,7 @@ module Maid::Tools
 
       # If the directory is empty, its parent should ignore it.
       should_ignore = Dir.glob(d + '/*').select { |n|
-        not ignore.include? n
+        !ignore.include?(n)
       }.length == 0
 
       ignore << d if should_ignore
@@ -736,7 +736,7 @@ module Maid::Tools
     }
 
     Dir.glob(root + '/*').select { |n|
-      not empty_dirs.include? n
+      !empty_dirs.include?(n)
     }.length == 0
   end
 
@@ -750,7 +750,7 @@ module Maid::Tools
     arr.sort { |x, y|
       y.count('/') - x.count('/')
     }.select { |d|
-      not arr.include?(File.dirname(d))
+      !arr.include?(File.dirname(d))
     }
   end
 
