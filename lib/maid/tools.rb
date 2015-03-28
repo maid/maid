@@ -168,7 +168,7 @@ module Maid::Tools
 
       unless File.exist?(target)
         log("cp #{ sh_escape(source) } #{ sh_escape(destination) }")
-        FileUtils.cp(source, destination, @file_options)
+        FileUtils.cp(source, destination) # FIXME: fails in FakeFS with 3 args @file_options
       else
         warn("skipping copy because #{ sh_escape(source) } because #{ sh_escape(target) } already exists")
       end
