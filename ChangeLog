@@ -5,6 +5,7 @@ maid (0.7.0) unstable; urgency=low
   * Add dependencies: "exifr", "geocoder"
   * Add "location_city" tool
   * Itsuki Kurokawa: Add "ignore_child_dirs", "tree_empty?" tools.  (Closes: #144, #145)
+  * Bugfix: "copy" now respects the dry-run/noop option
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 

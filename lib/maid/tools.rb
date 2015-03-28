@@ -168,7 +168,7 @@ module Maid::Tools
 
       unless File.exist?(target)
         log("cp #{ sh_escape(source) } #{ sh_escape(destination) }")
-        FileUtils.cp(source, destination )
+        FileUtils.cp(source, destination, @file_options)
       else
         warn("skipping copy because #{ sh_escape(source) } because #{ sh_escape(target) } already exists")
       end
