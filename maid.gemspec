@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
   #     s.add_dependency('spotlight', '~> 0.0.6')
 
   # Strategy: specific versions (since they're just for development)
-  s.add_development_dependency('fakefs', '~> 0.4.2')
+  s.add_development_dependency('fakefs', '~> 0.4.3')
   s.add_development_dependency('guard', '~> 2.10.4')
   s.add_development_dependency('guard-rspec', '~> 4.5.0')
   s.add_development_dependency('rake', '~> 10.4.2')
