@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency('mime-types', '~> 2.0')
   s.add_dependency('rubyzip', '~> 1.1.0')
   s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs
-  s.add_dependency('listen', '~> 2.8.0')
+  s.add_dependency('listen', '>= 2.8.0', '< 2.11.0')
   s.add_dependency('rufus-scheduler', '~> 3.0.6')
   s.add_dependency('exifr', '~> 1.2.0')
   s.add_dependency('geocoder', '~> 1.2.0')
