@@ -1,5 +1,6 @@
 maid (0.7.0) unstable; urgency=low
 
+  * Started official support for Ruby 2.2.1.
   * Updated dependencies: "listen"
   * Add dependencies: "exifr", "geocoder"
   * Add "location_city" tool
