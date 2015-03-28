@@ -4,6 +4,7 @@ In alphabetical order:
 * Bradley Smith (@bradleyd)
 * Brandon Pittman (@brandonpittman)
 * Graham Siener (@gsiener)
+* Itsuki Kurokawa (@fanalis)
 * Jayson Rhynas (@jayrhynas)
 * John Colvin (@JohnColvin)
 * Jurriaan Pruis (@jurriaan)
