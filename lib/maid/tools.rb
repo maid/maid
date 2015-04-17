@@ -871,6 +871,73 @@ module Maid::Tools
     end
   end
 
+  # Tell if a file has been used since added  
+  #
+  # ## Example
+  #
+  #     has_been_used?("~/Downloads/downloading.download") # => false
+  def has_been_used?(path)
+    if Maid::Platform.osx? 
+      path = expand(path)
+      raw = cmd("mdls -raw -name kMDItemLastUsedDate #{ sh_escape(path) }")
+      if raw == "(null)"
+        return false
+      end
+      begin
+        DateTime.parse(raw).to_time
+        return true
+      rescue Exception => e
+        return false
+      end
+    else
+      return used_at(path) <=> added_at(path) > 0
+    end
+  end
+
+  # The last used time of a file on OS X, or atime on Linux.
+  #
+  # ## Example
+  #
+  #     used_at("foo.zip") # => Sat Apr 09 10:50:01 -0400 2011
+  def used_at(path)
+    if Maid::Platform.osx? 
+      path = expand(path)
+      raw = cmd("mdls -raw -name kMDItemLastUsedDate #{ sh_escape(path) }")
+      if raw == "(null)"
+        return 3650.day.ago
+      end
+      begin
+        return DateTime.parse(raw).to_time
+      rescue Exception => e
+        return accessed_at(path)
+      end
+    else
+      return accessed_at(path)
+    end
+  end
+
+  # The added time of a file on OS X, or ctime on Linux.
+  #
+  # ## Example
+  #
+  #     added_at("foo.zip") # => Sat Apr 09 10:50:01 -0400 2011
+  def added_at(path)
+    if Maid::Platform.osx? 
+      path = expand(path)
+      raw = cmd("mdls -raw -name kMDItemDateAdded #{ sh_escape(path) }")
+      if raw == "(null)"
+        return 1.second.ago
+      end
+      begin
+        return DateTime.parse(raw).to_time
+      rescue Exception => e
+        return created_at(path)
+      end
+    else
+      return created_at(path)
+    end
+  end
+
   private
 
   def firefox_downloading?(path)
