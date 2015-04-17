@@ -1,3 +1,14 @@
+maid (0.8.0) unstable; urgency=low
+
+  * Song Chen Wen: Added OSX tagging tools (depends on `brew install tag`):
+    "tags", "has_tags?", "contains_tag?", "add_tag", "remove_tag", "set_tag"
+    (Closes: #125)
+  * Song Chen Wen: Added "hidden?", "has_been_used?", "used_at", "added_at"
+    tools, using OSX Spotlight metadata when available
+  * Song Chen Wen: Added Aria2 and Tunder support to "downloading?" tool
+
+ -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
+
 maid (0.7.0) stable; urgency=low
 
   * Stats! { 'collaborators' => 19, 'downloads' => 19988, 'forks' => 49,

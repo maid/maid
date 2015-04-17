@@ -18,4 +18,5 @@ In alphabetical order:
 * Nico Ritschel (@nicosuave)
 * Pedro Lambert (@p-lambert)
 * Shiro Hazuki (@HazukiShiro)
+* Song Chen Wen (宋辰文, @songchenwen)
 * Vladimir Agafonkin (@mourner)
