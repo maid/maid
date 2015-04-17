@@ -1,5 +1,6 @@
 maid (0.8.0) unstable; urgency=low
 
+  * Started official support for Ruby 2.2.2.
   * Song Chen Wen: Added OSX tagging tools (depends on `brew install tag`):
     "tags", "has_tags?", "contains_tag?", "add_tag", "remove_tag", "set_tag"
     (Closes: #125)
