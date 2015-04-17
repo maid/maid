@@ -360,7 +360,7 @@ module Maid::Tools
   #
   # See also: `dir_safe`
   def downloading?(path)
-    !!(chrome_downloading?(path) || firefox_downloading?(path) || safari_downloading?(path))
+    !!(chrome_downloading?(path) || firefox_downloading?(path) || safari_downloading?(path) || aria2_downloading?(path) || thunder_downloading?(path))
   end
 
   # Find all duplicate files in the given globs.
@@ -866,6 +866,14 @@ module Maid::Tools
 
   def safari_downloading?(path)
     path =~ /\.download$/
+  end
+
+  def aria2_downloading?(path)
+    File.exist?("#{path}.aria2") || path =~ /\.aria2$/
+  end
+
+  def thunder_downloading?(path)
+    path =~ /\.td$/ || path =~ /\.td.cfg$/
   end
 
   def has_tag_available?()
