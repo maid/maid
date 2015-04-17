@@ -867,7 +867,7 @@ module Maid::Tools
       return raw == '1'
     else
       p = Pathname.new(expand(path))
-      return p.basename ~= /^\./
+      return p.basename =~ /^\./
     end
   end
 
