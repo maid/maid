@@ -9,6 +9,8 @@ require 'mime/types'
 require 'dimensions'
 require 'zip'
 
+require 'pathname'
+
 # These "tools" are methods available in the Maid DSL.
 #
 # In general, methods are expected to:
@@ -360,7 +362,7 @@ module Maid::Tools
   #
   # See also: `dir_safe`
   def downloading?(path)
-    !!(chrome_downloading?(path) || firefox_downloading?(path) || safari_downloading?(path))
+    !!(chrome_downloading?(path) || firefox_downloading?(path) || safari_downloading?(path) || aria2_downloading?(path) || thunder_downloading?(path))
   end
 
   # Find all duplicate files in the given globs.
@@ -754,6 +756,188 @@ module Maid::Tools
     }
   end
 
+
+  # Get a list of Finder labels of a file or directory. Only available on OS X when you have tag installed.
+  #
+  # ## Example
+  #
+  #     tags("~/Downloads/a.dmg.download") # => ["Unfinished"]
+  def tags(path)
+    unless has_tag_available_and_warn?()
+      return []
+    end
+
+    path = sh_escape(expand(path))
+    raw = cmd("tag -lN #{path}")
+    raw.strip.split(',')
+  end
+
+  # Tell if a file or directory has any Finder labels. Only available on OS X when you have tag installed. 
+  #
+  # ## Example
+  #
+  #     has_tags?("~/Downloads/a.dmg.download") # => true
+  def has_tags?(path)
+    unless has_tag_available_and_warn?()
+      return false
+    end
+
+    ts = tags(path)
+    ts && ts.count > 0
+  end
+
+  # Tell if a file or directory has a certain Finder labels. Only available on OS X when you have tag installed. 
+  #
+  # ## Example
+  #
+  #     contains_tag?("~/Downloads/a.dmg.download", "Unfinished") # => true
+  def contains_tag?(path, tag)
+    unless has_tag_available_and_warn?()
+      return false
+    end
+
+    path = expand(path)
+    ts = tags(path)
+    ts.include? tag
+  end
+
+  # Add a Finder label or a list of labels to a file or directory. Only available on OS X when you have tag installed. 
+  #
+  # ## Example
+  #
+  #     add_tag("~/Downloads/a.dmg.download", "Unfinished")
+  def add_tag(path, tag)
+    unless has_tag_available_and_warn?()
+      return
+    end
+
+    path = expand(path)
+    ts = Array(tag).join(",")
+    log "add tags #{ts} to #{path}"
+    if !@file_options[:noop]
+      cmd("tag -a #{ts} #{sh_escape(path)}")
+    end
+  end
+
+  # Remove a Finder label or a list of labels from a file or directory. Only available on OS X when you have tag installed. 
+  #
+  # ## Example
+  #
+  #     remove_tag("~/Downloads/a.dmg", "Unfinished")
+  def remove_tag(path, tag)
+    unless has_tag_available_and_warn?()
+      return
+    end
+
+    path = expand(path)
+    ts = Array(tag).join(",")
+    log "remove tags #{ts} from #{path}"
+    if !@file_options[:noop]
+      cmd("tag -r #{ts} #{sh_escape(path)}")
+    end
+  end
+
+  # Set Finder label of a file or directory to a label or a list of labels. Only available on OS X when you have tag installed. 
+  #
+  # ## Example
+  #
+  #     set_tag("~/Downloads/a.dmg.download", "Unfinished")
+  def set_tag(path, tag)
+    unless has_tag_available_and_warn?()
+      return
+    end
+
+    path = expand(path)
+    ts = Array(tag).join(",")
+    log "set tags #{ts} to #{path}"
+    if !@file_options[:noop]
+      `tag -s "#{ts}" "#{path}"`
+    end
+  end
+
+  # Tell if a file is hidden  
+  #
+  # ## Example
+  #
+  #     hidden?("~/.maid") # => true
+  def hidden?(path)
+    if Maid::Platform.osx? 
+      attribute = 'kMDItemFSInvisible'
+      raw = cmd("mdls -raw -name #{attribute} #{ sh_escape(path) }")
+      return raw == '1'
+    else
+      p = Pathname.new(expand(path))
+      return p.basename ~= /^\./
+    end
+  end
+
+  # Tell if a file has been used since added  
+  #
+  # ## Example
+  #
+  #     has_been_used?("~/Downloads/downloading.download") # => false
+  def has_been_used?(path)
+    if Maid::Platform.osx? 
+      path = expand(path)
+      raw = cmd("mdls -raw -name kMDItemLastUsedDate #{ sh_escape(path) }")
+      if raw == "(null)"
+        return false
+      end
+      begin
+        DateTime.parse(raw).to_time
+        return true
+      rescue Exception => e
+        return false
+      end
+    else
+      return used_at(path) <=> added_at(path) > 0
+    end
+  end
+
+  # The last used time of a file on OS X, or atime on Linux.
+  #
+  # ## Example
+  #
+  #     used_at("foo.zip") # => Sat Apr 09 10:50:01 -0400 2011
+  def used_at(path)
+    if Maid::Platform.osx? 
+      path = expand(path)
+      raw = cmd("mdls -raw -name kMDItemLastUsedDate #{ sh_escape(path) }")
+      if raw == "(null)"
+        return 3650.day.ago
+      end
+      begin
+        return DateTime.parse(raw).to_time
+      rescue Exception => e
+        return accessed_at(path)
+      end
+    else
+      return accessed_at(path)
+    end
+  end
+
+  # The added time of a file on OS X, or ctime on Linux.
+  #
+  # ## Example
+  #
+  #     added_at("foo.zip") # => Sat Apr 09 10:50:01 -0400 2011
+  def added_at(path)
+    if Maid::Platform.osx? 
+      path = expand(path)
+      raw = cmd("mdls -raw -name kMDItemDateAdded #{ sh_escape(path) }")
+      if raw == "(null)"
+        return 1.second.ago
+      end
+      begin
+        return DateTime.parse(raw).to_time
+      rescue Exception => e
+        return created_at(path)
+      end
+    else
+      return created_at(path)
+    end
+  end
+
   private
 
   def firefox_downloading?(path)
@@ -767,6 +951,30 @@ module Maid::Tools
 
   def safari_downloading?(path)
     path =~ /\.download$/
+  end
+
+  def aria2_downloading?(path)
+    File.exist?("#{path}.aria2") || path =~ /\.aria2$/
+  end
+
+  def thunder_downloading?(path)
+    path =~ /\.td$/ || path =~ /\.td.cfg$/
+  end
+
+  def has_tag_available?()
+    return Maid::Platform.osx? && system("which -s tag")
+  end
+
+  def has_tag_available_and_warn?()
+    unless has_tag_available?
+      if Maid::Platform.osx?
+        warn("To use this feature, you need `tag` installed.  Run `brew install tag`")
+      else
+        warn("sorry, tagging is unavailable on your platform")
+      end
+      return false
+    end
+    return true
   end
 
   def sh_escape(array)
