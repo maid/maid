@@ -9,6 +9,8 @@ require 'mime/types'
 require 'dimensions'
 require 'zip'
 
+require 'pathname'
+
 # These "tools" are methods available in the Maid DSL.
 #
 # In general, methods are expected to:
@@ -850,6 +852,22 @@ module Maid::Tools
     log "set tags #{ts} to #{path}"
     if !@file_options[:noop]
       `tag -s "#{ts}" "#{path}"`
+    end
+  end
+
+  # Tell if a file is hidden  
+  #
+  # ## Example
+  #
+  #     hidden?("~/.maid") # => true
+  def hidden?(path)
+    if Maid::Platform.osx? 
+      attribute = 'kMDItemFSInvisible'
+      raw = cmd("mdls -raw -name #{attribute} #{ sh_escape(path) }")
+      return raw == '1'
+    else
+      p = Pathname.new(expand(path))
+      return p.basename ~= /^\./
     end
   end
 
