@@ -771,5 +771,150 @@ module Maid
         expect(@maid.ignore_child_dirs(src).sort).to eq(expected)
       end
     end
+
+    describe '#tags' do
+      before do
+        @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
+        `mkdir -p #{@test_dir}`
+        `touch #{@test_file}`
+        @maid.file_options[:noop] = false
+      end
+
+      after do
+        `rm -r #{@test_dir}`
+        @maid.file_options[:noop] = true
+      end
+
+      it 'get tags from a file that has one' do 
+        if system("which -s tag")
+          @maid.file_options[:noop] = false
+          @maid.add_tag(@test_file, "Test")
+          expect(@maid.tags(@test_file)).to eq(["Test"])
+        end
+      end
+
+      it 'get tags from a file that has serveral tags' do
+        if system("which -s tag")
+          @maid.file_options[:noop] = false
+          @maid.add_tag(@test_file, ["Test", "Twice"])
+          expect(@maid.tags(@test_file)).to eq(["Test", "Twice"])
+        end
+      end
+    end
+
+    describe '#has_tags?' do
+      before do
+        @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
+        `mkdir -p #{@test_dir}`
+        `touch #{@test_file}`
+        @maid.file_options[:noop] = false
+      end
+
+      after do
+        `rm -r #{@test_dir}`
+        @maid.file_options[:noop] = true
+      end
+
+      it 'A file with tags' do 
+        if system("which -s tag")
+          @maid.add_tag(@test_file, "Test")
+          expect(@maid.has_tags?(@test_file)).to be(true)
+        end
+      end
+
+      it 'A file without tags' do
+          expect(@maid.has_tags?(@test_file)).to be(false)
+      end
+    end
+
+    describe '#contains_tag?' do
+      before do
+        @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
+        `mkdir -p #{@test_dir}`
+        `touch #{@test_file}`
+        @maid.file_options[:noop] = false
+      end
+
+      after do
+        `rm -r #{@test_dir}`
+        @maid.file_options[:noop] = true
+      end
+
+      it 'A file with Test tag' do 
+        if system("which -s tag")
+          @maid.add_tag(@test_file, "Test")
+          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
+          expect(@maid.contains_tag?(@test_file, "Not there")).to be(false)
+        end
+      end
+    end
+
+    describe '#add_tag' do
+      before do
+        @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
+        `mkdir -p #{@test_dir}`
+        `touch #{@test_file}`
+        @maid.file_options[:noop] = false
+      end
+
+      after do
+        `rm -r #{@test_dir}`
+        @maid.file_options[:noop] = true
+      end
+
+      it 'Add Test tag to a file' do 
+        if system("which -s tag")
+          @maid.add_tag(@test_file, "Test")
+          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
+        end
+      end
+    end
+
+    describe '#remove_tag' do
+      before do
+        @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
+        `mkdir -p #{@test_dir}`
+        `touch #{@test_file}`
+        @maid.file_options[:noop] = false
+      end
+
+      after do
+        `rm -r #{@test_dir}`
+        @maid.file_options[:noop] = true
+      end
+
+      it 'Remove Test tag from a file' do 
+        if system("which -s tag")
+          @maid.add_tag(@test_file, "Test")
+          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
+          @maid.remove_tag(@test_file, "Test")
+          expect(@maid.contains_tag?(@test_file, "Test")).to be(false)
+        end
+      end
+    end
+
+    describe '#set_tag' do
+      before do
+        @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
+        `mkdir -p #{@test_dir}`
+        `touch #{@test_file}`
+        @maid.file_options[:noop] = false
+      end
+
+      after do
+        `rm -r #{@test_dir}`
+        @maid.file_options[:noop] = true
+      end
+
+      it 'Set Test tags to a file' do 
+        if system("which -s tag")
+          @maid.set_tag(@test_file, "Test")
+          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
+          @maid.set_tag(@test_file, ["Test", "Twice"])
+          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
+          expect(@maid.contains_tag?(@test_file, "Twice")).to be(true)
+        end
+      end
+    end
   end
 end

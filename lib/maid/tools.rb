@@ -754,6 +754,105 @@ module Maid::Tools
     }
   end
 
+
+  # Get a list of Finder labels of a file or directory. Only available on OS X when you have tag installed.
+  #
+  # ## Example
+  #
+  #     tags("~/Downloads/a.dmg.download") # => ["Unfinished"]
+  def tags(path)
+    unless has_tag_available_and_warn?()
+      return []
+    end
+
+    path = sh_escape(expand(path))
+    raw = cmd("tag -lN #{path}")
+    raw.strip.split(',')
+  end
+
+  # Tell if a file or directory has any Finder labels. Only available on OS X when you have tag installed. 
+  #
+  # ## Example
+  #
+  #     has_tags?("~/Downloads/a.dmg.download") # => true
+  def has_tags?(path)
+    unless has_tag_available_and_warn?()
+      return false
+    end
+
+    ts = tags(path)
+    ts && ts.count > 0
+  end
+
+  # Tell if a file or directory has a certain Finder labels. Only available on OS X when you have tag installed. 
+  #
+  # ## Example
+  #
+  #     contains_tag?("~/Downloads/a.dmg.download", "Unfinished") # => true
+  def contains_tag?(path, tag)
+    unless has_tag_available_and_warn?()
+      return false
+    end
+
+    path = expand(path)
+    ts = tags(path)
+    ts.include? tag
+  end
+
+  # Add a Finder label or a list of labels to a file or directory. Only available on OS X when you have tag installed. 
+  #
+  # ## Example
+  #
+  #     add_tag("~/Downloads/a.dmg.download", "Unfinished")
+  def add_tag(path, tag)
+    unless has_tag_available_and_warn?()
+      return
+    end
+
+    path = expand(path)
+    ts = Array(tag).join(",")
+    log "add tags #{ts} to #{path}"
+    if !@file_options[:noop]
+      cmd("tag -a #{ts} #{sh_escape(path)}")
+    end
+  end
+
+  # Remove a Finder label or a list of labels from a file or directory. Only available on OS X when you have tag installed. 
+  #
+  # ## Example
+  #
+  #     remove_tag("~/Downloads/a.dmg", "Unfinished")
+  def remove_tag(path, tag)
+    unless has_tag_available_and_warn?()
+      return
+    end
+
+    path = expand(path)
+    ts = Array(tag).join(",")
+    log "remove tags #{ts} from #{path}"
+    if !@file_options[:noop]
+      cmd("tag -r #{ts} #{sh_escape(path)}")
+    end
+  end
+
+  # Set Finder label of a file or directory to a label or a list of labels. Only available on OS X when you have tag installed. 
+  #
+  # ## Example
+  #
+  #     set_tag("~/Downloads/a.dmg.download", "Unfinished")
+  def set_tag(path, tag)
+    unless has_tag_available_and_warn?()
+      return
+    end
+
+    path = expand(path)
+    ts = Array(tag).join(",")
+    log "set tags #{ts} to #{path}"
+    if !@file_options[:noop]
+      `tag -s "#{ts}" "#{path}"`
+    end
+  end
+
   private
 
   def firefox_downloading?(path)
@@ -767,6 +866,22 @@ module Maid::Tools
 
   def safari_downloading?(path)
     path =~ /\.download$/
+  end
+
+  def has_tag_available?()
+    return Maid::Platform.osx? && system("which -s tag")
+  end
+
+  def has_tag_available_and_warn?()
+    unless has_tag_available?
+      if Maid::Platform.osx?
+        warn("To use this feature, you need `tag` installed.  Run `brew install tag`")
+      else
+        warn("sorry, tagging is unavailable on your platform")
+      end
+      return false
+    end
+    return true
   end
 
   def sh_escape(array)
