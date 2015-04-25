@@ -358,11 +358,12 @@ module Maid::Tools
     mdls_to_array(path, 'kMDItemWhereFroms')
   end
 
+  include Maid::Downloading
   # Detect whether the path is currently being downloaded in Chrome, Firefox or Safari.
   #
   # See also: `dir_safe`
   def downloading?(path)
-    !!(chrome_downloading?(path) || firefox_downloading?(path) || safari_downloading?(path) || aria2_downloading?(path) || thunder_downloading?(path))
+    Maid::Downloading.downloading?(path)
   end
 
   # Find all duplicate files in the given globs.
@@ -939,27 +940,6 @@ module Maid::Tools
   end
 
   private
-
-  def firefox_downloading?(path)
-    path =~ /\.part$/ ||
-      File.exist?("#{path}.part")
-  end
-
-  def chrome_downloading?(path)
-    path =~ /\.crdownload$/
-  end
-
-  def safari_downloading?(path)
-    path =~ /\.download$/
-  end
-
-  def aria2_downloading?(path)
-    File.exist?("#{path}.aria2") || path =~ /\.aria2$/
-  end
-
-  def thunder_downloading?(path)
-    path =~ /\.td$/ || path =~ /\.td.cfg$/
-  end
 
   def has_tag_available?()
     return Maid::Platform.osx? && system("which -s tag")

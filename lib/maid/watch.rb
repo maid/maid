@@ -1,6 +1,7 @@
 require 'listen'
 class Maid::Watch
   include Maid::RuleContainer
+  include Maid::Downloading
 
   attr_reader :path, :listener, :logger
 
@@ -9,7 +10,7 @@ class Maid::Watch
     if options.nil? 
       @lazy = true
       @options = { wait_for_delay: 10, 
-                   ignore: [/\.crdownload$/, /\.download$/, /\.aria2$/, /\.td$/, /\.td.cfg$/, /\.part$/] }
+                   ignore: Maid::Downloading.downloading_file_regexps }
     else
       @lazy = options.delete(:lazy) { |key| true }
       @options = options
