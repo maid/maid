@@ -4,6 +4,7 @@ Deprecated.set_action(:warn)
 
 # Must be in this order:
 require 'maid/version'
+require 'maid/downloading'
 require 'maid/tools'
 require 'maid/rule_container'
 require 'maid/maid'
