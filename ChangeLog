@@ -7,6 +7,7 @@ maid (0.8.0) unstable; urgency=low
   * Song Chen Wen: Added "hidden?", "has_been_used?", "used_at", "added_at"
     tools, using OSX Spotlight metadata when available
   * Song Chen Wen: Added Aria2 and Tunder support to "downloading?" tool
+  * Song Chen Wen: Reduce "watch" CPU usage by throttling (Closes: #149, #150)
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
