@@ -7,7 +7,7 @@ class Maid::Watch
 
   def initialize(maid, path, options = {}, &rules)
     @maid = maid
-    if options.nil? 
+    if options.nil? || options.empty?
       @lazy = true
       @options = { wait_for_delay: 10, 
                    ignore: Maid::Downloading.downloading_file_regexps }
