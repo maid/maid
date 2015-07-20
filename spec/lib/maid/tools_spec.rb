@@ -777,21 +777,19 @@ module Maid
     before do
       @logger = double('Logger').as_null_object
       @maid = Maid.new(:logger => @logger)
+
+      @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
+      FileUtils.mkdir_p(@test_dir)
+      FileUtils.touch(@test_file)
+      @maid.file_options[:noop] = false
+    end
+
+    after do
+      FileUtils.rm_r(@test_dir)
+      @maid.file_options[:noop] = true
     end
 
     describe '#tags' do
-      before do
-        @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-        FileUtils.mkdir_p(@test_dir)
-        FileUtils.touch(@test_file)
-        @maid.file_options[:noop] = false
-      end
-
-      after do
-        FileUtils.rm_r(@test_dir)
-        @maid.file_options[:noop] = true
-      end
-
       it 'get tags from a file that has one' do 
         if Platform.has_tag_available?
           @maid.file_options[:noop] = false
@@ -810,18 +808,6 @@ module Maid
     end
 
     describe '#has_tags?' do
-      before do
-        @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-        FileUtils.mkdir_p(@test_dir)
-        FileUtils.touch(@test_file)
-        @maid.file_options[:noop] = false
-      end
-
-      after do
-        FileUtils.rm_r(@test_dir)
-        @maid.file_options[:noop] = true
-      end
-
       it 'A file with tags' do 
         if Platform.has_tag_available?
           @maid.add_tag(@test_file, "Test")
@@ -835,18 +821,6 @@ module Maid
     end
 
     describe '#contains_tag?' do
-      before do
-        @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-        FileUtils.mkdir_p(@test_dir)
-        FileUtils.touch(@test_file)
-        @maid.file_options[:noop] = false
-      end
-
-      after do
-        FileUtils.rm_r(@test_dir)
-        @maid.file_options[:noop] = true
-      end
-
       it 'A file with Test tag' do 
         if Platform.has_tag_available?
           @maid.add_tag(@test_file, "Test")
@@ -857,18 +831,6 @@ module Maid
     end
 
     describe '#add_tag' do
-      before do
-        @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-        FileUtils.mkdir_p(@test_dir)
-        FileUtils.touch(@test_file)
-        @maid.file_options[:noop] = false
-      end
-
-      after do
-        FileUtils.rm_r(@test_dir)
-        @maid.file_options[:noop] = true
-      end
-
       it 'Add Test tag to a file' do 
         if Platform.has_tag_available?
           @maid.add_tag(@test_file, "Test")
@@ -878,18 +840,6 @@ module Maid
     end
 
     describe '#remove_tag' do
-      before do
-        @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-        FileUtils.mkdir_p(@test_dir)
-        FileUtils.touch(@test_file)
-        @maid.file_options[:noop] = false
-      end
-
-      after do
-        `rm -r #{@test_dir}`
-        @maid.file_options[:noop] = true
-      end
-
       it 'Remove Test tag from a file' do 
         if Platform.has_tag_available?
           @maid.add_tag(@test_file, "Test")
@@ -901,18 +851,6 @@ module Maid
     end
 
     describe '#set_tag' do
-      before do
-        @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-        FileUtils.mkdir_p(@test_dir)
-        FileUtils.touch(@test_file)
-        @maid.file_options[:noop] = false
-      end
-
-      after do
-        FileUtils.rm_r(@test_dir)
-        @maid.file_options[:noop] = true
-      end
-
       it 'Set Test tags to a file' do 
         if Platform.has_tag_available?
           @maid.set_tag(@test_file, "Test")
