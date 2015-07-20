@@ -25,8 +25,8 @@ Gem::Specification.new do |s|
   s.add_dependency('mime-types', '~> 2.0')
   s.add_dependency('rubyzip', '~> 1.1.0')
   s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs
-  s.add_dependency('listen', '>= 2.8.0', '< 2.11.0')
-  s.add_dependency('rufus-scheduler', '~> 3.0.6')
+  s.add_dependency('listen', '>= 2.8.0', '< 3.1.0')
+  s.add_dependency('rufus-scheduler', '>= 3.0.6', '< 3.2.0')
   s.add_dependency('exifr', '~> 1.2.0')
   s.add_dependency('geocoder', '~> 1.2.0')
   
@@ -38,10 +38,10 @@ Gem::Specification.new do |s|
   # Strategy: specific versions (since they're just for development)
   s.add_development_dependency('fakefs', '~> 0.4.3')
   s.add_development_dependency('guard', '~> 2.12.5')
-  s.add_development_dependency('guard-rspec', '~> 4.5.0')
+  s.add_development_dependency('guard-rspec', '~> 4.6.2')
   s.add_development_dependency('rake', '~> 10.4.2')
-  s.add_development_dependency('redcarpet', '~> 3.2.2') # Soft dependency of `yard`
-  s.add_development_dependency('rspec', '~> 3.2.0')
+  s.add_development_dependency('redcarpet', '~> 3.3.2') # Soft dependency of `yard`
+  s.add_development_dependency('rspec', '~> 3.3.0')
   s.add_development_dependency('timecop', '~> 0.7.0')
   s.add_development_dependency('yard', '~> 0.8.4')
 
