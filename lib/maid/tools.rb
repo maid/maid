@@ -763,13 +763,13 @@ module Maid::Tools
   #
   #     tags("~/Downloads/a.dmg.download") # => ["Unfinished"]
   def tags(path)
-    unless has_tag_available_and_warn?()
-      return []
+    if has_tag_available_and_warn?()
+      path = sh_escape(expand(path))
+      raw = cmd("tag -lN #{path}")
+      raw.strip.split(',')
+    else
+      []
     end
-
-    path = sh_escape(expand(path))
-    raw = cmd("tag -lN #{path}")
-    raw.strip.split(',')
   end
 
   # Tell if a file or directory has any Finder labels. Only available on OS X when you have tag installed.
@@ -778,12 +778,12 @@ module Maid::Tools
   #
   #     has_tags?("~/Downloads/a.dmg.download") # => true
   def has_tags?(path)
-    unless has_tag_available_and_warn?()
-      return false
+    if has_tag_available_and_warn?()
+      ts = tags(path)
+      ts && ts.count > 0
+    else
+      false
     end
-
-    ts = tags(path)
-    ts && ts.count > 0
   end
 
   # Tell if a file or directory has a certain Finder labels. Only available on OS X when you have tag installed.
@@ -792,13 +792,13 @@ module Maid::Tools
   #
   #     contains_tag?("~/Downloads/a.dmg.download", "Unfinished") # => true
   def contains_tag?(path, tag)
-    unless has_tag_available_and_warn?()
-      return false
+    if has_tag_available_and_warn?()
+      path = expand(path)
+      ts = tags(path)
+      ts.include? tag
+    else
+      false
     end
-
-    path = expand(path)
-    ts = tags(path)
-    ts.include? tag
   end
 
   # Add a Finder label or a list of labels to a file or directory. Only available on OS X when you have tag installed.
@@ -807,15 +807,13 @@ module Maid::Tools
   #
   #     add_tag("~/Downloads/a.dmg.download", "Unfinished")
   def add_tag(path, tag)
-    unless has_tag_available_and_warn?()
-      return
-    end
-
-    path = expand(path)
-    ts = Array(tag).join(",")
-    log "add tags #{ts} to #{path}"
-    if !@file_options[:noop]
-      cmd("tag -a #{ts} #{sh_escape(path)}")
+    if has_tag_available_and_warn?()
+      path = expand(path)
+      ts = Array(tag).join(",")
+      log "add tags #{ts} to #{path}"
+      if !@file_options[:noop]
+        cmd("tag -a #{ts} #{sh_escape(path)}")
+      end
     end
   end
 
@@ -825,15 +823,13 @@ module Maid::Tools
   #
   #     remove_tag("~/Downloads/a.dmg", "Unfinished")
   def remove_tag(path, tag)
-    unless has_tag_available_and_warn?()
-      return
-    end
-
-    path = expand(path)
-    ts = Array(tag).join(",")
-    log "remove tags #{ts} from #{path}"
-    if !@file_options[:noop]
-      cmd("tag -r #{ts} #{sh_escape(path)}")
+    if has_tag_available_and_warn?()
+      path = expand(path)
+      ts = Array(tag).join(",")
+      log "remove tags #{ts} from #{path}"
+      if !@file_options[:noop]
+        cmd("tag -r #{ts} #{sh_escape(path)}")
+      end
     end
   end
 
@@ -843,15 +839,13 @@ module Maid::Tools
   #
   #     set_tag("~/Downloads/a.dmg.download", "Unfinished")
   def set_tag(path, tag)
-    unless has_tag_available_and_warn?()
-      return
-    end
-
-    path = expand(path)
-    ts = Array(tag).join(",")
-    log "set tags #{ts} to #{path}"
-    if !@file_options[:noop]
-      `tag -s "#{ts}" "#{path}"`
+    if has_tag_available_and_warn?()
+      path = expand(path)
+      ts = Array(tag).join(",")
+      log "set tags #{ts} to #{path}"
+      if !@file_options[:noop]
+        `tag -s "#{ts}" "#{path}"`
+      end
     end
   end
 
@@ -864,10 +858,10 @@ module Maid::Tools
     if Maid::Platform.osx?
       attribute = 'kMDItemFSInvisible'
       raw = cmd("mdls -raw -name #{attribute} #{ sh_escape(path) }")
-      return raw == '1'
+      raw == '1'
     else
       p = Pathname.new(expand(path))
-      return p.basename =~ /^\./
+      p.basename =~ /^\./
     end
   end
 
@@ -880,17 +874,19 @@ module Maid::Tools
     if Maid::Platform.osx?
       path = expand(path)
       raw = cmd("mdls -raw -name kMDItemLastUsedDate #{ sh_escape(path) }")
+
       if raw == "(null)"
-        return false
-      end
-      begin
-        DateTime.parse(raw).to_time
-        return true
-      rescue ArgumentError => e
-        return false
+        false
+      else
+        begin
+          DateTime.parse(raw).to_time
+          true
+        rescue ArgumentError => e
+          false
+        end
       end
     else
-      return used_at(path) <=> added_at(path) > 0
+      used_at(path) <=> added_at(path) > 0
     end
   end
 
@@ -904,15 +900,16 @@ module Maid::Tools
       path = expand(path)
       raw = cmd("mdls -raw -name kMDItemLastUsedDate #{ sh_escape(path) }")
       if raw == "(null)"
-        return 3650.day.ago
-      end
-      begin
-        return DateTime.parse(raw).to_time
-      rescue ArgumentError => e
-        return accessed_at(path)
+        3650.day.ago
+      else
+        begin
+          DateTime.parse(raw).to_time
+        rescue ArgumentError => e
+          accessed_at(path)
+        end
       end
     else
-      return accessed_at(path)
+      accessed_at(path)
     end
   end
 
@@ -925,23 +922,25 @@ module Maid::Tools
     if Maid::Platform.osx?
       path = expand(path)
       raw = cmd("mdls -raw -name kMDItemDateAdded #{ sh_escape(path) }")
+
       if raw == "(null)"
-        return 1.second.ago
-      end
-      begin
-        return DateTime.parse(raw).to_time
-      rescue ArgumentError => e
-        return created_at(path)
+        1.second.ago
+      else
+        begin
+          DateTime.parse(raw).to_time
+        rescue ArgumentError => e
+          created_at(path)
+        end
       end
     else
-      return created_at(path)
+      created_at(path)
     end
   end
 
   private
 
   def has_tag_available?()
-    return Maid::Platform.osx? && system("which -s tag")
+    Maid::Platform.osx? && system("which -s tag")
   end
 
   def has_tag_available_and_warn?()
@@ -951,9 +950,9 @@ module Maid::Tools
       else
         warn("sorry, tagging is unavailable on your platform")
       end
-      return false
+      false
     end
-    return true
+    true
   end
 
   def sh_escape(array)
@@ -977,10 +976,17 @@ module Maid::Tools
   end
 
   def mdls_to_array(path, attribute)
-    return [] unless Maid::Platform.osx?
-    raw = cmd("mdls -raw -name #{attribute} #{ sh_escape(path) }")
-    return [] if raw.empty?
-    clean = raw[1, raw.length - 2]
-    clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
+    if Maid::Platform.osx?
+      raw = cmd("mdls -raw -name #{attribute} #{ sh_escape(path) }")
+
+      if raw.empty?
+        []
+      else
+        clean = raw[1, raw.length - 2]
+        clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
+      end
+    else
+      []
+    end
   end
 end
