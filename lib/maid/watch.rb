@@ -1,4 +1,5 @@
 require 'listen'
+
 class Maid::Watch
   include Maid::RuleContainer
 
@@ -6,14 +7,16 @@ class Maid::Watch
 
   def initialize(maid, path, options = {}, &rules)
     @maid = maid
+
     if options.nil? || options.empty?
       @lazy = true
-      @options = { wait_for_delay: 10, 
+      @options = { wait_for_delay: 10,
                    ignore: Maid::Downloading.downloading_file_regexps }
     else
       @lazy = options.delete(:lazy) { |key| true }
       @options = options
     end
+
     @logger = maid.logger # TODO: Maybe it's better to create seperate loggers?
     @path = File.expand_path(path)
     initialize_rules(&rules)
@@ -26,6 +29,7 @@ class Maid::Watch
           follow_rules(modified, added, removed)
         end
       end
+
       @listener.start
     end
   end

@@ -157,11 +157,11 @@ module Maid::Tools
   # Single path:
   #
   #     copy('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
-  # 
+  #
   # Multiple paths:
   #
   #     copy(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
-  #     copy(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')    
+  #     copy(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
   def copy(sources, destination)
     destination = expand(destination)
 
@@ -772,7 +772,7 @@ module Maid::Tools
     raw.strip.split(',')
   end
 
-  # Tell if a file or directory has any Finder labels. Only available on OS X when you have tag installed. 
+  # Tell if a file or directory has any Finder labels. Only available on OS X when you have tag installed.
   #
   # ## Example
   #
@@ -786,7 +786,7 @@ module Maid::Tools
     ts && ts.count > 0
   end
 
-  # Tell if a file or directory has a certain Finder labels. Only available on OS X when you have tag installed. 
+  # Tell if a file or directory has a certain Finder labels. Only available on OS X when you have tag installed.
   #
   # ## Example
   #
@@ -801,7 +801,7 @@ module Maid::Tools
     ts.include? tag
   end
 
-  # Add a Finder label or a list of labels to a file or directory. Only available on OS X when you have tag installed. 
+  # Add a Finder label or a list of labels to a file or directory. Only available on OS X when you have tag installed.
   #
   # ## Example
   #
@@ -819,7 +819,7 @@ module Maid::Tools
     end
   end
 
-  # Remove a Finder label or a list of labels from a file or directory. Only available on OS X when you have tag installed. 
+  # Remove a Finder label or a list of labels from a file or directory. Only available on OS X when you have tag installed.
   #
   # ## Example
   #
@@ -837,7 +837,7 @@ module Maid::Tools
     end
   end
 
-  # Set Finder label of a file or directory to a label or a list of labels. Only available on OS X when you have tag installed. 
+  # Set Finder label of a file or directory to a label or a list of labels. Only available on OS X when you have tag installed.
   #
   # ## Example
   #
@@ -855,13 +855,13 @@ module Maid::Tools
     end
   end
 
-  # Tell if a file is hidden  
+  # Tell if a file is hidden
   #
   # ## Example
   #
   #     hidden?("~/.maid") # => true
   def hidden?(path)
-    if Maid::Platform.osx? 
+    if Maid::Platform.osx?
       attribute = 'kMDItemFSInvisible'
       raw = cmd("mdls -raw -name #{attribute} #{ sh_escape(path) }")
       return raw == '1'
@@ -871,13 +871,13 @@ module Maid::Tools
     end
   end
 
-  # Tell if a file has been used since added  
+  # Tell if a file has been used since added
   #
   # ## Example
   #
   #     has_been_used?("~/Downloads/downloading.download") # => false
   def has_been_used?(path)
-    if Maid::Platform.osx? 
+    if Maid::Platform.osx?
       path = expand(path)
       raw = cmd("mdls -raw -name kMDItemLastUsedDate #{ sh_escape(path) }")
       if raw == "(null)"
@@ -900,7 +900,7 @@ module Maid::Tools
   #
   #     used_at("foo.zip") # => Sat Apr 09 10:50:01 -0400 2011
   def used_at(path)
-    if Maid::Platform.osx? 
+    if Maid::Platform.osx?
       path = expand(path)
       raw = cmd("mdls -raw -name kMDItemLastUsedDate #{ sh_escape(path) }")
       if raw == "(null)"
@@ -922,7 +922,7 @@ module Maid::Tools
   #
   #     added_at("foo.zip") # => Sat Apr 09 10:50:01 -0400 2011
   def added_at(path)
-    if Maid::Platform.osx? 
+    if Maid::Platform.osx?
       path = expand(path)
       raw = cmd("mdls -raw -name kMDItemDateAdded #{ sh_escape(path) }")
       if raw == "(null)"
