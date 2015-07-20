@@ -764,8 +764,8 @@ module Maid::Tools
   #     tags("~/Downloads/a.dmg.download") # => ["Unfinished"]
   def tags(path)
     if has_tag_available_and_warn?
-      path = sh_escape(expand(path))
-      raw = cmd("tag -lN #{path}")
+      path = expand(path)
+      raw = cmd("tag -lN #{sh_escape(path)}")
       raw.strip.split(',')
     else
       []
@@ -812,7 +812,7 @@ module Maid::Tools
       ts = Array(tag).join(",")
       log "add tags #{ts} to #{path}"
       if !@file_options[:noop]
-        cmd("tag -a #{ts} #{sh_escape(path)}")
+        cmd("tag -a #{sh_escape(ts)} #{sh_escape(path)}")
       end
     end
   end
@@ -828,7 +828,7 @@ module Maid::Tools
       ts = Array(tag).join(",")
       log "remove tags #{ts} from #{path}"
       if !@file_options[:noop]
-        cmd("tag -r #{ts} #{sh_escape(path)}")
+        cmd("tag -r #{sh_escape(ts)} #{sh_escape(path)}")
       end
     end
   end
@@ -844,7 +844,7 @@ module Maid::Tools
       ts = Array(tag).join(",")
       log "set tags #{ts} to #{path}"
       if !@file_options[:noop]
-        `tag -s "#{ts}" "#{path}"`
+        cmd("tag -s #{sh_escape(ts)} #{sh_escape(path)}")
       end
     end
   end
@@ -856,8 +856,7 @@ module Maid::Tools
   #     hidden?("~/.maid") # => true
   def hidden?(path)
     if Maid::Platform.osx?
-      attribute = 'kMDItemFSInvisible'
-      raw = cmd("mdls -raw -name #{attribute} #{ sh_escape(path) }")
+      raw = cmd("mdls -raw -name kMDItemFSInvisible #{ sh_escape(path) }")
       raw == '1'
     else
       p = Pathname.new(expand(path))
@@ -980,7 +979,7 @@ module Maid::Tools
 
   def mdls_to_array(path, attribute)
     if Maid::Platform.osx?
-      raw = cmd("mdls -raw -name #{attribute} #{ sh_escape(path) }")
+      raw = cmd("mdls -raw -name #{sh_escape(attribute)} #{ sh_escape(path) }")
 
       if raw.empty?
         []
