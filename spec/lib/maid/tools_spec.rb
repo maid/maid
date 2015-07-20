@@ -772,7 +772,7 @@ module Maid
       end
     end
 
-    describe '#tags' do
+    describe 'Finder tag support' do
       before do
         @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
         `mkdir -p #{@test_dir}`
