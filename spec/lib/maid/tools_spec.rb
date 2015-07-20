@@ -823,7 +823,7 @@ module Maid
       end
 
       it 'A file without tags' do
-          expect(@maid.has_tags?(@test_file)).to be(false)
+        expect(@maid.has_tags?(@test_file)).to be(false)
       end
     end
 
