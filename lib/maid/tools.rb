@@ -886,7 +886,7 @@ module Maid::Tools
       begin
         DateTime.parse(raw).to_time
         return true
-      rescue Exception => e
+      rescue ArgumentError => e
         return false
       end
     else
@@ -908,7 +908,7 @@ module Maid::Tools
       end
       begin
         return DateTime.parse(raw).to_time
-      rescue Exception => e
+      rescue ArgumentError => e
         return accessed_at(path)
       end
     else
@@ -930,7 +930,7 @@ module Maid::Tools
       end
       begin
         return DateTime.parse(raw).to_time
-      rescue Exception => e
+      rescue ArgumentError => e
         return created_at(path)
       end
     else
