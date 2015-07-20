@@ -763,7 +763,7 @@ module Maid::Tools
   #
   #     tags("~/Downloads/a.dmg.download") # => ["Unfinished"]
   def tags(path)
-    if has_tag_available_and_warn?()
+    if has_tag_available_and_warn?
       path = sh_escape(expand(path))
       raw = cmd("tag -lN #{path}")
       raw.strip.split(',')
@@ -778,7 +778,7 @@ module Maid::Tools
   #
   #     has_tags?("~/Downloads/a.dmg.download") # => true
   def has_tags?(path)
-    if has_tag_available_and_warn?()
+    if has_tag_available_and_warn?
       ts = tags(path)
       ts && ts.count > 0
     else
@@ -792,7 +792,7 @@ module Maid::Tools
   #
   #     contains_tag?("~/Downloads/a.dmg.download", "Unfinished") # => true
   def contains_tag?(path, tag)
-    if has_tag_available_and_warn?()
+    if has_tag_available_and_warn?
       path = expand(path)
       ts = tags(path)
       ts.include? tag
@@ -807,7 +807,7 @@ module Maid::Tools
   #
   #     add_tag("~/Downloads/a.dmg.download", "Unfinished")
   def add_tag(path, tag)
-    if has_tag_available_and_warn?()
+    if has_tag_available_and_warn?
       path = expand(path)
       ts = Array(tag).join(",")
       log "add tags #{ts} to #{path}"
@@ -823,7 +823,7 @@ module Maid::Tools
   #
   #     remove_tag("~/Downloads/a.dmg", "Unfinished")
   def remove_tag(path, tag)
-    if has_tag_available_and_warn?()
+    if has_tag_available_and_warn?
       path = expand(path)
       ts = Array(tag).join(",")
       log "remove tags #{ts} from #{path}"
@@ -839,7 +839,7 @@ module Maid::Tools
   #
   #     set_tag("~/Downloads/a.dmg.download", "Unfinished")
   def set_tag(path, tag)
-    if has_tag_available_and_warn?()
+    if has_tag_available_and_warn?
       path = expand(path)
       ts = Array(tag).join(",")
       log "set tags #{ts} to #{path}"
@@ -899,6 +899,7 @@ module Maid::Tools
     if Maid::Platform.osx?
       path = expand(path)
       raw = cmd("mdls -raw -name kMDItemLastUsedDate #{ sh_escape(path) }")
+
       if raw == "(null)"
         3650.day.ago
       else
@@ -939,20 +940,22 @@ module Maid::Tools
 
   private
 
-  def has_tag_available?()
+  def has_tag_available?
     Maid::Platform.osx? && system("which -s tag")
   end
 
-  def has_tag_available_and_warn?()
-    unless has_tag_available?
+  def has_tag_available_and_warn?
+    if has_tag_available?
+      true
+    else
       if Maid::Platform.osx?
         warn("To use this feature, you need `tag` installed.  Run `brew install tag`")
       else
         warn("sorry, tagging is unavailable on your platform")
       end
+
       false
     end
-    true
   end
 
   def sh_escape(array)
