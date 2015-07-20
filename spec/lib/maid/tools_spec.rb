@@ -786,7 +786,7 @@ module Maid
       end
 
       it 'get tags from a file that has one' do 
-        if system("which -s tag")
+        if Platform.has_tag_available?
           @maid.file_options[:noop] = false
           @maid.add_tag(@test_file, "Test")
           expect(@maid.tags(@test_file)).to eq(["Test"])
@@ -794,7 +794,7 @@ module Maid
       end
 
       it 'get tags from a file that has serveral tags' do
-        if system("which -s tag")
+        if Platform.has_tag_available?
           @maid.file_options[:noop] = false
           @maid.add_tag(@test_file, ["Test", "Twice"])
           expect(@maid.tags(@test_file)).to eq(["Test", "Twice"])
@@ -816,7 +816,7 @@ module Maid
       end
 
       it 'A file with tags' do 
-        if system("which -s tag")
+        if Platform.has_tag_available?
           @maid.add_tag(@test_file, "Test")
           expect(@maid.has_tags?(@test_file)).to be(true)
         end
@@ -841,7 +841,7 @@ module Maid
       end
 
       it 'A file with Test tag' do 
-        if system("which -s tag")
+        if Platform.has_tag_available?
           @maid.add_tag(@test_file, "Test")
           expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
           expect(@maid.contains_tag?(@test_file, "Not there")).to be(false)
@@ -863,7 +863,7 @@ module Maid
       end
 
       it 'Add Test tag to a file' do 
-        if system("which -s tag")
+        if Platform.has_tag_available?
           @maid.add_tag(@test_file, "Test")
           expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
         end
@@ -884,7 +884,7 @@ module Maid
       end
 
       it 'Remove Test tag from a file' do 
-        if system("which -s tag")
+        if Platform.has_tag_available?
           @maid.add_tag(@test_file, "Test")
           expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
           @maid.remove_tag(@test_file, "Test")
@@ -907,7 +907,7 @@ module Maid
       end
 
       it 'Set Test tags to a file' do 
-        if system("which -s tag")
+        if Platform.has_tag_available?
           @maid.set_tag(@test_file, "Test")
           expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
           @maid.set_tag(@test_file, ["Test", "Twice"])
