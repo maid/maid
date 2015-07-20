@@ -790,7 +790,7 @@ module Maid
     end
 
     describe '#tags' do
-      it 'get tags from a file that has one' do 
+      it 'returns tags from a file that has one' do 
         if Platform.has_tag_available?
           @maid.file_options[:noop] = false
           @maid.add_tag(@test_file, "Test")
@@ -798,7 +798,7 @@ module Maid
         end
       end
 
-      it 'get tags from a file that has serveral tags' do
+      it 'returns tags from a file that has serveral tags' do
         if Platform.has_tag_available?
           @maid.file_options[:noop] = false
           @maid.add_tag(@test_file, ["Test", "Twice"])
@@ -808,20 +808,20 @@ module Maid
     end
 
     describe '#has_tags?' do
-      it 'A file with tags' do 
+      it 'returns true for a file with tags' do 
         if Platform.has_tag_available?
           @maid.add_tag(@test_file, "Test")
           expect(@maid.has_tags?(@test_file)).to be(true)
         end
       end
 
-      it 'A file without tags' do
+      it 'returns false for a file without tags' do
         expect(@maid.has_tags?(@test_file)).to be(false)
       end
     end
 
     describe '#contains_tag?' do
-      it 'A file with Test tag' do 
+      it 'returns true a file with the given tag' do 
         if Platform.has_tag_available?
           @maid.add_tag(@test_file, "Test")
           expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
@@ -831,7 +831,7 @@ module Maid
     end
 
     describe '#add_tag' do
-      it 'Add Test tag to a file' do 
+      it 'adds the given tag to a file' do 
         if Platform.has_tag_available?
           @maid.add_tag(@test_file, "Test")
           expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
@@ -840,7 +840,7 @@ module Maid
     end
 
     describe '#remove_tag' do
-      it 'Remove Test tag from a file' do 
+      it 'removes the given tag from a file' do 
         if Platform.has_tag_available?
           @maid.add_tag(@test_file, "Test")
           expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
@@ -851,7 +851,7 @@ module Maid
     end
 
     describe '#set_tag' do
-      it 'Set Test tags to a file' do 
+      it 'sets the given tags on a file' do 
         if Platform.has_tag_available?
           @maid.set_tag(@test_file, "Test")
           expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
