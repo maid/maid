@@ -940,7 +940,7 @@ module Maid::Tools
   private
 
   def has_tag_available?
-    Maid::Platform.osx? && system("which -s tag")
+    Maid::Platform.has_tag_available?
   end
 
   def has_tag_available_and_warn?

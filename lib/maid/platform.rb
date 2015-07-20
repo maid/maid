@@ -14,6 +14,9 @@ module Maid::Platform
       !!(host_os =~ /darwin/i)
     end
 
+    def has_tag_available?
+      osx? && system("which -s tag")
+    end
   end
 
   # Commands based on OS type
