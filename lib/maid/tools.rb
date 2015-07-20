@@ -900,7 +900,7 @@ module Maid::Tools
       raw = cmd("mdls -raw -name kMDItemLastUsedDate #{ sh_escape(path) }")
 
       if raw == "(null)"
-        3650.day.ago
+        nil
       else
         begin
           DateTime.parse(raw).to_time
