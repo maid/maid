@@ -1,7 +1,6 @@
 require 'listen'
 class Maid::Watch
   include Maid::RuleContainer
-  include Maid::Downloading
 
   attr_reader :path, :listener, :logger
 
