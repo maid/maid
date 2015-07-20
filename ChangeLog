@@ -8,6 +8,8 @@ maid (0.8.0) unstable; urgency=low
     tools, using OSX Spotlight metadata when available
   * Song Chen Wen: Added Aria2 and Tunder support to "downloading?" tool
   * Song Chen Wen: Reduce "watch" CPU usage by throttling (Closes: #149, #150)
+  * Updated development dependencies, except for FakeFS (help appreciated!)
+  * Updated dependencies: "listen", "rufus-scheduler"
 
  -- Benjamin Oakes <hello@benjaminoakes.com>  TODO
 
