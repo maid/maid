@@ -771,6 +771,13 @@ module Maid
         expect(@maid.ignore_child_dirs(src).sort).to eq(expected)
       end
     end
+  end
+
+  describe 'OSX tag support', :fakefs => false do
+    before do
+      @logger = double('Logger').as_null_object
+      @maid = Maid.new(:logger => @logger)
+    end
 
     describe '#tags' do
       before do
