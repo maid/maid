@@ -775,13 +775,13 @@ module Maid
     describe 'Finder tag support' do
       before do
         @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-        `mkdir -p #{@test_dir}`
-        `touch #{@test_file}`
+        FileUtils.mkdir_p(@test_dir)
+        FileUtils.touch(@test_file)
         @maid.file_options[:noop] = false
       end
 
       after do
-        `rm -r #{@test_dir}`
+        FileUtils.rm_r(@test_dir)
         @maid.file_options[:noop] = true
       end
 
@@ -805,13 +805,13 @@ module Maid
     describe '#has_tags?' do
       before do
         @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-        `mkdir -p #{@test_dir}`
-        `touch #{@test_file}`
+        FileUtils.mkdir_p(@test_dir)
+        FileUtils.touch(@test_file)
         @maid.file_options[:noop] = false
       end
 
       after do
-        `rm -r #{@test_dir}`
+        FileUtils.rm_r(@test_dir)
         @maid.file_options[:noop] = true
       end
 
@@ -830,13 +830,13 @@ module Maid
     describe '#contains_tag?' do
       before do
         @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-        `mkdir -p #{@test_dir}`
-        `touch #{@test_file}`
+        FileUtils.mkdir_p(@test_dir)
+        FileUtils.touch(@test_file)
         @maid.file_options[:noop] = false
       end
 
       after do
-        `rm -r #{@test_dir}`
+        FileUtils.rm_r(@test_dir)
         @maid.file_options[:noop] = true
       end
 
@@ -852,13 +852,13 @@ module Maid
     describe '#add_tag' do
       before do
         @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-        `mkdir -p #{@test_dir}`
-        `touch #{@test_file}`
+        FileUtils.mkdir_p(@test_dir)
+        FileUtils.touch(@test_file)
         @maid.file_options[:noop] = false
       end
 
       after do
-        `rm -r #{@test_dir}`
+        FileUtils.rm_r(@test_dir)
         @maid.file_options[:noop] = true
       end
 
@@ -873,8 +873,8 @@ module Maid
     describe '#remove_tag' do
       before do
         @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-        `mkdir -p #{@test_dir}`
-        `touch #{@test_file}`
+        FileUtils.mkdir_p(@test_dir)
+        FileUtils.touch(@test_file)
         @maid.file_options[:noop] = false
       end
 
@@ -896,13 +896,13 @@ module Maid
     describe '#set_tag' do
       before do
         @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-        `mkdir -p #{@test_dir}`
-        `touch #{@test_file}`
+        FileUtils.mkdir_p(@test_dir)
+        FileUtils.touch(@test_file)
         @maid.file_options[:noop] = false
       end
 
       after do
-        `rm -r #{@test_dir}`
+        FileUtils.rm_r(@test_dir)
         @maid.file_options[:noop] = true
       end
 
