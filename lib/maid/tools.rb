@@ -795,7 +795,7 @@ module Maid::Tools
     if has_tag_available_and_warn?
       path = expand(path)
       ts = tags(path)
-      ts.include? tag
+      ts.include?(tag)
     else
       false
     end
