@@ -73,13 +73,14 @@ EOF
 
     say "Sample rules created at #{ path.inspect }", :green
   end
-  
+
   desc 'daemon', 'Runs the watch/repeat rules in a daemon'
   method_option :rules,   :type => :string,  :aliases => %w(-r)
   method_option :silent,  :type => :boolean, :aliases => %w(-s)
+  method_option :log,  :type => :string, :aliases => %w(-l)
   def daemon
     maid = Maid::Maid.new(maid_options(options))
-    
+
     if Maid::TrashMigration.needed?
       migrate_trash
       return
@@ -88,7 +89,7 @@ EOF
     unless options.silent?
       say "Logging actions to #{ maid.log_device.inspect }"
     end
-    
+
     maid.load_rules
     maid.daemonize
   end
