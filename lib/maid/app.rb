@@ -73,13 +73,13 @@ EOF
 
     say "Sample rules created at #{ path.inspect }", :green
   end
-  
+
   desc 'daemon', 'Runs the watch/repeat rules in a daemon'
   method_option :rules,   :type => :string,  :aliases => %w(-r)
   method_option :silent,  :type => :boolean, :aliases => %w(-s)
   def daemon
     maid = Maid::Maid.new(maid_options(options))
-    
+
     if Maid::TrashMigration.needed?
       migrate_trash
       return
@@ -88,9 +88,18 @@ EOF
     unless options.silent?
       say "Logging actions to #{ maid.log_device.inspect }"
     end
-    
+
     maid.load_rules
     maid.daemonize
+  end
+
+  desc 'launchagent', 'Installs maid daemon as launch agent on OS X'
+  def launchagent
+    if %x(uname -a).include?("Darwin")
+      install_launch_agent
+    else
+      say "Doesn’t look like you’re running OS X. Aborting!", :red
+    end
   end
 
   no_tasks do
@@ -152,6 +161,59 @@ Exiting...
       exit -1
     else
       raise "Reached 'impossible' case (response: #{ response.inspect })"
+    end
+  end
+
+  def install_launch_agent
+    maid_executable = %x(which maid)
+    plist_destination = File.expand_path("~/Library/LaunchAgents/benjaminoakes.maid.plist")
+    plist_contents = <<-EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+          "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>benjaminoakes.maid</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/sh</string>
+      <string>-c</string>
+      <string>#{maid_executable} daemon</string>
+    </array>
+    <key>KeepAlive</key>
+    <true/>
+  </dict>
+</plist>
+    EOF
+
+    say('Installing launch agent for Maid...')
+    if File.exists?(plist_destination)
+      say 'Looks like you’ve already got a launch agent configured for Maid. Aborting!', :red
+    else
+      File.open(plist_destination, 'w') { |f| f.write(plist_contents) }
+      say 'Launch agent successfully configured for Maid.', :green
+      say ''
+      response = ask('Would you like to launch the Maid daemon now?', :limited_to => %w(Y N))
+      case response
+      when 'Y'
+        say('')
+        say('Starting Maid daemon...')
+
+        if load_agent = %x(launchctl load #{plist_destination})
+          say 'Maid daemon is up and running. Enjoy!', :green
+        else
+          say 'Woops! Something went wrong, and the daemon didn’t start.', :red
+        end
+      when 'N'
+        say <<-EOF
+
+Cool beans, whenever you’re ready to start the launch daemon, use the following command:
+launchctl load #{plist_destination}
+        EOF
+      else
+        raise "Reached 'impossible' case (response: #{ response.inspect })"
+      end
     end
   end
 
