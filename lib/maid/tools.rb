@@ -624,6 +624,7 @@ module Maid::Tools
       ops << "--exclude=#{ sh_escape(path) }"
     end
 
+    ops << "--chown=#{ sh_escape(options[:chown]) }" if options[:chown]
     ops << '--delete' if options[:delete]
     stdout = cmd("rsync #{ ops.join(' ') } #{ sh_escape(from) } #{ sh_escape(to) } 2>&1")
     log("Fired sync from #{ sh_escape(from) } to #{ sh_escape(to) }.  STDOUT:\n\n#{ stdout }")
