@@ -89,8 +89,8 @@ class Maid::Maid
     @watches << ::Maid::Watch.new(self, path, options, &rules)
   end
 
-  def repeat(timestring, &rules)
-    @repeats << ::Maid::Repeat.new(self, timestring, &rules)
+  def repeat(timestring, options = {}, &rules)
+    @repeats << ::Maid::Repeat.new(self, timestring, options, &rules)
   end
 
   # Daemonizes the process by starting all watches and repeats and joining
