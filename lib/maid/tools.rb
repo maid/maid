@@ -456,7 +456,7 @@ module Maid::Tools
       gps = EXIFR::JPEG.new(path).gps
       coordinates_string = [gps.latitude, gps.longitude]
       location = Geocoder.search(coordinates_string).first
-      [location.city, location.province, location.country_code].join(', ')
+      [location.city, location.province, location.country_code.upcase].join(', ')
     end
   end
 
