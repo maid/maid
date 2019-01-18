@@ -3,8 +3,7 @@
 
 Vagrant.configure('2') do |config|
   # See also: `script/vagrant-test`, `script/vagrant-test-all`
-  config.vm.box     = ENV['MAID_TARGET_BOX'] || 'precise64'
-  config.vm.box_url = 'http://files.vagrantup.com/precise64.box' if 'precise64' == config.vm.box
+  config.vm.box     = ENV['MAID_TARGET_BOX'] || 'hashicorp/precise64'
 
   config.vm.provider :virtualbox do |vb|
     # Maid has very low system requirements
