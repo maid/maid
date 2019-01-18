@@ -1,25 +1,26 @@
 require 'spec_helper'
 require 'stringio'
 
+def capture_stdout
+  out = StringIO.new
+  $stdout = out
+  yield
+  out.string
+ensure
+  $stdout = STDOUT
+end
+
+def capture_stderr
+  out = StringIO.new
+  $stderr = out
+  yield
+  out.string
+ensure
+  $stderr = STDERR
+end
+
 module Maid
   describe App, '#clean' do
-    def capture_stdout
-      out = StringIO.new
-      $stdout = out
-      yield
-      out.string
-    ensure
-      $stdout = STDOUT
-    end
-
-    def capture_stderr
-      out = StringIO.new
-      $stderr = out
-      yield
-      out.string
-    ensure
-      $stderr = STDERR
-    end
 
     before do
       @app = App.new
@@ -122,6 +123,55 @@ module Maid
     it 'sets the rules path when given rules' do
       opts = @app.maid_options('rules' => 'maid_rules.rb')
       expect(opts[:rules_path]).to match(/maid_rules.rb$/)
+    end
+  end
+
+  describe App, '#logs' do
+    before do
+      @maid = double('Maid')
+      @maid.stub(:clean)
+      @maid.stub(:log_device) { '/var/log/maid.log' }
+      @maid.stub(:load_rules)
+      Maid.stub(:new) { @maid }
+    end
+
+    describe 'prints out the log' do
+      before do
+        @log = "A maid log\nAnother log"
+        @log_file = Tempfile.new('maid.log')
+        @log_file.write(@log)
+        @log_file.close
+
+        @maid.stub(:log_device) { @log_file.path }
+      end
+
+      after do
+        @log_file.unlink if !@log_file.nil?
+      end
+
+      it 'dumps the last log entries when invoked without an option' do
+        expect(capture_stdout { App.start(['logs']) }).to eq("#{@log}\n")
+      end
+
+      it 'prints an error when log does not exist' do
+        @maid.stub(:log_device) { '/maid/file-does-not-exist' }
+        message = "Log file #{@maid.log_device} does not exist.\n"
+
+        expect(capture_stderr { App.start(['logs']) }).to eq(message)
+      end
+
+      it 'does not tail when log does not exist' do
+        @maid.stub(:log_device) { '/maid/file-does-not-exist' }
+        message = "Log file #{@maid.log_device} does not exist.\n"
+
+        expect(capture_stderr { App.start(['logs', '--tail']) }).to eq(message)
+      end
+    end
+
+    it 'prints out the log path' do
+      ['--path', '-p'].each do |option|
+        expect(capture_stdout { App.start(['logs', option]) }).to eq("/var/log/maid.log\n")
+      end
     end
   end
 end
