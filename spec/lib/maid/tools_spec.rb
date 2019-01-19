@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 # Workaround for Ruby 2.1.0, remove after https://github.com/defunkt/fakefs/pull/209 is released
-if RUBY_VERSION =~ /2\.[12]\.\d/
+if RUBY_VERSION =~ /2\.[1234]\.\d/
   module FakeFS
     class Dir
       def self.entries(dirname, opts = {})
