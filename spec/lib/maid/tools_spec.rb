@@ -14,11 +14,21 @@ if RUBY_VERSION =~ /2\.[12]\.\d/
   end
 end
 
-# Workaround for broken `cp` implementation; remove after upgrading FakeFS
+# Workaround for
+# - broken `cp` implementation; remove after upgrading FakeFS
+# - missing method `children`; remove after upgrading FakeFS
 module FakeFS
   module FileUtils
     def self.cp(src, dest, options = {})
       copy(src, dest)
+    end
+  end
+
+  class Dir
+    def self.children(dirname, opts = {})
+      Dir.new(dirname)
+        .map { |file| File.basename(file) }
+        .select { |filename| filename != '.' && filename != '..' }
     end
   end
 end
