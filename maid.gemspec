@@ -22,14 +22,14 @@ Gem::Specification.new do |s|
   s.add_dependency('thor', '>= 0.14.0', '< 1.0.0')
   s.add_dependency('deprecated', '~> 3.0.0')
   s.add_dependency('dimensions', '>= 1.0.0', '< 2.0')
-  s.add_dependency('mime-types', '~> 2.0', '< 3.0') # 3.0 drops Ruby 1.9.3 compatibility (which should be kept for Ubuntu, at least until we document use of Maid on 2.0+ for Ubuntu).  mime-types 2.99 is supported until 2017-11-21.  https://github.com/mime-types/ruby-mime-types/#mime-types-2x-end-of-life
+  s.add_dependency('mime-types', '~> 3.0', '< 4.0')
   s.add_dependency('rubyzip', '~> 1.2.2')
   s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs
   s.add_dependency('listen', '>= 2.8.0', '< 3.1.0')
   s.add_dependency('rufus-scheduler', '>= 3.0.6', '< 3.2.0')
   s.add_dependency('exifr', '~> 1.2.0')
   s.add_dependency('geocoder', '~> 1.5.0')
-  
+
   # TODO: use one of these two gems instead of `mdfind`.  **But** They have to work on Linux as well.
   #
   #     s.add_dependency('mac-spotlight', '~> 0.0.4')
