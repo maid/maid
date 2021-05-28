@@ -59,9 +59,9 @@ module Maid
     describe '#move' do
       before do
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
-        FileUtils.mkdir_p(@src_dir)
-        FileUtils.touch(@src_file)
-        FileUtils.mkdir_p(@dst_dir = '~/Destination/')
+        FileUtils.mkdir_p(File.expand_path(@src_dir))
+        FileUtils.touch(File.expand_path(@src_file))
+        FileUtils.mkdir_p(File.expand_path(@dst_dir = '~/Destination/'))
       end
 
       it 'moves expanded paths, passing file_options' do
@@ -76,7 +76,7 @@ module Maid
 
       it 'handles multiple from paths' do
         second_src_file = @src_dir + (second_file_name = 'bar.zip')
-        FileUtils.touch(second_src_file)
+        FileUtils.touch(File.expand_path(second_src_file))
         src_files = [@src_file, second_src_file]
 
         @maid.move(src_files, @dst_dir)
@@ -102,8 +102,8 @@ module Maid
     describe '#rename' do
       before do
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
-        FileUtils.mkdir_p(@src_dir)
-        FileUtils.touch(@src_file)
+        FileUtils.mkdir_p(File.expand_path(@src_dir))
+        FileUtils.touch(File.expand_path(@src_file))
         @expanded_src_name = "#@home/Source/foo.zip"
 
         @dst_name = '~/Destination/bar.zip'
@@ -127,8 +127,8 @@ module Maid
 
       context 'given the target already exists' do
         before do
-          FileUtils.mkdir_p(@expanded_dst_dir)
-          FileUtils.touch(@expanded_dst_name)
+          FileUtils.mkdir_p(File.expand_path(@expanded_dst_dir))
+          FileUtils.touch(File.expand_path(@expanded_dst_name))
         end
 
         it 'does not move' do
@@ -143,8 +143,8 @@ module Maid
       before do
         @trash_path = @maid.trash_path
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
-        FileUtils.mkdir_p(@src_dir)
-        FileUtils.touch(@src_file)
+        FileUtils.mkdir_p(File.expand_path(@src_dir))
+        FileUtils.touch(File.expand_path(@src_file))
 
         @trash_file = File.join(@trash_path, @file_name)
       end
@@ -157,7 +157,7 @@ module Maid
       it 'uses a safe path if the target exists' do
         # Without an offset, ISO8601 parses to local time, which is what we want here.
         Timecop.freeze(Time.parse('2011-05-22T16:53:52')) do
-          FileUtils.touch(@trash_file)
+          FileUtils.touch(File.expand_path(@trash_file))
           @maid.trash(@src_file)
           new_trash_file = File.join(@trash_path, @file_name + ' 2011-05-22-16-53-52')
           expect(File.exist?(new_trash_file)).to be(true)
@@ -166,7 +166,7 @@ module Maid
 
       it 'handles multiple paths' do
         second_src_file = @src_dir + (second_file_name = 'bar.zip')
-        FileUtils.touch(second_src_file)
+        FileUtils.touch(File.expand_path(second_src_file))
         @src_files = [@src_file, second_src_file]
         @maid.trash(@src_files)
 
@@ -192,8 +192,8 @@ module Maid
     describe '#remove' do
       before do
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
-        FileUtils.mkdir_p(@src_dir)
-        FileUtils.touch(@src_file)
+        FileUtils.mkdir_p(File.expand_path(@src_dir))
+        FileUtils.touch(File.expand_path(@src_file))
         @src_file_expand_path = File.expand_path(@src_file)
         @options = @maid.file_options
       end
@@ -222,7 +222,7 @@ module Maid
 
       it 'handles multiple paths' do
         second_src_file = "#@src_dir/bar.zip"
-        FileUtils.touch(second_src_file)
+        FileUtils.touch(File.expand_path(second_src_file))
         @src_files = [@src_file, second_src_file]
 
         @maid.remove(@src_files)
@@ -234,11 +234,11 @@ module Maid
     describe '#dir' do
       before do
         @file = (@dir = "#@home/Downloads") + '/foo.zip'
-        FileUtils.mkdir_p(@dir)
+        FileUtils.mkdir_p(File.expand_path(@dir))
       end
 
       it 'lists files in a directory' do
-        FileUtils.touch(@file)
+        FileUtils.touch(File.expand_path(@file))
         expect(@maid.dir('~/Downloads/*.zip')).to eq([@file])
       end
 
@@ -252,8 +252,8 @@ module Maid
       context 'with multiple files' do
         before do
           @other_file = "#@dir/qux.tgz"
-          FileUtils.touch(@file)
-          FileUtils.touch(@other_file)
+          FileUtils.touch(File.expand_path(@file))
+          FileUtils.touch(File.expand_path(@other_file))
         end
 
         it 'list files in all provided globs' do
@@ -268,9 +268,9 @@ module Maid
       context 'with multiple directories' do
         before do
           @other_file = "#@home/Desktop/bar.zip"
-          FileUtils.touch(@file)
-          FileUtils.mkdir_p(File.dirname(@other_file))
-          FileUtils.touch(@other_file)
+          FileUtils.touch(File.expand_path(@file))
+          FileUtils.mkdir_p(File.expand_path(File.dirname(@other_file)))
+          FileUtils.touch(File.expand_path(@other_file))
         end
 
         it 'lists files in directories when using regexp-like glob patterns' do
@@ -286,12 +286,12 @@ module Maid
     describe '#files' do
       before do
         @file = (@dir = "#@home/Downloads") + '/foo.zip'
-        FileUtils.mkdir_p(@dir)
+        FileUtils.mkdir_p(File.expand_path(@dir))
         FileUtils.mkdir(@dir + '/notfile')
       end
 
       it 'lists only files in a directory' do
-        FileUtils.touch(@file)
+        FileUtils.touch(File.expand_path(@file))
         expect(@maid.files('~/Downloads/*.zip')).to eq([@file])
       end
 
@@ -305,8 +305,8 @@ module Maid
       context 'with multiple files' do
         before do
           @other_file = "#@dir/qux.tgz"
-          FileUtils.touch(@file)
-          FileUtils.touch(@other_file)
+          FileUtils.touch(File.expand_path(@file))
+          FileUtils.touch(File.expand_path(@other_file))
         end
 
         it 'list files in all provided globs' do
@@ -321,10 +321,10 @@ module Maid
       context 'with multiple directories' do
         before do
           @other_file = "#@home/Desktop/bar.zip"
-          FileUtils.touch(@file)
-          FileUtils.mkdir_p(File.dirname(@other_file))
+          FileUtils.touch(File.expand_path(@file))
+          FileUtils.mkdir_p(File.expand_path(File.dirname(@other_file)))
           FileUtils.mkdir(@home + '/Desktop/notfile')
-          FileUtils.touch(@other_file)
+          FileUtils.touch(File.expand_path(@other_file))
         end
 
         it 'lists files in directories when using regexp-like glob patterns' do
@@ -365,8 +365,8 @@ module Maid
     describe '#find' do
       before do
         @file = (@dir = '~/Source/') + (@file_name = 'foo.zip')
-        FileUtils.mkdir_p(@dir)
-        FileUtils.touch(@file)
+        FileUtils.mkdir_p(File.expand_path(@dir))
+        FileUtils.touch(File.expand_path(@file))
         @dir_expand_path = File.expand_path(@dir)
         @file_expand_path = File.expand_path(@file)
       end
@@ -455,7 +455,7 @@ module Maid
 
       it 'gives the created time of the file' do
         Timecop.freeze(@now) do
-          FileUtils.touch(File.expand_path(@path))
+          FileUtils.touch(File.expand_path(File.expand_path(@path)))
           expect(@maid.created_at(@path)).to eq(Time.now)
         end
       end
@@ -568,9 +568,9 @@ module Maid
     describe '#copy' do
       before do
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
-        FileUtils.mkdir_p(@src_dir)
-        FileUtils.touch(@src_file)
-        FileUtils.mkdir_p(@dst_dir = '~/Destination/')
+        FileUtils.mkdir_p(File.expand_path(@src_dir))
+        FileUtils.touch(File.expand_path(@src_file))
+        FileUtils.mkdir_p(File.expand_path(@dst_dir = '~/Destination/'))
       end
 
       it 'copies expanded paths, passing file_options' do
@@ -584,7 +584,7 @@ module Maid
       end
 
       it 'does not copy if the target already exists' do
-        FileUtils.touch(@dst_dir + @file_name)
+        FileUtils.touch(File.expand_path(@dst_dir + @file_name))
         expect(@logger).to receive(:warn)
 
         @maid.copy(@src_file, @dst_dir)
@@ -592,12 +592,12 @@ module Maid
 
       it 'handle multiple from paths' do
         second_src_file = @src_dir + (second_file_name = 'bar.zip')
-        FileUtils.touch(second_src_file)
+        FileUtils.touch(File.expand_path(second_src_file))
         src_files = [@src_file, second_src_file]
 
         @maid.copy(src_files, @dst_dir)
-        expect(File.exist?(@dst_dir + @file_name)).to be_truthy
-        expect(File.exist?(@dst_dir + second_file_name)).to be_truthy
+        expect(File.exist?(File.expand_path(@dst_dir + @file_name))).to be_truthy
+        expect(File.exist?(File.expand_path(@dst_dir + second_file_name))).to be_truthy
       end
     end
   end
@@ -637,10 +637,10 @@ module Maid
         # FIXME: Broken on Ruby 2.1.0-preview2, maybe because of FakeFS
         #
         #     oldest_path = "#{file_fixtures_path}/foo.zip"
-        #     FileUtils.touch(oldest_path, :mtime => Time.new(1970, 1, 1))
+        #     FileUtils.touch(File.expand_path(oldest_path, :mtime => Time.new(1970, 1, 1)))
 
-        FileUtils.touch("#{file_fixtures_path}/bar.zip")
-        FileUtils.touch("#{file_fixtures_path}/1.zip")
+        FileUtils.touch(File.expand_path("#{file_fixtures_path}/bar.zip"))
+        FileUtils.touch(File.expand_path("#{file_fixtures_path}/1.zip"))
 
         dupes = @maid.newest_dupes_in(file_fixtures_glob)
 
@@ -723,9 +723,9 @@ module Maid
         @root = '~/Source'
         @empty_dir = (@parent_of_empty_dir = @root + '/empty-parent') + '/empty'
         @file = (@non_empty_dir = @root + '/non-empty') + '/file.txt'
-        FileUtils.mkdir_p(@empty_dir)
-        FileUtils.mkdir_p(@non_empty_dir)
-        FileUtils.touch(@file)
+        FileUtils.mkdir_p(File.expand_path(@empty_dir))
+        FileUtils.mkdir_p(File.expand_path(@non_empty_dir))
+        FileUtils.touch(File.expand_path(@file))
       end
 
       it 'returns false for non-empty directories' do
@@ -789,13 +789,13 @@ module Maid
       @maid = Maid.new(:logger => @logger)
 
       @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-      FileUtils.mkdir_p(@test_dir)
-      FileUtils.touch(@test_file)
+      FileUtils.mkdir_p(File.expand_path(@test_dir))
+      FileUtils.touch(File.expand_path(@test_file))
       @maid.file_options[:noop] = false
     end
 
     after do
-      FileUtils.rm_r(@test_dir)
+      FileUtils.rm_r(File.expand_path(@test_dir))
       @maid.file_options[:noop] = true
     end
 

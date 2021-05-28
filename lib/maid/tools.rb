@@ -44,7 +44,7 @@ module Maid::Tools
     if File.directory?(destination)
       expand_all(sources).each do |source|
         log("move #{ sh_escape(source) } #{ sh_escape(destination) }")
-        FileUtils.mv(source, destination, @file_options)
+        FileUtils.mv(source, destination, **@file_options)
       end
     else
       # Unix `mv` warns about the target not being a directory with multiple sources.  Maid checks the same.
@@ -81,7 +81,7 @@ module Maid::Tools
       warn("skipping rename of #{ sh_escape(source) } to #{ sh_escape(destination) } because it would overwrite")
     else
       log("rename #{ sh_escape(source) } #{ sh_escape(destination) }")
-      FileUtils.mv(source, destination, @file_options)
+      FileUtils.mv(source, destination, **@file_options)
     end
   end
 
@@ -166,11 +166,11 @@ module Maid::Tools
     destination = expand(destination)
 
     expand_all(sources).each do |source|
-        target = File.join(destination, File.basename(source))
+      target = File.join(destination, File.basename(source))
 
       unless File.exist?(target)
         log("cp #{ sh_escape(source) } #{ sh_escape(destination) }")
-        FileUtils.cp(source, destination, @file_options)
+        FileUtils.cp(source, destination, **@file_options)
       else
         warn("skipping copy because #{ sh_escape(source) } because #{ sh_escape(target) } already exists")
       end
@@ -208,7 +208,7 @@ module Maid::Tools
       options = @file_options.merge(options)
 
       log("Removing #{ sh_escape(path) }")
-      FileUtils.rm_r(path, options)
+      FileUtils.rm_r(path, **options)
     end
   end
 
@@ -302,7 +302,7 @@ module Maid::Tools
   def mkdir(path, options = {})
     path = expand(path)
     log("mkdir -p #{ sh_escape(path) }")
-    FileUtils.mkdir_p(path, @file_options.merge(options))
+    FileUtils.mkdir_p(path, **@file_options.merge(options))
     path
   end
 
@@ -714,6 +714,7 @@ module Maid::Tools
   #       trash('~/Downloads/foo')
   #     end
   def tree_empty?(root)
+    root = expand(root)
     return nil if File.file?(root)
     return true if Dir.glob(root + '/*').length == 0
 
