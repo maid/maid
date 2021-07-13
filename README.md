@@ -136,7 +136,7 @@ For example, this is a rule:
 Maid.rules do
   rule 'Old files downloaded while developing/testing' do
     dir('~/Downloads/*').each do |path|
-      if downloaded_from(path).any? {|u| u.match 'http://localhost'} && 1.week.since?(last_accessed(path))
+      if downloaded_from(path).any? {|u| u.match 'http://localhost'} && 1.week.since?(accessed_at(path))
         trash(path)
       end
     end
