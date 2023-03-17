@@ -41,8 +41,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency('guard-rspec', '~> 4.6.2')
   s.add_development_dependency('rake', '~> 10.4.2')
   s.add_development_dependency('redcarpet', '~> 3.3.2') # Soft dependency of `yard`
-  s.add_development_dependency('rspec', '~> 3.3.0')
-  s.add_development_dependency('timecop', '~> 0.7.0')
+  s.add_development_dependency('rspec', '~> 3.12.0')
+  s.add_development_dependency('timecop', '~> 0.9.6')
   s.add_development_dependency('yard', '>= 0.9.11')
 
   # In Vagrant, polling won't cross over the OS boundary if you develop in the host OS but run your tests in the
@@ -50,8 +50,8 @@ Gem::Specification.new do |s|
   #
   #     bundle exec guard --force-polling
   #
-  s.add_development_dependency('rb-inotify', '~> 0.9.0')
-  s.add_development_dependency('rb-fsevent', '~> 0.9.2')
+  s.add_development_dependency('rb-inotify', '~> 0.10.1')
+  s.add_development_dependency('rb-fsevent', '~> 0.11.2')
 
   s.files         = `git ls-files -z`.split("\0")
   s.test_files    = `git ls-files -z -- {test,spec,features}/*`.split("\0")
