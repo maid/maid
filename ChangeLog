@@ -1,4 +1,5 @@
 maid (0.9.0) unstable; urgency=low
+  * Mark Przepiora: Support passing scheduler options to Rufus
   * Pierre Rock: Support Ruby 3
   * Pierre Rock: Update most dependencies
 
