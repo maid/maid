@@ -98,7 +98,7 @@ Consider `rbenv` or `rvm`, especially if only Ruby 1.8.7 is available (e.g. if y
 System Ruby works fine too, though:
 
 * **Mac OS X:** Ruby 2.0.0 comes preinstalled in OS X 10.9.
-* **Ubuntu:** Ruby is not preinstalled.  To install Ruby 2.7: `sudo apt-get install ruby2.7` (sic)
+* **Ubuntu:** Ruby is not preinstalled.  To install Ruby 2.7: `sudo apt-get install ruby2.7`
   ([Interested in a package?](https://github.com/benjaminoakes/maid/issues/3))
 
 Then, you can install via RubyGems.  Open a terminal and run:
