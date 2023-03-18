@@ -3,7 +3,7 @@ require 'find'
 require 'fileutils'
 require 'time'
 
-require 'exifr'
+require 'exifr/jpeg'
 require 'geocoder'
 require 'mime/types'
 require 'dimensions'
