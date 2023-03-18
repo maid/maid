@@ -1,5 +1,5 @@
 require 'dimensions'
-require 'exifr'
+require 'exifr/jpeg'
 require 'logger'
 require 'geocoder'
 require 'mime/types'

@@ -3,7 +3,7 @@ require 'find'
 require 'fileutils'
 require 'time'
 
-require 'exifr'
+require 'exifr/jpeg'
 require 'geocoder'
 require 'mime/types'
 require 'dimensions'
@@ -39,16 +39,16 @@ module Maid::Tools
   #     move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
   #     move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
   def move(sources, destination)
-    destination = expand(destination)
+    expanded_destination = expand(destination)
 
-    if File.directory?(destination)
+    if File.directory?(expanded_destination)
       expand_all(sources).each do |source|
-        log("move #{ sh_escape(source) } #{ sh_escape(destination) }")
-        FileUtils.mv(source, destination, @file_options)
+        log("move #{ sh_escape(source) } #{ sh_escape(expanded_destination) }")
+        FileUtils.mv(source, expanded_destination, @file_options)
       end
     else
       # Unix `mv` warns about the target not being a directory with multiple sources.  Maid checks the same.
-      warn("skipping move because #{ sh_escape(destination) } is not a directory (use 'mkdir' to create first, or use 'rename')")
+      warn("skipping move because #{ sh_escape(expanded_destination) } is not a directory (use 'mkdir' to create first, or use 'rename')")
     end
   end
 
@@ -456,7 +456,7 @@ module Maid::Tools
       gps = EXIFR::JPEG.new(path).gps
       coordinates_string = [gps.latitude, gps.longitude]
       location = Geocoder.search(coordinates_string).first
-      [location.city, location.province, location.country_code].join(', ')
+      [location.city, location.province, location.country_code.upcase].join(', ')
     end
   end
 

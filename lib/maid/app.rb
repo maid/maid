@@ -93,6 +93,27 @@ EOF
     maid.daemonize
   end
 
+  desc 'logs', 'Manages logs written by maid'
+  method_option :path, :type => :boolean, :aliases => %w(-p)
+  method_option :tail, :type => :boolean, :aliases => %w(-t)
+  def logs
+    maid = Maid::Maid.new(maid_options(options))
+
+    if options.path?
+      say maid.log_device
+    else
+      unless File.readable?(maid.log_device)
+        error "Log file #{maid.log_device} does not exist."
+      else
+        if options.tail?
+          system("tail -f #{maid.log_device}")
+        else
+          say `tail #{maid.log_device}`
+        end
+      end
+    end
+  end
+
   no_tasks do
     def maid_options(options)
       h = {}

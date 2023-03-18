@@ -40,7 +40,7 @@ Maid.rules do
 
   rule 'Mac OS X applications in zip files' do
     found = dir('~/Downloads/*.zip').select { |path|
-      zipfile_contents(path).any? { |c| c.match(/\.app$/) }
+      zipfile_contents(path).any? { |c| c.match(/\.app\/Contents\//) }
     }
 
     trash(found)

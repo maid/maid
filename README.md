@@ -1,9 +1,8 @@
 # Maid
 
-[![Gem Version](https://badge.fury.io/rb/maid.png)](http://badge.fury.io/rb/maid)
-[![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.png)](http://travis-ci.org/benjaminoakes/maid)
-[![Dependency Status](https://gemnasium.com/benjaminoakes/maid.png)](https://gemnasium.com/benjaminoakes/maid)
-[![Code Climate](https://codeclimate.com/github/benjaminoakes/maid.png)](https://codeclimate.com/github/benjaminoakes/maid)
+[![Gem Version](https://badge.fury.io/rb/maid.svg)](http://badge.fury.io/rb/maid)
+[![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.svg)](http://travis-ci.org/benjaminoakes/maid)
+[![Code Climate](https://codeclimate.com/github/benjaminoakes/maid.svg)](https://codeclimate.com/github/benjaminoakes/maid)
 [![Hakiri](https://hakiri.io/github/benjaminoakes/maid/stable.svg)](https://hakiri.io/github/benjaminoakes/maid/stable)
 [![StackOverflow](http://img.shields.io/badge/stackoverflow-maid-blue.svg)](http://stackoverflow.com/questions/tagged/maid)
 
@@ -86,7 +85,7 @@ Modern Ruby versions and Unix-like operating systems should work, but only OS X 
 Offically supported:
 
 * **OS:** Mac OS X, Ubuntu
-* **Ruby:** 1.9.3+ (2.0.x or 2.1.x are preferred)
+* **Ruby:** 2.7.0+ (3.0.0+ preferred)
 
 Some features require OS X.  See the [documentation][] for more details.
 
@@ -99,7 +98,7 @@ Consider `rbenv` or `rvm`, especially if only Ruby 1.8.7 is available (e.g. if y
 System Ruby works fine too, though:
 
 * **Mac OS X:** Ruby 2.0.0 comes preinstalled in OS X 10.9.
-* **Ubuntu:** Ruby is not preinstalled.  To install Ruby 1.9.3: `sudo apt-get install ruby1.9.1` (sic)
+* **Ubuntu:** Ruby is not preinstalled.  To install Ruby 2.7: `sudo apt-get install ruby2.7`
   ([Interested in a package?](https://github.com/benjaminoakes/maid/issues/3))
 
 Then, you can install via RubyGems.  Open a terminal and run:
@@ -137,7 +136,7 @@ For example, this is a rule:
 Maid.rules do
   rule 'Old files downloaded while developing/testing' do
     dir('~/Downloads/*').each do |path|
-      if downloaded_from(path).any? {|u| u.match 'http://localhost'} && 1.week.since?(last_accessed(path))
+      if downloaded_from(path).any? {|u| u.match 'http://localhost'} && 1.week.since?(accessed_at(path))
         trash(path)
       end
     end

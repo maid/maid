@@ -17,6 +17,7 @@ In alphabetical order:
 * Mu Ye (@yemutex)
 * Nico Ritschel (@nicosuave)
 * Pedro Lambert (@p-lambert)
+* Pierre Rock (@coaxial)
 * Shiro Hazuki (@HazukiShiro)
 * Song Chen Wen (宋辰文, @songchenwen)
 * Vladimir Agafonkin (@mourner)
