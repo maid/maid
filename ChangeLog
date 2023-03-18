@@ -1,4 +1,4 @@
-maid (0.9.0) stable; urgency=low
+maid (0.9.0) unstable; urgency=low
   * Pierre Rock: Support Ruby 3
   * Pierre Rock: Update most dependencies
 
