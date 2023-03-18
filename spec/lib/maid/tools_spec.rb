@@ -788,35 +788,39 @@ module Maid
   end
 
   describe 'OSX tag support', :fakefs => false do
+      let(:test_file) { '~/.maid/test/tag.zip' }
+      let(:test_dir) { File.dirname(test_file) }
+      let(:file_name) { File.basename(test_file) }
+      let(:original_file_options) { @maid.file_options.clone }
+
     before do
       @logger = double('Logger').as_null_object
       @maid = Maid.new(:logger => @logger)
 
-      @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-      FileUtils.mkdir_p(@test_dir)
-      FileUtils.touch(@test_file)
+      FileUtils.mkdir_p(test_dir)
+      FileUtils.touch(test_file)
       @maid.file_options[:noop] = false
     end
 
     after do
-      FileUtils.rm_r(@test_dir)
-      @maid.file_options[:noop] = true
+      FileUtils.rm_r(test_dir)
+      @maid.file_options[:noop] = original_file_options[:noop]
     end
 
     describe '#tags' do
       it 'returns tags from a file that has one' do 
         if Platform.has_tag_available?
           @maid.file_options[:noop] = false
-          @maid.add_tag(@test_file, "Test")
-          expect(@maid.tags(@test_file)).to eq(["Test"])
+          @maid.add_tag(test_file, "Test")
+          expect(@maid.tags(test_file)).to eq(["Test"])
         end
       end
 
       it 'returns tags from a file that has serveral tags' do
         if Platform.has_tag_available?
           @maid.file_options[:noop] = false
-          @maid.add_tag(@test_file, ["Test", "Twice"])
-          expect(@maid.tags(@test_file)).to eq(["Test", "Twice"])
+          @maid.add_tag(test_file, ["Test", "Twice"])
+          expect(@maid.tags(test_file)).to eq(["Test", "Twice"])
         end
       end
     end
@@ -824,22 +828,22 @@ module Maid
     describe '#has_tags?' do
       it 'returns true for a file with tags' do 
         if Platform.has_tag_available?
-          @maid.add_tag(@test_file, "Test")
-          expect(@maid.has_tags?(@test_file)).to be(true)
+          @maid.add_tag(test_file, "Test")
+          expect(@maid.has_tags?(test_file)).to be(true)
         end
       end
 
       it 'returns false for a file without tags' do
-        expect(@maid.has_tags?(@test_file)).to be(false)
+        expect(@maid.has_tags?(test_file)).to be(false)
       end
     end
 
     describe '#contains_tag?' do
       it 'returns true a file with the given tag' do 
         if Platform.has_tag_available?
-          @maid.add_tag(@test_file, "Test")
-          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
-          expect(@maid.contains_tag?(@test_file, "Not there")).to be(false)
+          @maid.add_tag(test_file, "Test")
+          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
+          expect(@maid.contains_tag?(test_file, "Not there")).to be(false)
         end
       end
     end
@@ -847,8 +851,8 @@ module Maid
     describe '#add_tag' do
       it 'adds the given tag to a file' do 
         if Platform.has_tag_available?
-          @maid.add_tag(@test_file, "Test")
-          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
+          @maid.add_tag(test_file, "Test")
+          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
         end
       end
     end
@@ -856,10 +860,10 @@ module Maid
     describe '#remove_tag' do
       it 'removes the given tag from a file' do 
         if Platform.has_tag_available?
-          @maid.add_tag(@test_file, "Test")
-          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
-          @maid.remove_tag(@test_file, "Test")
-          expect(@maid.contains_tag?(@test_file, "Test")).to be(false)
+          @maid.add_tag(test_file, "Test")
+          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
+          @maid.remove_tag(test_file, "Test")
+          expect(@maid.contains_tag?(test_file, "Test")).to be(false)
         end
       end
     end
@@ -867,11 +871,11 @@ module Maid
     describe '#set_tag' do
       it 'sets the given tags on a file' do 
         if Platform.has_tag_available?
-          @maid.set_tag(@test_file, "Test")
-          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
-          @maid.set_tag(@test_file, ["Test", "Twice"])
-          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
-          expect(@maid.contains_tag?(@test_file, "Twice")).to be(true)
+          @maid.set_tag(test_file, "Test")
+          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
+          @maid.set_tag(test_file, ["Test", "Twice"])
+          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
+          expect(@maid.contains_tag?(test_file, "Twice")).to be(true)
         end
       end
     end
