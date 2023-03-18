@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency('listen', '~> 3.8.0')
   s.add_dependency('rufus-scheduler', '~> 3.8.2')
   s.add_dependency('exifr', '~> 1.3.10')
-  s.add_dependency('geocoder', '~> 1.5.0')
+  s.add_dependency('geocoder', '~> 1.8.1')
 
   # TODO: use one of these two gems instead of `mdfind`.  **But** They have to work on Linux as well.
   #
