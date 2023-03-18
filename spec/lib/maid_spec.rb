@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Maid do
   it 'includes Maid::NumericExtensions::Time' do
+    fail # intentional, to test GitHub Actions CI
     expect(1.minute).to eq(60)
   end
 
