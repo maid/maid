@@ -75,7 +75,7 @@ module Maid
       end
     end
 
-    describe '#rename', focus: true do
+    describe '#rename' do
       before do
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
         FileUtils.mkdir_p(File.expand_path(@src_dir))
