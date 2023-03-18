@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency('rubyzip', '~> 2.3.2')
   s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs
   s.add_dependency('listen', '~> 3.8.0')
-  s.add_dependency('rufus-scheduler', '>= 3.0.6', '< 3.2.0')
+  s.add_dependency('rufus-scheduler', '~> 3.8.2')
   s.add_dependency('exifr', '~> 1.2.0')
   s.add_dependency('geocoder', '~> 1.5.0')
 
