@@ -1,38 +1,6 @@
 # encoding: utf-8
 require 'spec_helper'
 
-# Workaround for Ruby 2.1.0, remove after https://github.com/defunkt/fakefs/pull/209 is released
-if RUBY_VERSION =~ /2\.[1234]\.\d/
-  module FakeFS
-    class Dir
-      def self.entries(dirname, opts = {})
-        _check_for_valid_file(dirname)
-
-        Dir.new(dirname).map { |file| File.basename(file) }
-      end
-    end
-  end
-end
-
-# Workaround for
-# - broken `cp` implementation; remove after upgrading FakeFS
-# - missing method `children`; remove after upgrading FakeFS
-module FakeFS
-  module FileUtils
-    def self.cp(src, dest, options = {})
-      copy(src, dest)
-    end
-  end
-
-  class Dir
-    def self.children(dirname, opts = {})
-      Dir.new(dirname)
-        .map { |file| File.basename(file) }
-        .select { |filename| filename != '.' && filename != '..' }
-    end
-  end
-end
-
 module Maid
   # NOTE: Please use FakeFS instead of mocking and stubbing specific calls which happen to modify the filesystem.
   #
@@ -58,15 +26,20 @@ module Maid
 
     describe '#move' do
       before do
-        @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
-        FileUtils.mkdir_p(@src_dir)
-        FileUtils.touch(@src_file)
-        FileUtils.mkdir_p(@dst_dir = '~/Destination/')
+        @src_dir = File.join('~', 'Source')
+        @file_name = 'foo.zip'
+        @src_file = File.join(@src_dir, @file_name)
+        @dst_dir = File.join('~', 'Destination')
+        FileUtils.mkdir_p(File.expand_path(@src_dir))
+        FileUtils.touch(File.expand_path(@src_file))
+        FileUtils.mkdir_p(File.expand_path(@dst_dir))
       end
 
       it 'moves expanded paths, passing file_options' do
+        dest_file = File.expand_path(File.join(@dst_dir, @file_name))
+
         @maid.move(@src_file, @dst_dir)
-        expect(File.exists?(@dst_dir + @file_name)).to be(true)
+        expect(File.exist?(dest_file)).to be(true)
       end
 
       it 'logs the move' do
@@ -75,18 +48,21 @@ module Maid
       end
 
       it 'handles multiple from paths' do
-        second_src_file = @src_dir + (second_file_name = 'bar.zip')
-        FileUtils.touch(second_src_file)
+        second_file_name = 'bar.zip'
+        second_src_file = File.join(@src_dir, second_file_name)
+        FileUtils.touch(File.expand_path(second_src_file))
         src_files = [@src_file, second_src_file]
+        dst_file = File.expand_path(File.join(@dst_dir, @file_name))
+        second_dst_file = File.expand_path(File.join(@dst_dir, second_file_name))
 
         @maid.move(src_files, @dst_dir)
-        expect(File.exist?(@dst_dir + @file_name)).to be(true)
-        expect(File.exist?(@dst_dir + second_file_name)).to be(true)
+        expect(File.exist?(dst_file)).to be(true)
+        expect(File.exist?(second_dst_file)).to be(true)
       end
 
       context 'given the destination directory does not exist' do
         before do
-          FileUtils.rmdir(@dst_dir)
+          FileUtils.rmdir(File.expand_path(@dst_dir))
         end
 
         it 'does not overwrite when moving' do
@@ -102,8 +78,8 @@ module Maid
     describe '#rename' do
       before do
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
-        FileUtils.mkdir_p(@src_dir)
-        FileUtils.touch(@src_file)
+        FileUtils.mkdir_p(File.expand_path(@src_dir))
+        FileUtils.touch(File.expand_path(@src_file))
         @expanded_src_name = "#@home/Source/foo.zip"
 
         @dst_name = '~/Destination/bar.zip'
@@ -118,11 +94,11 @@ module Maid
       end
 
       it 'moves the file from the source to the destination' do
-        expect(File.exists?(@expanded_src_name)).to be(true)
-        expect(File.exists?(@expanded_dst_name)).to be(false)
+        expect(File.exist?(@expanded_src_name)).to be(true)
+        expect(File.exist?(@expanded_dst_name)).to be(false)
         @maid.rename(@src_file, @dst_name)
-        expect(File.exists?(@expanded_src_name)).to be(false)
-        expect(File.exists?(@expanded_dst_name)).to be(true)
+        expect(File.exist?(@expanded_src_name)).to be(false)
+        expect(File.exist?(@expanded_dst_name)).to be(true)
       end
 
       context 'given the target already exists' do
@@ -142,9 +118,11 @@ module Maid
     describe '#trash' do
       before do
         @trash_path = @maid.trash_path
-        @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
-        FileUtils.mkdir_p(@src_dir)
-        FileUtils.touch(@src_file)
+        @src_dir = File.join('~', 'Source/')
+        @file_name = 'foo.zip'
+        @src_file = File.join(@src_dir, @file_name)
+        FileUtils.mkdir_p(File.expand_path(@src_dir))
+        FileUtils.touch(File.expand_path(@src_file))
 
         @trash_file = File.join(@trash_path, @file_name)
       end
@@ -165,12 +143,14 @@ module Maid
       end
 
       it 'handles multiple paths' do
-        second_src_file = @src_dir + (second_file_name = 'bar.zip')
-        FileUtils.touch(second_src_file)
-        @src_files = [@src_file, second_src_file]
-        @maid.trash(@src_files)
-
+        second_file_name = 'bar.zip'
+        second_src_file = File.join(@src_dir, second_file_name)
+        FileUtils.touch(File.expand_path(second_src_file))
+        src_files = [@src_file, second_src_file]
         second_trash_file = File.join(@trash_path, second_file_name)
+
+        @maid.trash(src_files)
+
         expect(File.exist?(@trash_file)).to be(true)
         expect(File.exist?(second_trash_file)).to be(true)
       end
@@ -191,11 +171,11 @@ module Maid
 
     describe '#remove' do
       before do
-        @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
-        FileUtils.mkdir_p(@src_dir)
-        FileUtils.touch(@src_file)
-        @src_file_expand_path = File.expand_path(@src_file)
-        @options = @maid.file_options
+        @src_dir = File.join('~', 'Source')
+        @file_name = 'foo.zip'
+        @src_file = File.join(@src_dir, @file_name)
+        FileUtils.mkdir_p(File.expand_path(@src_dir))
+        FileUtils.touch(File.expand_path(@src_file))
       end
 
       it 'removes expanded paths, passing options' do
@@ -209,25 +189,25 @@ module Maid
       end
 
       it 'sets the secure option' do
-        @options = @options.merge(:secure => true)
-        expect(FileUtils).to receive(:rm_r).with(@src_file_expand_path, @options)
+        @options = @maid.file_options.merge(:secure => true)
+        expect(FileUtils).to receive(:rm_r).with(File.expand_path(@src_file), @options)
         @maid.remove(@src_file, :secure => true)
       end
 
       it 'sets the force option' do
-        @options = @options.merge(:force => true)
-        expect(FileUtils).to receive(:rm_r).with(@src_file_expand_path, @options)
+        @options = @maid.file_options.merge(:force => true)
+        expect(FileUtils).to receive(:rm_r).with(File.expand_path(@src_file), @options)
         @maid.remove(@src_file, :force => true)
       end
 
       it 'handles multiple paths' do
-        second_src_file = "#@src_dir/bar.zip"
-        FileUtils.touch(second_src_file)
+        second_src_file = File.join(@src_dir, 'bar.zip')
+        FileUtils.touch(File.expand_path(second_src_file))
         @src_files = [@src_file, second_src_file]
 
         @maid.remove(@src_files)
-        expect(File.exist?(@src_file)).to be(false)
-        expect(File.exist?(second_src_file)).to be(false)
+        expect(File.exist?(File.expand_path(@src_file))).to be(false)
+        expect(File.exist?(File.expand_path(second_src_file))).to be(false)
       end
     end
 
@@ -364,9 +344,11 @@ module Maid
 
     describe '#find' do
       before do
-        @file = (@dir = '~/Source/') + (@file_name = 'foo.zip')
-        FileUtils.mkdir_p(@dir)
-        FileUtils.touch(@file)
+        @dir = File.join('~', 'Source')
+        @file_name = 'foo.zip'
+        @file = File.join(@dir, @file_name)
+        FileUtils.mkdir_p(File.expand_path(@dir))
+        FileUtils.touch(File.expand_path(@file))
         @dir_expand_path = File.expand_path(@dir)
         @file_expand_path = File.expand_path(@file)
       end
@@ -477,13 +459,13 @@ module Maid
 
     describe '#modified_at' do
       before do
-        @path = '~/test.txt'
+        @path = File.join('~', 'test.txt')
         FileUtils.touch(File.expand_path(@path))
       end
 
       it 'gives the modified time of the file' do
         Timecop.freeze(@now) do
-          File.open(@path, 'w') { |f| f.write('Test') }
+          File.open(File.expand_path(@path), 'w') { |f| f.write('Test') }
         end
 
         # use to_i to ignore milliseconds during test
@@ -558,46 +540,68 @@ module Maid
         @maid.sync(@src_dir, @dst_dir, :exclude => ['.git', '.rvmrc'])
       end
 
-      it 'adds noop option' do
-        @maid.file_options[:noop] = true
-        expect(@maid).to receive(:cmd).with(%(rsync -a -u -n #@home/Downloads/ #@home/Reference 2>&1))
-        @maid.sync(@src_dir, @dst_dir)
+      context 'when file_options[:noop] is true' do
+        let!(:original_file_options) { @maid.file_options.clone }
+
+        before do
+          @maid.file_options[:noop] = true
+        end
+
+        after do
+          @maid.file_options[:noop] = original_file_options[:noop]
+        end
+
+        it 'adds noop option' do
+          expect(@maid).to receive(:cmd).with(%(rsync -a -u -n #@home/Downloads/ #@home/Reference 2>&1))
+          @maid.sync(@src_dir, @dst_dir)
+        end
       end
     end
 
     describe '#copy' do
+      let(:src_file) { File.join('~', 'Source', 'foo.zip') }
+      let(:src_dir) { File.dirname(src_file) }
+      let(:dst_file) { File.join('~', 'Destination', 'foo.zip') }
+      let(:dst_dir) { File.dirname(dst_file) }
+
       before do
-        @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
-        FileUtils.mkdir_p(@src_dir)
-        FileUtils.touch(@src_file)
-        FileUtils.mkdir_p(@dst_dir = '~/Destination/')
+        FileUtils.mkdir_p(File.expand_path(src_dir))
+        FileUtils.touch(File.expand_path(src_file))
+        FileUtils.mkdir_p(File.expand_path(dst_dir))
       end
 
       it 'copies expanded paths, passing file_options' do
-        @maid.copy(@src_file, @dst_dir)
-        expect(File.exists?(@dst_dir + @file_name)).to be_truthy
+        @maid.copy(src_file, dst_dir)
+        expect(File.exist?(File.expand_path(dst_file))).to be_truthy
       end
 
       it 'logs the copy' do
         expect(@logger).to receive(:info)
-        @maid.copy(@src_file, @dst_dir)
+        @maid.copy(src_file, dst_dir)
       end
 
       it 'does not copy if the target already exists' do
-        FileUtils.touch(@dst_dir + @file_name)
+        FileUtils.touch(File.expand_path(dst_file))
         expect(@logger).to receive(:warn)
 
-        @maid.copy(@src_file, @dst_dir)
+        @maid.copy(src_file, dst_dir)
       end
 
-      it 'handle multiple from paths' do
-        second_src_file = @src_dir + (second_file_name = 'bar.zip')
-        FileUtils.touch(second_src_file)
-        src_files = [@src_file, second_src_file]
+      context 'with multiple `from` paths' do
+        let(:first_file) { File.join(src_dir, 'bar.zip') }
+        let(:second_file) { File.join(src_dir, 'baz.zip') }
+        let(:src_files) { [first_file, second_file] }
 
-        @maid.copy(src_files, @dst_dir)
-        expect(File.exist?(@dst_dir + @file_name)).to be_truthy
-        expect(File.exist?(@dst_dir + second_file_name)).to be_truthy
+        before do
+          src_files.each { |file| FileUtils.touch(File.expand_path(file)) }
+        end
+
+        it 'copies all files' do
+          @maid.copy(src_files, dst_dir)
+
+          expect(File.exist?(File.expand_path(first_file))).to be_truthy
+          expect(File.exist?(File.expand_path(second_file))).to be_truthy
+        end
       end
     end
   end
@@ -784,35 +788,39 @@ module Maid
   end
 
   describe 'OSX tag support', :fakefs => false do
+      let(:test_file) { '~/.maid/test/tag.zip' }
+      let(:test_dir) { File.dirname(test_file) }
+      let(:file_name) { File.basename(test_file) }
+      let(:original_file_options) { @maid.file_options.clone }
+
     before do
       @logger = double('Logger').as_null_object
       @maid = Maid.new(:logger => @logger)
 
-      @test_file = (@test_dir = '~/.maid/test/') + (@file_name = 'tag.zip')
-      FileUtils.mkdir_p(@test_dir)
-      FileUtils.touch(@test_file)
+      FileUtils.mkdir_p(test_dir)
+      FileUtils.touch(test_file)
       @maid.file_options[:noop] = false
     end
 
     after do
-      FileUtils.rm_r(@test_dir)
-      @maid.file_options[:noop] = true
+      FileUtils.rm_r(test_dir)
+      @maid.file_options[:noop] = original_file_options[:noop]
     end
 
     describe '#tags' do
       it 'returns tags from a file that has one' do 
         if Platform.has_tag_available?
           @maid.file_options[:noop] = false
-          @maid.add_tag(@test_file, "Test")
-          expect(@maid.tags(@test_file)).to eq(["Test"])
+          @maid.add_tag(test_file, "Test")
+          expect(@maid.tags(test_file)).to eq(["Test"])
         end
       end
 
       it 'returns tags from a file that has serveral tags' do
         if Platform.has_tag_available?
           @maid.file_options[:noop] = false
-          @maid.add_tag(@test_file, ["Test", "Twice"])
-          expect(@maid.tags(@test_file)).to eq(["Test", "Twice"])
+          @maid.add_tag(test_file, ["Test", "Twice"])
+          expect(@maid.tags(test_file)).to eq(["Test", "Twice"])
         end
       end
     end
@@ -820,22 +828,22 @@ module Maid
     describe '#has_tags?' do
       it 'returns true for a file with tags' do 
         if Platform.has_tag_available?
-          @maid.add_tag(@test_file, "Test")
-          expect(@maid.has_tags?(@test_file)).to be(true)
+          @maid.add_tag(test_file, "Test")
+          expect(@maid.has_tags?(test_file)).to be(true)
         end
       end
 
       it 'returns false for a file without tags' do
-        expect(@maid.has_tags?(@test_file)).to be(false)
+        expect(@maid.has_tags?(test_file)).to be(false)
       end
     end
 
     describe '#contains_tag?' do
       it 'returns true a file with the given tag' do 
         if Platform.has_tag_available?
-          @maid.add_tag(@test_file, "Test")
-          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
-          expect(@maid.contains_tag?(@test_file, "Not there")).to be(false)
+          @maid.add_tag(test_file, "Test")
+          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
+          expect(@maid.contains_tag?(test_file, "Not there")).to be(false)
         end
       end
     end
@@ -843,8 +851,8 @@ module Maid
     describe '#add_tag' do
       it 'adds the given tag to a file' do 
         if Platform.has_tag_available?
-          @maid.add_tag(@test_file, "Test")
-          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
+          @maid.add_tag(test_file, "Test")
+          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
         end
       end
     end
@@ -852,10 +860,10 @@ module Maid
     describe '#remove_tag' do
       it 'removes the given tag from a file' do 
         if Platform.has_tag_available?
-          @maid.add_tag(@test_file, "Test")
-          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
-          @maid.remove_tag(@test_file, "Test")
-          expect(@maid.contains_tag?(@test_file, "Test")).to be(false)
+          @maid.add_tag(test_file, "Test")
+          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
+          @maid.remove_tag(test_file, "Test")
+          expect(@maid.contains_tag?(test_file, "Test")).to be(false)
         end
       end
     end
@@ -863,11 +871,11 @@ module Maid
     describe '#set_tag' do
       it 'sets the given tags on a file' do 
         if Platform.has_tag_available?
-          @maid.set_tag(@test_file, "Test")
-          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
-          @maid.set_tag(@test_file, ["Test", "Twice"])
-          expect(@maid.contains_tag?(@test_file, "Test")).to be(true)
-          expect(@maid.contains_tag?(@test_file, "Twice")).to be(true)
+          @maid.set_tag(test_file, "Test")
+          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
+          @maid.set_tag(test_file, ["Test", "Twice"])
+          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
+          expect(@maid.contains_tag?(test_file, "Twice")).to be(true)
         end
       end
     end

@@ -1,3 +1,10 @@
+maid (0.9.0) unstable; urgency=low
+  * Pierre Rock: Support Ruby 3
+  * Pierre Rock: Update most dependencies
+
+ -- Pierre Rock <coaxial@users.noreply.github.com> Sat, 18 Mar 2023 12:06:00
+ +0100
+
 maid (0.8.0) unstable; urgency=low
 
   * Started official support for Ruby 2.2 - 2.6. (Closes: #174)

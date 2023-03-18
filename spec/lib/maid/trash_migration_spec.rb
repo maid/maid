@@ -51,25 +51,31 @@ module Maid
         Logger.stub(:new) { double('Logger').as_null_object }
       end
 
-      it 'moves files from the incorrect trash to the correct trash' do
-        # This will only be performed on Linux, but we test on both platforms, so stub:
-        subject.stub(:correct_trash) { File.expand_path('~/.local/share/Trash/files/') }
+      context 'in Linux' do
+        let(:filename) { 'foo.txt' }
+        let(:trash_contents) { Dir.glob(File.join(subject.correct_trash, '*'),
+                                        File::FNM_DOTMATCH) }
 
-        filename = 'foo.txt'
-        FileUtils.mkdir_p(subject.incorrect_trash)
-        FileUtils.touch(subject.incorrect_trash + filename)
+        before do
+          subject.stub(:correct_trash) { File.expand_path('~/.local/share/Trash/files/') }
 
-        FileUtils.mkdir_p(subject.correct_trash)
-        expect(Dir["#{ subject.correct_trash }/*"]).to be_empty
+          FileUtils.mkdir_p(subject.incorrect_trash)
+          FileUtils.touch(File.join(subject.incorrect_trash, filename))
+          FileUtils.mkdir_p(subject.correct_trash)
 
-        subject.perform
+          subject.perform
+        end
 
-        # For some reason (perhaps a bug in fakefs), `File.exists?` wasn't giving the results I expected, but `Dir[]` did.
-        expect(Dir[subject.incorrect_trash]).to be_empty
-        trash_contents = Dir["#{ subject.correct_trash }/*"]
-        expect(trash_contents.length).to eq(2)
-        expect(trash_contents[0]).to match(/files\/\.Trash$/)
-        expect(trash_contents[1]).to match(/files\/foo.txt$/)
+
+        it 'removes all files from incorrect trash directory' do
+          expect(File.exist?(subject.incorrect_trash)).to be false
+        end
+
+        it 'moves all files to the correct trash directory' do
+          expect(trash_contents.length).to eq(2)
+          expect(trash_contents[0]).to match(/files\/\.Trash$/)
+          expect(trash_contents[1]).to match(/files\/foo.txt$/)
+        end
       end
     end
   end

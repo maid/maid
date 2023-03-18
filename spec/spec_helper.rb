@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rspec'
 require 'timecop'
 require 'fakefs/spec_helpers'
+require 'pry-byebug'
 
 require 'maid'
 
