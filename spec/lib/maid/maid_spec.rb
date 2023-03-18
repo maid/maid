@@ -231,6 +231,21 @@ module Maid
         expect(@maid.repeats.length).to eq(1)
         expect(@maid.repeats.first.timestring).to eq('1s')
       end
+
+      it 'accepts a hash of options and passes them to Rufus' do
+        scheduler = double('scheduler')
+        expect(Rufus::Scheduler).to receive(:singleton).and_return(scheduler)
+
+        hash = { :some => :options }
+        @maid.repeat('1s', hash) do
+          rule 'test' do
+          end
+        end
+
+        expect(scheduler).to receive(:repeat).with('1s', hash)
+
+        @maid.repeats.last.run
+      end
     end
 
     describe '#follow_rules' do
