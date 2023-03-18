@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency('deprecated', '~> 3.0.0')
   s.add_dependency('dimensions', '>= 1.0.0', '< 2.0')
   s.add_dependency('mime-types', '~> 3.0', '< 4.0')
-  s.add_dependency('rubyzip', '~> 1.2.2')
+  s.add_dependency('rubyzip', '~> 2.3.2')
   s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs
   s.add_dependency('listen', '>= 2.8.0', '< 3.1.0')
   s.add_dependency('rufus-scheduler', '>= 3.0.6', '< 3.2.0')
