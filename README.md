@@ -85,7 +85,7 @@ Modern Ruby versions and Unix-like operating systems should work, but only OS X 
 Offically supported:
 
 * **OS:** Mac OS X, Ubuntu
-* **Ruby:** 2.0.0+ (3.0.0+ preferred)
+* **Ruby:** 2.7.0+ (3.0.0+ preferred)
 
 Some features require OS X.  See the [documentation][] for more details.
 
