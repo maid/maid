@@ -3,7 +3,7 @@ require 'spec_helper'
 module Maid
   describe Platform do
     def stub_host_os(value)
-      RbConfig::CONFIG.stub(:[]).with('host_os') { value }
+      allow(RbConfig::CONFIG).to receive(:[]).with('host_os').and_return(value)
     end
 
     describe 'determining the host OS' do

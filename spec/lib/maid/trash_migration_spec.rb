@@ -6,7 +6,7 @@ module Maid
   describe TrashMigration, :fakefs => true do
     context 'when running on Linux' do
       before do
-        Platform.stub(:linux?) { true }
+        allow(Platform).to receive(:linux?).and_return(true)
       end
 
       context 'and the incorrect trash path does not exist' do
@@ -26,7 +26,7 @@ module Maid
 
         context 'and the kill switch is activated' do
           before do
-            ENV.stub(:[]).with('MAID_NO_MIGRATE_TRASH') { 'any-value' }
+            allow(ENV).to receive(:[]).with('MAID_NO_MIGRATE_TRASH').and_return('any-value')
           end
 
           it 'is not needed' do
@@ -38,7 +38,7 @@ module Maid
 
     context 'when running on OS X' do
       before do
-        Platform.stub(:linux?) { false }
+        allow(Platform).to receive(:linux?).and_return(false)
       end
 
       it 'is not needed' do
@@ -48,7 +48,7 @@ module Maid
 
     describe 'performing' do
       before do
-        Logger.stub(:new) { double('Logger').as_null_object }
+        allow(Logger).to receive(:new).and_return(double('Logger').as_null_object)
       end
 
       context 'in Linux' do
@@ -57,7 +57,7 @@ module Maid
                                         File::FNM_DOTMATCH) }
 
         before do
-          subject.stub(:correct_trash) { File.expand_path('~/.local/share/Trash/files/') }
+          allow(subject).to receive(:correct_trash).and_return(File.expand_path('~/.local/share/Trash/files/'))
 
           FileUtils.mkdir_p(subject.incorrect_trash)
           FileUtils.touch(File.join(subject.incorrect_trash, filename))

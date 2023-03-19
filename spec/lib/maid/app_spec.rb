@@ -24,22 +24,22 @@ module Maid
 
     before do
       @app = App.new
-      @app.stub(:maid_options)
-      @app.stub(:say)
+      allow(@app).to receive(:maid_options)
+      allow(@app).to receive(:say)
 
-      TrashMigration.stub(:needed?) { false }
+      allow(TrashMigration).to receive(:needed?).and_return(false)
 
       # NOTE: It's pretty important that this is stubbed, unless you want your rules to be run over and over when you test!
       @maid = double('Maid')
-      @maid.stub(:clean)
-      @maid.stub(:log_device)
-      @maid.stub(:load_rules)
-      Maid.stub(:new) { @maid }
+      allow(@maid).to receive(:clean)
+      allow(@maid).to receive(:log_device)
+      allow(@maid).to receive(:load_rules)
+      allow(Maid).to receive(:new).and_return(@maid)
     end
 
     it 'makes a new Maid with the options' do
       opts = { :foo => 'bar' }
-      @app.stub(:maid_options).and_return(opts)
+      allow(@app).to receive(:maid_options).and_return(opts)
       expect(Maid).to receive(:new).with(opts).and_return(@maid)
       @app.clean
     end
@@ -100,7 +100,7 @@ module Maid
 
       it 'prints out the gem version' do
         ua = 'Maid/0.0.1'
-        UserAgent.stub(:value) { ua }
+        allow(UserAgent).to receive(:value).and_return(ua)
         expect(@app).to receive(:say).with(ua)
         @app.version
       end
@@ -129,10 +129,10 @@ module Maid
   describe App, '#logs' do
     before do
       @maid = double('Maid')
-      @maid.stub(:clean)
-      @maid.stub(:log_device) { '/var/log/maid.log' }
-      @maid.stub(:load_rules)
-      Maid.stub(:new) { @maid }
+      allow(@maid).to receive(:clean)
+      allow(@maid).to receive(:log_device).and_return('/var/log/maid.log')
+      allow(@maid).to receive(:load_rules)
+      allow(Maid).to receive(:new).and_return(@maid)
     end
 
     describe 'prints out the log' do
@@ -142,7 +142,7 @@ module Maid
         @log_file.write(@log)
         @log_file.close
 
-        @maid.stub(:log_device) { @log_file.path }
+        allow(@maid).to receive(:log_device).and_return(@log_file.path)
       end
 
       after do
@@ -154,14 +154,14 @@ module Maid
       end
 
       it 'prints an error when log does not exist' do
-        @maid.stub(:log_device) { '/maid/file-does-not-exist' }
+        allow(@maid).to receive(:log_device).and_return('/maid/file-does-not-exist')
         message = "Log file #{@maid.log_device} does not exist.\n"
 
         expect(capture_stderr { App.start(['logs']) }).to eq(message)
       end
 
       it 'does not tail when log does not exist' do
-        @maid.stub(:log_device) { '/maid/file-does-not-exist' }
+        allow(@maid).to receive(:log_device).and_return('/maid/file-does-not-exist')
         message = "Log file #{@maid.log_device} does not exist.\n"
 
         expect(capture_stderr { App.start(['logs', '--tail']) }).to eq(message)

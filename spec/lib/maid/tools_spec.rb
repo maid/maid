@@ -18,10 +18,10 @@ module Maid
       @maid = Maid.new(:logger => @logger)
 
       # Prevent warnings from showing when testing deprecated methods:
-      @maid.stub(:__deprecated_run_action__)
+      allow(@maid).to receive(:__deprecated_run_action__)
 
       # For safety, stub `cmd` to prevent running commands:
-      @maid.stub(:cmd)
+      allow(@maid).to receive(:cmd)
     end
 
     describe '#move' do
@@ -156,14 +156,14 @@ module Maid
       end
 
       it 'removes files greater then the remove option size' do
-        @maid.stub(:disk_usage) { 1025 }
+        allow(@maid).to receive(:disk_usage).and_return(1025)
         @maid.trash(@src_file, :remove_over => 1.mb)
         expect(File.exist?(@src_file)).not_to be(true)
         expect(File.exist?(@trash_file)).not_to be(true)
       end
 
       it 'trashes files less then the remove option size' do
-        @maid.stub(:disk_usage) { 1023 }
+        allow(@maid).to receive(:disk_usage).and_return(1023)
         @maid.trash(@src_file, :remove_over => 1.mb)
         expect(File.exist?(@trash_file)).to be(true)
       end
@@ -225,7 +225,7 @@ module Maid
       it 'lists multiple files in alphabetical order' do
         # It doesn't occur with `FakeFS` as far as I can tell, but Ubuntu (and possibly OS X) can give the results out
         # of lexical order.  That makes using the `dry-run` output difficult to use.
-        Dir.stub(:glob) { %w(/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip) }
+        allow(Dir).to receive(:glob).and_return(%w(/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip))
         expect(@maid.dir('~/Downloads/*.zip')).to eq(%w(/home/foo/a.zip /home/foo/b.zip /home/foo/c.zip))
       end
 
@@ -278,7 +278,7 @@ module Maid
       it 'lists multiple files in alphabetical order' do
         # It doesn't occur with `FakeFS` as far as I can tell, but Ubuntu (and possibly OS X) can give the results out
         # of lexical order.  That makes using the `dry-run` output difficult to use.
-        Dir.stub(:glob) { %w(/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip) }
+        allow(Dir).to receive(:glob).and_return(%w(/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip))
         expect(@maid.dir('~/Downloads/*.zip')).to eq(%w(/home/foo/a.zip /home/foo/b.zip /home/foo/c.zip))
       end
 
@@ -373,7 +373,7 @@ module Maid
 
     describe '#downloaded_from' do
       before do
-        Platform.stub(:osx?) { true }
+        allow(Platform).to receive(:osx?).and_return(true)
       end
 
       it 'determines the download site' do
@@ -410,7 +410,7 @@ module Maid
     describe '#zipfile_contents' do
       it 'inspects the contents of a .zip file' do
         entries = [double(:name => 'foo.exe'), double(:name => 'README.txt'), double(:name => 'subdir/anything.txt')]
-        Zip::File.stub(:open).and_yield(entries)
+        allow(Zip::File).to receive(:open).and_yield(entries)
 
         expect(@maid.zipfile_contents('foo.zip')).to eq(['README.txt', 'foo.exe', 'subdir/anything.txt'])
       end
@@ -425,7 +425,7 @@ module Maid
       context 'when the file does not exist' do
         it 'raises an error' do
           expect(@maid).to receive(:cmd).and_return('du: cannot access `foo.zip\': No such file or directory')
-          expect(lambda { @maid.disk_usage('foo.zip') }).to raise_error(RuntimeError)
+          expect { @maid.disk_usage('foo.zip') }.to raise_error(RuntimeError)
         end
       end
     end
