@@ -13,6 +13,7 @@ In alphabetical order:
 * Lewis O'Driscoll (@loddy1234)
 * Lloyd Philbrook (@phoolish)
 * Mark Jaquith (@markjaquith)
+* Mark Przepiora (@markprzepiora)
 * Mikael Hultgren (@blomma)
 * Mu Ye (@yemutex)
 * Nico Ritschel (@nicosuave)
