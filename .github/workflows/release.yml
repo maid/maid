@@ -38,5 +38,5 @@ jobs:
           touch $HOME/.gem/credentials
           printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
         env:
-          - GEM_HOST_API_KEY: secrets.RUBYGEMS_AUTH_TOKEN
+          GEM_HOST_API_KEY: secrets.RUBYGEMS_AUTH_TOKEN
         if: ${{ steps.release.outputs.release_created }}
