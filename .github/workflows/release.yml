@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare release
+        uses: google-github-actions/release-please-action@v3
+        with:
+          release-type: ruby
+          package-name: maid
+          # Major bump is minor instead pre-1.0.0
+          bump-minor-pre-major: true
+          # Minor bump is patch instead pre-1.0.0
+          bump-patch-for-minor-pre-major: true
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          # ruby-version derived from .ruby-version file
+          bundler-cache: true
+      - name: Install dependencies
+        run: bundle install
+      - name: Run tests
+        run: bundle exec rake
+      - name: Publish gem
+        run: |
+          mkdir -p $HOME/.gem
+          touch $HOME/.gem/credentials
+          printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
+        env:
+          - GEM_HOST_API_KEY: secrets.RUBYGEMS_AUTH_TOKEN
+        if: ${{ steps.release.outputs.release_created }}
