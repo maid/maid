@@ -9,9 +9,17 @@ Gem::Specification.new do |s|
   s.authors     = ['Benjamin Oakes']
   s.email       = %w(hello@benjaminoakes.com)
   s.license     = 'GPLv2'
-  s.homepage    = 'http://github.com/benjaminoakes/maid'
+  s.homepage    = 'http://github.com/maid/maid'
   s.summary     = Maid::SUMMARY
   s.description = s.summary
+  s.files       = Dir['lib/**/*.rb'] + Dir['bin/maid']
+  s.metadata    = {
+                    "bug_tracker_uri"   => "https://github.com/maid/maid/issues",
+                    "changelog_uri"     => "https://github.com/maid/maid/blob/master/CHANGELOG.md",
+                    "documentation_uri" => "https://github.com/maid/maid/blob/master/README.md",
+                    "source_code_uri"   => "https://github.com/maid/maid",
+                    "wiki_uri"          => "https://github.com/maid/maid/wiki"
+                  }
 
   s.rubyforge_project = 'maid'
 
