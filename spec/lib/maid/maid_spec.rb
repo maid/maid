@@ -4,8 +4,8 @@ module Maid
   describe Maid do
     before do
       @logger = double('Logger').as_null_object
-      Logger.stub(:new) { @logger }
-      FileUtils.stub(:mkdir_p)
+      allow(Logger).to receive(:new) { @logger }
+      allow(FileUtils).to receive(:mkdir_p)
     end
 
     describe '.new' do
@@ -36,22 +36,22 @@ module Maid
       end
 
       it 'takes a logger object during intialization' do
-        Logger.unstub(:new)
+        allow(Logger).to receive(:new).and_call_original
         maid = Maid.new(:logger => @logger)
         expect(maid.logger).to eq(@logger)
       end
 
       describe 'platform-specific behavior' do
         before do
-          Platform.stub(:linux?)
-          Platform.stub(:osx?)
+          allow(Platform).to receive(:linux?)
+          allow(Platform).to receive(:osx?)
           @home = File.expand_path('~')
         end
 
         context 'when running on Linux' do
           before do
-            Platform.stub(:linux?) { true }
-            XDG.stub(:[]).with('DATA_HOME') { "#{ @home }/.local/share" }
+            allow(Platform).to receive(:linux?) { true }
+            allow(XDG).to receive(:[]).with('DATA_HOME') { "#{ @home }/.local/share" }
           end
 
           it 'set the trash to the correct default path' do
@@ -64,7 +64,7 @@ module Maid
 
         context 'when running on OS X' do
           before do
-            Platform.stub(:osx?) { true }
+            allow(Platform).to receive(:osx?).and_return(true)
           end
 
           it 'sets the trash to the correct default path' do
@@ -77,7 +77,7 @@ module Maid
 
         context 'when running on an unsupported platform' do
           it 'does not implement trashing files' do
-            expect(lambda { Maid.new }).to raise_error(NotImplementedError)
+            expect { Maid.new }.to raise_error(NotImplementedError)
           end
         end
       end
@@ -127,7 +127,7 @@ module Maid
     describe '#clean' do
       before do
         @maid = Maid.new
-        @logger.stub(:info)
+        allow(@logger).to receive(:info)
       end
 
       it 'logs start and finish' do
@@ -144,7 +144,7 @@ module Maid
 
     describe '#load_rules' do
       before do
-        Kernel.stub(:load)
+        allow(Kernel).to receive(:load)
         @maid = Maid.new
       end
 
@@ -154,7 +154,7 @@ module Maid
       end
 
       it 'gives an error on STDERR if there is a LoadError' do
-        Kernel.stub(:load).and_raise(LoadError)
+        allow(Kernel).to receive(:load).and_raise(LoadError)
         expect(STDERR).to receive(:puts)
         @maid.load_rules
       end
@@ -179,8 +179,8 @@ module Maid
 
     describe '#watch' do
       before do
-        Listen.stub(:to)
-        Listen.stub(:start)
+        allow(Listen).to receive(:to)
+        allow(Listen).to receive(:start)
         @maid = Maid.new
       end
 
@@ -270,11 +270,11 @@ module Maid
       end
 
       it 'reports `not-a-real-command` as not being a supported command' do
-        expect(lambda { @maid.cmd('not-a-real-command arg1 arg2') }).to raise_error(NotImplementedError)
+        expect { @maid.cmd('not-a-real-command arg1 arg2') }.to raise_error(NotImplementedError)
       end
 
       it 'should report `echo` as a real command' do
-        expect(lambda { @maid.cmd('echo .') }).not_to raise_error
+        expect { @maid.cmd('echo .') }.not_to raise_error
       end
     end
   end
