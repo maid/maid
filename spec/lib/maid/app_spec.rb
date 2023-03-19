@@ -100,7 +100,7 @@ module Maid
 
       it 'prints out the gem version' do
         ua = 'Maid/0.0.1'
-        allow(UserAgent).to receive(:value) { ua }
+        allow(UserAgent).to receive(:value).and_return(ua)
         expect(@app).to receive(:say).with(ua)
         @app.version
       end

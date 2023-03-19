@@ -9,6 +9,7 @@ require 'maid'
 RSpec.configure do |config|
   config.mock_with(:rspec)
   config.include(FakeFS::SpecHelpers, :fakefs => true)
+  config.raise_errors_for_deprecations!
 end
 
 RSpec::Matchers.define :have_deprecated_method do |expected|

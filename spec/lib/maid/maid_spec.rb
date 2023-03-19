@@ -4,7 +4,7 @@ module Maid
   describe Maid do
     before do
       @logger = double('Logger').as_null_object
-      allow(Logger).to receive(:new) { @logger }
+      allow(Logger).to receive(:new).and_return(@logger)
       allow(FileUtils).to receive(:mkdir_p)
     end
 
@@ -50,8 +50,8 @@ module Maid
 
         context 'when running on Linux' do
           before do
-            allow(Platform).to receive(:linux?) { true }
-            allow(XDG).to receive(:[]).with('DATA_HOME') { "#{ @home }/.local/share" }
+            allow(Platform).to receive(:linux?).and_return(true)
+            allow(XDG).to receive(:[]).with('DATA_HOME').and_return("#{ @home }/.local/share")
           end
 
           it 'set the trash to the correct default path' do
