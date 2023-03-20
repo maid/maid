@@ -2,10 +2,16 @@ require 'spec_helper'
 
 module Maid
   module Rake
-    describe SingleRule do
+    describe SingleRule, fakefs: true do
       subject(:single_rule) { described_class.new name, task }
       let(:name)            { double(:rule_description) }
       let(:task)            { Proc.new {} }
+
+      before do
+        logfile = File.join('~', '.maid', 'maid.log')
+        FileUtils.mkdir_p(File.expand_path(File.dirname(logfile)))
+        FileUtils.touch(File.expand_path(logfile))
+      end
 
       describe '#initialize' do
         it 'has a name' do
