@@ -54,6 +54,11 @@ Gem::Specification.new do |s|
   s.add_development_dependency('yard', '>= 0.9.11')
   s.add_development_dependency('pry-byebug')
   s.add_development_dependency('guard-bundler', '~> 3.0.1')
+  s.add_development_dependency('rubocop-rspec')
+  s.add_development_dependency('rubocop-rake')
+  s.add_development_dependency('guard-rubocop')
+  s.add_development_dependency('rubocop')
+  s.add_development_dependency('fuubar')
 
   # In Vagrant, polling won't cross over the OS boundary if you develop in the host OS but run your tests in the
   # guest.  One way around this is to force polling instead:
