@@ -2,9 +2,10 @@ require 'spec_helper'
 
 module Maid
   describe Maid do
+    let(:logger) { instance_spy('Logger') }
+
     before do
-      @logger = double('Logger').as_null_object
-      allow(Logger).to receive(:new).and_return(@logger)
+      allow(Logger).to receive(:new).and_return(logger)
       allow(FileUtils).to receive(:mkdir_p)
     end
 
@@ -17,28 +18,29 @@ module Maid
       it 'sets up a logger with the given path, when provided' do
         log_device = '/var/log/maid.log'
         expect(Logger).to receive(:new).with(log_device, anything, anything)
-        Maid.new(:log_device => log_device)
+        Maid.new(log_device:)
       end
 
       it 'rotates the log with the default settings' do
-        expect(Logger).to receive(:new).with(anything, Maid::DEFAULTS[:log_shift_age], Maid::DEFAULTS[:log_shift_size])
+        expect(Logger).to receive(:new).with(anything, Maid::DEFAULTS[:log_shift_age],
+                                             Maid::DEFAULTS[:log_shift_size],)
         Maid.new
       end
 
       it 'rotates the log with the given settings, when provided' do
         expect(Logger).to receive(:new).with(anything, 42, 1_000_000)
-        Maid.new(:log_shift_age => 42, :log_shift_size => 1_000_000)
+        Maid.new(log_shift_age: 42, log_shift_size: 1_000_000)
       end
 
       it 'makes the log directory in case it does not exist' do
         expect(FileUtils).to receive(:mkdir_p).with('/home/username/log')
-        Maid.new(:log_device => '/home/username/log/maid.log')
+        Maid.new(log_device: '/home/username/log/maid.log')
       end
 
       it 'takes a logger object during intialization' do
         allow(Logger).to receive(:new).and_call_original
-        maid = Maid.new(:logger => @logger)
-        expect(maid.logger).to eq(@logger)
+        maid = Maid.new(logger:)
+        expect(maid.logger).to eq(logger)
       end
 
       describe 'platform-specific behavior' do
@@ -51,11 +53,11 @@ module Maid
         context 'when running on Linux' do
           before do
             allow(Platform).to receive(:linux?).and_return(true)
-            allow(XDG).to receive(:[]).with('DATA_HOME').and_return("#{ @home }/.local/share")
+            allow(XDG).to receive(:[]).with('DATA_HOME').and_return("#{@home}/.local/share")
           end
 
           it 'set the trash to the correct default path' do
-            trash_path = "#{ @home }/.local/share/Trash/files/"
+            trash_path = "#{@home}/.local/share/Trash/files/"
             expect(FileUtils).to receive(:mkdir_p).with(trash_path).once
             maid = Maid.new
             expect(maid.trash_path).to eq(trash_path)
@@ -68,7 +70,7 @@ module Maid
           end
 
           it 'sets the trash to the correct default path' do
-            trash_path = "#{ @home }/.Trash/"
+            trash_path = "#{@home}/.Trash/"
             expect(FileUtils).to receive(:mkdir_p).with(trash_path).once
             maid = Maid.new
             expect(maid.trash_path).to eq(trash_path)
@@ -85,19 +87,21 @@ module Maid
       it 'sets the trash to the given path, if provided' do
         trash_path = '/home/username/tmp/my_trash/'
         expect(FileUtils).to receive(:mkdir_p).with(trash_path).once
-        maid = Maid.new(:trash_path => trash_path)
+        maid = Maid.new(trash_path:)
         expect(maid.trash_path).not_to be_nil
         expect(maid.trash_path).to eq(trash_path)
       end
 
       it 'sets the progname for the logger' do
-        expect(@logger).to receive(:progname=).with(Maid::DEFAULTS[:progname])
         Maid.new
+
+        expect(logger).to have_received(:progname=).with(Maid::DEFAULTS[:progname])
       end
 
       it 'sets the progname for the logger to the given name, if provided' do
-        expect(@logger).to receive(:progname=).with('Fran')
-        Maid.new(:progname => 'Fran')
+        Maid.new(progname: 'Fran')
+
+        expect(logger).to have_received(:progname=).with('Fran')
       end
 
       it 'sets the file options to the defaults' do
@@ -105,8 +109,8 @@ module Maid
       end
 
       it 'sets the file options to the given options, if provided' do
-        maid = Maid.new(:file_options => { :verbose => true })
-        expect(maid.file_options).to eq(:verbose => true)
+        maid = Maid.new(file_options: { verbose: true })
+        expect(maid.file_options).to eq(verbose: true)
       end
 
       it 'sets the rules path' do
@@ -114,12 +118,12 @@ module Maid
       end
 
       it 'sets the rules pathto the given path, if provided' do
-        maid = Maid.new(:rules_path => 'Maidfile')
+        maid = Maid.new(rules_path: 'Maidfile')
         expect(maid.rules_path).to eq('Maidfile')
       end
 
       it 'ignores nil options' do
-        maid = Maid.new(:rules_path => nil)
+        maid = Maid.new(rules_path: nil)
         expect(maid.rules_path).to eq(Maid::DEFAULTS[:rules_path])
       end
     end
@@ -131,9 +135,10 @@ module Maid
       end
 
       it 'logs start and finish' do
-        expect(@logger).to receive(:info).with('Started')
-        expect(@logger).to receive(:info).with('Finished')
         @maid.clean
+
+        expect(logger).to have_received(:info).with('Started')
+        expect(logger).to have_received(:info).with('Finished')
       end
 
       it 'follows the given rules' do
@@ -143,20 +148,32 @@ module Maid
     end
 
     describe '#load_rules' do
-      before do
-        allow(Kernel).to receive(:load)
-        @maid = Maid.new
+      context 'when there is no LoadError' do
+        before do
+          allow(Kernel).to receive(:load)
+        end
+
+        let(:maid) { Maid.new }
+
+        it 'sets the Maid instance' do
+          expect(::Maid).to receive(:with_instance).with(maid)
+          maid.load_rules
+        end
       end
 
-      it 'sets the Maid instance' do
-        expect(::Maid).to receive(:with_instance).with(@maid)
-        @maid.load_rules
-      end
+      context 'when there is a LoadError' do
+        let(:maid) { Maid.new }
 
-      it 'gives an error on STDERR if there is a LoadError' do
-        allow(Kernel).to receive(:load).and_raise(LoadError)
-        expect(STDERR).to receive(:puts)
-        @maid.load_rules
+        before do
+          allow(Kernel).to receive(:load).and_raise(LoadError)
+          allow(Logger).to receive(:warn)
+        end
+
+        it 'gives an error on STDERR if there is a LoadError' do
+          maid.load_rules
+
+          expect(logger).to have_received(:warn).once
+        end
       end
     end
 
@@ -196,7 +213,7 @@ module Maid
       end
 
       it 'accepts a hash of options and passes them to Listen' do
-        hash = { :some => :options }
+        hash = { some: :options }
         @maid.watch('some_dir', hash) do
           rule 'test' do
           end
@@ -236,7 +253,7 @@ module Maid
         scheduler = double('scheduler')
         expect(Rufus::Scheduler).to receive(:singleton).and_return(scheduler)
 
-        hash = { :some => :options }
+        hash = { some: :options }
         @maid.repeat('1s', hash) do
           rule 'test' do
           end
@@ -252,15 +269,17 @@ module Maid
       it 'follows each rule' do
         n = 3
         maid = Maid.new
-        expect(@logger).to receive(:info).exactly(n).times
+
         rules = (1..n).map do |i|
-          d = double("rule ##{ i }", :description => 'description')
+          d = double("rule ##{i}", description: 'description')
           expect(d).to receive(:follow)
           d
         end
         maid.instance_eval { @rules = rules }
 
         maid.follow_rules
+
+        expect(logger).to have_received(:info).exactly(n).times
       end
     end
 
@@ -273,7 +292,7 @@ module Maid
         expect { @maid.cmd('not-a-real-command arg1 arg2') }.to raise_error(NotImplementedError)
       end
 
-      it 'should report `echo` as a real command' do
+      it 'reports `echo` as a real command' do
         expect { @maid.cmd('echo .') }.not_to raise_error
       end
     end

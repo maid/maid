@@ -43,12 +43,12 @@ module Maid::Tools
 
     if File.directory?(expanded_destination)
       expand_all(sources).each do |source|
-        log("move #{ sh_escape(source) } #{ sh_escape(expanded_destination) }")
+        log("move #{sh_escape(source)} #{sh_escape(expanded_destination)}")
         FileUtils.mv(source, expanded_destination, @file_options)
       end
     else
       # Unix `mv` warns about the target not being a directory with multiple sources.  Maid checks the same.
-      warn("skipping move because #{ sh_escape(expanded_destination) } is not a directory (use 'mkdir' to create first, or use 'rename')")
+      warn("skipping move because #{sh_escape(expanded_destination)} is not a directory (use 'mkdir' to create first, or use 'rename')")
     end
   end
 
@@ -78,9 +78,9 @@ module Maid::Tools
     mkdir(File.dirname(destination))
 
     if File.exist?(destination)
-      warn("skipping rename of #{ sh_escape(source) } to #{ sh_escape(destination) } because it would overwrite")
+      warn("skipping rename of #{sh_escape(source)} to #{sh_escape(destination)} because it would overwrite")
     else
-      log("rename #{ sh_escape(source) } #{ sh_escape(destination) }")
+      log("rename #{sh_escape(source)} #{sh_escape(destination)}")
       FileUtils.mv(source, destination, @file_options)
     end
   end
@@ -130,11 +130,11 @@ module Maid::Tools
 
     expand_all(paths).each do |path|
       target = File.join(@trash_path, File.basename(path))
-      safe_trash_path = File.join(@trash_path, "#{ File.basename(path) } #{ Time.now.strftime('%Y-%m-%d-%H-%M-%S') }")
+      safe_trash_path = File.join(@trash_path, "#{File.basename(path)} #{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}")
 
       if options[:remove_over] &&
-          File.exist?(path) &&
-          disk_usage(path) > options[:remove_over]
+         File.exist?(path) &&
+         disk_usage(path) > options[:remove_over]
         remove(path)
       end
 
@@ -166,13 +166,13 @@ module Maid::Tools
     destination = expand(destination)
 
     expand_all(sources).each do |source|
-        target = File.join(destination, File.basename(source))
+      target = File.join(destination, File.basename(source))
 
-      unless File.exist?(target)
-        log("cp #{ sh_escape(source) } #{ sh_escape(destination) }")
-        FileUtils.cp(source, destination, @file_options)
+      if File.exist?(target)
+        warn("skipping copy because #{sh_escape(source)} because #{sh_escape(target)} already exists")
       else
-        warn("skipping copy because #{ sh_escape(source) } because #{ sh_escape(target) } already exists")
+        log("cp #{sh_escape(source)} #{sh_escape(destination)}")
+        FileUtils.cp(source, destination, @file_options)
       end
     end
   end
@@ -207,7 +207,7 @@ module Maid::Tools
     expand_all(paths).each do |path|
       options = @file_options.merge(options)
 
-      log("Removing #{ sh_escape(path) }")
+      log("Removing #{sh_escape(path)}")
       FileUtils.rm_r(path, options)
     end
   end
@@ -240,10 +240,10 @@ module Maid::Tools
   #     dir('~/Music/**/*.m4a')
   #
   def dir(globs)
-    expand_all(globs).
-      map { |glob| Dir.glob(glob) }.
-      flatten.
-      sort
+    expand_all(globs)
+      .map { |glob| Dir.glob(glob) }
+      .flatten
+      .sort
   end
 
   # Same as `dir`, but excludes files that are (possibly) being
@@ -256,8 +256,8 @@ module Maid::Tools
   #     move dir_safe('~/Downloads/*.deb'), '~/Archive/Software'
   #
   def dir_safe(globs)
-    dir(globs).
-      reject { |path| downloading?(path) }
+    dir(globs)
+      .reject { |path| downloading?(path) }
   end
 
   # Give only files matching the given glob.
@@ -265,8 +265,8 @@ module Maid::Tools
   # This is the same as `dir` but only includes actual files (no directories or symlinks).
   #
   def files(globs)
-    dir(globs).
-      select { |f| File.file?(f) }
+    dir(globs)
+      .select { |f| File.file?(f) }
   end
 
   # Escape characters that have special meaning as a part of path global patterns.
@@ -277,7 +277,7 @@ module Maid::Tools
   #
   #     escape_glob('test [tmp]') # => 'test \\[tmp\\]'
   def escape_glob(glob)
-    glob.gsub(/[\{\}\[\]]/) { |s| '\\' + s }
+    glob.gsub(/[{}\[\]]/) { |s| '\\' + s }
   end
 
   # Create a directory and all of its parent directories.
@@ -301,7 +301,7 @@ module Maid::Tools
   #     move('~/Downloads/Pink Floyd*.mp3', mkdir('~/Music/Pink Floyd/'))
   def mkdir(path, options = {})
     path = expand(path)
-    log("mkdir -p #{ sh_escape(path) }")
+    log("mkdir -p #{sh_escape(path)}")
     FileUtils.mkdir_p(path, @file_options.merge(options))
     path
   end
@@ -346,7 +346,7 @@ module Maid::Tools
   #
   #     locate('foo.zip') # => ['/a/foo.zip', '/b/foo.zip']
   def locate(name)
-    cmd("#{Maid::Platform::Commands.locate} #{ sh_escape(name) }").split("\n")
+    cmd("#{Maid::Platform::Commands.locate} #{sh_escape(name)}").split("\n")
   end
 
   # [Mac OS X] Use Spotlight metadata to determine the site from which a file was downloaded.
@@ -390,14 +390,14 @@ module Maid::Tools
   #
   def dupes_in(globs)
     dupes = []
-    files(globs).                           # Start by filtering out non-files
-      group_by { |f| size_of(f) }.          # ... then grouping by size, since that's fast
-      reject { |s, p| p.length < 2 }.       # ... and filter out any non-dupes
-      map do |size, candidates|
-        dupes += candidates.
-          group_by { |p| checksum_of(p) }.  # Now group our candidates by a slower checksum calculation
-          reject { |c, p| p.length < 2 }.   # ... and filter out any non-dupes
-          values
+    files(globs) # Start by filtering out non-files
+      .group_by { |f| size_of(f) } # ... then grouping by size, since that's fast
+      .reject { |_s, p| p.length < 2 } # ... and filter out any non-dupes
+      .map do |_size, candidates|
+        dupes += candidates
+                 .group_by { |p| checksum_of(p) } # Now group our candidates by a slower checksum calculation
+                 .reject { |_c, p| p.length < 2 } # ... and filter out any non-dupes
+                 .values
       end
     dupes
   end
@@ -411,9 +411,9 @@ module Maid::Tools
   #     trash newest_dupes_in('~/Downloads/*')
   #
   def newest_dupes_in(globs)
-    dupes_in(globs).
-      map { |dupes| dupes.sort_by { |p| File.mtime(p) }[1..-1] }.
-      flatten
+    dupes_in(globs)
+      .map { |dupes| dupes.sort_by { |p| File.mtime(p) }[1..-1] }
+      .flatten
   end
 
   # Convenience method for `dupes_in` that excludes the dupe with the shortest name.
@@ -427,9 +427,9 @@ module Maid::Tools
   #     trash verbose_dupes_in('~/Downloads/*')
   #
   def verbose_dupes_in(globs)
-    dupes_in(globs).
-      map { |dupes| dupes.sort_by { |p| File.basename(p).length }[1..-1] }.
-      flatten
+    dupes_in(globs)
+      .map { |dupes| dupes.sort_by { |p| File.basename(p).length }[1..-1] }
+      .flatten
   end
 
   # Determine the dimensions of GIF, PNG, JPEG, or TIFF images.
@@ -466,7 +466,7 @@ module Maid::Tools
   #
   #     duration_s('foo.mp3') # => 235.705
   def duration_s(path)
-    cmd("mdls -raw -name kMDItemDurationSeconds #{ sh_escape(path) }").to_f
+    cmd("mdls -raw -name kMDItemDurationSeconds #{sh_escape(path)}").to_f
   end
 
   # List the contents of a zip file.
@@ -489,15 +489,13 @@ module Maid::Tools
   #
   #     disk_usage('foo.zip') # => 136
   def disk_usage(path)
-    raw = cmd("du -s #{ sh_escape(path) }")
+    raw = cmd("du -s #{sh_escape(path)}")
     # FIXME: This reports in kilobytes, but should probably report in bytes.
     usage_kb = raw.split(/\s+/).first.to_i
 
-    if usage_kb.zero?
-      raise "Stopping pessimistically because of unexpected value from du (#{ raw.inspect })"
-    else
-      usage_kb
-    end
+    raise "Stopping pessimistically because of unexpected value from du (#{raw.inspect})" if usage_kb.zero?
+
+    usage_kb
   end
 
   # Get the creation time of a file.
@@ -572,8 +570,8 @@ module Maid::Tools
   #     git_piston('~/code/projectname')
   def git_piston(path)
     full_path = expand(path)
-    stdout = cmd("cd #{ sh_escape(full_path) } && git pull && git push 2>&1")
-    log("Fired git piston on #{ sh_escape(full_path) }.  STDOUT:\n\n#{ stdout }")
+    stdout = cmd("cd #{sh_escape(full_path)} && git pull && git push 2>&1")
+    log("Fired git piston on #{sh_escape(full_path)}.  STDOUT:\n\n#{stdout}")
   end
 
   deprecated :git_piston, 'SparkleShare (http://sparkleshare.org/)'
@@ -612,7 +610,7 @@ module Maid::Tools
     from = expand(from) + (from.end_with?('/') ? '/' : '')
     to = expand(to) + (to.end_with?('/') ? '/' : '')
     # default options
-    options = { :archive => true, :update => true }.merge(options)
+    options = { archive: true, update: true }.merge(options)
     ops = []
     ops << '-a' if options[:archive]
     ops << '-v' if options[:verbose]
@@ -621,12 +619,12 @@ module Maid::Tools
     ops << '-n' if @file_options[:noop]
 
     Array(options[:exclude]).each do |path|
-      ops << "--exclude=#{ sh_escape(path) }"
+      ops << "--exclude=#{sh_escape(path)}"
     end
 
     ops << '--delete' if options[:delete]
-    stdout = cmd("rsync #{ ops.join(' ') } #{ sh_escape(from) } #{ sh_escape(to) } 2>&1")
-    log("Fired sync from #{ sh_escape(from) } to #{ sh_escape(to) }.  STDOUT:\n\n#{ stdout }")
+    stdout = cmd("rsync #{ops.join(' ')} #{sh_escape(from)} #{sh_escape(to)} 2>&1")
+    log("Fired sync from #{sh_escape(from)} to #{sh_escape(to)}.  STDOUT:\n\n#{stdout}")
   end
 
   # [Mac OS X] Use Spotlight metadata to determine which content types a file has.
@@ -658,9 +656,9 @@ module Maid::Tools
   def mime_type(path)
     type = MIME::Types.type_for(path)[0]
 
-    if type
-      [type.media_type, type.sub_type].join('/')
-    end
+    return unless type
+
+    [type.media_type, type.sub_type].join('/')
   end
 
   # Get the Internet media type of the file.
@@ -673,9 +671,9 @@ module Maid::Tools
   def media_type(path)
     type = MIME::Types.type_for(path)[0]
 
-    if type
-      type.media_type
-    end
+    return unless type
+
+    type.media_type
   end
 
   # Filter an array by content types.
@@ -722,24 +720,24 @@ module Maid::Tools
     # Look for files.
     return false if Dir.glob(root + '/*').select { |f| File.file?(f) }.length > 0
 
-    empty_dirs = Dir.glob(root + '/**/*').select { |d|
+    empty_dirs = Dir.glob(root + '/**/*').select do |d|
       File.directory?(d)
-    }.reverse.select { |d|
+    end.reverse.select do |d|
       # `.reverse` sorts deeper directories first.
 
       # If the directory is empty, its parent should ignore it.
-      should_ignore = Dir.glob(d + '/*').select { |n|
+      should_ignore = Dir.glob(d + '/*').select do |n|
         !ignore.include?(n)
-      }.length == 0
+      end.length == 0
 
       ignore << d if should_ignore
 
       should_ignore
-    }
+    end
 
-    Dir.glob(root + '/*').select { |n|
+    Dir.glob(root + '/*').select do |n|
       !empty_dirs.include?(n)
-    }.length == 0
+    end.length == 0
   end
 
   # Given an array of directories, return a new array without any child
@@ -749,13 +747,12 @@ module Maid::Tools
   #
   #     ignore_child_dirs(["foo", "foo/a", "foo/b", "bar"]) # => ["foo", "bar"]
   def ignore_child_dirs(arr)
-    arr.sort { |x, y|
+    arr.sort do |x, y|
       y.count('/') - x.count('/')
-    }.select { |d|
+    end.select do |d|
       !arr.include?(File.dirname(d))
-    }
+    end
   end
-
 
   # Get a list of Finder labels of a file or directory. Only available on OS X when you have tag installed.
   #
@@ -807,14 +804,14 @@ module Maid::Tools
   #
   #     add_tag("~/Downloads/a.dmg.download", "Unfinished")
   def add_tag(path, tag)
-    if has_tag_available_and_warn?
-      path = expand(path)
-      ts = Array(tag).join(",")
-      log "add tags #{ts} to #{path}"
-      if !@file_options[:noop]
-        cmd("tag -a #{sh_escape(ts)} #{sh_escape(path)}")
-      end
-    end
+    return unless has_tag_available_and_warn?
+
+    path = expand(path)
+    ts = Array(tag).join(',')
+    log "add tags #{ts} to #{path}"
+    return if @file_options[:noop]
+
+    cmd("tag -a #{sh_escape(ts)} #{sh_escape(path)}")
   end
 
   # Remove a Finder label or a list of labels from a file or directory. Only available on OS X when you have tag installed.
@@ -823,14 +820,14 @@ module Maid::Tools
   #
   #     remove_tag("~/Downloads/a.dmg", "Unfinished")
   def remove_tag(path, tag)
-    if has_tag_available_and_warn?
-      path = expand(path)
-      ts = Array(tag).join(",")
-      log "remove tags #{ts} from #{path}"
-      if !@file_options[:noop]
-        cmd("tag -r #{sh_escape(ts)} #{sh_escape(path)}")
-      end
-    end
+    return unless has_tag_available_and_warn?
+
+    path = expand(path)
+    ts = Array(tag).join(',')
+    log "remove tags #{ts} from #{path}"
+    return if @file_options[:noop]
+
+    cmd("tag -r #{sh_escape(ts)} #{sh_escape(path)}")
   end
 
   # Set Finder label of a file or directory to a label or a list of labels. Only available on OS X when you have tag installed.
@@ -839,14 +836,14 @@ module Maid::Tools
   #
   #     set_tag("~/Downloads/a.dmg.download", "Unfinished")
   def set_tag(path, tag)
-    if has_tag_available_and_warn?
-      path = expand(path)
-      ts = Array(tag).join(",")
-      log "set tags #{ts} to #{path}"
-      if !@file_options[:noop]
-        cmd("tag -s #{sh_escape(ts)} #{sh_escape(path)}")
-      end
-    end
+    return unless has_tag_available_and_warn?
+
+    path = expand(path)
+    ts = Array(tag).join(',')
+    log "set tags #{ts} to #{path}"
+    return if @file_options[:noop]
+
+    cmd("tag -s #{sh_escape(ts)} #{sh_escape(path)}")
   end
 
   # Tell if a file is hidden
@@ -856,7 +853,7 @@ module Maid::Tools
   #     hidden?("~/.maid") # => true
   def hidden?(path)
     if Maid::Platform.osx?
-      raw = cmd("mdls -raw -name kMDItemFSInvisible #{ sh_escape(path) }")
+      raw = cmd("mdls -raw -name kMDItemFSInvisible #{sh_escape(path)}")
       raw == '1'
     else
       p = Pathname.new(expand(path))
@@ -872,9 +869,9 @@ module Maid::Tools
   def has_been_used?(path)
     if Maid::Platform.osx?
       path = expand(path)
-      raw = cmd("mdls -raw -name kMDItemLastUsedDate #{ sh_escape(path) }")
+      raw = cmd("mdls -raw -name kMDItemLastUsedDate #{sh_escape(path)}")
 
-      if raw == "(null)"
+      if raw == '(null)'
         false
       else
         begin
@@ -897,9 +894,9 @@ module Maid::Tools
   def used_at(path)
     if Maid::Platform.osx?
       path = expand(path)
-      raw = cmd("mdls -raw -name kMDItemLastUsedDate #{ sh_escape(path) }")
+      raw = cmd("mdls -raw -name kMDItemLastUsedDate #{sh_escape(path)}")
 
-      if raw == "(null)"
+      if raw == '(null)'
         nil
       else
         begin
@@ -921,9 +918,9 @@ module Maid::Tools
   def added_at(path)
     if Maid::Platform.osx?
       path = expand(path)
-      raw = cmd("mdls -raw -name kMDItemDateAdded #{ sh_escape(path) }")
+      raw = cmd("mdls -raw -name kMDItemDateAdded #{sh_escape(path)}")
 
-      if raw == "(null)"
+      if raw == '(null)'
         1.second.ago
       else
         begin
@@ -948,9 +945,9 @@ module Maid::Tools
       true
     else
       if Maid::Platform.osx?
-        warn("To use this feature, you need `tag` installed.  Run `brew install tag`")
+        warn('To use this feature, you need `tag` installed.  Run `brew install tag`')
       else
-        warn("sorry, tagging is unavailable on your platform")
+        warn('sorry, tagging is unavailable on your platform')
       end
 
       false
@@ -979,13 +976,16 @@ module Maid::Tools
 
   def mdls_to_array(path, attribute)
     if Maid::Platform.osx?
-      raw = cmd("mdls -raw -name #{sh_escape(attribute)} #{ sh_escape(path) }")
+      raw = cmd("mdls -raw -name #{sh_escape(attribute)} #{sh_escape(path)}")
 
       if raw.empty?
         []
       else
         clean = raw[1, raw.length - 2]
-        clean.split(/,\s+/).map { |s| t = s.strip; t[1, t.length - 2] }
+        clean.split(/,\s+/).map do |s|
+          t = s.strip
+          t[1, t.length - 2]
+        end
       end
     else
       []

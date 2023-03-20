@@ -18,7 +18,7 @@ describe Maid::NumericExtensions::SizeToKb do
   it 'tells you that 1 gigabyte equals 1024 megabytes' do
     expect(1.gigabyte).to eq(1024.megabytes)
   end
-  
+
   it 'tells you that 1 terabyte equals 1024 gigabytes' do
     expect(1.terabyte).to eq(1024.gigabytes)
   end

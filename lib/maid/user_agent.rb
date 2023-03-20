@@ -5,12 +5,12 @@
 module Maid::UserAgent
   class << self
     def short
-      "Maid/#{ ::Maid.const_get(:VERSION) }"
+      "Maid/#{::Maid.const_get(:VERSION)}"
     end
 
     # This used to be called `#to_s`, but that made things difficult when testing.
     def value
-      "#{ short } (#{ RUBY_DESCRIPTION })"
+      "#{short} (#{RUBY_DESCRIPTION})"
     end
   end
 end

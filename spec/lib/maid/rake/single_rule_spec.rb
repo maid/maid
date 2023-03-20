@@ -5,7 +5,7 @@ module Maid
     describe SingleRule, fakefs: true do
       subject(:single_rule) { described_class.new name, task }
       let(:name)            { double(:rule_description) }
-      let(:task)            { Proc.new {} }
+      let(:task)            { proc {} }
 
       before do
         logfile = File.join('~', '.maid', 'maid.log')
@@ -15,11 +15,11 @@ module Maid
 
       describe '#initialize' do
         it 'has a name' do
-          expect(single_rule.name). to eq(name)
+          expect(single_rule.name).to eq(name)
         end
 
         it 'has a task' do
-          expect(single_rule.task). to eq(task)
+          expect(single_rule.task).to eq(task)
         end
       end
 
@@ -74,7 +74,7 @@ module Maid
       describe '.perform' do
         subject(:perform) { described_class.perform name, task }
         let(:name)        { double(:name) }
-        let(:task)        { Proc.new {} }
+        let(:task)        { proc {} }
 
         it 'creates an instance' do
           expect(described_class)
@@ -98,7 +98,6 @@ module Maid
           end
         end
       end
-
     end
   end
 end

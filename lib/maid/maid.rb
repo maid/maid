@@ -9,18 +9,19 @@ require 'xdg'
 class Maid::Maid
   include Maid::RuleContainer
   DEFAULTS = {
-    :progname     => 'Maid',
+    progname: 'Maid',
 
-    :log_device   => File.expand_path('~/.maid/maid.log'),
+    log_device: File.expand_path('~/.maid/maid.log'),
     # We don't want the log files to grow without check, but 50 MB doesn't seem too bad.  (We're going with a larger size just for safety right now.)
-    :log_shift_age  => 5,
-    :log_shift_size => 10 * 1_048_576, # 10 * 1 MB
+    log_shift_age: 5,
+    log_shift_size: 10 * 1_048_576, # 10 * 1 MB
 
-    :rules_path   => File.expand_path('~/.maid/rules.rb'),
-    :file_options => { :noop => false }, # for `FileUtils`
+    rules_path: File.expand_path('~/.maid/rules.rb'),
+    file_options: { noop: false }, # for `FileUtils`
   }.freeze
 
   attr_reader :file_options, :logger, :log_device, :rules_path, :trash_path, :watches, :repeats
+
   include ::Maid::Tools
 
   # Make a new Maid, setting up paths for the log and trash.
@@ -30,16 +31,16 @@ class Maid::Maid
   #     Maid::Maid.new(:log_device => '/home/username/log/maid.log', :trash_path => '/home/username/my_trash')
   #
   def initialize(options = {})
-    options = DEFAULTS.merge(options.reject { |k, v| v.nil? })
+    options = DEFAULTS.merge(options.reject { |_k, v| v.nil? })
 
     # TODO: Refactor and simplify (see also https://github.com/benjaminoakes/maid/pull/48#discussion_r1683942)
-    @logger = unless options[:logger]
-      @log_device = options[:log_device]
-      FileUtils.mkdir_p(File.dirname(@log_device)) unless @log_device.kind_of?(IO)
-      @logger = Logger.new(@log_device, options[:log_shift_age], options[:log_shift_size])
-    else
-      options[:logger]
-    end
+    @logger = if options[:logger]
+                options[:logger]
+              else
+                @log_device = options[:log_device]
+                FileUtils.mkdir_p(File.dirname(@log_device)) unless @log_device.is_a?(IO)
+                @logger = Logger.new(@log_device, options[:log_shift_age], options[:log_shift_size])
+              end
 
     @logger.progname  = options[:progname]
     @logger.formatter = options[:log_formatter] if options[:log_formatter]
@@ -59,16 +60,16 @@ class Maid::Maid
 
   # Start cleaning, based on the rules defined at rules_path.
   def clean
-    unless @log_device.kind_of?(IO)
-      @logger.info "v#{ Maid::VERSION }"
+    unless @log_device.is_a?(IO)
+      @logger.info "v#{Maid::VERSION}"
       @logger.info 'Started'
     end
 
     follow_rules
 
-    unless @log_device.kind_of?(IO)
-      @logger.info 'Finished'
-    end
+    return if @log_device.is_a?(IO)
+
+    @logger.info 'Finished'
   end
 
   # Add the rules at rules_path.
@@ -82,26 +83,26 @@ class Maid::Maid
       Kernel.load(path)
     end
   rescue LoadError => e
-    STDERR.puts e.message
+    warn e.message
   end
 
-  def watch(path, options = {}, &rules)
-    @watches << ::Maid::Watch.new(self, path, options, &rules)
+  def watch(path, options = {}, &)
+    @watches << ::Maid::Watch.new(self, path, options, &)
   end
 
-  def repeat(timestring, options = {}, &rules)
-    @repeats << ::Maid::Repeat.new(self, timestring, options, &rules)
+  def repeat(timestring, options = {}, &)
+    @repeats << ::Maid::Repeat.new(self, timestring, options, &)
   end
 
   # Daemonizes the process by starting all watches and repeats and joining
   # the threads of the schedulers/watchers
   def daemonize
     if @watches.empty? && @repeats.empty?
-      STDERR.puts 'Cannot run daemon. Nothing to watch or repeat.'
+      warn 'Cannot run daemon. Nothing to watch or repeat.'
     else
       all = @watches + @repeats
       all.each(&:run)
-      trap("SIGINT") do
+      trap('SIGINT') do
         # Running in a thread fixes celluloid ThreadError
         Thread.new do
           all.each(&:stop)
@@ -115,18 +116,16 @@ class Maid::Maid
   # Run a shell command.
   #--
   # Delegates to `Kernel.\``.  Made primarily for testing other commands and some error handling.
-  def cmd(command) #:nodoc:
-    if supported_command?(command)
-      %x(#{ command })
-    else
-      raise NotImplementedError, "Unsupported system command: #{ command.inspect }"
-    end
+  def cmd(command) # :nodoc:
+    raise NotImplementedError, "Unsupported system command: #{command.inspect}" unless supported_command?(command)
+
+    `#{command}`
   end
 
   private
 
   # Does the OS support this command?
-  def supported_command?(command) #:nodoc:
+  def supported_command?(command) # :nodoc:
     @@supported_commands ||= {}
 
     command_name = command.strip.split(/\s+/)[0]
@@ -134,20 +133,20 @@ class Maid::Maid
     # TODO: Instead of using `which`, use an alternative listed at:
     #
     #     http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
-    @@supported_commands[command_name] = supported ? supported : !%x(which #{ command_name }).empty?
+    @@supported_commands[command_name] = supported || !`which #{command_name}`.empty?
   end
 
   def default_trash_path
     # TODO: Refactor module declaration so this can be `Platform`
     if Maid::Platform.linux?
       # See the [FreeDesktop.org Trash specification](http://www.ramendik.ru/docs/trashspec.html)
-      path = "#{ XDG['DATA_HOME'] }/Trash/files"
+      path = "#{XDG['DATA_HOME']}/Trash/files"
     elsif Maid::Platform.osx?
       path = File.expand_path('~/.Trash')
     else
-      raise NotImplementedError, "Unknown default trash path (unsupported host OS: #{ Maid::Platform.host_os.inspect })"
+      raise NotImplementedError, "Unknown default trash path (unsupported host OS: #{Maid::Platform.host_os.inspect})"
     end
 
-    "#{ path }/"
+    "#{path}/"
   end
 end

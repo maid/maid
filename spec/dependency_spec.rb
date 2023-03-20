@@ -25,7 +25,7 @@ describe 'Dependency expectations' do
       io = StringIO.new
       logger = Logger.new(io)
       logger.info('my message')
-      logger.formatter = lambda { |_, _, _, msg| msg }
+      logger.formatter = ->(_, _, _, msg) { msg }
       expect(io.string).to match(/my message/)
     end
   end
@@ -68,28 +68,28 @@ describe 'Dependency expectations' do
 
   describe Zip::File do
     it 'makes entries available with #entries' do
-      Zip::File.open("#@file_fixtures_path/foo.zip") do |zip_file|
-        expect(zip_file.entries.map { |entry| entry.name }).to match_array(%w(README.txt foo.exe subdir/anything.txt))
+      Zip::File.open("#{@file_fixtures_path}/foo.zip") do |zip_file|
+        expect(zip_file.entries.map { |entry| entry.name }).to match_array(%w[README.txt foo.exe subdir/anything.txt])
       end
     end
 
     it 'supports UTF-8 filenames' do
       # Filename is a Japanese character
-      Zip::File.open("#@file_fixtures_path/\343\201\225.zip") do |zip_file|
-        expect(zip_file.entries.map { |entry| entry.name }).to eq(%w(anything.txt))
+      Zip::File.open("#{@file_fixtures_path}/\343\201\225.zip") do |zip_file|
+        expect(zip_file.entries.map { |entry| entry.name }).to eq(%w[anything.txt])
       end
     end
   end
 
   describe Dimensions do
     it 'returns dimensions as an array' do
-      expect(Dimensions.dimensions("#@file_fixtures_path/sydney.jpg")).to eq([100, 75])
+      expect(Dimensions.dimensions("#{@file_fixtures_path}/sydney.jpg")).to eq([100, 75])
     end
   end
 
   describe EXIFR::JPEG do
     it 'returns latitude and longitude' do
-      gps = EXIFR::JPEG.new("#@file_fixtures_path/sydney.jpg").gps
+      gps = EXIFR::JPEG.new("#{@file_fixtures_path}/sydney.jpg").gps
       expect([gps.latitude, gps.longitude]).to eq([-33.85608611111111, 151.219925])
     end
   end

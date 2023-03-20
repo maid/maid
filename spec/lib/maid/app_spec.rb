@@ -21,7 +21,6 @@ end
 
 module Maid
   describe App, '#clean' do
-
     before do
       @app = App.new
       allow(@app).to receive(:maid_options)
@@ -38,16 +37,16 @@ module Maid
     end
 
     it 'makes a new Maid with the options' do
-      opts = { :foo => 'bar' }
+      opts = { foo: 'bar' }
       allow(@app).to receive(:maid_options).and_return(opts)
       expect(Maid).to receive(:new).with(opts).and_return(@maid)
       @app.clean
     end
 
-    it 'cleans when --force is specified' do      
+    it 'cleans when --force is specified' do
       expect(@maid).to receive(:clean)
       App.start(['clean', '--force'])
-    end 
+    end
 
     it 'issues deprecation notice when called without option, but still clean' do
       expect(@maid).to receive(:clean).twice
@@ -94,7 +93,7 @@ module Maid
         # FIXME: This is ugly.  Maybe use `Maid.start(%w(version --long))` instead.
 
         # We can't simply stub `long?` because `options` is a frozen object.
-        options = double('options', :long? => true)
+        options = double('options', long?: true)
         @app.options = options
       end
 
@@ -146,7 +145,7 @@ module Maid
       end
 
       after do
-        @log_file.unlink if !@log_file.nil?
+        @log_file.unlink unless @log_file.nil?
       end
 
       it 'dumps the last log entries when invoked without an option' do
