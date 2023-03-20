@@ -26,7 +26,7 @@ jobs:
           # conventional commit format
           # (https://www.conventionalcommits.org/en/v1.0.0/#summary)
           bootstrap-sha: d3414ac198fe9677a54ca0d53fbff02d12ede7d2
-          # This is the least release before starting to use release-please
+          # This is the last release before starting to use release-please
           last-release-sha: 0a6ff8abc6db00aca181d6bfed9751e332900ac9
           version-file: lib/maid/version.rb
       - uses: actions/checkout@v3
