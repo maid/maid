@@ -27,8 +27,8 @@ jobs:
           # (https://www.conventionalcommits.org/en/v1.0.0/#summary)
           bootstrap-sha: d3414ac198fe9677a54ca0d53fbff02d12ede7d2
           # This is the least release before starting to use release-please
-          # (aka v0.9.0.alpha.2)
-          last-release-sha: e38d449cbc3e17ebe5467e7cff47e1385e443244
+          last-release-sha: 0a6ff8abc6db00aca181d6bfed9751e332900ac9
+          version-file: lib/maid/version.rb
       - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
