@@ -45,14 +45,15 @@ Gem::Specification.new do |s|
 
   # Strategy: specific versions (since they're just for development)
   s.add_development_dependency('fakefs', '~> 2.4.0')
-  s.add_development_dependency('guard', '~> 2.12.5')
-  s.add_development_dependency('guard-rspec', '~> 4.6.2')
+  s.add_development_dependency('guard', '~> 2.18.0')
+  s.add_development_dependency('guard-rspec', '~> 4.7.3')
   s.add_development_dependency('rake', '~> 13.0.6')
   s.add_development_dependency('redcarpet', '~> 3.6.0') # Soft dependency of `yard`
   s.add_development_dependency('rspec', '~> 3.12.0')
   s.add_development_dependency('timecop', '~> 0.9.6')
   s.add_development_dependency('yard', '>= 0.9.11')
   s.add_development_dependency('pry-byebug')
+  s.add_development_dependency('guard-bundler', '~> 3.0.1')
 
   # In Vagrant, polling won't cross over the OS boundary if you develop in the host OS but run your tests in the
   # guest.  One way around this is to force polling instead:
