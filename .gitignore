@@ -5,3 +5,4 @@
 Gemfile.lock
 tmp/*
 doc/*
+.act-secrets
