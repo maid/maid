@@ -18,36 +18,17 @@ Metrics/BlockLength:
     - Guardfile
     - "spec/**/*"
 
-Style/ClassAndModuleChildren:
-  AutoCorrect: true
-
 Style/TrailingCommaInArguments:
-  AutoCorrect: true
   EnforcedStyleForMultiline: consistent_comma
 
 Style/TrailingCommaInArrayLiteral:
-  AutoCorrect: true
   EnforcedStyleForMultiline: consistent_comma
 
 Style/TrailingCommaInBlockArgs:
-  AutoCorrect: true
   Enabled: true
 
 Style/TrailingCommaInHashLiteral:
-  AutoCorrect: true
   EnforcedStyleForMultiline: consistent_comma
-
-RSpec/InstanceVariable:
-  Enabled: false
-
-RSpec/NestedGroups:
-  Max: 4
-
-RSpec/ExampleLength:
-  Max: 8
-
-Style/FrozenStringLiteralComment:
-  AutoCorrect: true
 
 RSpec/Focus:
   AutoCorrect: false
