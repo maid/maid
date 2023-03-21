@@ -46,7 +46,8 @@ module Maid
         @maid.move(@src_file, @dst_dir)
       end
 
-      it 'handles multiple from paths' do
+      # FIXME: Example is too long, shouldn't need the rubocop::disable
+      it 'handles multiple from paths' do # rubocop:disable RSpec/ExampleLength
         second_file_name = 'bar.zip'
         second_src_file = File.join(@src_dir, second_file_name)
         FileUtils.touch(File.expand_path(second_src_file))
@@ -750,7 +751,8 @@ module Maid
     end
 
     describe '#ignore_child_dirs' do
-      it 'filters out any child directory' do
+      # FIXME: Example is too long, shouldn't need the rubocop::disable
+      it 'filters out any child directory' do # rubocop:disable RSpec/ExampleLength
         src = [
           'a',
           'b',

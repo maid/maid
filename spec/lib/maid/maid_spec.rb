@@ -212,7 +212,8 @@ module Maid
         expect(@maid.watches.first.path).to eq(File.expand_path('watch_dir'))
       end
 
-      it 'accepts a hash of options and passes them to Listen' do
+      # FIXME: Example is too long, shouldn't need the rubocop::disable
+      it 'accepts a hash of options and passes them to Listen' do # rubocop:disable RSpec/ExampleLength
         hash = { some: :options }
         @maid.watch('some_dir', hash) do
           rule 'test' do
@@ -249,7 +250,8 @@ module Maid
         expect(@maid.repeats.first.timestring).to eq('1s')
       end
 
-      it 'accepts a hash of options and passes them to Rufus' do
+      # FIXME: Example is too long, shouldn't need the rubocop::disable
+      it 'accepts a hash of options and passes them to Rufus' do # rubocop:disable RSpec/ExampleLength
         scheduler = double('scheduler')
         expect(Rufus::Scheduler).to receive(:singleton).and_return(scheduler)
 
@@ -266,7 +268,8 @@ module Maid
     end
 
     describe '#follow_rules' do
-      it 'follows each rule' do
+      # FIXME: Example is too long, shouldn't need the rubocop::disable
+      it 'follows each rule' do # rubocop:disable RSpec/ExampleLength
         n = 3
         maid = Maid.new
 
