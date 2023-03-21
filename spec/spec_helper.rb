@@ -9,7 +9,9 @@ require 'pry-byebug'
 require 'maid'
 
 RSpec.configure do |config|
-  config.mock_with(:rspec)
+  config.mock_with(:rspec) do |mocks|
+    mocks.allow_message_expectations_on_nil = false
+  end
   config.include(FakeFS::SpecHelpers, fakefs: true)
   config.raise_errors_for_deprecations!
 end
