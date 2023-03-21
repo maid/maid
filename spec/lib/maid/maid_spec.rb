@@ -18,7 +18,7 @@ module Maid
       it 'sets up a logger with the given path, when provided' do
         log_device = '/var/log/maid.log'
         expect(Logger).to receive(:new).with(log_device, anything, anything)
-        Maid.new(log_device:)
+        Maid.new(:log_device => log_device)
       end
 
       it 'rotates the log with the default settings' do
@@ -39,7 +39,7 @@ module Maid
 
       it 'takes a logger object during intialization' do
         allow(Logger).to receive(:new).and_call_original
-        maid = Maid.new(logger:)
+        maid = Maid.new(:logger => logger)
         expect(maid.logger).to eq(logger)
       end
 
@@ -87,7 +87,7 @@ module Maid
       it 'sets the trash to the given path, if provided' do
         trash_path = '/home/username/tmp/my_trash/'
         expect(FileUtils).to receive(:mkdir_p).with(trash_path).once
-        maid = Maid.new(trash_path:)
+        maid = Maid.new(:trash_path => trash_path)
         expect(maid.trash_path).not_to be_nil
         expect(maid.trash_path).to eq(trash_path)
       end

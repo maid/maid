@@ -86,12 +86,12 @@ class Maid::Maid
     warn e.message
   end
 
-  def watch(path, options = {}, &)
-    @watches << ::Maid::Watch.new(self, path, options, &)
+  def watch(path, options = {}, &block)
+    @watches << ::Maid::Watch.new(self, path, options, &block)
   end
 
-  def repeat(timestring, options = {}, &)
-    @repeats << ::Maid::Repeat.new(self, timestring, options, &)
+  def repeat(timestring, options = {}, &block)
+    @repeats << ::Maid::Repeat.new(self, timestring, options, &block)
   end
 
   # Daemonizes the process by starting all watches and repeats and joining
