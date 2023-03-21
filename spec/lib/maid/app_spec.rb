@@ -1,6 +1,10 @@
 require 'spec_helper'
 require 'stringio'
 
+# FIXME: this clobbers rspec's output in the console. out.truncate(0) flushes
+# the StringIO object but fails the test. Maybe stubbing Kernel.warn and
+# Kernel.info would silence the output?
+# Something like spec/lib/maid/maid_spec.rb:5 and :172
 def capture_stdout
   out = StringIO.new
   $stdout = out
@@ -10,6 +14,10 @@ ensure
   $stdout = STDOUT
 end
 
+# FIXME: this clobbers rspec's output in the console. out.truncate(0) flushes
+# the StringIO object but fails the test. Maybe stubbing Kernel.warn and
+# Kernel.info would silence the output?
+# Something like spec/lib/maid/maid_spec.rb:5 and :172
 def capture_stderr
   out = StringIO.new
   $stderr = out
