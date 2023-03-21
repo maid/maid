@@ -131,7 +131,7 @@ module Maid
     describe '#clean' do
       before do
         @maid = Maid.new
-        allow(@logger).to receive(:info)
+        allow(logger).to receive(:info)
       end
 
       it 'logs start and finish' do
