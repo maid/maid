@@ -26,7 +26,8 @@ module Maid::Tools
 
   # Move `sources` to a `destination` directory.
   #
-  # Movement is only allowed to directories that already exist.  If your intention is to rename, see the `rename` method.
+  # Movement is only allowed to directories that already exist.  If your
+  # intention is to rename, see the `rename` method.
   #
   # ## Examples
   #
@@ -48,7 +49,8 @@ module Maid::Tools
       end
     else
       # Unix `mv` warns about the target not being a directory with multiple sources.  Maid checks the same.
-      warn("skipping move because #{sh_escape(expanded_destination)} is not a directory (use 'mkdir' to create first, or use 'rename')")
+      warn("skipping move because #{sh_escape(expanded_destination)} is not a" \
+           "directory (use 'mkdir' to create first, or use 'rename')")
     end
   end
 
@@ -56,7 +58,8 @@ module Maid::Tools
   #
   # Any directories needed in order to complete the rename are made automatically.
   #
-  # Overwriting is not allowed; it logs a warning.  If overwriting is desired, use `remove` to delete the file first, then use `rename`.
+  # Overwriting is not allowed; it logs a warning.  If overwriting is desired,
+  # use `remove` to delete the file first, then use `rename`.
   #
   # ## Examples
   #
@@ -115,18 +118,19 @@ module Maid::Tools
   def trash(paths, options = {})
     # ## Implementation Notes
     #
-    # Trashing files correctly is surprisingly hard.  What Maid ends up doing is one the easiest, most foolproof
-    # solutions:  moving the file.
+    # Trashing files correctly is surprisingly hard.  What Maid ends up doing
+    # is one the easiest, most foolproof solutions:  moving the file.
     #
-    # Unfortunately, that means it's not possile to restore files automatically in OSX or Ubuntu.  The previous location
-    # of the file is lost.
+    # Unfortunately, that means it's not possile to restore files automatically
+    # in OSX or Ubuntu.  The previous location of the file is lost.
     #
-    # OSX support depends on AppleScript or would require a not-yet-written C extension to interface with the OS.  The
-    # AppleScript solution is less than ideal: the user has to be logged in, Finder has to be running, and it makes the
-    # "trash can sound" every time a file is moved.
+    # OSX support depends on AppleScript or would require a not-yet-written C
+    # extension to interface with the OS.  The AppleScript solution is less
+    # than ideal: the user has to be logged in, Finder has to be running, and
+    # it makes the "trash can sound" every time a file is moved.
     #
-    # Ubuntu makes it easy to implement, and there's a Python library for doing so (see `trash-cli`).  However, there's
-    # not a Ruby equivalent yet.
+    # Ubuntu makes it easy to implement, and there's a Python library for doing
+    # so (see `trash-cli`).  However, there's not a Ruby equivalent yet.
 
     expand_all(paths).each do |path|
       target = File.join(@trash_path, File.basename(path))
@@ -150,8 +154,10 @@ module Maid::Tools
 
   # Copy from `sources` to `destination`
   #
-  # The path is not copied if a file already exists at the destination with the same name.  A warning is logged instead.
-  # Note: Similar functionality is provided by the sync tool, but this requires installation of the `rsync` binary
+  # The path is not copied if a file already exists at the destination with the
+  # same name.  A warning is logged instead. Note: Similar functionality is
+  # provided by the sync tool, but this requires installation of the `rsync`
+  # binary
   # ## Examples
   #
   # Single path:
@@ -179,7 +185,10 @@ module Maid::Tools
 
   # Delete the files at the given path recursively.
   #
-  # **NOTE**: In most cases, `trash` is a safer choice, since the files will be recoverable by retreiving them from the trash.  Once you delete a file using `remove`, it's gone!  Please use `trash` whenever possible and only use `remove` when necessary.
+  # **NOTE**: In most cases, `trash` is a safer choice, since the files will be
+  # recoverable by retreiving them from the trash.  Once you delete a file
+  # using `remove`, it's gone!  Please use `trash` whenever possible and only
+  # use `remove` when necessary.
   #
   # ## Options
   #
@@ -642,7 +651,8 @@ module Maid::Tools
   #
   # ## Examples
   #
-  #     content_types('foo.zip') # => ["public.zip-archive", "com.pkware.zip-archive", "public.archive", "application/zip", "application"]
+  #     content_types('foo.zip') # => ["public.zip-archive", "com.pkware.zip-archive",
+  #                                    "public.archive", "application/zip", "application"]
   #     content_types('bar.jpg') # => ["public.jpeg", "public.image", "image/jpeg", "image"]
   def content_types(path)
     [spotlight_content_types(path), mime_type(path), media_type(path)].flatten
@@ -769,7 +779,8 @@ module Maid::Tools
     end
   end
 
-  # Tell if a file or directory has any Finder labels. Only available on OS X when you have tag installed.
+  # Tell if a file or directory has any Finder labels. Only available on OS X
+  # when you have tag installed.
   #
   # ## Example
   #
@@ -783,7 +794,8 @@ module Maid::Tools
     end
   end
 
-  # Tell if a file or directory has a certain Finder labels. Only available on OS X when you have tag installed.
+  # Tell if a file or directory has a certain Finder labels. Only available on
+  # OS X when you have tag installed.
   #
   # ## Example
   #
@@ -798,7 +810,8 @@ module Maid::Tools
     end
   end
 
-  # Add a Finder label or a list of labels to a file or directory. Only available on OS X when you have tag installed.
+  # Add a Finder label or a list of labels to a file or directory. Only
+  # available on OS X when you have tag installed.
   #
   # ## Example
   #
@@ -814,7 +827,8 @@ module Maid::Tools
     cmd("tag -a #{sh_escape(ts)} #{sh_escape(path)}")
   end
 
-  # Remove a Finder label or a list of labels from a file or directory. Only available on OS X when you have tag installed.
+  # Remove a Finder label or a list of labels from a file or directory. Only
+  # available on OS X when you have tag installed.
   #
   # ## Example
   #
@@ -830,7 +844,8 @@ module Maid::Tools
     cmd("tag -r #{sh_escape(ts)} #{sh_escape(path)}")
   end
 
-  # Set Finder label of a file or directory to a label or a list of labels. Only available on OS X when you have tag installed.
+  # Set Finder label of a file or directory to a label or a list of labels.
+  # Only available on OS X when you have tag installed.
   #
   # ## Example
   #

@@ -28,7 +28,8 @@ module Maid
 
       allow(TrashMigration).to receive(:needed?).and_return(false)
 
-      # NOTE: It's pretty important that this is stubbed, unless you want your rules to be run over and over when you test!
+      # NOTE: It's pretty important that this is stubbed, unless you want your
+      # rules to be run over and over when you test!
       @maid = double('Maid')
       allow(@maid).to receive(:clean)
       allow(@maid).to receive(:log_device)

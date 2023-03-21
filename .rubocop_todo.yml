@@ -58,7 +58,7 @@ Metrics/BlockLength:
 # Offense count: 1
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
-  Max: 127
+  Max: 128
 
 # Offense count: 2
 # Configuration parameters: AllowedMethods, AllowedPatterns.
@@ -68,7 +68,7 @@ Metrics/CyclomaticComplexity:
 # Offense count: 15
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
 Metrics/MethodLength:
-  Max: 26
+  Max: 27
 
 # Offense count: 4
 # Configuration parameters: CountComments, CountAsOne.
@@ -382,10 +382,3 @@ Style/SymbolProc:
 Style/ZeroLengthPredicate:
   Exclude:
     - 'lib/maid/tools.rb'
-
-# Offense count: 15
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, AllowedPatterns.
-# URISchemes: http, https
-Layout/LineLength:
-  Max: 253

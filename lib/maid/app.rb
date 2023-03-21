@@ -145,7 +145,8 @@ class Maid::App < Thor
     EOF
 
     response = ask(
-      "Would you like Maid to move the files in #{migration.incorrect_trash.inspect} to #{migration.correct_trash.inspect}?", limited_to: %w[
+      "Would you like Maid to move the files in #{migration.incorrect_trash.inspect} " \
+      "to #{migration.correct_trash.inspect}?", limited_to: %w[
         Y N
       ],
     )

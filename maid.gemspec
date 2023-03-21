@@ -28,7 +28,8 @@ Gem::Specification.new do |s|
   # Strategy: if possible, use ranges (so there are fewer chances of version conflicts)
   s.add_dependency('deprecated', '~> 3.0.0')
   s.add_dependency('dimensions', '>= 1.0.0', '< 2.0')
-  s.add_dependency('escape', '>= 0.0.1', '< 0.1.0') # Used for better Ruby 1.8.7 support, could be replaced with `Shellwords`
+  # Used for better Ruby 1.8.7 support, could be replaced with `Shellwords`
+  s.add_dependency('escape', '>= 0.0.1', '< 0.1.0')
   s.add_dependency('exifr', '~> 1.3.10')
   s.add_dependency('geocoder', '~> 1.8.1')
   s.add_dependency('listen', '~> 3.8.0')

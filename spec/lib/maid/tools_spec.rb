@@ -530,7 +530,7 @@ module Maid
       end
 
       it 'adds all options' do
-        expect(@maid).to receive(:cmd).with(%(rsync -a -v -u -m --exclude=.git --delete #{@home}/Downloads/ #{@home}/Reference 2>&1))
+        expect(@maid).to receive(:cmd).with(%(rsync -a -v -u -m --exclude=.git --delete #{@home}/Downloads/ #{@home}/Reference 2>&1)) # rubocop:disable Layout/LineLength
         @maid.sync(@src_dir, @dst_dir, archive: true, update: true, delete: true, verbose: true,
                                        prune_empty: true, exclude: '.git',)
       end

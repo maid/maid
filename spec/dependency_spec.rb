@@ -20,7 +20,8 @@ describe 'Dependency expectations' do
   end
 
   describe Logger do
-    # Depending on the situation, `Logger` might have been overwritten to have a different interface.  (I'm looking at you, Rails.)
+    # Depending on the situation, `Logger` might have been overwritten to have
+    # a different interface.  (I'm looking at you, Rails.)
     it 'logs with the expected interface' do
       io = StringIO.new
       logger = Logger.new(io)
