@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = 'maid'
 
-  s.required_ruby_version = '>= 2.7.0'
+  s.required_ruby_version = '>= 3.0.0'
 
   # Strategy: if possible, use ranges (so there are fewer chances of version conflicts)
   s.add_dependency('deprecated', '~> 3.0.0')
