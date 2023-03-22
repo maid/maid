@@ -23,12 +23,14 @@ jobs:
           # Minor bump is patch instead pre-1.0.0
           bump-patch-for-minor-pre-major: true
           # Don't parse commits before this one as they don't follow the
-          # conventional commit format
+          # conventional commit format AND don't have `release-please`
+          # COMMIT_MESSAGE_OVERRIDE data.
           # (https://www.conventionalcommits.org/en/v1.0.0/#summary)
-          bootstrap-sha: d3414ac198fe9677a54ca0d53fbff02d12ede7d2
+          bootstrap-sha: 0a6ff8abc6db00aca181d6bfed9751e332900ac9
           # This is the last release before starting to use release-please
           last-release-sha: 0a6ff8abc6db00aca181d6bfed9751e332900ac9
           version-file: lib/maid/version.rb
+          token: ${{ secrets.MAID_GH_TOKEN }}
       - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
