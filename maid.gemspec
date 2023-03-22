@@ -66,4 +66,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -z -- {test,spec,features}/*`.split("\0")
   s.executables   = `git ls-files -z -- bin/*`.split("\0").map{ |f| File.basename(f) }
   s.require_paths = %w(lib)
+
+  s.post_install_message = "🙏 Thank you for installing Maid, we hope it's " \
+    "useful to you! Visit #{s.homepage} to report issues or contribute code."
 end
