@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = 'maid'
   s.version     = Maid::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ['Benjamin Oakes']
-  s.email       = %w(hello@benjaminoakes.com)
+  s.authors     = ['Benjamin Oakes', 'Coaxial']
+  s.email       = ['hello@benjaminoakes.com', 'c+rubygems@64b.it']
   s.license     = 'GPLv2'
   s.homepage    = 'http://github.com/maid/maid'
   s.summary     = Maid::SUMMARY
