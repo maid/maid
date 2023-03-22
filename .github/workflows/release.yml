@@ -32,7 +32,7 @@ jobs:
           version-file: lib/maid/version.rb
           token: ${{ secrets.MAID_GH_TOKEN }}
           prerelease: true
-          release-as: 0.10.0.pre.1
+          release-as: v0.10.0.pre.1
       - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
