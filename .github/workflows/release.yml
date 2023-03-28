@@ -56,6 +56,8 @@ jobs:
           # Only sign and push the commit if it's not already signed to avoid
           # unnecessarily updating the PR.
           git --no-pager show HEAD --show-signature | grep 'gpg: Good signature from "maid-release-bot' || (git commit --gpg-sign --amend --no-edit && git push --force-with-lease)
+        env:
+          RELEASE_BRANCH_NAME: release-please--branches--master--components--maid
         if: ${{ !steps.release.outputs.release_created }}
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
