@@ -48,6 +48,10 @@ jobs:
           # https://github.com/maid/maid/wiki/Release-Process
           prerelease: true
           release-as: v0.10.0-alpha.1
+      - name: Sign commit
+        run: |
+          git commit -S --amend --no-edit
+          git push --force-with-lease
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
