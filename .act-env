@@ -1,0 +1,2 @@
+# Mirrors GitHub Actions' environment vars
+RELEASE_BRANCH_NAME=release-please--branches--master--components--maid
