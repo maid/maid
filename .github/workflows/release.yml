@@ -13,6 +13,16 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.BOT_GPG_PRIVATE_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+      - name: List keys
+        run: gpg -K
       - name: Prepare release
         uses: google-github-actions/release-please-action@v3
         with:
@@ -30,10 +40,14 @@ jobs:
           # This is the last release before starting to use release-please
           last-release-sha: 0a6ff8abc6db00aca181d6bfed9751e332900ac9
           version-file: lib/maid/version.rb
-          token: ${{ secrets.MAID_GH_TOKEN }}
+          # Don't use GITHUB_TOKEN because this doesn't allow workflows to
+          # trigger workflows; it leave the `release-please`-generated PR with
+          # pending checks as they're never started.
+          token: ${{ secrets.BOT_GH_TOKEN }}
+          # Uncomment for pre-releases, see
+          # https://github.com/maid/maid/wiki/Release-Process
           prerelease: true
           release-as: v0.10.0-alpha.1
-      - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
