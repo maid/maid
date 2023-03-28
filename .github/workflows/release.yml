@@ -50,6 +50,7 @@ jobs:
           release-as: v0.10.0-alpha.1
       - name: Sign commit
         run: |
+          export GPG_TTY=$(tty)
           git commit -S --amend --no-edit
           git push --force-with-lease
       - name: Set up Ruby
