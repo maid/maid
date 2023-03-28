@@ -19,11 +19,11 @@ jobs:
         uses: crazy-max/ghaction-import-gpg@v5
         with:
           gpg_private_key: ${{ secrets.BOT_GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.BOT_GPG_PRIVATE_KEY_PASSPHRASE }}
           git_user_signingkey: true
           git_commit_gpgsign: true
-      - name: List keys
-        run: gpg -K
       - name: Prepare release
+        id: release
         uses: google-github-actions/release-please-action@v3
         with:
           release-type: ruby
@@ -50,9 +50,13 @@ jobs:
           release-as: v0.10.0-alpha.1
       - name: Sign commit
         run: |
-          export GPG_TTY=$(tty)
-          git commit -S --amend --no-edit
-          git push --force-with-lease
+          git config --global user.name "${{ steps.import_gpg.outputs.name }}"
+          git config --global user.email "${{ steps.import_gpg.outputs.email }}"
+          git checkout "${RELEASE_BRANCH_NAME}"
+          # Only sign and push the commit if it's not already signed to avoid
+          # unnecessarily updating the PR.
+          git --no-pager show HEAD --show-signature | grep 'gpg: Good signature from "maid-release-bot' || (git commit --gpg-sign --amend --no-edit && git push --force-with-lease)
+        if: ${{ !steps.release.outputs.release_created }}
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
