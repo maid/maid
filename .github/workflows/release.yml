@@ -13,6 +13,15 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.BOT_GPG_PRIVATE_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+      - name: List keys
+        run: gpg -K
       - name: Prepare release
         uses: google-github-actions/release-please-action@v3
         with:
