@@ -14,14 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Import GPG key
-        id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v5
-        with:
-          gpg_private_key: ${{ secrets.BOT_GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.BOT_GPG_PRIVATE_KEY_PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
       - name: Prepare release
         id: release
         uses: google-github-actions/release-please-action@v3
@@ -48,25 +40,6 @@ jobs:
           # https://github.com/maid/maid/wiki/Release-Process
           prerelease: true
           release-as: v0.10.0-alpha.1
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Sign commit
-        run: |
-          git config --global user.name "${{ steps.import_gpg.outputs.name }}"
-          git config --global user.email "${{ steps.import_gpg.outputs.email }}"
-          git checkout "${RELEASE_BRANCH_NAME}"
-          # Without this, the push comes from github-actions and doesn't trigger tests etc.
-          git remote set-url --push origin https://${RELEASE_BOT_USERNAME}:${{ secrets.BOT_GH_TOKEN }}@github.com/maid/maid.git
-          # Only sign and push the commit if it's not already signed to avoid
-          # unnecessarily updating the PR.
-          git --no-pager show HEAD --show-signature | grep 'gpg: Good signature from "maid-release-bot' || (git commit --gpg-sign --amend --no-edit && git push --force-with-lease)
-        env:
-          # Allow for force push to trigger tests on PR.
-          GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
-          RELEASE_BOT_USERNAME: maid-release-bot
-          RELEASE_BRANCH_NAME: release-please--branches--master--components--maid
-        if: ${{ !steps.release.outputs.release_created }}
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
