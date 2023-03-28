@@ -43,7 +43,7 @@ jobs:
           # Don't use GITHUB_TOKEN because this doesn't allow workflows to
           # trigger workflows; it leave the `release-please`-generated PR with
           # pending checks as they're never started.
-          token: ${{ secrets.MAID_GH_TOKEN }}
+          token: ${{ secrets.BOT_GH_TOKEN }}
           # Uncomment for pre-releases, see
           # https://github.com/maid/maid/wiki/Release-Process
           prerelease: true
