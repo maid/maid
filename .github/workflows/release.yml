@@ -13,9 +13,6 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: Import GPG key
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v5
@@ -50,6 +47,9 @@ jobs:
           # https://github.com/maid/maid/wiki/Release-Process
           prerelease: true
           release-as: v0.10.0-alpha.1
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Sign commit
         run: |
           git config --global user.name "${{ steps.import_gpg.outputs.name }}"
