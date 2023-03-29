@@ -1,4 +1,4 @@
-name: Report coverage
+name: Code coverage
 
 on:
   push:
@@ -22,8 +22,9 @@ jobs:
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v3.2.0
         with:
-          coverageCommand: COVERAGE=true bundle exec rake
+          coverageCommand: bundle exec rake
           debug: true
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_KEY }}
+          COVERAGE: true
 
