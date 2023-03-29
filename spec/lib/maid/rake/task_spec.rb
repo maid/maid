@@ -3,11 +3,10 @@ require 'spec_helper'
 module Maid
   module Rake
     describe Task do
-
       before(:all) { ::Rake::TaskManager.record_task_metadata = true }
 
-      subject(:define_task) { described_class.new *args, &instructions }
-      let(:instructions)    { Proc.new {} }
+      subject(:define_task) { described_class.new(*args, &instructions) }
+      let(:instructions)    { proc {} }
 
       describe '#initialize' do
         before { ::Rake::Task.clear }
@@ -36,7 +35,7 @@ module Maid
           end
 
           context 'given a description argument' do
-            let(:args) { [:foobar, description: 'Custom description'] }
+            let(:args) { [:foobar, { description: 'Custom description' }] }
 
             it 'defines a rake task with the description provided' do
               define_task
@@ -45,7 +44,6 @@ module Maid
           end
         end
       end
-
     end
   end
 end

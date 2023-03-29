@@ -14,7 +14,7 @@ describe Maid, '.with_instance' do
   it 'temporarily sets the instance to the given argument and execute the block' do
     instance = double('instance')
     expect(Maid.with_instance(instance) { 0 }).to eq(0)
-    expect(Maid.instance_eval { @instance }).to be(nil)
+    expect(Maid.instance_eval { @instance }).to be_nil
   end
 end
 

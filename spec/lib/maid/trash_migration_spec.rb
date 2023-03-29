@@ -3,7 +3,7 @@ require 'fileutils'
 require 'spec_helper'
 
 module Maid
-  describe TrashMigration, :fakefs => true do
+  describe TrashMigration, fakefs: true do
     context 'when running on Linux' do
       before do
         allow(Platform).to receive(:linux?).and_return(true)
@@ -53,8 +53,10 @@ module Maid
 
       context 'in Linux' do
         let(:filename) { 'foo.txt' }
-        let(:trash_contents) { Dir.glob(File.join(subject.correct_trash, '*'),
-                                        File::FNM_DOTMATCH) }
+        let(:trash_contents) do
+          Dir.glob(File.join(subject.correct_trash, '*'),
+                   File::FNM_DOTMATCH,)
+        end
 
         before do
           allow(subject).to receive(:correct_trash).and_return(File.expand_path('~/.local/share/Trash/files/'))
@@ -66,15 +68,14 @@ module Maid
           subject.perform
         end
 
-
         it 'removes all files from incorrect trash directory' do
           expect(File.exist?(subject.incorrect_trash)).to be false
         end
 
         it 'moves all files to the correct trash directory' do
           expect(trash_contents.length).to eq(2)
-          expect(trash_contents[0]).to match(/files\/\.Trash$/)
-          expect(trash_contents[1]).to match(/files\/foo.txt$/)
+          expect(trash_contents[0]).to match(%r{files/\.Trash$})
+          expect(trash_contents[1]).to match(%r{files/foo.txt$})
         end
       end
     end

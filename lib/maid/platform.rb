@@ -15,7 +15,7 @@ module Maid::Platform
     end
 
     def has_tag_available?
-      osx? && system("which -s tag")
+      osx? && system('which -s tag')
     end
   end
 

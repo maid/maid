@@ -1,0 +1,35 @@
+---
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-rake
+  - rubocop-rspec
+
+AllCops:
+  AutoCorrect: true
+  Exclude:
+    - "bin/*"
+    - "vendor/bundle/**/*" # when running on GH Actions
+  NewCops: enable
+  TargetRubyVersion: 2.7
+
+Metrics/BlockLength:
+  Exclude:
+    - Guardfile
+    - "spec/**/*"
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInBlockArgs:
+  Enabled: true
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+RSpec/Focus:
+  AutoCorrect: false
+  Severity: error

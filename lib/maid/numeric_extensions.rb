@@ -33,32 +33,32 @@ module Maid::NumericExtensions
     def seconds
       self
     end
-    alias :second :seconds
+    alias second seconds
 
     def minutes
       self * 60
     end
-    alias :minute :minutes
+    alias minute minutes
 
     def hours
       self * 3600
     end
-    alias :hour :hours
+    alias hour hours
 
     def days
       self * 24.hours
     end
-    alias :day :days
+    alias day days
 
     def weeks
       self * 7.days
     end
-    alias :week :weeks
+    alias week weeks
 
     def fortnights
       self * 2.weeks
     end
-    alias :fortnight :fortnights
+    alias fortnight fortnights
 
     # Reads best without arguments:  10.minutes.ago
     def ago(time = ::Time.now)
@@ -66,7 +66,7 @@ module Maid::NumericExtensions
     end
 
     # Reads best with argument:  10.minutes.until(time)
-    alias :until :ago
+    alias until ago
 
     # Reads best with argument:  10.minutes.since(time)
     def since(time = ::Time.now)
@@ -74,21 +74,22 @@ module Maid::NumericExtensions
     end
 
     # Reads best without arguments:  10.minutes.from_now
-    alias :from_now :since
+    alias from_now since
 
     ######################
     ### Maid additions ###
     ######################
 
-    # TODO find a better place for these to live?
+    # TODO: find a better place for these to live?
 
     # Reads well in a case like:
     #
     #   1.week.since? accessed_at('filename')
     def since?(other_time)
-      other_time < self.ago
+      other_time < ago
     end
   end
+
   module SizeToKb
     # Enables Computer disk size conversion into kilobytes.
     #
@@ -100,29 +101,29 @@ module Maid::NumericExtensions
     def kb
       self
     end
-    alias :kilobytes :kb
-    alias :kilobyte :kb
-    alias :kB :kb
+    alias kilobytes kb
+    alias kilobyte kb
+    alias kB kb
 
     def mb
-      self * 1024 ** 1
+      self * (1024**1)
     end
-    alias :megabytes :mb
-    alias :megabyte :mb
-    alias :mB :mb
+    alias megabytes mb
+    alias megabyte mb
+    alias mB mb
 
     def gb
-      self * 1024 ** 2
+      self * (1024**2)
     end
-    alias :gigabytes :gb
-    alias :gigabyte :gb
-    alias :gB :gb
+    alias gigabytes gb
+    alias gigabyte gb
+    alias gB gb
 
     def tb
-      self * 1024 ** 3
+      self * (1024**3)
     end
-    alias :terabytes :tb
-    alias :terabyte :tb
-    alias :tB :tb
+    alias terabytes tb
+    alias terabyte tb
+    alias tB tb
   end
 end

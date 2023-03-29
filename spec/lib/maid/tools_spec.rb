@@ -1,4 +1,3 @@
-# encoding: utf-8
 require 'spec_helper'
 
 module Maid
@@ -7,7 +6,7 @@ module Maid
   # More info:
   #
   # * [FakeFS](https://github.com/defunkt/fakefs)
-  describe Tools, :fakefs => true do
+  describe Tools, fakefs: true do
     before do
       @home = File.expand_path('~')
       @now = Time.now
@@ -15,7 +14,7 @@ module Maid
       expect(Maid.ancestors).to include(Tools)
 
       @logger = double('Logger').as_null_object
-      @maid = Maid.new(:logger => @logger)
+      @maid = Maid.new(logger: @logger)
 
       # Prevent warnings from showing when testing deprecated methods:
       allow(@maid).to receive(:__deprecated_run_action__)
@@ -47,7 +46,8 @@ module Maid
         @maid.move(@src_file, @dst_dir)
       end
 
-      it 'handles multiple from paths' do
+      # FIXME: Example is too long, shouldn't need the rubocop::disable
+      it 'handles multiple from paths' do # rubocop:disable RSpec/ExampleLength
         second_file_name = 'bar.zip'
         second_src_file = File.join(@src_dir, second_file_name)
         FileUtils.touch(File.expand_path(second_src_file))
@@ -69,7 +69,7 @@ module Maid
           expect(FileUtils).not_to receive(:mv)
           expect(@logger).to receive(:warn).once
 
-          another_file = "#@src_file.1"
+          another_file = "#{@src_file}.1"
           @maid.move([@src_file, another_file], @dst_dir)
         end
       end
@@ -80,11 +80,11 @@ module Maid
         @src_file = (@src_dir = '~/Source/') + (@file_name = 'foo.zip')
         FileUtils.mkdir_p(File.expand_path(@src_dir))
         FileUtils.touch(File.expand_path(@src_file))
-        @expanded_src_name = "#@home/Source/foo.zip"
+        @expanded_src_name = "#{@home}/Source/foo.zip"
 
         @dst_name = '~/Destination/bar.zip'
-        @expanded_dst_dir = "#@home/Destination/"
-        @expanded_dst_name = "#@home/Destination/bar.zip"
+        @expanded_dst_dir = "#{@home}/Destination/"
+        @expanded_dst_name = "#{@home}/Destination/bar.zip"
       end
 
       it 'creates needed directories' do
@@ -157,14 +157,14 @@ module Maid
 
       it 'removes files greater then the remove option size' do
         allow(@maid).to receive(:disk_usage).and_return(1025)
-        @maid.trash(@src_file, :remove_over => 1.mb)
+        @maid.trash(@src_file, remove_over: 1.mb)
         expect(File.exist?(@src_file)).not_to be(true)
         expect(File.exist?(@trash_file)).not_to be(true)
       end
 
       it 'trashes files less then the remove option size' do
         allow(@maid).to receive(:disk_usage).and_return(1023)
-        @maid.trash(@src_file, :remove_over => 1.mb)
+        @maid.trash(@src_file, remove_over: 1.mb)
         expect(File.exist?(@trash_file)).to be(true)
       end
     end
@@ -189,15 +189,15 @@ module Maid
       end
 
       it 'sets the secure option' do
-        @options = @maid.file_options.merge(:secure => true)
+        @options = @maid.file_options.merge(secure: true)
         expect(FileUtils).to receive(:rm_r).with(File.expand_path(@src_file), @options)
-        @maid.remove(@src_file, :secure => true)
+        @maid.remove(@src_file, secure: true)
       end
 
       it 'sets the force option' do
-        @options = @maid.file_options.merge(:force => true)
+        @options = @maid.file_options.merge(force: true)
         expect(FileUtils).to receive(:rm_r).with(File.expand_path(@src_file), @options)
-        @maid.remove(@src_file, :force => true)
+        @maid.remove(@src_file, force: true)
       end
 
       it 'handles multiple paths' do
@@ -213,7 +213,7 @@ module Maid
 
     describe '#dir' do
       before do
-        @file = (@dir = "#@home/Downloads") + '/foo.zip'
+        @file = (@dir = "#{@home}/Downloads") + '/foo.zip'
         FileUtils.mkdir_p(@dir)
       end
 
@@ -225,19 +225,19 @@ module Maid
       it 'lists multiple files in alphabetical order' do
         # It doesn't occur with `FakeFS` as far as I can tell, but Ubuntu (and possibly OS X) can give the results out
         # of lexical order.  That makes using the `dry-run` output difficult to use.
-        allow(Dir).to receive(:glob).and_return(%w(/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip))
-        expect(@maid.dir('~/Downloads/*.zip')).to eq(%w(/home/foo/a.zip /home/foo/b.zip /home/foo/c.zip))
+        allow(Dir).to receive(:glob).and_return(%w[/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip])
+        expect(@maid.dir('~/Downloads/*.zip')).to eq(%w[/home/foo/a.zip /home/foo/b.zip /home/foo/c.zip])
       end
 
       context 'with multiple files' do
         before do
-          @other_file = "#@dir/qux.tgz"
+          @other_file = "#{@dir}/qux.tgz"
           FileUtils.touch(@file)
           FileUtils.touch(@other_file)
         end
 
         it 'list files in all provided globs' do
-          expect(@maid.dir(%w(~/Downloads/*.tgz ~/Downloads/*.zip))).to eq([@file, @other_file])
+          expect(@maid.dir(%w[~/Downloads/*.tgz ~/Downloads/*.zip])).to eq([@file, @other_file])
         end
 
         it 'lists files when using regexp-like glob patterns' do
@@ -247,7 +247,7 @@ module Maid
 
       context 'with multiple directories' do
         before do
-          @other_file = "#@home/Desktop/bar.zip"
+          @other_file = "#{@home}/Desktop/bar.zip"
           FileUtils.touch(@file)
           FileUtils.mkdir_p(File.dirname(@other_file))
           FileUtils.touch(@other_file)
@@ -265,7 +265,7 @@ module Maid
 
     describe '#files' do
       before do
-        @file = (@dir = "#@home/Downloads") + '/foo.zip'
+        @file = (@dir = "#{@home}/Downloads") + '/foo.zip'
         FileUtils.mkdir_p(@dir)
         FileUtils.mkdir(@dir + '/notfile')
       end
@@ -278,19 +278,19 @@ module Maid
       it 'lists multiple files in alphabetical order' do
         # It doesn't occur with `FakeFS` as far as I can tell, but Ubuntu (and possibly OS X) can give the results out
         # of lexical order.  That makes using the `dry-run` output difficult to use.
-        allow(Dir).to receive(:glob).and_return(%w(/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip))
-        expect(@maid.dir('~/Downloads/*.zip')).to eq(%w(/home/foo/a.zip /home/foo/b.zip /home/foo/c.zip))
+        allow(Dir).to receive(:glob).and_return(%w[/home/foo/b.zip /home/foo/a.zip /home/foo/c.zip])
+        expect(@maid.dir('~/Downloads/*.zip')).to eq(%w[/home/foo/a.zip /home/foo/b.zip /home/foo/c.zip])
       end
 
       context 'with multiple files' do
         before do
-          @other_file = "#@dir/qux.tgz"
+          @other_file = "#{@dir}/qux.tgz"
           FileUtils.touch(@file)
           FileUtils.touch(@other_file)
         end
 
         it 'list files in all provided globs' do
-          expect(@maid.dir(%w(~/Downloads/*.tgz ~/Downloads/*.zip))).to eq([@file, @other_file])
+          expect(@maid.dir(%w[~/Downloads/*.tgz ~/Downloads/*.zip])).to eq([@file, @other_file])
         end
 
         it 'lists files when using regexp-like glob patterns' do
@@ -300,7 +300,7 @@ module Maid
 
       context 'with multiple directories' do
         before do
-          @other_file = "#@home/Desktop/bar.zip"
+          @other_file = "#{@home}/Desktop/bar.zip"
           FileUtils.touch(@file)
           FileUtils.mkdir_p(File.dirname(@other_file))
           FileUtils.mkdir(@home + '/Desktop/notfile')
@@ -322,7 +322,7 @@ module Maid
     describe '#mkdir' do
       it 'creates a directory successfully' do
         @maid.mkdir('~/Downloads/Music/Pink.Floyd')
-        expect(File.exist?("#@home/Downloads/Music/Pink.Floyd")).to be(true)
+        expect(File.exist?("#{@home}/Downloads/Music/Pink.Floyd")).to be(true)
       end
 
       it 'logs the creation of the directory' do
@@ -331,7 +331,7 @@ module Maid
       end
 
       it 'returns the path of the created directory' do
-        expect(@maid.mkdir('~/Reference/Foo')).to eq("#@home/Reference/Foo")
+        expect(@maid.mkdir('~/Reference/Foo')).to eq("#{@home}/Reference/Foo")
       end
 
       # FIXME: FakeFS doesn't seem to report `File.exist?` properly.  However, this has been tested manually.
@@ -354,13 +354,13 @@ module Maid
       end
 
       it 'delegates to Find.find with an expanded path' do
-        f = lambda { |arg| }
+        f = ->(arg) {}
         expect(Find).to receive(:find).with(@file_expand_path, &f)
         @maid.find(@file, &f)
       end
 
       it "returns an array of all the files' names when no block is given" do
-        expect(@maid.find(@dir)).to match_array([@dir_expand_path, @file_expand_path])
+        expect(@maid.find(@dir)).to contain_exactly(@dir_expand_path, @file_expand_path)
       end
     end
 
@@ -396,7 +396,7 @@ module Maid
       end
 
       it 'detects when downloading in Safari' do
-        expect(@maid.downloading?('foo.zip.download')).to be (true)
+        expect(@maid.downloading?('foo.zip.download')).to be(true)
       end
     end
 
@@ -409,7 +409,7 @@ module Maid
 
     describe '#zipfile_contents' do
       it 'inspects the contents of a .zip file' do
-        entries = [double(:name => 'foo.exe'), double(:name => 'README.txt'), double(:name => 'subdir/anything.txt')]
+        entries = [double(name: 'foo.exe'), double(name: 'README.txt'), double(name: 'subdir/anything.txt')]
         allow(Zip::File).to receive(:open).and_yield(entries)
 
         expect(@maid.zipfile_contents('foo.zip')).to eq(['README.txt', 'foo.exe', 'subdir/anything.txt'])
@@ -432,7 +432,7 @@ module Maid
 
     describe '#created_at' do
       before do
-        @path = "~/test.txt"
+        @path = '~/test.txt'
       end
 
       it 'gives the created time of the file' do
@@ -446,12 +446,12 @@ module Maid
     describe '#accessed_at' do
       # FakeFS does not implement atime.
       it 'gives the last accessed time of the file' do
-        expect(File).to receive(:atime).with("#@home/foo.zip").and_return(@now)
+        expect(File).to receive(:atime).with("#{@home}/foo.zip").and_return(@now)
         expect(@maid.accessed_at('~/foo.zip')).to eq(@now)
       end
 
       it 'triggers deprecation warning when last_accessed is used, but still run' do
-        expect(File).to receive(:atime).with("#@home/foo.zip").and_return(@now)
+        expect(File).to receive(:atime).with("#{@home}/foo.zip").and_return(@now)
         expect(@maid).to have_deprecated_method(:last_accessed)
         expect(@maid.last_accessed('~/foo.zip')).to eq(@now)
       end
@@ -465,7 +465,7 @@ module Maid
 
       it 'gives the modified time of the file' do
         Timecop.freeze(@now) do
-          File.open(File.expand_path(@path), 'w') { |f| f.write('Test') }
+          File.write(File.expand_path(@path), 'Test')
         end
 
         # use to_i to ignore milliseconds during test
@@ -502,7 +502,7 @@ module Maid
       end
 
       it 'ands pushes the given git repository, logging the action' do
-        expect(@maid).to receive(:cmd).with(%(cd #@home/code/projectname && git pull && git push 2>&1))
+        expect(@maid).to receive(:cmd).with(%(cd #{@home}/code/projectname && git pull && git push 2>&1))
         expect(@logger).to receive(:info)
         @maid.git_piston('~/code/projectname')
       end
@@ -515,7 +515,7 @@ module Maid
       end
 
       it 'syncs the expanded paths, retaining backslash' do
-        expect(@maid).to receive(:cmd).with(%(rsync -a -u #@home/Downloads/ #@home/Reference 2>&1))
+        expect(@maid).to receive(:cmd).with(%(rsync -a -u #{@home}/Downloads/ #{@home}/Reference 2>&1))
         @maid.sync(@src_dir, @dst_dir)
       end
 
@@ -525,19 +525,20 @@ module Maid
       end
 
       it 'has no options' do
-        expect(@maid).to receive(:cmd).with(%(rsync  #@home/Downloads/ #@home/Reference 2>&1))
-        @maid.sync(@src_dir, @dst_dir, :archive => false, :update => false)
+        expect(@maid).to receive(:cmd).with(%(rsync  #{@home}/Downloads/ #{@home}/Reference 2>&1))
+        @maid.sync(@src_dir, @dst_dir, archive: false, update: false)
       end
 
       it 'adds all options' do
-        expect(@maid).to receive(:cmd).with(%(rsync -a -v -u -m --exclude=.git --delete #@home/Downloads/ #@home/Reference 2>&1))
-        @maid.sync(@src_dir, @dst_dir, :archive => true, :update => true, :delete => true, :verbose => true, :prune_empty => true, :exclude => '.git')
+        expect(@maid).to receive(:cmd).with(%(rsync -a -v -u -m --exclude=.git --delete #{@home}/Downloads/ #{@home}/Reference 2>&1)) # rubocop:disable Layout/LineLength
+        @maid.sync(@src_dir, @dst_dir, archive: true, update: true, delete: true, verbose: true,
+                                       prune_empty: true, exclude: '.git',)
       end
 
       it 'adds multiple exlcude options' do
-        expect(@maid).to receive(:cmd).
-          with(%(rsync -a -u --exclude=.git --exclude=.rvmrc #@home/Downloads/ #@home/Reference 2>&1))
-        @maid.sync(@src_dir, @dst_dir, :exclude => ['.git', '.rvmrc'])
+        expect(@maid).to receive(:cmd)
+          .with(%(rsync -a -u --exclude=.git --exclude=.rvmrc #{@home}/Downloads/ #{@home}/Reference 2>&1))
+        @maid.sync(@src_dir, @dst_dir, exclude: ['.git', '.rvmrc'])
       end
 
       context 'when file_options[:noop] is true' do
@@ -552,7 +553,7 @@ module Maid
         end
 
         it 'adds noop option' do
-          expect(@maid).to receive(:cmd).with(%(rsync -a -u -n #@home/Downloads/ #@home/Reference 2>&1))
+          expect(@maid).to receive(:cmd).with(%(rsync -a -u -n #{@home}/Downloads/ #{@home}/Reference 2>&1))
           @maid.sync(@src_dir, @dst_dir)
         end
       end
@@ -606,24 +607,24 @@ module Maid
     end
   end
 
-  describe Tools, :fakefs => false do
+  describe Tools, fakefs: false do
     let(:file_fixtures_path) { File.expand_path(File.dirname(__FILE__) + '../../../fixtures/files/') }
-    let(:file_fixtures_glob) { "#{ file_fixtures_path }/*" }
+    let(:file_fixtures_glob) { "#{file_fixtures_path}/*" }
     let(:image_path) { File.join(file_fixtures_path, 'ruby.jpg') }
     let(:unknown_path) { File.join(file_fixtures_path, 'unknown.foo') }
 
     before do
       @logger = double('Logger').as_null_object
-      @maid = Maid.new(:logger => @logger)
+      @maid = Maid.new(logger: @logger)
     end
 
     describe '#dupes_in' do
       it 'lists duplicate files in arrays' do
         dupes = @maid.dupes_in(file_fixtures_glob)
-        expect(dupes.first).to be_kind_of(Array)
+        expect(dupes.first).to be_a(Array)
 
         basenames = dupes.flatten.map { |p| File.basename(p) }
-        expect(basenames).to eq(%w(1.zip bar.zip foo.zip))
+        expect(basenames).to eq(%w[1.zip bar.zip foo.zip])
       end
     end
 
@@ -632,7 +633,7 @@ module Maid
         dupes = @maid.verbose_dupes_in(file_fixtures_glob)
 
         basenames = dupes.flatten.map { |p| File.basename(p) }
-        expect(basenames).to eq(%w(bar.zip foo.zip))
+        expect(basenames).to eq(%w[bar.zip foo.zip])
       end
     end
 
@@ -649,7 +650,7 @@ module Maid
         dupes = @maid.newest_dupes_in(file_fixtures_glob)
 
         basenames = dupes.flatten.map { |p| File.basename(p) }
-        expect(basenames).to match_array(%w(bar.zip 1.zip))
+        expect(basenames).to match_array(%w[bar.zip 1.zip])
       end
     end
 
@@ -750,7 +751,8 @@ module Maid
     end
 
     describe '#ignore_child_dirs' do
-      it 'filters out any child directory' do
+      # FIXME: Example is too long, shouldn't need the rubocop::disable
+      it 'filters out any child directory' do # rubocop:disable RSpec/ExampleLength
         src = [
           'a',
           'b',
@@ -787,15 +789,15 @@ module Maid
     end
   end
 
-  describe 'OSX tag support', :fakefs => false do
-      let(:test_file) { '~/.maid/test/tag.zip' }
-      let(:test_dir) { File.dirname(test_file) }
-      let(:file_name) { File.basename(test_file) }
-      let(:original_file_options) { @maid.file_options.clone }
+  describe 'OSX tag support', fakefs: false do
+    let(:test_file) { '~/.maid/test/tag.zip' }
+    let(:test_dir) { File.dirname(test_file) }
+    let(:file_name) { File.basename(test_file) }
+    let(:original_file_options) { @maid.file_options.clone }
 
     before do
       @logger = double('Logger').as_null_object
-      @maid = Maid.new(:logger => @logger)
+      @maid = Maid.new(logger: @logger)
 
       FileUtils.mkdir_p(test_dir)
       FileUtils.touch(test_file)
@@ -808,27 +810,27 @@ module Maid
     end
 
     describe '#tags' do
-      it 'returns tags from a file that has one' do 
+      it 'returns tags from a file that has one' do
         if Platform.has_tag_available?
           @maid.file_options[:noop] = false
-          @maid.add_tag(test_file, "Test")
-          expect(@maid.tags(test_file)).to eq(["Test"])
+          @maid.add_tag(test_file, 'Test')
+          expect(@maid.tags(test_file)).to eq(['Test'])
         end
       end
 
       it 'returns tags from a file that has serveral tags' do
         if Platform.has_tag_available?
           @maid.file_options[:noop] = false
-          @maid.add_tag(test_file, ["Test", "Twice"])
-          expect(@maid.tags(test_file)).to eq(["Test", "Twice"])
+          @maid.add_tag(test_file, %w[Test Twice])
+          expect(@maid.tags(test_file)).to eq(%w[Test Twice])
         end
       end
     end
 
     describe '#has_tags?' do
-      it 'returns true for a file with tags' do 
+      it 'returns true for a file with tags' do
         if Platform.has_tag_available?
-          @maid.add_tag(test_file, "Test")
+          @maid.add_tag(test_file, 'Test')
           expect(@maid.has_tags?(test_file)).to be(true)
         end
       end
@@ -839,43 +841,43 @@ module Maid
     end
 
     describe '#contains_tag?' do
-      it 'returns true a file with the given tag' do 
+      it 'returns true a file with the given tag' do
         if Platform.has_tag_available?
-          @maid.add_tag(test_file, "Test")
-          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
-          expect(@maid.contains_tag?(test_file, "Not there")).to be(false)
+          @maid.add_tag(test_file, 'Test')
+          expect(@maid.contains_tag?(test_file, 'Test')).to be(true)
+          expect(@maid.contains_tag?(test_file, 'Not there')).to be(false)
         end
       end
     end
 
     describe '#add_tag' do
-      it 'adds the given tag to a file' do 
+      it 'adds the given tag to a file' do
         if Platform.has_tag_available?
-          @maid.add_tag(test_file, "Test")
-          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
+          @maid.add_tag(test_file, 'Test')
+          expect(@maid.contains_tag?(test_file, 'Test')).to be(true)
         end
       end
     end
 
     describe '#remove_tag' do
-      it 'removes the given tag from a file' do 
+      it 'removes the given tag from a file' do
         if Platform.has_tag_available?
-          @maid.add_tag(test_file, "Test")
-          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
-          @maid.remove_tag(test_file, "Test")
-          expect(@maid.contains_tag?(test_file, "Test")).to be(false)
+          @maid.add_tag(test_file, 'Test')
+          expect(@maid.contains_tag?(test_file, 'Test')).to be(true)
+          @maid.remove_tag(test_file, 'Test')
+          expect(@maid.contains_tag?(test_file, 'Test')).to be(false)
         end
       end
     end
 
     describe '#set_tag' do
-      it 'sets the given tags on a file' do 
+      it 'sets the given tags on a file' do
         if Platform.has_tag_available?
-          @maid.set_tag(test_file, "Test")
-          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
-          @maid.set_tag(test_file, ["Test", "Twice"])
-          expect(@maid.contains_tag?(test_file, "Test")).to be(true)
-          expect(@maid.contains_tag?(test_file, "Twice")).to be(true)
+          @maid.set_tag(test_file, 'Test')
+          expect(@maid.contains_tag?(test_file, 'Test')).to be(true)
+          @maid.set_tag(test_file, %w[Test Twice])
+          expect(@maid.contains_tag?(test_file, 'Test')).to be(true)
+          expect(@maid.contains_tag?(test_file, 'Twice')).to be(true)
         end
       end
     end

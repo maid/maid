@@ -8,12 +8,14 @@
 # what they do, you might run into unwanted results!
 #
 # Don't forget, it's just Ruby!  You can define custom methods and use them below:
-# 
+#
 #     def magic(*)
 #       # ...
 #     end
-# 
-# If you come up with some cool tools of your own, please send me a pull request on GitHub!  Also, please consider sharing your rules with others via [the wiki](https://github.com/benjaminoakes/maid/wiki).
+#
+# If you come up with some cool tools of your own, please send me a pull
+# request on GitHub!  Also, please consider sharing your rules with others via
+# [the wiki](https://github.com/benjaminoakes/maid/wiki).
 #
 # For more help on Maid:
 #
@@ -39,37 +41,35 @@ Maid.rules do
   end
 
   rule 'Mac OS X applications in zip files' do
-    found = dir('~/Downloads/*.zip').select { |path|
-      zipfile_contents(path).any? { |c| c.match(/\.app\/Contents\//) }
-    }
+    found = dir('~/Downloads/*.zip').select do |path|
+      zipfile_contents(path).any? { |c| c.match(%r{\.app/Contents/}) }
+    end
 
     trash(found)
   end
 
   rule 'Misc Screenshots' do
     dir('~/Desktop/Screen shot *').each do |path|
-      if 1.week.since?(accessed_at(path))
-        move(path, '~/Documents/Misc Screenshots/')
-      end
+      move(path, '~/Documents/Misc Screenshots/') if 1.week.since?(accessed_at(path))
     end
   end
 
   # NOTE: Currently, only Mac OS X supports `duration_s`.
   rule 'MP3s likely to be music' do
     dir('~/Downloads/*.mp3').each do |path|
-      if duration_s(path) > 30.0
-        move(path, '~/Music/iTunes/iTunes Media/Automatically Add to iTunes/')
-      end
+      move(path, '~/Music/iTunes/iTunes Media/Automatically Add to iTunes/') if duration_s(path) > 30.0
     end
   end
-  
+
   # NOTE: Currently, only Mac OS X supports `downloaded_from`.
   rule 'Old files downloaded while developing/testing' do
     dir('~/Downloads/*').each do |path|
-      if downloaded_from(path).any? { |u| u.match('http://localhost') || u.match('http://staging\.yourcompany\.com') } &&
-          1.week.since?(accessed_at(path))
-        trash(path)
-      end
+      next unless downloaded_from(path).any? do |u|
+                    u.match('http://localhost') || u.match('http://staging\.yourcompany\.com')
+                  end &&
+                  1.week.since?(accessed_at(path))
+
+      trash(path)
     end
   end
 end

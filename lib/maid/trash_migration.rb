@@ -8,7 +8,7 @@ module Maid
       def incorrect_trash
         File.expand_path('~/.Trash') + '/'
       end
-  
+
       def correct_trash
         Maid.new.trash_path
       end
@@ -18,16 +18,16 @@ module Maid
           File.directory?(incorrect_trash) &&
           !ENV['MAID_NO_MIGRATE_TRASH']
       end
- 
+
       def perform
-        maid = ::Maid::Maid.new(:trash_path => correct_trash)
+        maid = ::Maid::Maid.new(trash_path: correct_trash)
         # Use local variable so it's available in the closure used by `instance_eval`
         path = incorrect_trash
 
         # Might as well use Maid itself for this :)
         maid.instance_eval do
           rule 'Migrate Linux trash to correct path' do
-            trash(dir("#{ path }/*"))
+            trash(dir("#{path}/*"))
             trash(path)
           end
         end

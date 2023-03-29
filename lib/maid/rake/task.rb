@@ -29,7 +29,7 @@ module Maid
 
       def define
         desc task_description
-        task *args do |task|
+        task(*args) do |task|
           SingleRule.perform(task.name, task_proc)
         end
       end
