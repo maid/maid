@@ -22,7 +22,7 @@ jobs:
       - name: Run tests
         run: COVERAGE=true bundle exec rake
       - name: Publish code coverage
-        uses: paambaati/codeclimate-action@v3
+        uses: paambaati/codeclimate-action@v3.2.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_KEY }}
 
