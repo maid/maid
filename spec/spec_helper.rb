@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+if ENV["COVERAGE"]
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter "/spec/"
+    add_filter "/lib/maid/rules.sample.rb"
+    minimum_coverage 82.77
+    refuse_coverage_drop
+  end
+end
 require 'rubygems'
 require 'rspec'
 require 'timecop'
