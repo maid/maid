@@ -1,9 +1,8 @@
 # Maid
 
 [![Gem Version](https://badge.fury.io/rb/maid.svg)](http://badge.fury.io/rb/maid)
-[![Build Status](https://secure.travis-ci.org/benjaminoakes/maid.svg)](http://travis-ci.org/benjaminoakes/maid)
+[![Test](https://github.com/maid/maid/actions/workflows/test.yml/badge.svg)](https://github.com/maid/maid/actions/workflows/test.yml)
 [![Code Climate](https://codeclimate.com/github/benjaminoakes/maid.svg)](https://codeclimate.com/github/benjaminoakes/maid)
-[![Hakiri](https://hakiri.io/github/benjaminoakes/maid/stable.svg)](https://hakiri.io/github/benjaminoakes/maid/stable)
 [![StackOverflow](http://img.shields.io/badge/stackoverflow-maid-blue.svg)](http://stackoverflow.com/questions/tagged/maid)
 
 **Be lazy!**  Let Maid clean up after you, based on rules you define.
