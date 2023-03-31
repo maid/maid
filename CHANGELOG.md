@@ -1,13 +1,13 @@
 # Changelog
 
-## [0.10.0-alpha.1](https://github.com/maid/maid/compare/v0.9.0.alpha.2...v0.10.0-alpha.1) (2023-03-28)
+## [0.10.0-alpha.2](https://github.com/maid/maid/compare/v0.10.0-alpha.1...v0.10.0-alpha.2) (2023-03-28)
 
 
 ### Bug Fixes
 
 * update syntax for Ruby 3 ([#269](https://github.com/maid/maid/issues/269)) ([ce5b42b](https://github.com/maid/maid/commit/ce5b42b78e53b5ccb9b25926c5af19e31a5c0ed7))
 
-## [0.10.0-alpha.1](https://github.com/maid/maid/compare/v0.9.0...v0.10.0-alpha.1) (2023-03-28)
+## [0.10.0-alpha.1](https://github.com/maid/maid/compare/v0.9.0.alpha.2...v0.10.0-alpha.1) (2023-03-28)
 
 
 ### ⚠ BREAKING CHANGES
