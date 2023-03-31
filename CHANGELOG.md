@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.10.0-alpha.1](https://github.com/maid/maid/compare/v0.9.0...v0.10.0-alpha.1) (2023-03-28)
+## [0.10.0-alpha.1](https://github.com/maid/maid/compare/v0.9.0.alpha.2...v0.10.0-alpha.1) (2023-03-28)
 
 
 ### ⚠ BREAKING CHANGES
