@@ -41,7 +41,7 @@ jobs:
       # zoneinfo for the tests to run properly.
       - name: Replace zoneinfo symlink with actual dir
         run: |
-          unlink /usr/share/zoneinfo
+          sudo unlink /usr/share/zoneinfo
           mkdir -p /usr/share/zoneinfo/
           cp /var/db/timezone/zoneifo/ /usr/share/zoneinfo/
           ls -clash /usr/share/zoneinfo
