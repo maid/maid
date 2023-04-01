@@ -73,6 +73,59 @@ module Maid
           @maid.move([@src_file, another_file], @dst_dir)
         end
       end
+
+      context 'when the destination file already exists' do
+        let(:src_file) { '/tmp/src/test_file' }
+        let(:dst_dir) { '/tmp/dest/' }
+        let(:dst_file) { File.join(dst_dir, File.basename(src_file)) }
+        let(:maid) { Maid.new(logger: @logger) }
+
+        before do
+          FileUtils.mkdir_p(File.dirname(src_file))
+          FileUtils.mkdir_p(dst_dir)
+          FileUtils.touch(src_file)
+          FileUtils.touch(dst_file)
+        end
+
+        after do
+          FileUtils.rm_rf([src_file, dst_file])
+        end
+
+        context 'by default' do
+          let!(:original_mtime) { File.stat(dst_file).mtime }
+
+          before do
+            maid.move(src_file, dst_dir)
+          end
+
+          it 'logs an info message' do
+            expect(@logger).to have_received(:info).with(/already/)
+            expect(@logger).to have_received(:info).with(/anyway/)
+            expect(@logger).not_to have_received(:info).with(/skipping/)
+          end
+
+          it 'overwrites destination' do
+            expect(File.stat(dst_file).mtime).not_to eq(original_mtime)
+          end
+        end
+
+        context 'when clobber: false' do
+          let!(:original_mtime) { File.stat(dst_file).mtime }
+
+          before do
+            maid.move(src_file, dst_dir, clobber: false)
+          end
+
+          it 'logs an info message' do
+            expect(@logger).not_to have_received(:info).with(/anyway/)
+            expect(@logger).to have_received(:info).with(/skipping/)
+          end
+
+          it "doesn't overwrite the destination file" do
+            expect(File.stat(dst_file).mtime).to eq(original_mtime)
+          end
+        end
+      end
     end
 
     describe '#rename' do
