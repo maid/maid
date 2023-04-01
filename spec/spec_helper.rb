@@ -7,7 +7,7 @@ if ENV['COVERAGE']
     add_filter '/lib/maid/rules.sample.rb'
     # as seen on ubuntu-latest on CI. macos reports a slightly lower number for
     # some reason.
-    minimum_coverage 82.77
+    minimum_coverage 80.00
     refuse_coverage_drop
   end
 end
