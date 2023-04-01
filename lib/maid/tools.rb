@@ -33,7 +33,8 @@ module Maid::Tools
   #   move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
   #
   # @example Multiple source files
-  #   move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
+  #   move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'],
+  #   '~/Archive/Software/Mac OS X/')
   #   move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
   #
   # @example Overwrite destination file if it already exists
@@ -42,7 +43,8 @@ module Maid::Tools
   # @param sources [String, Array<String>] the paths to the source files to move
   # @param destination [String] path of the directory where to move `sources` to
   # @param [Hash] kwargs the arguments to modify behaviour
-  # @option kwargs [Boolean] :clobber (true) `true` to overwrite destination file if it exists, `false` to skip that file
+  # @option kwargs [Boolean] :clobber (true) `true` to overwrite destination
+  # file if it exists, `false` to skip moving file if it exists
   def move(sources, destination, clobber: true)
     expanded_destination = expand(destination)
 
