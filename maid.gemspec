@@ -53,6 +53,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('guard-rubocop')
   s.add_development_dependency('pry-byebug')
   s.add_development_dependency('rake', '~> 13.0.6')
+  s.add_development_dependency('rake-notes')
   s.add_development_dependency('redcarpet', '~> 3.6.0') # Soft dependency of `yard`
   s.add_development_dependency('rspec', '~> 3.12.0')
   s.add_development_dependency('rubocop')
