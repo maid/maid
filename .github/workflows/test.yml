@@ -34,9 +34,10 @@ jobs:
         run: bundle install
       - name: debug osx
         run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           brew install tree
+          tree -C /usr/share/zoneinfo
           tree -C /var/db/timezone
+          ls -clash /usr/share/zoneinfo
         if: ${{ contains(matrix.os, 'macos') }}
       - name: Run tests
         run: bundle exec rake
