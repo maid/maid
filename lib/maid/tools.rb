@@ -1025,9 +1025,9 @@ module Maid::Tools
   end
 
   # Predicate to tell whether the file should be skipped when moving.
-  # @param source_path [String] the source path
-  # @param destination_dir [String] the destination path
-  # @param clobber [Boolean] `true` to overwrite existing destination path,
+  # @param source_path [String] the path to the source file
+  # @param destination_dir [String] the path to the destination directory
+  # @param clobber [Boolean] `true` to overwrite existing destination file,
   # `false` otherwise
   # @return [Boolean] whether to skip the move
   def skip_move?(source_path, destination_dir, clobber)
