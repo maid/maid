@@ -2,6 +2,7 @@ require 'bundler'
 require 'rake'
 require 'rspec/core/rake_task'
 require 'yard'
+require 'rake/notes/rake_task'
 
 task default: :spec
 
