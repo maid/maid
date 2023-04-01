@@ -140,7 +140,7 @@ class Maid::Maid
   def default_trash_path
     # TODO: Refactor module declaration so this can be `Platform`
     if Maid::Platform.linux?
-      # See the [FreeDesktop.org Trash specification](http://www.ramendik.ru/docs/trashspec.html)
+      # See the [FreeDesktop.org Trash specification](https://archive.is/cXir4)
       path = "#{XDG['DATA_HOME']}/Trash/files"
     elsif Maid::Platform.osx?
       path = File.expand_path('~/.Trash')
