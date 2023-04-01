@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 module Maid
-  describe Maid do
+  describe Maid, fakefs: true do
     let(:logger) { instance_spy('Logger') }
 
     before do
       allow(Logger).to receive(:new).and_return(logger)
-      allow(FileUtils).to receive(:mkdir_p)
+      # allow(FileUtils).to receive(:mkdir_p)
     end
 
     describe '.new' do
@@ -33,8 +33,11 @@ module Maid
       end
 
       it 'makes the log directory in case it does not exist' do
-        expect(FileUtils).to receive(:mkdir_p).with('/home/username/log')
+        expect(File.exist?('/home/username/log')).to be false
+
         Maid.new(log_device: '/home/username/log/maid.log')
+
+        expect(File.exist?('/home/username/log')).to be true
       end
 
       it 'takes a logger object during intialization' do
@@ -58,8 +61,9 @@ module Maid
 
           it 'set the trash to the correct default path' do
             trash_path = "#{@home}/.local/share/Trash/files/"
-            expect(FileUtils).to receive(:mkdir_p).with(trash_path).once
+
             maid = Maid.new
+
             expect(maid.trash_path).to eq(trash_path)
           end
         end
@@ -71,7 +75,7 @@ module Maid
 
           it 'sets the trash to the correct default path' do
             trash_path = "#{@home}/.Trash/"
-            expect(FileUtils).to receive(:mkdir_p).with(trash_path).once
+
             maid = Maid.new
             expect(maid.trash_path).to eq(trash_path)
           end
@@ -86,8 +90,9 @@ module Maid
 
       it 'sets the trash to the given path, if provided' do
         trash_path = '/home/username/tmp/my_trash/'
-        expect(FileUtils).to receive(:mkdir_p).with(trash_path).once
+
         maid = Maid.new(trash_path: trash_path)
+
         expect(maid.trash_path).not_to be_nil
         expect(maid.trash_path).to eq(trash_path)
       end
@@ -198,6 +203,7 @@ module Maid
       before do
         allow(Listen).to receive(:to)
         allow(Listen).to receive(:start)
+        FileUtils.mkdir_p('watch_dir')
         @maid = Maid.new
       end
 
@@ -215,6 +221,8 @@ module Maid
       # FIXME: Example is too long, shouldn't need the rubocop::disable
       it 'accepts a hash of options and passes them to Listen' do # rubocop:disable RSpec/ExampleLength
         hash = { some: :options }
+        FileUtils.mkdir_p('some_dir')
+
         @maid.watch('some_dir', hash) do
           rule 'test' do
           end
@@ -236,6 +244,9 @@ module Maid
 
     describe '#repeat' do
       before do
+        # This is necessary for Rufus to work properly, but since we're using
+        # FakeFS, the fake filesystem is missing that file.
+        FakeFS::FileSystem.clone('/usr/share/zoneinfo/')
         @maid = Maid.new
       end
 
