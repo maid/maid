@@ -25,6 +25,9 @@ RSpec.configure do |config|
   end
   config.include(FakeFS::SpecHelpers, fakefs: true)
   config.raise_errors_for_deprecations!
+
+  config.filter_run focus: true
+  config.run_all_when_everything_filtered = true
 end
 
 RSpec::Matchers.define :have_deprecated_method do |expected|
