@@ -24,31 +24,41 @@ module Maid::Tools
   # For showing deprecation notices
   include Deprecated
 
-  # Move `sources` to a `destination` directory.
+  # Moves `sources` file(s) to a `destination` directory.
   #
   # Movement is only allowed to directories that already exist.  If your
   # intention is to rename, see the `rename` method.
   #
-  # ## Examples
+  # @example Single source file
+  #   move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
   #
-  # Single path:
+  # @example Multiple source files
+  #   move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
+  #   move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
   #
-  #     move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
+  # @example Overwrite destination file if it already exists
+  #   move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/', clobber: true)
   #
-  # Multiple paths:
-  #
-  #     move(['~/Downloads/foo.zip', '~/Downloads/bar.zip'], '~/Archive/Software/Mac OS X/')
-  #     move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
-  def move(sources, destination)
+  # @param sources [String, Array<String>] the paths to the source files to move
+  # @param destination [String] path of the directory where to move `sources` to
+  # @param [Hash] kwargs the arguments to modify behaviour
+  # @option kwargs [Boolean] :clobber (true) `true` to overwrite destination file if it exists, `false` to skip that file
+  def move(sources, destination, clobber: true)
     expanded_destination = expand(destination)
 
     if File.directory?(expanded_destination)
       expand_all(sources).each do |source|
         dest_file_path = File.join(expanded_destination, File.basename(source))
-        dest_file_exists = File.exist?(dest_file_path)
 
-        if dest_file_exists
-          log("#{File.join(expanded_destination, File.basename(source))} already exists, moving it anyway.")
+        if File.exist?(dest_file_path)
+          log("#{dest_file_path} already exists")
+
+          if clobber
+            log("clobber is true, moving #{File.basename(source)} anyway")
+          else
+            log("clobber is false, skipping move for #{File.basename(source)}")
+            next
+          end
         end
 
         log("move #{sh_escape(source)} #{sh_escape(expanded_destination)}")
