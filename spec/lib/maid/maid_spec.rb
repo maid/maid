@@ -245,7 +245,8 @@ module Maid
       before do
         # This is necessary for Rufus to work properly, but since we're using
         # FakeFS, the fake filesystem is missing that file.
-        # FakeFS::FileSystem.clone('/usr/share/zoneinfo/')
+        # macos-1{1,2} don't have this file on GitHub Actions for some reason.
+        FakeFS::FileSystem.clone('/usr/share/zoneinfo/') if Platform.linux?
         @maid = Maid.new
       end
 
