@@ -246,9 +246,18 @@ module Maid
         # This is necessary for Rufus to work properly, but since we're using
         # FakeFS, the fake filesystem is missing that file.
         FakeFS::FileSystem.clone('/usr/share/zoneinfo') if Platform.linux?
-        # The above is a symlink to this path on OSX, and GitHub Actions blow
-        # up when testing for macos otherwise.
-        FakeFS::FileSystem.clone('/var/db/timezone/zoneinfo') if Platform.osx?
+        # OSX is special and uses a symlink at /usr/share/zoneinfo which
+        # confuses FakeFS.
+        # Instead, we create the /usr/share/zoneinfo/ directory on the FakeFS
+        # and copy the zoneinfo data from elsewhere on OSX.
+        if Platform.osx?
+          # Where the actual zoneinfo data is
+          FakeFS::FileSystem.clone('/usr/share/zoneinfo.default/')
+          # Where we need it to be
+          FileUtils.mkdir_p('/usr/share/zoneinfo/')
+          FileUtils.cp('/usr/share/zoneinfo.default/', '/usr/share/zoneinfo/')
+        end
+
         @maid = Maid.new
       end
 
