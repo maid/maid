@@ -34,6 +34,8 @@ jobs:
         run: bundle install
       - name: debug osx
         run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          brew install tree
           tree -C /usr/share
           tree -C /usr
           tree -C /var/db/timezone
