@@ -32,5 +32,11 @@ jobs:
           bundler-cache: true
       - name: Install dependencies
         run: bundle install
+      - name: debug osx
+        run: |
+          tree -C /usr/share
+          tree -C /usr
+          tree -C /var/db/timezone
+          tree -C /var/db
       - name: Run tests
         run: bundle exec rake
