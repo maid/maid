@@ -46,36 +46,28 @@ module Maid::Tools
   #   move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/', clobber:
   #   false)
   #
-  # @param sources [String, Array<String>] the paths to the source files to move
-  # @param destination [String] path of the directory where to move `sources` to
+  # @param sources [String, Array<String>] the paths to the source files to
+  # move
+  # @param destination_dir [String] path of the directory where to move
+  # `sources` to
   # @param [Hash] kwargs the arguments to modify behaviour
   # @option kwargs [Boolean] :clobber (true) `true` to overwrite destination
   # file if it exists, `false` to skip moving file if it exists
-  def move(sources, destination, clobber: true)
-    expanded_destination = expand(destination)
+  def move(sources, destination_dir, clobber: true)
+    expanded_destination_dir = expand(destination_dir)
 
-    if File.directory?(expanded_destination)
+    if File.directory?(expanded_destination_dir)
       expand_all(sources).each do |source|
-        dest_file_path = File.join(expanded_destination, File.basename(source))
+        log("move #{sh_escape(source)} #{sh_escape(expanded_destination_dir)}")
 
-        if File.exist?(dest_file_path)
-          log("#{dest_file_path} already exists")
-
-          if clobber
-            log("clobber is true, moving #{File.basename(source)} anyway")
-          else
-            log("clobber is false, skipping move for #{File.basename(source)}")
-            next
-          end
+        unless skip_move?(source, expanded_destination_dir, clobber)
+          FileUtils.mv(source, expanded_destination_dir, **@file_options)
         end
-
-        log("move #{sh_escape(source)} #{sh_escape(expanded_destination)}")
-        FileUtils.mv(source, expanded_destination, **@file_options)
       end
     else
       # Unix `mv` warns about the target not being a directory with multiple sources.  Maid checks the same.
-      warn("skipping move because #{sh_escape(expanded_destination)} is not a" \
-           "directory (use 'mkdir' to create first, or use 'rename')")
+      warn("skipping move because #{sh_escape(expanded_destination_dir)} " \
+           "is not a directory (use 'mkdir' to create first, or use 'rename')")
     end
   end
 
@@ -1030,5 +1022,30 @@ module Maid::Tools
     else
       []
     end
+  end
+
+  # Predicate to tell whether the file should be skipped when moving.
+  # @param source_path [String] the source path
+  # @param destination_dir [String] the destination path
+  # @param clobber [Boolean] `true` to overwrite existing destination path,
+  # `false` otherwise
+  # @return [Boolean] whether to skip the move
+  def skip_move?(source_path, destination_dir, clobber)
+    destination_path = File.join(destination_dir, File.basename(source_path))
+
+    # if the destination file doesn't exist, we can move.
+    return false unless File.exist?(destination_path)
+
+    log("#{destination_path} already exists")
+
+    # figure out whether to overwrite the existing destination file.
+    if clobber
+      log("clobbering enabled, moving #{File.basename(source_path)} anyway")
+
+      return false
+    end
+    log("clobbering disabled, skipping move for #{File.basename(source_path)}")
+
+    true
   end
 end
