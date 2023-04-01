@@ -38,7 +38,13 @@ module Maid::Tools
   #   move(dir('~/Downloads/*.zip'), '~/Archive/Software/Mac OS X/')
   #
   # @example Overwrite destination file if it already exists
-  #   move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/', clobber: true)
+  #   move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/')
+  #   move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/', clobber:
+  #   true)
+  #
+  # @example Skip file if it already exists at destination
+  #   move('~/Downloads/foo.zip', '~/Archive/Software/Mac OS X/', clobber:
+  #   false)
   #
   # @param sources [String, Array<String>] the paths to the source files to move
   # @param destination [String] path of the directory where to move `sources` to
