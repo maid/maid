@@ -35,9 +35,8 @@ jobs:
       - name: debug osx
         run: |
           brew install tree
-          tree -C /usr/share/zoneinfo
-          tree -C /var/db/timezone
           ls -clash /usr/share/zoneinfo
+          ls -clash /var/db/timezone/zoneinfo
         if: ${{ contains(matrix.os, 'macos') }}
       - name: Run tests
         run: bundle exec rake

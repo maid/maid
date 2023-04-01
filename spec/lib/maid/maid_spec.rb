@@ -252,10 +252,10 @@ module Maid
         # and copy the zoneinfo data from elsewhere on OSX.
         if Platform.osx?
           # Where the actual zoneinfo data is
-          FakeFS::FileSystem.clone('/var/db/timezone/zoneinfo')
+          FakeFS::FileSystem.clone('/var/db/timezone/tz/2023b.1.0/zoneinfo')
           # Where we need it to be
           FileUtils.mkdir_p('/usr/share/zoneinfo/')
-          FileUtils.cp('/var/db/timezone/zoneinfo/', '/usr/share/zoneinfo/')
+          FileUtils.cp('/var/db/timezone/tz/2023b.1.0/zoneinfo', '/usr/share/zoneinfo/')
         end
 
         @maid = Maid.new
