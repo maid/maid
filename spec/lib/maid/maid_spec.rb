@@ -245,7 +245,7 @@ module Maid
       before do
         # This is necessary for Rufus to work properly, but since we're using
         # FakeFS, the fake filesystem is missing that file.
-        FakeFS::FileSystem.clone('/usr/share/zoneinfo/')
+        # FakeFS::FileSystem.clone('/usr/share/zoneinfo/')
         @maid = Maid.new
       end
 
