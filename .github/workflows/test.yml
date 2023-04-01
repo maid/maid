@@ -40,5 +40,6 @@ jobs:
           tree -C /usr
           tree -C /var/db/timezone
           tree -C /var/db
+        if: ${{ matrix.os }} == "macos-12"
       - name: Run tests
         run: bundle exec rake
