@@ -6,7 +6,6 @@ module Maid
 
     before do
       allow(Logger).to receive(:new).and_return(logger)
-      # allow(FileUtils).to receive(:mkdir_p)
     end
 
     describe '.new' do
