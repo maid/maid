@@ -44,6 +44,13 @@ module Maid::Tools
 
     if File.directory?(expanded_destination)
       expand_all(sources).each do |source|
+        dest_file_path = File.join(expanded_destination, File.basename(source))
+        dest_file_exists = File.exist?(dest_file_path)
+
+        if dest_file_exists
+          log("#{File.join(expanded_destination, File.basename(source))} already exists, moving it anyway.")
+        end
+
         log("move #{sh_escape(source)} #{sh_escape(expanded_destination)}")
         FileUtils.mv(source, expanded_destination, **@file_options)
       end

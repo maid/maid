@@ -73,6 +73,21 @@ module Maid
           @maid.move([@src_file, another_file], @dst_dir)
         end
       end
+
+      context 'when the destination file already exists' do
+        let(:file) { File.expand_path('/tmp/test_file') }
+
+        before do
+          FileUtils.mkdir_p(File.dirname(file))
+          FileUtils.touch(file)
+        end
+
+        it 'logs an info message' do
+          expect(@logger).to receive(:info).with(/already/)
+
+          @maid.move(file, File.dirname(file))
+        end
+      end
     end
 
     describe '#rename' do
