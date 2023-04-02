@@ -1,12 +1,11 @@
 require 'spec_helper'
 
 module Maid
-  describe Maid do
+  describe Maid, fakefs: true do
     let(:logger) { instance_spy('Logger') }
 
     before do
       allow(Logger).to receive(:new).and_return(logger)
-      allow(FileUtils).to receive(:mkdir_p)
     end
 
     describe '.new' do
@@ -33,8 +32,11 @@ module Maid
       end
 
       it 'makes the log directory in case it does not exist' do
-        expect(FileUtils).to receive(:mkdir_p).with('/home/username/log')
+        expect(File.exist?('/home/username/log')).to be false
+
         Maid.new(log_device: '/home/username/log/maid.log')
+
+        expect(File.exist?('/home/username/log')).to be true
       end
 
       it 'takes a logger object during intialization' do
@@ -58,8 +60,9 @@ module Maid
 
           it 'set the trash to the correct default path' do
             trash_path = "#{@home}/.local/share/Trash/files/"
-            expect(FileUtils).to receive(:mkdir_p).with(trash_path).once
+
             maid = Maid.new
+
             expect(maid.trash_path).to eq(trash_path)
           end
         end
@@ -71,7 +74,7 @@ module Maid
 
           it 'sets the trash to the correct default path' do
             trash_path = "#{@home}/.Trash/"
-            expect(FileUtils).to receive(:mkdir_p).with(trash_path).once
+
             maid = Maid.new
             expect(maid.trash_path).to eq(trash_path)
           end
@@ -86,8 +89,9 @@ module Maid
 
       it 'sets the trash to the given path, if provided' do
         trash_path = '/home/username/tmp/my_trash/'
-        expect(FileUtils).to receive(:mkdir_p).with(trash_path).once
+
         maid = Maid.new(trash_path: trash_path)
+
         expect(maid.trash_path).not_to be_nil
         expect(maid.trash_path).to eq(trash_path)
       end
@@ -198,6 +202,7 @@ module Maid
       before do
         allow(Listen).to receive(:to)
         allow(Listen).to receive(:start)
+        FileUtils.mkdir_p('watch_dir')
         @maid = Maid.new
       end
 
@@ -215,6 +220,8 @@ module Maid
       # FIXME: Example is too long, shouldn't need the rubocop::disable
       it 'accepts a hash of options and passes them to Listen' do # rubocop:disable RSpec/ExampleLength
         hash = { some: :options }
+        FileUtils.mkdir_p('some_dir')
+
         @maid.watch('some_dir', hash) do
           rule 'test' do
           end
@@ -232,9 +239,29 @@ module Maid
 
         @maid.watches.last.run
       end
+
+      context('with a non-existent directory') do
+        let(:maid) { Maid.new }
+
+        it 'raises with an intelligible message' do
+          expect { maid.watch('/doesnt_exist/') }.to raise_error(/file.*exist/)
+        end
+
+        it 'logs an intelligible message' do
+          begin
+            maid.watch('/doesnt_exist')
+            # Suppressing the exception is fine, because we just want to test
+            # that the message is logged when it throws and the test above
+            # checks that the exception is raised.
+          rescue StandardError # rubocop:disable Lint/SuppressedException
+          end
+
+          expect(logger).to have_received(:warn).with(/file.*exist/)
+        end
+      end
     end
 
-    describe '#repeat' do
+    describe '#repeat', fake_zoneinfo: true do
       before do
         @maid = Maid.new
       end

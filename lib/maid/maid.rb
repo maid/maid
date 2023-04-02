@@ -88,6 +88,15 @@ class Maid::Maid
   end
 
   def watch(path, options = {}, &block)
+    full_path = File.expand_path(path)
+
+    unless File.directory?(full_path)
+      message = "#{full_path} cannot be a file and it must exist in order to watch it"
+
+      warn(message)
+      raise message
+    end
+
     @watches << ::Maid::Watch.new(self, path, options, &block)
   end
 
