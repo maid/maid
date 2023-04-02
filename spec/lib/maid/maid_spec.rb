@@ -245,12 +245,12 @@ module Maid
       before do
         if Platform.osx?
           FakeFS.deactivate!
-          FileUtils.mkdir_p('/zoneinfo')
-          FileUtils.cp_r('/usr/share/zoneinfo/', '/zoneinfo')
+          FileUtils.mkdir_p('zoneinfo/')
+          FileUtils.cp_r('/usr/share/zoneinfo/', 'zoneinfo/')
           FakeFS.activate!
-          FakeFS.clone('/zoneinfo')
-          FileUtils.mkdir_p('/usr/share/zoneinfo')
-          FileUtils.cp_r('/zoneinfo', '/usr/share/zoneinfo/')
+          FakeFS.clone('zoneinfo/')
+          FileUtils.mkdir_p('/usr/share/zoneinfo/')
+          FileUtils.cp_r('zoneinfo/', '/usr/share/zoneinfo/')
         end
         # This is necessary for Rufus to work properly, but since we're using
         # FakeFS, the fake filesystem is missing that file.
