@@ -29,6 +29,9 @@ RSpec.configure do |config|
   config.filter_run focus: true
   config.run_all_when_everything_filtered = true
 
+  # NOTE: If a test fails because ENOENT /usr/share/zoneinfo/Africa/Abidjan,
+  # add `fake_zoneinfo: true` to the describe:
+  # `describe(MyClass, fake_zoneinfo: true do`
   config.before(:context, fake_zoneinfo: true) do
     # Rufus needs zoneinfo data to run, but when using FakeFS,
     # /usr/share/zoneinfo doesn't exist on the FakeFS.
@@ -40,9 +43,6 @@ RSpec.configure do |config|
     # filesystem, enable the FakeFS, clone that temporary directory, create
     # /usr/share/zoneinfo onto the FakeFS, and finally copy the files into it.
     # This way, they're available in the FakeFS where Rufus can find them.
-    # NOTE: If a test fails because ENOENT /usr/share/zoneinfo/Africa/Abidjan,
-    # add `fake_zoneinfo: true` to the describe:
-    # `describe(MyClass, fake_zoneinfo: true do`
     include FakeFS::SpecHelpers
     FakeFS.activate!
 
@@ -55,9 +55,7 @@ RSpec.configure do |config|
       FileUtils.mkdir_p('/usr/share/')
       FileUtils.cp_r('/tmp/zoneinfo/', '/usr/share/')
     end
-    # This is necessary for Rufus to work properly, but since we're using
-    # FakeFS, the fake filesystem is missing that file.
-    # FakeFS::FileSystem.clone('/usr/share/zoneinfo') if Platform.linux?
+
     FakeFS::FileSystem.clone('/usr/share/zoneinfo') if Maid::Platform.linux?
   end
 end
