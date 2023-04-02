@@ -50,7 +50,8 @@ module Maid::Tools
   # move
   # @param destination_dir [String] path of the directory where to move
   # `sources` to
-  # @param kwargs [Boolean] :clobber (true) `true` to overwrite destination
+  # @param [Hash] kwargs the arguments to modify behaviour
+  # @option kwargs [Boolean] :clobber (true) `true` to overwrite destination
   # file if it exists, `false` to skip moving file if it exists
   def move(sources, destination_dir, clobber: true)
     expanded_destination_dir = expand(destination_dir)
