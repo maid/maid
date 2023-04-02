@@ -250,16 +250,16 @@ module Maid
           FileUtils.mkdir_p('/tmp/zoneinfo/')
           FileUtils.cp_r('/usr/share/zoneinfo/', '/tmp/zoneinfo/')
           bone_machine = Dir.glob('/tmp/zoneinfo/**/*')
-          raise bone_machine.to_s if bone_machine.empty?
-          raise 'awesome' unless File.exist?('/tmp/zoneinfo/Africa/Abidjan')
+          raise bone_machine.to_s # if bone_machine.empty?
+          raise 'yo' unless File.exist?('/tmp/zoneinfo/Africa/Abidjan')
 
           FakeFS.activate!
           FakeFS::FileSystem.clone('/tmp/zoneinfo/')
-          raise 'awesome' unless File.exist?('/tmp/zoneinfo/Africa/Abidjan')
+          raise 'how dat dawg' unless File.exist?('/tmp/zoneinfo/Africa/Abidjan')
 
           FileUtils.mkdir_p('/usr/share/zoneinfo/')
           FileUtils.cp_r('/tmp/zoneinfo/', '/usr/share/zoneinfo/')
-          raise 'awesome' unless File.exist?('/usr/share/zoneinfo/Africa/Abidjan')
+          raise 'doin' unless File.exist?('/usr/share/zoneinfo/Africa/Abidjan')
         end
         # This is necessary for Rufus to work properly, but since we're using
         # FakeFS, the fake filesystem is missing that file.
