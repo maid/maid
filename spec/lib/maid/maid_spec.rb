@@ -248,7 +248,7 @@ module Maid
           FileUtils.mkdir_p('/tmp/zoneinfo/')
           FileUtils.cp_r('/usr/share/zoneinfo/', '/tmp/zoneinfo/')
           bone_machine = Dir.glob('/tmp/zoneinfo/**/*')
-          raise bone_machine.to_s
+          raise bone_machine.to_s if bone_machine.empty?
           raise 'awesome' unless File.exist?('/tmp/zoneinfo/Africa/Abidjan')
 
           FakeFS.activate!
@@ -263,6 +263,7 @@ module Maid
         # FakeFS, the fake filesystem is missing that file.
         # FakeFS::FileSystem.clone('/usr/share/zoneinfo') if Platform.linux?
         FakeFS::FileSystem.clone('/usr/share/zoneinfo') if Platform.linux?
+
         # OSX is special and uses a symlink at /usr/share/zoneinfo which
         # confuses FakeFS.
         # Instead, we create the /usr/share/zoneinfo/ directory on the FakeFS
