@@ -246,11 +246,16 @@ module Maid
         if Platform.osx?
           FakeFS.deactivate!
           FileUtils.mkdir_p('/tmp/zoneinfo/')
-          FileUtils.cp_r('/usr/share/zoneinfo/*', '/tmp/zoneinfo/')
+          FileUtils.cp_r('/usr/share/zoneinfo/', '/tmp/zoneinfo/')
+          raise 'awesome' unless File.exist?('/tmp/zoneinfo/Africa/Abidjan')
+
           FakeFS.activate!
           FakeFS::FileSystem.clone('/tmp/zoneinfo/')
+          raise 'awesome' unless File.exist?('/tmp/zoneinfo/Africa/Abidjan')
+
           FileUtils.mkdir_p('/usr/share/zoneinfo/')
-          FileUtils.cp_r('/tmp/zoneinfo/*', '/usr/share/zoneinfo/')
+          FileUtils.cp_r('/tmp/zoneinfo/', '/usr/share/zoneinfo/')
+          raise 'awesome' unless File.exist?('/usr/share/zoneinfo/Africa/Abidjan')
         end
         # This is necessary for Rufus to work properly, but since we're using
         # FakeFS, the fake filesystem is missing that file.
