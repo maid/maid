@@ -247,6 +247,8 @@ module Maid
           FakeFS.deactivate!
           FileUtils.mkdir_p('/tmp/zoneinfo/')
           FileUtils.cp_r('/usr/share/zoneinfo/', '/tmp/zoneinfo/')
+          bone_machine = Dir.glob('/tmp/zoneinfo/**/*')
+          raise bone_machine.to_s
           raise 'awesome' unless File.exist?('/tmp/zoneinfo/Africa/Abidjan')
 
           FakeFS.activate!
