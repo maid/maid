@@ -248,7 +248,7 @@ module Maid
           FileUtils.mkdir_p('zoneinfo/')
           FileUtils.cp_r('/usr/share/zoneinfo/', 'zoneinfo/')
           FakeFS.activate!
-          FakeFS.clone('zoneinfo/')
+          FakeFS::FileSystem.clone('zoneinfo/')
           FileUtils.mkdir_p('/usr/share/zoneinfo/')
           FileUtils.cp_r('zoneinfo/', '/usr/share/zoneinfo/')
         end
