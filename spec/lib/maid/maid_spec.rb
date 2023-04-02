@@ -250,7 +250,7 @@ module Maid
           FileUtils.mkdir_p('/tmp/')
           FileUtils.cp_r('/usr/share/zoneinfo/', '/tmp/')
           bone_machine = Dir.glob('/tmp/zoneinfo/**/*')
-          raise bone_machine.to_s # if bone_machine.empty?
+          raise bone_machine.to_s if bone_machine.empty?
           raise 'yo' unless File.exist?('/tmp/zoneinfo/Africa/Abidjan')
 
           FakeFS.activate!
