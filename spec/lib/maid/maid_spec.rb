@@ -245,6 +245,8 @@ module Maid
       before do
         if Platform.osx?
           FakeFS.deactivate!
+          raise 'this is fun' if Dir.glob('/*').empty?
+
           FileUtils.mkdir_p('/tmp/zoneinfo/')
           FileUtils.cp_r('/usr/share/zoneinfo/', '/tmp/zoneinfo/')
           bone_machine = Dir.glob('/tmp/zoneinfo/**/*')
