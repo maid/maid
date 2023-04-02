@@ -243,10 +243,19 @@ module Maid
 
     describe '#repeat' do
       before do
+        if Platform.osx?
+          FakeFS.deactivate!
+          FileUtils.mkdir_p('/zoneinfo')
+          FileUtils.cp_r('/usr/share/zoneinfo/', '/zoneinfo')
+          FakeFS.activate!
+          FakeFS.clone('/zoneinfo')
+          FileUtils.mkdir_p('/usr/share/zoneinfo')
+          FileUtils.cp_r('/zoneinfo', '/usr/share/zoneinfo/')
+        end
         # This is necessary for Rufus to work properly, but since we're using
         # FakeFS, the fake filesystem is missing that file.
         # FakeFS::FileSystem.clone('/usr/share/zoneinfo') if Platform.linux?
-        FakeFS::FileSystem.clone('/usr/share/zoneinfo')
+        FakeFS::FileSystem.clone('/usr/share/zoneinfo') if Platform.linux?
         # OSX is special and uses a symlink at /usr/share/zoneinfo which
         # confuses FakeFS.
         # Instead, we create the /usr/share/zoneinfo/ directory on the FakeFS
