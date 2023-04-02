@@ -41,7 +41,8 @@ RSpec.configure do |config|
     # /usr/share/zoneinfo onto the FakeFS, and finally copy the files into it.
     # This way, they're available in the FakeFS where Rufus can find them.
     # NOTE: If a test fails because ENOENT /usr/share/zoneinfo/Africa/Abidjan,
-    # add the `fake_zoneinfo: true` to the describe.
+    # add `fake_zoneinfo: true` to the describe:
+    # `describe(MyClass, fake_zoneinfo: true do`
     include FakeFS::SpecHelpers
     FakeFS.activate!
 
