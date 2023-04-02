@@ -239,6 +239,26 @@ module Maid
 
         @maid.watches.last.run
       end
+
+      context('with a non-existent directory') do
+        let(:maid) { Maid.new }
+
+        it 'raises with an intelligible message' do
+          expect { maid.watch('/doesnt_exist/') }.to raise_error(/file.*exist/)
+        end
+
+        it 'logs an intelligible message' do
+          begin
+            maid.watch('/doesnt_exist')
+            # Suppressing the exception is fine, because we just want to test
+            # that the message is logged when it throws and the test above
+            # checks that the exception is raised.
+          rescue StandardError # rubocop:disable Lint/SuppressedException
+          end
+
+          expect(logger).to have_received(:warn).with(/file.*exist/)
+        end
+      end
     end
 
     describe '#repeat', fake_zoneinfo: true do
