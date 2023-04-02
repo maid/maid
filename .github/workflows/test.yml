@@ -32,20 +32,5 @@ jobs:
           bundler-cache: true
       - name: Install dependencies
         run: bundle install
-      # - name: debug osx
-      #   run: |
-      #     ls -clash /usr/share/zoneinfo
-      #     ls -clash /var/db/timezone/zoneinfo
-      #   if: ${{ contains(matrix.os, 'macos') }}
-      #     # TODO: copy zoneinfo somehwere else, then clone this in FakeFS, and copy that to FakeFS /usr/share/zoneinfo
-      # # FakeFS.clone doesn't deal with symlinks well, and Rufus needs
-      # # zoneinfo for the tests to run properly.
-      # - name: Replace zoneinfo symlink with actual dir
-      #   run: |
-      #     sudo unlink /usr/share/zoneinfo
-      #     mkdir -p /usr/share/zoneinfo/
-      #     cp /var/db/timezone/zoneifo/ /usr/share/zoneinfo/
-      #     ls -clash /usr/share/zoneinfo
-      #   if: ${{ contains(matrix.os, 'macos') }}
       - name: Run tests
         run: bundle exec rake
