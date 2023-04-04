@@ -38,8 +38,8 @@ jobs:
           token: ${{ secrets.BOT_GH_TOKEN }}
           # Uncomment for pre-releases, see
           # https://github.com/maid/maid/wiki/Release-Process
-          # prerelease: true
-          # release-as: v0.10.0-alpha.2
+          prerelease: true
+          release-as: v0.10.0-alpha.3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
