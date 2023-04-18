@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.10.0-alpha.3](https://github.com/maid/maid/compare/v0.10.0-alpha.2...v0.10.0-alpha.3) (2023-04-04)
+
+
+### Features
+
+* **maid:** improve `#watch` error message ([#287](https://github.com/maid/maid/issues/287)) ([0894cd6](https://github.com/maid/maid/commit/0894cd69665d5d9fe775b6b3df5a247f22f217d6))
+* **tools:** add option to disable clobbering destination for `#move` ([#284](https://github.com/maid/maid/issues/284)) ([979413f](https://github.com/maid/maid/commit/979413fe284b61b43b33ba2169e72ed23043bcca))
+
 ## [0.10.0-alpha.2](https://github.com/maid/maid/compare/v0.10.0-alpha.1...v0.10.0-alpha.2) (2023-03-28)
 
 
