@@ -9,7 +9,7 @@ assignees: ''
 
 **👋 Before reporting a bug, please make sure you're running the latest available version of maid (`gem install maid`).**
 
-**👋 If you're using Ruby 2.7+, please make sure you're running maid v0.10.0+ (`gem instal maid --pre`)**
+**👋 If you're using Ruby 2.7+, please make sure you're running maid v0.10.0+ (`gem install maid --pre`)**
 
 **Describe the bug**
 A clear and concise description of what the bug is.
