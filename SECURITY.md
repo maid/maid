@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-### Gem
+### Maid gem
 | Version      | Supported          |
 | ------------ | ------------------ |
 | >= 0.10.0    | :heavy_check_mark: |
