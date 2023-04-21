@@ -723,7 +723,7 @@ module Maid
 
     describe '#location_city' do
       context 'given a JPEG image' do
-        it 'reports the known location' do
+        it 'reports the known location', vcr: { record: :new_episodes } do
           sydney_path = File.join(file_fixtures_path, 'sydney.jpg')
           expect(@maid.location_city(sydney_path)).to eq('Sydney, New South Wales, AU')
         end

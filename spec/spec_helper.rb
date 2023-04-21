@@ -16,6 +16,7 @@ require 'rspec'
 require 'timecop'
 require 'fakefs/spec_helpers'
 require 'pry-byebug'
+require 'vcr'
 
 require 'maid'
 
@@ -64,4 +65,11 @@ RSpec::Matchers.define :have_deprecated_method do |expected|
   match do |actual|
     expect(actual).to receive(:__deprecated_run_action__).with(expected, anything) # rubocop:disable RSpec/MessageSpies
   end
+end
+
+VCR.configure do |config|
+  config.cassette_library_dir = 'fixtures/vcr_cassettes'
+  config.hook_into :webmock
+  # For autogenerating VCR cassettes' names based on the tests' metadata
+  config.configure_rspec_metadata!
 end

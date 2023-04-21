@@ -61,6 +61,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rubocop-rspec')
   s.add_development_dependency('simplecov')
   s.add_development_dependency('timecop', '~> 0.9.6')
+  s.add_development_dependency('vcr', '~> 6.1.0')
+  s.add_development_dependency('webmock', '~> 3.18.1')
   s.add_development_dependency('yard', '>= 0.9.11')
 
   # In Vagrant, polling won't cross over the OS boundary if you develop in the host OS but run your tests in the
