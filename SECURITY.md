@@ -17,7 +17,7 @@
 | <= 2.6       | :x:                |
 
 > :warning: Ruby 2.7 became EOL on 2023-03-31 and might be dropped in the near
->  future. We strongly recommend using Ruby 3+. 
+> future. We strongly recommend using Ruby 3+. 
 
 ## Reporting a Vulnerability
 
