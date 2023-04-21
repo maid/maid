@@ -21,9 +21,9 @@
 
 ## Reporting a Vulnerability
 
-To report a vulnerability, please open an issue. We will investigate and 
+To report a vulnerability, please open an issue. We will investigate and
 respond in a timely manner.
 
-If the vulnerability is accepted, we will work on a patch. Bear in mind
-that this is a community effort and we can't commit to specific timeframes
-other than best effort.
+If the vulnerability is accepted, we will work on a patch. Bear in mind that
+this is a community effort and we can't commit to specific timeframes other
+than best effort.
