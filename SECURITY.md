@@ -7,13 +7,13 @@
 | ------------ | ------------------ |
 | >= 0.10.0    | :heavy_check_mark: |
 |    0.7.0     | :heavy_check_mark: |
-| <  0.7.0      | :x:                |
+| <  0.7.0     | :x:                |
 
 ### Ruby
 | Version      | Supported          |
 | ------------ | ------------------ |
 | >= 3.0       | :heavy_check_mark: |
-|    2.7       | :warning: |
+|    2.7       | :warning:          |
 | <= 2.6       | :x:                |
 
 > :warning: Ruby 2.7 became EOL on 2023-03-31 and might be dropped in the near
