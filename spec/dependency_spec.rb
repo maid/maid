@@ -95,7 +95,7 @@ describe 'Dependency expectations' do
     end
   end
 
-  describe Geocoder do
+  describe Geocoder, vcr: { record: :new_episodes } do
     it 'translates latitude and longitude into street addresses' do
       city = Geocoder.search('-33.85608611111111,151.219925').map { |location| location.city }.uniq.compact
       expect(city).to eq(['Sydney'])
