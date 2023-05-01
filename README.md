@@ -41,7 +41,7 @@ This project wouldn't be where it is today without its users and contributors.  
 * Participate in [beta testing](https://github.com/maid/maid/issues/10)
 * [Report an issue](https://github.com/maid/maid/issues) (bug or feature request)
 * Read through the [wiki](https://github.com/maid/maid/wiki)
-* Even just [share a link to Maid](https://twitter.com/intent/tweet?related=benjaminoakes&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fbenjaminoakes%2Fmaid) :)
+* Even just [share a link to Maid](https://twitter.com/intent/tweet?related=maidgem&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fmaid%2Fmaid) :)
 
 ### For Developers
 
