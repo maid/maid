@@ -46,7 +46,7 @@ This project wouldn't be where it is today without its users and contributors.  
 ### For Developers
 
 * Address a `TODO` or `FIXME` in the code.
-* Work on an [issue](https://github.com/maid/maid/issues)
+* Fix an [existing issue](https://github.com/maid/maid/issues)
 * **Working on an issue?** Please leave a comment so others know.
 * See the [Contributing guide](https://github.com/maid/maid/wiki/Contributing)
 
