@@ -118,7 +118,7 @@ If you decide you don't want Maid installed anymore, remove it:
 In a nutshell, Maid uses "rules" to define how files are handled.  Once you have rules defined, you can either test what
 cleaning would do (`maid clean -n`) or actually clean (`maid clean -f`).
 
-To generate a [sample rules file](https://github.com/maid/maid/blob/master/lib/maid/rules.sample.rb), run:
+To generate a [sample rules file](lib/maid/rules.sample.rb), run:
 
 ```bash
 maid sample
@@ -270,7 +270,7 @@ Maid::Rake::Task.new :clean do
 end
 ```
 
-In fact, the Maid project uses Maid in [its Rakefile](https://github.com/maid/maid/blob/master/Rakefile).
+In fact, the Maid project uses Maid in [its Rakefile](Rakefile).
 
 You can also provide a custom description:
 
