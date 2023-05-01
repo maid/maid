@@ -10,6 +10,6 @@ Vagrant.configure('2') do |config|
     vb.customize ['modifyvm', :id, '--cpus', 4, '--memory', 1024]
   end
 
-  config.vm.provision(:shell, path: 'script/vagrant-provision', args:
-                      ENV['MAID_TARGET_RUBY'] || File.read('.ruby-version'),)
+  config.vm.provision(:shell, path: 'script/vagrant-provision',
+                              args: ENV['MAID_TARGET_RUBY'] || File.read('.ruby-version').chomp,)
 end
