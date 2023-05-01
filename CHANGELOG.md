@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/maid/maid/compare/v0.10.0-alpha.3...v0.10.0) (2023-05-01)
+
+
+### Miscellaneous Chores
+
+* release 0.10.0 ([1f35afd](https://github.com/maid/maid/commit/1f35afd2030bd74a5175ced5cd9766273162dea4))
+
 ## [0.10.0-alpha.3](https://github.com/maid/maid/compare/v0.10.0-alpha.2...v0.10.0-alpha.3) (2023-04-04)
 
 
