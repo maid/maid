@@ -46,7 +46,7 @@ This project wouldn't be where it is today without its users and contributors.  
 ### For Developers
 
 * Address a `TODO` or `FIXME` in the code.
-* Complete an issue (easy ones [are labelled](https://github.com/maid/maid/issues?labels=difficulty-1&page=1&state=open), and issues for future releases are [grouped by milestone](https://github.com/maid/maid/issues/milestones)).
+* Work on an [issue](https://github.com/maid/maid/issues)
 * **Working on an issue?** Please leave a comment so others know.
 * See the [Contributing guide](https://github.com/maid/maid/wiki/Contributing)
 
@@ -87,21 +87,14 @@ Some features require OS X.  See the [documentation][] for more details.
 
 ### Manual Installation
 
-First, you need Ruby.
+First, you need Ruby 2.7 or 3. If you're starting without any Rubies, we
+strongly recommend going for Ruby 3 as 2.7 is EOL.
 
-Consider `rbenv` or `rvm`, especially if only Ruby 1.8.7 is available (e.g. if you are using an older version of OS X).
+Consider using [`rvm`](https://rvm.io/rvm/install), [`rbenv`](https://github.com/rbenv/rbenv#installation), [`rtx`](https://github.com/jdxcode/rtx), or [any other version management tool](https://github.com/bernardoduarte/awesome-version-managers).
 
-System Ruby works fine too, though:
-
-* **Mac OS X:** Ruby 2.0.0 comes preinstalled in OS X 10.9.
-* **Ubuntu:** Ruby is not preinstalled.  To install Ruby 2.7: `sudo apt-get install ruby2.7`
-  ([Interested in a package?](https://github.com/maid/maid/issues/3))
-
-Then, you can install via RubyGems.  Open a terminal and run:
+Then, install via RubyGems.  Open a terminal and run:
 
     gem install maid
-
-(Use `sudo` if using system Ruby.)
 
 At a later date, you can update by running:
 
