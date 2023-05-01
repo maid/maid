@@ -13,7 +13,7 @@
 | [Example](https://github.com/maid/maid-example)
 | [User Community](https://github.com/maid/maid/wiki)
 | [Documentation][]
-| [Change Log](https://github.com/maid/maid/blob/master/ChangeLog)
+| [Changelog](CHANGELOG.md)
 
 Maid keeps files from sitting around too long, untouched.  Many of the downloads and temporary files you collect can
 easily be categorized and handled appropriately by rules you define.  Let the `maid` in your computer take care of the
