@@ -112,6 +112,24 @@ gem uninstall maid
 
 **NOTE:** This does not remove any files under `~/.maid` or crontab entries.  Please remove them at your convenience.
 
+### Install through RVM and a dedicated gemset
+
+Install Ruby 3.2 and create a gemset:
+
+`rvm install ruby-3.2 && rvm use 3.2 && rvm gemset create maid && rvm alias create maid ruby-3.2@maid`
+
+Install maid:
+
+`rvm use maid && gem install maid`
+
+Update maid:
+
+`rvm use maid && gem update maid`
+
+Update ruby:
+
+`rvm install ruby-3.3 && rvm gemset copy 3.{2,3}@maid && rvm alias maid 3.3@maid`
+
 ## Tutorial
 
 In a nutshell, Maid uses "rules" to define how files are handled.  Once you have rules defined, you can either test what
@@ -252,6 +270,20 @@ end
 ```
 
 The command to run the daemon is `maid daemon`.  Starting the daemon on login depends on the platform.
+
+#### With RVM and cron
+
+See [above](#install-through-rvm-and-a-dedicated-gemset) to install RVM and
+maid in its own gemset.
+
+Run maid daily in a cron:
+
+```cron
+# /etc/cron.daily/maid
+
+#!/usr/bin/env bash
+sudo -Hu <your username> bash -li -c "<your username>/.rvm/wrappers/maid/maid clean --force --silent --rules ~/.maid/rules.rb"
+```
 
 #### Ubuntu
 
