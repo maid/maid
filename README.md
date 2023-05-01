@@ -94,15 +94,21 @@ Consider using [`rvm`](https://rvm.io/rvm/install), [`rbenv`](https://github.com
 
 Then, install via RubyGems.  Open a terminal and run:
 
-    gem install maid
+```bash
+gem install maid
+```
 
 At a later date, you can update by running:
 
-    gem update maid
+```bash
+gem update maid
+```
 
 If you decide you don't want Maid installed anymore, remove it:
 
-    gem uninstall maid
+```bash
+gem uninstall maid
+```
 
 **NOTE:** This does not remove any files under `~/.maid` or crontab entries.  Please remove them at your convenience.
 
@@ -171,11 +177,13 @@ end
 
 Then, this is the command to test, as well as some sample output:
 
-    $ maid clean -nr some_rules.rb
-    Rule: downloaded PDF books
-    mv "/Users/ben/Downloads/book.pdf" "/Users/ben/Books/"
-    mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Books/"
-    mv "/Users/ben/Downloads/spring2011newsletter.pdf" "/Users/ben/Books/"
+```bash
+$ maid clean -nr some_rules.rb
+Rule: downloaded PDF books
+mv "/Users/ben/Downloads/book.pdf" "/Users/ben/Books/"
+mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Books/"
+mv "/Users/ben/Downloads/spring2011newsletter.pdf" "/Users/ben/Books/"
+```
 
 For help with command line usage, run `maid help`.  For more help, please see the links at the top of this README.
 
@@ -188,16 +196,20 @@ your computer stays a little tidier with as you teach it how to handle your comm
 
 To do this, edit your crontab in your tool of choice:
 
-    crontab -e
+```bash
+crontab -e
+```
 
 ...and have it invoke the `maid clean -f` command.  The `--silent` option is provided to keep this from emailing you, if
 desired.  A log of the actions taken is kept at `~/.maid/maid.log`.
 
 Example for every day at 1am:
 
-    # minute hour day_of_month month day_of_week command_to_execute
-    0 1 * * * /bin/bash -li -c "maid clean --force --silent"
-    
+```cron
+# minute hour day_of_month month day_of_week command_to_execute
+0 1 * * * /bin/bash -li -c "maid clean --force --silent"
+```
+
 ### Running as a daemon
 
 To run Maid as a daemon you first have to specify watch/repeat rules.
@@ -245,7 +257,7 @@ The command to run the daemon is `maid daemon`.  Starting the daemon on login de
 
 You can run `maid daemon` as a normal startup application (Power/Gear Menu -> Startup Applications... -> Add).
 
-#### OSX
+#### OS X
 
 Please see Jurriaan Pruis' blog post, [Maid as a Daemon on OS X](https://web.archive.org/web/20191228181605/jurriaan.ninja/2015/01/01/maid-on-os-x.html).  ([Automating this setup would be welcome as a pull request!](https://github.com/maid/maid/issues/136))
 
