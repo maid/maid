@@ -10,10 +10,10 @@
 
 [Installation](#installation)
 | [Tutorial](#tutorial)
-| [Example](https://github.com/benjaminoakes/maid-example)
-| [User Community](https://github.com/benjaminoakes/maid/wiki)
+| [Example](https://github.com/maid/maid-example)
+| [User Community](https://github.com/maid/maid/wiki)
 | [Documentation][]
-| [Change Log](https://github.com/benjaminoakes/maid/blob/master/ChangeLog)
+| [Change Log](https://github.com/maid/maid/blob/master/ChangeLog)
 
 Maid keeps files from sitting around too long, untouched.  Many of the downloads and temporary files you collect can
 easily be categorized and handled appropriately by rules you define.  Let the `maid` in your computer take care of the
@@ -33,42 +33,42 @@ general-purpose **advanced file renaming tool**.
 This project wouldn't be where it is today without its users and contributors.  Thank you!  See [AUTHORS][] and the
 [contributors graph][] for more info.
 
-  [authors]: https://github.com/benjaminoakes/maid/blob/master/AUTHORS.md
-  [contributors graph]: https://github.com/benjaminoakes/maid/graphs/contributors
+  [authors]: https://github.com/maid/maid/blob/master/AUTHORS.md
+  [contributors graph]: https://github.com/maid/maid/graphs/contributors
 
 ### For Users
 
-* Participate in [beta testing](https://github.com/benjaminoakes/maid/issues/10)
-* [Report an issue](https://github.com/benjaminoakes/maid/issues) (bug or feature request)
-* Read through the [wiki](https://github.com/benjaminoakes/maid/wiki)
+* Participate in [beta testing](https://github.com/maid/maid/issues/10)
+* [Report an issue](https://github.com/maid/maid/issues) (bug or feature request)
+* Read through the [wiki](https://github.com/maid/maid/wiki)
 * Even just [share a link to Maid](https://twitter.com/intent/tweet?related=benjaminoakes&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fbenjaminoakes%2Fmaid) :)
 
 ### For Developers
 
 * Address a `TODO` or `FIXME` in the code.
-* Complete an issue (easy ones [are labelled](https://github.com/benjaminoakes/maid/issues?labels=difficulty-1&page=1&state=open), and issues for future releases are [grouped by milestone](https://github.com/benjaminoakes/maid/issues/milestones)).
+* Complete an issue (easy ones [are labelled](https://github.com/maid/maid/issues?labels=difficulty-1&page=1&state=open), and issues for future releases are [grouped by milestone](https://github.com/maid/maid/issues/milestones)).
 * **Working on an issue?** Please leave a comment so others know.
-* See the [Contributing guide](https://github.com/benjaminoakes/maid/wiki/Contributing)
+* See the [Contributing guide](https://github.com/maid/maid/wiki/Contributing)
 
 ## Buzz
 
 [
-![Hacker News Logo](https://raw.github.com/benjaminoakes/maid/master/resources/hacker-news.png)
+![Hacker News Logo](https://raw.github.com/maid/maid/master/resources/hacker-news.png)
 ](http://news.ycombinator.com/)
 
 [Hazel for hackers](http://news.ycombinator.com/item?id=4928605) - December 16th, 2012 (peaked at #2)
 
-[![Ruby5 Logo](https://raw.github.com/benjaminoakes/maid/master/resources/ruby5.gif)](http://ruby5.envylabs.com/)
+[![Ruby5 Logo](https://raw.github.com/maid/maid/master/resources/ruby5.gif)](http://ruby5.envylabs.com/)
 
 [Podcast #302](http://ruby5.envylabs.com/episodes/306-episode-302-august-31st-2012) (at 2:45) - August 31st, 2012
 
 [
-![OneThingWell Logo](https://raw.github.com/benjaminoakes/maid/master/resources/OneThingWell.png)
+![OneThingWell Logo](https://raw.github.com/maid/maid/master/resources/OneThingWell.png)
 ](http://onethingwell.org/)
 
 [Maid](http://onethingwell.org/post/30455088809/maid) - August 29th, 2012
 
-[More...](https://github.com/benjaminoakes/maid/wiki/In-the-Media)
+[More...](https://github.com/maid/maid/wiki/In-the-Media)
 
 ## Installation
 
@@ -95,7 +95,7 @@ System Ruby works fine too, though:
 
 * **Mac OS X:** Ruby 2.0.0 comes preinstalled in OS X 10.9.
 * **Ubuntu:** Ruby is not preinstalled.  To install Ruby 2.7: `sudo apt-get install ruby2.7`
-  ([Interested in a package?](https://github.com/benjaminoakes/maid/issues/3))
+  ([Interested in a package?](https://github.com/maid/maid/issues/3))
 
 Then, you can install via RubyGems.  Open a terminal and run:
 
@@ -118,7 +118,7 @@ If you decide you don't want Maid installed anymore, remove it:
 In a nutshell, Maid uses "rules" to define how files are handled.  Once you have rules defined, you can either test what
 cleaning would do (`maid clean -n`) or actually clean (`maid clean -f`).
 
-To generate a [sample rules file](https://github.com/benjaminoakes/maid/blob/master/lib/maid/rules.sample.rb), run:
+To generate a [sample rules file](https://github.com/maid/maid/blob/master/lib/maid/rules.sample.rb), run:
 
 ```bash
 maid sample
@@ -254,7 +254,7 @@ You can run `maid daemon` as a normal startup application (Power/Gear Menu -> St
 
 #### OSX
 
-Please see Jurriaan Pruis' blog post, [Maid as a Daemon on OS X](http://jurriaan.ninja/2015/01/01/maid-on-os-x.html).  ([Automating this setup would be welcome as a pull request!](https://github.com/benjaminoakes/maid/issues/136))
+Please see Jurriaan Pruis' blog post, [Maid as a Daemon on OS X](http://jurriaan.ninja/2015/01/01/maid-on-os-x.html).  ([Automating this setup would be welcome as a pull request!](https://github.com/maid/maid/issues/136))
 
 ### Rake Tasks
 
@@ -270,7 +270,7 @@ Maid::Rake::Task.new :clean do
 end
 ```
 
-In fact, the Maid project uses Maid in [its Rakefile](https://github.com/benjaminoakes/maid/blob/master/Rakefile).
+In fact, the Maid project uses Maid in [its Rakefile](https://github.com/maid/maid/blob/master/Rakefile).
 
 You can also provide a custom description:
 
