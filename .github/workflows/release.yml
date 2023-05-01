@@ -39,7 +39,7 @@ jobs:
           # Uncomment for pre-releases, see
           # https://github.com/maid/maid/wiki/Release-Process
           # prerelease: true
-          release-as: v0.10.0
+          # release-as: v0.10.0
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
