@@ -3,12 +3,13 @@
 
 Vagrant.configure('2') do |config|
   # See also: `script/vagrant-test`, `script/vagrant-test-all`
-  config.vm.box = ENV['MAID_TARGET_BOX'] || 'hashicorp/precise64'
+  config.vm.box = ENV['MAID_TARGET_BOX'] || 'ubuntu/jammy64'
 
   config.vm.provider :virtualbox do |vb|
     # Maid has very low system requirements
-    vb.customize ['modifyvm', :id, '--cpus', 1, '--memory', 192]
+    vb.customize ['modifyvm', :id, '--cpus', 4, '--memory', 1024]
   end
 
-  config.vm.provision(:shell, path: 'script/vagrant-provision', args: ENV['MAID_TARGET_RUBY'] || '1.9.3')
+  config.vm.provision(:shell, path: 'script/vagrant-provision', args:
+                      ENV['MAID_TARGET_RUBY'] || File.read('.ruby-version'),)
 end
