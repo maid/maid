@@ -292,4 +292,4 @@ ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
 
 GPLv2.  See LICENSE for a copy.
 
-  [documentation]: http://www.rubydoc.info/github/benjaminoakes/maid/master/Maid/Tools
+  [documentation]: https://www.rubydoc.info/github/maid/maid/master
