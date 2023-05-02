@@ -2,7 +2,6 @@
 .bundle
 .vagrant
 .yardoc/*
-Gemfile.lock
 tmp/*
 doc/*
 .act-secrets
