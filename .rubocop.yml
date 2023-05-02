@@ -10,6 +10,7 @@ AllCops:
   Exclude:
     - "bin/*"
     - "vendor/bundle/**/*" # when running on GH Actions
+    - ".vagrant/**/*"
   NewCops: enable
   TargetRubyVersion: 2.7
 
