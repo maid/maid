@@ -1,0 +1,25 @@
+name: 'Close stale issues and PRs'
+on:
+  schedule:
+    - cron: '30 1 * * *'
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v8
+        with:
+          days-before-stale: 30
+          days-before-close: 7
+          stale-issue-message: >-
+            This issue has been open for 30 days without any activity. Remove
+            `no-issue-activity` label or comment to avoid automatic closure in
+            7 days.
+          stale-pr-message: >-
+            This PR has been open for 30 days without any activity. Remove
+            `no-pr-activity` label or comment to avoid automatic closure in 7
+            days.
+          stale-issue-label: 'no-issue-activity'
+          exempt-issue-labels: 'maintenance,incubate'
+          stale-pr-label: 'no-pr-activity'
+          exempt-pr-labels: 'awaiting-approval,work-in-progress'
