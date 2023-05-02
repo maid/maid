@@ -10,10 +10,10 @@
 
 [Installation](#installation)
 | [Tutorial](#tutorial)
-| [Example](https://github.com/benjaminoakes/maid-example)
-| [User Community](https://github.com/benjaminoakes/maid/wiki)
+| [Example](https://github.com/maid/maid-example)
+| [User Community](https://github.com/maid/maid/wiki)
 | [Documentation][]
-| [Change Log](https://github.com/benjaminoakes/maid/blob/master/ChangeLog)
+| [Changelog](CHANGELOG.md)
 
 Maid keeps files from sitting around too long, untouched.  Many of the downloads and temporary files you collect can
 easily be categorized and handled appropriately by rules you define.  Let the `maid` in your computer take care of the
@@ -33,46 +33,42 @@ general-purpose **advanced file renaming tool**.
 This project wouldn't be where it is today without its users and contributors.  Thank you!  See [AUTHORS][] and the
 [contributors graph][] for more info.
 
-  [authors]: https://github.com/benjaminoakes/maid/blob/master/AUTHORS.md
-  [contributors graph]: https://github.com/benjaminoakes/maid/graphs/contributors
+  [authors]: https://github.com/maid/maid/blob/master/AUTHORS.md
+  [contributors graph]: https://github.com/maid/maid/graphs/contributors
 
 ### For Users
 
-[
-![Flattr this git repo](https://api.flattr.com/button/flattr-badge-large.png)
-](https://flattr.com/submit/auto?user_id=benjaminoakes&url=https://github.com/benjaminoakes/maid&title=maid&language=en_GB&tags=github&category=software)
-
-* Participate in [beta testing](https://github.com/benjaminoakes/maid/issues/10)
-* [Report an issue](https://github.com/benjaminoakes/maid/issues) (bug or feature request)
-* Read through the [wiki](https://github.com/benjaminoakes/maid/wiki)
-* Even just [share a link to Maid](https://twitter.com/intent/tweet?related=benjaminoakes&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fbenjaminoakes%2Fmaid) :)
+* Participate in [beta testing](https://github.com/maid/maid/issues/10)
+* [Report an issue](https://github.com/maid/maid/issues) (bug or feature request)
+* Read through the [wiki](https://github.com/maid/maid/wiki)
+* Even just [share a link to Maid](https://twitter.com/intent/tweet?related=maidgem&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fmaid%2Fmaid) :)
 
 ### For Developers
 
-* Address a `TODO` or `FIXME` in the code.
-* Complete an issue (easy ones [are labelled](https://github.com/benjaminoakes/maid/issues?labels=difficulty-1&page=1&state=open), and issues for future releases are [grouped by milestone](https://github.com/benjaminoakes/maid/issues/milestones)).
+* Address a `TODO` or `FIXME` in the code (list them with `rake notes`.)
+* Fix an [existing issue](https://github.com/maid/maid/issues)
 * **Working on an issue?** Please leave a comment so others know.
-* See the [Contributing guide](https://github.com/benjaminoakes/maid/wiki/Contributing)
+* See the [Contributing guide](https://github.com/maid/maid/wiki/Contributing)
 
 ## Buzz
 
 [
-![Hacker News Logo](https://raw.github.com/benjaminoakes/maid/master/resources/hacker-news.png)
+![Hacker News Logo](https://raw.github.com/maid/maid/master/resources/hacker-news.png)
 ](http://news.ycombinator.com/)
 
 [Hazel for hackers](http://news.ycombinator.com/item?id=4928605) - December 16th, 2012 (peaked at #2)
 
-[![Ruby5 Logo](https://raw.github.com/benjaminoakes/maid/master/resources/ruby5.gif)](http://ruby5.envylabs.com/)
+[![Ruby5 Logo](https://raw.github.com/maid/maid/master/resources/ruby5.gif)](http://ruby5.envylabs.com/)
 
 [Podcast #302](http://ruby5.envylabs.com/episodes/306-episode-302-august-31st-2012) (at 2:45) - August 31st, 2012
 
 [
-![OneThingWell Logo](https://raw.github.com/benjaminoakes/maid/master/resources/OneThingWell.png)
+![OneThingWell Logo](https://raw.github.com/maid/maid/master/resources/OneThingWell.png)
 ](http://onethingwell.org/)
 
 [Maid](http://onethingwell.org/post/30455088809/maid) - August 29th, 2012
 
-[More...](https://github.com/benjaminoakes/maid/wiki/In-the-Media)
+[More...](https://github.com/maid/maid/wiki/In-the-Media)
 
 ## Installation
 
@@ -91,38 +87,55 @@ Some features require OS X.  See the [documentation][] for more details.
 
 ### Manual Installation
 
-First, you need Ruby.
+First, you need Ruby 2.7 or 3. If you're starting without any Rubies, we
+strongly recommend going for Ruby 3 as 2.7 is EOL.
 
-Consider `rbenv` or `rvm`, especially if only Ruby 1.8.7 is available (e.g. if you are using an older version of OS X).
+Consider using [`rvm`](https://rvm.io/rvm/install), [`rbenv`](https://github.com/rbenv/rbenv#installation), [`rtx`](https://github.com/jdxcode/rtx), or [any other version management tool](https://github.com/bernardoduarte/awesome-version-managers).
 
-System Ruby works fine too, though:
+Then, install via RubyGems.  Open a terminal and run:
 
-* **Mac OS X:** Ruby 2.0.0 comes preinstalled in OS X 10.9.
-* **Ubuntu:** Ruby is not preinstalled.  To install Ruby 2.7: `sudo apt-get install ruby2.7`
-  ([Interested in a package?](https://github.com/benjaminoakes/maid/issues/3))
-
-Then, you can install via RubyGems.  Open a terminal and run:
-
-    gem install maid
-
-(Use `sudo` if using system Ruby.)
+```bash
+gem install maid
+```
 
 At a later date, you can update by running:
 
-    gem update maid
+```bash
+gem update maid
+```
 
 If you decide you don't want Maid installed anymore, remove it:
 
-    gem uninstall maid
+```bash
+gem uninstall maid
+```
 
 **NOTE:** This does not remove any files under `~/.maid` or crontab entries.  Please remove them at your convenience.
+
+### Install through RVM and a dedicated gemset
+
+Install Ruby 3.2 and create a gemset:
+
+`rvm install ruby-3.2 && rvm use 3.2 && rvm gemset create maid && rvm alias create maid ruby-3.2@maid`
+
+Install maid:
+
+`rvm use maid && gem install maid`
+
+Update maid:
+
+`rvm use maid && gem update maid`
+
+Update ruby:
+
+`rvm install ruby-3.3 && rvm gemset copy 3.{2,3}@maid && rvm alias maid 3.3@maid`
 
 ## Tutorial
 
 In a nutshell, Maid uses "rules" to define how files are handled.  Once you have rules defined, you can either test what
 cleaning would do (`maid clean -n`) or actually clean (`maid clean -f`).
 
-To generate a [sample rules file](https://github.com/benjaminoakes/maid/blob/master/lib/maid/rules.sample.rb), run:
+To generate a [sample rules file](lib/maid/rules.sample.rb), run:
 
 ```bash
 maid sample
@@ -182,11 +195,13 @@ end
 
 Then, this is the command to test, as well as some sample output:
 
-    $ maid clean -nr some_rules.rb
-    Rule: downloaded PDF books
-    mv "/Users/ben/Downloads/book.pdf" "/Users/ben/Books/"
-    mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Books/"
-    mv "/Users/ben/Downloads/spring2011newsletter.pdf" "/Users/ben/Books/"
+```bash
+$ maid clean -nr some_rules.rb
+Rule: downloaded PDF books
+mv "/Users/ben/Downloads/book.pdf" "/Users/ben/Books/"
+mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Books/"
+mv "/Users/ben/Downloads/spring2011newsletter.pdf" "/Users/ben/Books/"
+```
 
 For help with command line usage, run `maid help`.  For more help, please see the links at the top of this README.
 
@@ -199,16 +214,20 @@ your computer stays a little tidier with as you teach it how to handle your comm
 
 To do this, edit your crontab in your tool of choice:
 
-    crontab -e
+```bash
+crontab -e
+```
 
 ...and have it invoke the `maid clean -f` command.  The `--silent` option is provided to keep this from emailing you, if
 desired.  A log of the actions taken is kept at `~/.maid/maid.log`.
 
 Example for every day at 1am:
 
-    # minute hour day_of_month month day_of_week command_to_execute
-    0 1 * * * /bin/bash -li -c "maid clean --force --silent"
-    
+```cron
+# minute hour day_of_month month day_of_week command_to_execute
+0 1 * * * /bin/bash -li -c "maid clean --force --silent"
+```
+
 ### Running as a daemon
 
 To run Maid as a daemon you first have to specify watch/repeat rules.
@@ -252,13 +271,27 @@ end
 
 The command to run the daemon is `maid daemon`.  Starting the daemon on login depends on the platform.
 
+#### With RVM and cron
+
+See [above](#install-through-rvm-and-a-dedicated-gemset) to install RVM and
+maid in its own gemset.
+
+Run maid daily in a cron:
+
+```cron
+# /etc/cron.daily/maid
+
+#!/usr/bin/env bash
+sudo -Hu <your username> bash -li -c "<your username>/.rvm/wrappers/maid/maid clean --force --silent --rules ~/.maid/rules.rb"
+```
+
 #### Ubuntu
 
 You can run `maid daemon` as a normal startup application (Power/Gear Menu -> Startup Applications... -> Add).
 
-#### OSX
+#### OS X
 
-Please see Jurriaan Pruis' blog post, [Maid as a Daemon on OS X](http://jurriaan.ninja/2015/01/01/maid-on-os-x.html).  ([Automating this setup would be welcome as a pull request!](https://github.com/benjaminoakes/maid/issues/136))
+Please see Jurriaan Pruis' blog post, [Maid as a Daemon on OS X](https://web.archive.org/web/20191228181605/jurriaan.ninja/2015/01/01/maid-on-os-x.html).  ([Automating this setup would be welcome as a pull request!](https://github.com/maid/maid/issues/136))
 
 ### Rake Tasks
 
@@ -274,7 +307,7 @@ Maid::Rake::Task.new :clean do
 end
 ```
 
-In fact, the Maid project uses Maid in [its Rakefile](https://github.com/benjaminoakes/maid/blob/master/Rakefile).
+In fact, the Maid project uses Maid in [its Rakefile](Rakefile).
 
 You can also provide a custom description:
 
@@ -296,4 +329,4 @@ ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
 
 GPLv2.  See LICENSE for a copy.
 
-  [documentation]: http://www.rubydoc.info/github/benjaminoakes/maid/master/Maid/Tools
+  [documentation]: https://www.rubydoc.info/github/maid/maid/master
