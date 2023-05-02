@@ -1,6 +1,6 @@
 # Maid
 
-[![Gem Version](https://badge.fury.io/rb/maid.svg)](http://badge.fury.io/rb/maid)
+[![Gem Version](https://badge.fury.io/rb/maid.svg)](https://badge.fury.io/rb/maid)
 [![Test](https://github.com/maid/maid/actions/workflows/test.yml/badge.svg)](https://github.com/maid/maid/actions/workflows/test.yml)
 [![Code Climate](https://codeclimate.com/github/maid/maid.svg)](https://codeclimate.com/github/maid/maid)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3898063fb5b3caf24044/test_coverage)](https://codeclimate.com/github/maid/maid/test_coverage)
