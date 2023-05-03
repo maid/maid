@@ -2,32 +2,32 @@ require 'spec_helper'
 
 module Maid
   describe Maid, fakefs: true do
-    let(:logger) { instance_spy('Logger') }
+    let(:logger) { instance_spy('::Logger') }
 
     before do
-      allow(Logger).to receive(:new).and_return(logger)
+      allow(::Logger).to receive(:new).and_return(logger)
     end
 
     describe '.new' do
       it 'sets up a logger with the default path' do
-        expect(Logger).to receive(:new).with(Maid::DEFAULTS[:log_device], anything, anything)
+        expect(::Logger).to receive(:new).with(Maid::DEFAULTS[:log_device], anything, anything)
         Maid.new
       end
 
       it 'sets up a logger with the given path, when provided' do
         log_device = '/var/log/maid.log'
-        expect(Logger).to receive(:new).with(log_device, anything, anything)
+        expect(::Logger).to receive(:new).with(log_device, anything, anything)
         Maid.new(log_device: log_device)
       end
 
       it 'rotates the log with the default settings' do
-        expect(Logger).to receive(:new).with(anything, Maid::DEFAULTS[:log_shift_age],
-                                             Maid::DEFAULTS[:log_shift_size],)
+        expect(::Logger).to receive(:new).with(anything, Maid::DEFAULTS[:log_shift_age],
+                                               Maid::DEFAULTS[:log_shift_size],)
         Maid.new
       end
 
       it 'rotates the log with the given settings, when provided' do
-        expect(Logger).to receive(:new).with(anything, 42, 1_000_000)
+        expect(::Logger).to receive(:new).with(anything, 42, 1_000_000)
         Maid.new(log_shift_age: 42, log_shift_size: 1_000_000)
       end
 
@@ -40,7 +40,7 @@ module Maid
       end
 
       it 'takes a logger object during intialization' do
-        allow(Logger).to receive(:new).and_call_original
+        allow(::Logger).to receive(:new).and_call_original
         maid = Maid.new(logger: logger)
         expect(maid.logger).to eq(logger)
       end
@@ -170,7 +170,7 @@ module Maid
 
         before do
           allow(Kernel).to receive(:load).and_raise(LoadError)
-          allow(Logger).to receive(:warn)
+          allow(::Logger).to receive(:warn)
         end
 
         it 'gives an error on STDERR if there is a LoadError' do

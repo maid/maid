@@ -48,7 +48,7 @@ module Maid
 
     describe 'performing' do
       before do
-        allow(Logger).to receive(:new).and_return(double('Logger').as_null_object)
+        allow(::Logger).to receive(:new).and_return(double('::Logger').as_null_object)
       end
 
       context 'in Linux' do

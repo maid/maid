@@ -40,7 +40,7 @@ class Maid::Maid
               else
                 @log_device = options[:log_device]
                 FileUtils.mkdir_p(File.dirname(@log_device)) unless @log_device.is_a?(IO)
-                @logger = Logger.new(@log_device, options[:log_shift_age], options[:log_shift_size])
+                @logger = ::Logger.new(@log_device, options[:log_shift_age], options[:log_shift_size])
               end
 
     @logger.progname  = options[:progname]

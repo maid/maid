@@ -13,7 +13,7 @@ module Maid
 
       expect(Maid.ancestors).to include(Tools)
 
-      @logger = double('Logger').as_null_object
+      @logger = double('::Logger').as_null_object
       @maid = Maid.new(logger: @logger)
 
       # Prevent warnings from showing when testing deprecated methods:
@@ -667,7 +667,7 @@ module Maid
     let(:unknown_path) { File.join(file_fixtures_path, 'unknown.foo') }
 
     before do
-      @logger = double('Logger').as_null_object
+      @logger = double('::Logger').as_null_object
       @maid = Maid.new(logger: @logger)
     end
 
@@ -849,7 +849,7 @@ module Maid
     let(:original_file_options) { @maid.file_options.clone }
 
     before do
-      @logger = double('Logger').as_null_object
+      @logger = double('::Logger').as_null_object
       @maid = Maid.new(logger: @logger)
 
       FileUtils.mkdir_p(test_dir)
