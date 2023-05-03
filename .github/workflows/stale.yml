@@ -20,6 +20,6 @@ jobs:
             `no-pr-activity` label or comment to avoid automatic closure in 7
             days.
           stale-issue-label: 'no-issue-activity'
-          exempt-issue-labels: 'maintenance,incubate'
+          any-of-labels: 'needs-info'
           stale-pr-label: 'no-pr-activity'
           exempt-pr-labels: 'awaiting-approval,work-in-progress'
