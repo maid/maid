@@ -6,6 +6,8 @@ module Maid
     let(:logfile) { '/tmp/maid/test.log' }
     let(:logger) { described_class.new(device: logfile) }
 
+    # FakeFS not required because we're writing the log to /tmp/ and deleting
+    # it after the test.
     after { FileUtils.rm('/tmp/maid/test.log', force: true) }
 
     levels = %i[debug info warn error fatal unknown]
@@ -19,7 +21,7 @@ module Maid
       before { logger.info('hello') }
 
       it 'creates that file' do
-        expect(File.exist?(logfile)).to eq true
+        expect(File.exist?(logfile)).to be true
       end
 
       context 'with the ::Logger::DEBUG log level' do
@@ -33,6 +35,18 @@ module Maid
           end
         end
       end
+
+      it 'works with a string' do
+        logger.info('test message')
+
+        expect(File.read(logfile)).to match 'test message'
+      end
+
+      it 'works with a custom progname and a block' do
+        logger.info('TestProgname') { 'test message' }
+
+        expect(File.read(logfile)).to match 'TestProgname: test message'
+      end
     end
 
     context 'with an IO' do
@@ -41,7 +55,8 @@ module Maid
       before { logger.info('hello') }
 
       it "doesn't create a file" do
-        expect(File.exist?('$stderr')).to eq false
+        expect(File.exist?('$stderr')).to be false
+        expect(File.exist?('STDERR')).to be false
       end
     end
   end
