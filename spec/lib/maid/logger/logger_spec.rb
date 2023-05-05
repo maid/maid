@@ -2,12 +2,12 @@ require 'spec_helper'
 require 'maid/logger/logger'
 
 module Maid
+  # FakeFS not required because we're writing the log to /tmp/ and deleting it
+  # after the test.
   describe Logger do
     let(:logfile) { '/tmp/maid/test.log' }
     let(:logger) { described_class.new(device: logfile) }
 
-    # FakeFS not required because we're writing the log to /tmp/ and deleting
-    # it after the test.
     after { FileUtils.rm('/tmp/maid/test.log', force: true) }
 
     levels = %i[debug info warn error fatal unknown]
