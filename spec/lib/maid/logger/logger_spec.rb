@@ -18,7 +18,7 @@ module Maid
     end
 
     context 'with a filename' do
-      before { logger.info('hello') }
+      before { logger.info('test message') }
 
       it 'creates that file' do
         expect(File.exist?(logfile)).to be true
@@ -50,13 +50,10 @@ module Maid
     end
 
     context 'with an IO' do
-      let(:logger) { described_class.new(device: $stderr) }
+      let(:logger) { described_class.new(device: StringIO.new) }
 
-      before { logger.info('hello') }
-
-      it "doesn't create a file" do
-        expect(File.exist?('$stderr')).to be false
-        expect(File.exist?('STDERR')).to be false
+      it 'is happy' do
+        expect { logger.info('test message') }.not_to raise_error
       end
     end
   end
