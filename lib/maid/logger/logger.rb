@@ -41,7 +41,10 @@ module Maid
     def initialize(device:, logger: ::Logger, level: ::Logger::INFO)
       create_logfile_dir(device) if device.is_a? String
 
-      @logger = logger.new(device)
+      # Keep the 5 last logs, with a max size of 10MiB each.
+      logger_options = { shift_age: 5, shift_size: 10 * 1_048_576 }
+      @logger = logger.new(device, logger_options[:shift_age],
+                           logger_options[:shift_size],)
       @logger.progname = 'Maid'
       @logger.level = level
       @logger.debug(self.class) { "Will log to #{device} with level #{level}" }

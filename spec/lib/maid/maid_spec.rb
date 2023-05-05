@@ -1,48 +1,37 @@
 require 'spec_helper'
 
 module Maid
-  describe Maid, fakefs: true do
-    let(:logger) { instance_spy('::Logger') }
-
-    before do
-      allow(::Logger).to receive(:new).and_return(logger)
-    end
+  describe Maid do
+    let(:logger) { class_spy('Maid::Logger') }
+    let(:logfile) { '/tmp/maid/test-log.log' }
+    let(:rules_file) { File.expand_path(File.join(File.dirname(__dir__), '../../fixtures/files/test_rules.rb')) }
+    let(:test_defaults) { Maid::DEFAULTS.merge({ log_device: logfile, rules_path: rules_file }) }
 
     describe '.new' do
-      it 'sets up a logger with the default path' do
-        expect(::Logger).to receive(:new).with(Maid::DEFAULTS[:log_device], anything, anything)
-        Maid.new
+      context 'with the default options' do
+        before { Maid.new(**test_defaults, logger: logger) }
+
+        it 'sets up a logger with the default path' do
+          expect(logger).to have_received(:new).with(device: test_defaults[:log_device])
+        end
       end
 
-      it 'sets up a logger with the given path, when provided' do
-        log_device = '/var/log/maid.log'
-        expect(::Logger).to receive(:new).with(log_device, anything, anything)
-        Maid.new(log_device: log_device)
+      context 'with a custom logfile path' do
+        let(:device) { '/tmp/maid/overridden-maid.log' }
+
+        before { Maid.new(log_device: device, logger: logger) }
+
+        it 'sets up a logger with the given path, when provided' do
+          expect(logger).to have_received(:new).with(device: device)
+        end
       end
 
-      it 'rotates the log with the default settings' do
-        expect(::Logger).to receive(:new).with(anything, Maid::DEFAULTS[:log_shift_age],
-                                               Maid::DEFAULTS[:log_shift_size],)
-        Maid.new
-      end
+      context 'with a custom logger' do
+        let(:maid) { Maid.new(logger: logger) }
 
-      it 'rotates the log with the given settings, when provided' do
-        expect(::Logger).to receive(:new).with(anything, 42, 1_000_000)
-        Maid.new(log_shift_age: 42, log_shift_size: 1_000_000)
-      end
-
-      it 'makes the log directory in case it does not exist' do
-        expect(File.exist?('/home/username/log')).to be false
-
-        Maid.new(log_device: '/home/username/log/maid.log')
-
-        expect(File.exist?('/home/username/log')).to be true
-      end
-
-      it 'takes a logger object during intialization' do
-        allow(::Logger).to receive(:new).and_call_original
-        maid = Maid.new(logger: logger)
-        expect(maid.logger).to eq(logger)
+        it 'uses it' do
+          expect(maid.logger).to eq(logger)
+        end
       end
 
       describe 'platform-specific behavior' do
@@ -87,25 +76,14 @@ module Maid
         end
       end
 
-      it 'sets the trash to the given path, if provided' do
-        trash_path = '/home/username/tmp/my_trash/'
+      context 'with a custom trash path' do
+        let(:trash_path) { '/tmp/my_trash/' }
+        let(:maid) { Maid.new(log_device: test_defaults[:log_device], trash_path: trash_path) }
 
-        maid = Maid.new(trash_path: trash_path)
-
-        expect(maid.trash_path).not_to be_nil
-        expect(maid.trash_path).to eq(trash_path)
-      end
-
-      it 'sets the progname for the logger' do
-        Maid.new
-
-        expect(logger).to have_received(:progname=).with(Maid::DEFAULTS[:progname])
-      end
-
-      it 'sets the progname for the logger to the given name, if provided' do
-        Maid.new(progname: 'Fran')
-
-        expect(logger).to have_received(:progname=).with('Fran')
+        it 'sets the trash to the given path' do
+          expect(maid.trash_path).not_to be_nil
+          expect(maid.trash_path).to eq(trash_path)
+        end
       end
 
       it 'sets the file options to the defaults' do
@@ -133,21 +111,32 @@ module Maid
     end
 
     describe '#clean' do
+      let(:maid) { Maid.new(**test_defaults) }
+
       before do
-        @maid = Maid.new
-        allow(logger).to receive(:info)
+        # Create the files that the test rules will impact
+        FileUtils.mkdir_p('/tmp/maid-test')
+        FileUtils.touch('/tmp/maid-test/perfect_man')
+
+        maid.load_rules
+        maid.clean
       end
 
-      it 'logs start and finish' do
-        @maid.clean
+      after do
+        FileUtils.rm_f('/tmp/maid-test')
+      end
 
-        expect(logger).to have_received(:info).with('Started')
-        expect(logger).to have_received(:info).with('Finished')
+      it 'logs start' do
+        expect(File.read(logfile)).to match(/Started/)
+      end
+
+      it 'logs finish' do
+        expect(File.read(logfile)).to match(/Finished/)
       end
 
       it 'follows the given rules' do
-        expect(@maid).to receive(:follow_rules)
-        @maid.clean
+        expect(File.exist?('/tmp/maid-test/perfect_man')).to be false
+        expect(File.exist?('/tmp/maid-test/buffalo_fuzz')).to be true
       end
     end
 
@@ -166,17 +155,16 @@ module Maid
       end
 
       context 'when there is a LoadError' do
-        let(:maid) { Maid.new }
+        let(:maid) { Maid.new(**test_defaults) }
 
         before do
           allow(Kernel).to receive(:load).and_raise(LoadError)
-          allow(::Logger).to receive(:warn)
         end
 
         it 'gives an error on STDERR if there is a LoadError' do
           maid.load_rules
 
-          expect(logger).to have_received(:warn).once
+          expect(File.read(logfile)).to match(/LoadError/)
         end
       end
     end
@@ -241,7 +229,7 @@ module Maid
       end
 
       context('with a non-existent directory') do
-        let(:maid) { Maid.new }
+        let(:maid) { Maid.new(**test_defaults) }
 
         it 'raises with an intelligible message' do
           expect { maid.watch('/doesnt_exist/') }.to raise_error(/file.*exist/)
@@ -256,7 +244,7 @@ module Maid
           rescue StandardError # rubocop:disable Lint/SuppressedException
           end
 
-          expect(logger).to have_received(:warn).with(/file.*exist/)
+          expect(File.read(logfile)).to match(/file.*exist/)
         end
       end
     end
@@ -295,21 +283,16 @@ module Maid
     end
 
     describe '#follow_rules' do
-      # FIXME: Example is too long, shouldn't need the rubocop::disable
-      it 'follows each rule' do # rubocop:disable RSpec/ExampleLength
-        n = 3
-        maid = Maid.new
+      let(:maid) { Maid.new(**test_defaults) }
 
-        rules = (1..n).map do |i|
-          d = double("rule ##{i}", description: 'description')
-          expect(d).to receive(:follow)
-          d
-        end
+      it 'follows each rule' do
+        # FIXME: This should run in a before and rules should be a let, but it
+        # fails when arranged that way.
+        rules = [spy(Rule), spy(Rule), spy(Rule)]
         maid.instance_eval { @rules = rules }
-
         maid.follow_rules
 
-        expect(logger).to have_received(:info).exactly(n).times
+        expect(rules).to all(have_received(:follow).once)
       end
     end
 

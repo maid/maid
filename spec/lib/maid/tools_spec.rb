@@ -7,7 +7,16 @@ module Maid
   #
   # * [FakeFS](https://github.com/defunkt/fakefs)
   describe Tools, fakefs: true do
+    let(:file_fixtures_path) { File.expand_path(File.dirname(__FILE__) + '../../../fixtures/files/') }
+    let(:file_fixtures_glob) { "#{file_fixtures_path}/*" }
+    let(:image_path) { File.join(file_fixtures_path, 'ruby.jpg') }
+    let(:unknown_path) { File.join(file_fixtures_path, 'unknown.foo') }
+    let(:logfile) { '/tmp/maid-test.log' }
+    let(:maid) { Maid.new({ log_device: logfile }) }
+
     before do
+      FakeFS::FileSystem.clone(file_fixtures_path)
+
       @home = File.expand_path('~')
       @now = Time.now
 
@@ -78,7 +87,6 @@ module Maid
         let(:src_file) { '/tmp/src/test_file' }
         let(:dst_dir) { '/tmp/dest/' }
         let(:dst_file) { File.join(dst_dir, File.basename(src_file)) }
-        let(:maid) { Maid.new(logger: @logger) }
 
         before do
           FileUtils.mkdir_p(File.dirname(src_file))
@@ -99,9 +107,9 @@ module Maid
           end
 
           it 'logs an info message' do
-            expect(@logger).to have_received(:info).with(/already/)
-            expect(@logger).to have_received(:info).with(/anyway/)
-            expect(@logger).not_to have_received(:info).with(/skipping/)
+            expect(File.read(logfile)).to match(/INFO.*already/)
+            expect(File.read(logfile)).to match(/INFO.*anyway/)
+            expect(File.read(logfile)).not_to match(/INFO.*skipping/)
           end
 
           it 'overwrites destination' do
@@ -117,8 +125,8 @@ module Maid
           end
 
           it 'logs an info message' do
-            expect(@logger).not_to have_received(:info).with(/anyway/)
-            expect(@logger).to have_received(:info).with(/skipping/)
+            expect(File.read(logfile)).not_to match(/INFO.*anyway/)
+            expect(File.read(logfile)).to match(/INFO.*skipping/)
           end
 
           it "doesn't overwrite the destination file" do
@@ -658,22 +666,10 @@ module Maid
         end
       end
     end
-  end
-
-  describe Tools, fakefs: false do
-    let(:file_fixtures_path) { File.expand_path(File.dirname(__FILE__) + '../../../fixtures/files/') }
-    let(:file_fixtures_glob) { "#{file_fixtures_path}/*" }
-    let(:image_path) { File.join(file_fixtures_path, 'ruby.jpg') }
-    let(:unknown_path) { File.join(file_fixtures_path, 'unknown.foo') }
-
-    before do
-      @logger = double('::Logger').as_null_object
-      @maid = Maid.new(logger: @logger)
-    end
 
     describe '#dupes_in' do
       it 'lists duplicate files in arrays' do
-        dupes = @maid.dupes_in(file_fixtures_glob)
+        dupes = maid.dupes_in(file_fixtures_glob)
         expect(dupes.first).to be_a(Array)
 
         basenames = dupes.flatten.map { |p| File.basename(p) }
@@ -683,7 +679,7 @@ module Maid
 
     describe '#verbose_dupes_in' do
       it 'lists all but the shortest-named dupe' do
-        dupes = @maid.verbose_dupes_in(file_fixtures_glob)
+        dupes = maid.verbose_dupes_in(file_fixtures_glob)
 
         basenames = dupes.flatten.map { |p| File.basename(p) }
         expect(basenames).to eq(%w[bar.zip foo.zip])
@@ -700,7 +696,7 @@ module Maid
         FileUtils.touch("#{file_fixtures_path}/bar.zip")
         FileUtils.touch("#{file_fixtures_path}/1.zip")
 
-        dupes = @maid.newest_dupes_in(file_fixtures_glob)
+        dupes = maid.newest_dupes_in(file_fixtures_glob)
 
         basenames = dupes.flatten.map { |p| File.basename(p) }
         expect(basenames).to match_array(%w[bar.zip 1.zip])
@@ -710,13 +706,13 @@ module Maid
     describe '#dimensions_px' do
       context 'given a JPEG image' do
         it 'reports the known size' do
-          expect(@maid.dimensions_px(image_path)).to eq([32, 32])
+          expect(maid.dimensions_px(image_path)).to eq([32, 32])
         end
       end
 
       context 'given an unknown type' do
         it 'returns nil' do
-          expect(@maid.dimensions_px(unknown_path)).to be_nil
+          expect(maid.dimensions_px(unknown_path)).to be_nil
         end
       end
     end
@@ -725,13 +721,13 @@ module Maid
       context 'given a JPEG image' do
         it 'reports the known location', vcr: { record: :new_episodes } do
           sydney_path = File.join(file_fixtures_path, 'sydney.jpg')
-          expect(@maid.location_city(sydney_path)).to eq('Sydney, New South Wales, AU')
+          expect(maid.location_city(sydney_path)).to eq('Sydney, New South Wales, AU')
         end
       end
 
       context 'given an unknown type' do
         it 'returns nil' do
-          expect(@maid.location_city(unknown_path)).to be_nil
+          expect(maid.location_city(unknown_path)).to be_nil
         end
       end
     end
@@ -739,13 +735,13 @@ module Maid
     describe '#mime_type' do
       context 'given a JPEG image' do
         it 'reports "image/jpeg"' do
-          expect(@maid.mime_type(image_path)).to eq('image/jpeg')
+          expect(maid.mime_type(image_path)).to eq('image/jpeg')
         end
       end
 
       context 'given an unknown type' do
         it 'returns nil' do
-          expect(@maid.mime_type(unknown_path)).to be_nil
+          expect(maid.mime_type(unknown_path)).to be_nil
         end
       end
     end
@@ -753,13 +749,13 @@ module Maid
     describe '#media_type' do
       context 'given a JPEG image' do
         it 'reports "image"' do
-          expect(@maid.media_type(image_path)).to eq('image')
+          expect(maid.media_type(image_path)).to eq('image')
         end
       end
 
       context 'given an unknown type' do
         it 'returns nil' do
-          expect(@maid.media_type(unknown_path)).to be_nil
+          expect(maid.media_type(unknown_path)).to be_nil
         end
       end
     end
@@ -767,7 +763,7 @@ module Maid
     describe '#where_content_type' do
       context 'given "image"' do
         it 'only lists the fixture JPEGs' do
-          matches = @maid.where_content_type(@maid.dir(file_fixtures_glob), 'image')
+          matches = maid.where_content_type(maid.dir(file_fixtures_glob), 'image')
 
           expect(matches.length).to eq(2)
           expect(matches.first).to end_with('spec/fixtures/files/ruby.jpg')
@@ -787,19 +783,19 @@ module Maid
       end
 
       it 'returns false for non-empty directories' do
-        expect(@maid.tree_empty?(@non_empty_dir)).to be(false)
+        expect(maid.tree_empty?(@non_empty_dir)).to be(false)
       end
 
       it 'returns true for empty directories' do
-        expect(@maid.tree_empty?(@empty_dir)).to be(true)
+        expect(maid.tree_empty?(@empty_dir)).to be(true)
       end
 
       it 'returns true for directories with empty subdirectories' do
-        expect(@maid.tree_empty?(@parent_of_empty_dir)).to be(true)
+        expect(maid.tree_empty?(@parent_of_empty_dir)).to be(true)
       end
 
       it 'returns false for directories with non-empty subdirectories' do
-        expect(@maid.tree_empty?(@root)).to be(false)
+        expect(maid.tree_empty?(@root)).to be(false)
       end
     end
 
@@ -837,45 +833,43 @@ module Maid
           'g/y/a/c',
         ].sort
 
-        expect(@maid.ignore_child_dirs(src).sort).to eq(expected)
+        expect(maid.ignore_child_dirs(src).sort).to eq(expected)
       end
     end
   end
 
-  describe 'OSX tag support', fakefs: false do
+  describe 'OSX tag support', fakefs: true do
     let(:test_file) { '~/.maid/test/tag.zip' }
     let(:test_dir) { File.dirname(test_file) }
     let(:file_name) { File.basename(test_file) }
-    let(:original_file_options) { @maid.file_options.clone }
+    let(:original_file_options) { maid.file_options.clone }
+    let(:maid) { Maid.new(log_device: '/tmp/maid-test.log') }
 
     before do
-      @logger = double('::Logger').as_null_object
-      @maid = Maid.new(logger: @logger)
-
       FileUtils.mkdir_p(test_dir)
       FileUtils.touch(test_file)
-      @maid.file_options[:noop] = false
+      maid.file_options[:noop] = false
     end
 
     after do
       FileUtils.rm_r(test_dir)
-      @maid.file_options[:noop] = original_file_options[:noop]
+      maid.file_options[:noop] = original_file_options[:noop]
     end
 
     describe '#tags' do
       it 'returns tags from a file that has one' do
         if Platform.has_tag_available?
-          @maid.file_options[:noop] = false
-          @maid.add_tag(test_file, 'Test')
-          expect(@maid.tags(test_file)).to eq(['Test'])
+          maid.file_options[:noop] = false
+          maid.add_tag(test_file, 'Test')
+          expect(maid.tags(test_file)).to eq(['Test'])
         end
       end
 
       it 'returns tags from a file that has serveral tags' do
         if Platform.has_tag_available?
-          @maid.file_options[:noop] = false
-          @maid.add_tag(test_file, %w[Test Twice])
-          expect(@maid.tags(test_file)).to eq(%w[Test Twice])
+          maid.file_options[:noop] = false
+          maid.add_tag(test_file, %w[Test Twice])
+          expect(maid.tags(test_file)).to eq(%w[Test Twice])
         end
       end
     end
@@ -883,22 +877,22 @@ module Maid
     describe '#has_tags?' do
       it 'returns true for a file with tags' do
         if Platform.has_tag_available?
-          @maid.add_tag(test_file, 'Test')
-          expect(@maid.has_tags?(test_file)).to be(true)
+          maid.add_tag(test_file, 'Test')
+          expect(maid.has_tags?(test_file)).to be(true)
         end
       end
 
       it 'returns false for a file without tags' do
-        expect(@maid.has_tags?(test_file)).to be(false)
+        expect(maid.has_tags?(test_file)).to be(false)
       end
     end
 
     describe '#contains_tag?' do
       it 'returns true a file with the given tag' do
         if Platform.has_tag_available?
-          @maid.add_tag(test_file, 'Test')
-          expect(@maid.contains_tag?(test_file, 'Test')).to be(true)
-          expect(@maid.contains_tag?(test_file, 'Not there')).to be(false)
+          maid.add_tag(test_file, 'Test')
+          expect(maid.contains_tag?(test_file, 'Test')).to be(true)
+          expect(maid.contains_tag?(test_file, 'Not there')).to be(false)
         end
       end
     end
@@ -906,8 +900,8 @@ module Maid
     describe '#add_tag' do
       it 'adds the given tag to a file' do
         if Platform.has_tag_available?
-          @maid.add_tag(test_file, 'Test')
-          expect(@maid.contains_tag?(test_file, 'Test')).to be(true)
+          maid.add_tag(test_file, 'Test')
+          expect(maid.contains_tag?(test_file, 'Test')).to be(true)
         end
       end
     end
@@ -915,10 +909,10 @@ module Maid
     describe '#remove_tag' do
       it 'removes the given tag from a file' do
         if Platform.has_tag_available?
-          @maid.add_tag(test_file, 'Test')
-          expect(@maid.contains_tag?(test_file, 'Test')).to be(true)
-          @maid.remove_tag(test_file, 'Test')
-          expect(@maid.contains_tag?(test_file, 'Test')).to be(false)
+          maid.add_tag(test_file, 'Test')
+          expect(maid.contains_tag?(test_file, 'Test')).to be(true)
+          maid.remove_tag(test_file, 'Test')
+          expect(maid.contains_tag?(test_file, 'Test')).to be(false)
         end
       end
     end
@@ -926,11 +920,11 @@ module Maid
     describe '#set_tag' do
       it 'sets the given tags on a file' do
         if Platform.has_tag_available?
-          @maid.set_tag(test_file, 'Test')
-          expect(@maid.contains_tag?(test_file, 'Test')).to be(true)
-          @maid.set_tag(test_file, %w[Test Twice])
-          expect(@maid.contains_tag?(test_file, 'Test')).to be(true)
-          expect(@maid.contains_tag?(test_file, 'Twice')).to be(true)
+          maid.set_tag(test_file, 'Test')
+          expect(maid.contains_tag?(test_file, 'Test')).to be(true)
+          maid.set_tag(test_file, %w[Test Twice])
+          expect(maid.contains_tag?(test_file, 'Test')).to be(true)
+          expect(maid.contains_tag?(test_file, 'Twice')).to be(true)
         end
       end
     end

@@ -24,6 +24,10 @@ module Maid
         expect(File.exist?(logfile)).to be true
       end
 
+      it 'sets the default progname' do
+        expect(File.read(logfile)).to match(/Maid: /)
+      end
+
       context 'with the ::Logger::DEBUG log level' do
         let(:logger) { described_class.new(device: logfile, level: ::Logger::DEBUG) }
 

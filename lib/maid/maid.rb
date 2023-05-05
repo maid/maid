@@ -1,5 +1,5 @@
 require 'fileutils'
-require 'logger'
+# require 'logger'
 require 'xdg'
 
 # Maid cleans up according to the given rules, logging what it does.
@@ -9,13 +9,12 @@ require 'xdg'
 class Maid::Maid
   include Maid::RuleContainer
   DEFAULTS = {
-    progname: 'Maid',
-
     log_device: File.expand_path('~/.maid/maid.log'),
-    # We don't want the log files to grow without check, but 50 MB doesn't seem
-    # too bad.  (We're going with a larger size just for safety right now.)
-    log_shift_age: 5,
-    log_shift_size: 10 * 1_048_576, # 10 * 1 MB
+    logger: ::Maid::Logger,
+    # # We don't want the log files to grow without check, but 50 MB doesn't seem
+    # # too bad.  (We're going with a larger size just for safety right now.)
+    # log_shift_age: 5,
+    # log_shift_size: 10 * 1_048_576, # 10 * 1 MB
 
     rules_path: File.expand_path('~/.maid/rules.rb'),
     file_options: { noop: false }, # for `FileUtils`
@@ -34,19 +33,20 @@ class Maid::Maid
   def initialize(options = {})
     options = DEFAULTS.merge(options.reject { |_k, v| v.nil? })
 
-    # TODO: Refactor and simplify (see also https://github.com/benjaminoakes/maid/pull/48#discussion_r1683942)
-    @logger = if options[:logger]
-                options[:logger]
-              else
-                @log_device = options[:log_device]
-                FileUtils.mkdir_p(File.dirname(@log_device)) unless @log_device.is_a?(IO)
-                @logger = ::Logger.new(@log_device, options[:log_shift_age], options[:log_shift_size])
-              end
+    @logger = options[:logger].new(device: options[:log_device])
+    # # TODO: Refactor and simplify (see also https://github.com/benjaminoakes/maid/pull/48#discussion_r1683942)
+    # @logger = if options[:logger]
+    #             options[:logger]
+    #           else
+    #             @log_device = options[:log_device]
+    #             FileUtils.mkdir_p(File.dirname(@log_device)) unless @log_device.is_a?(IO)
+    #             @logger = ::Logger.new(@log_device, options[:log_shift_age], options[:log_shift_size])
+    #           end
 
-    @logger.progname  = options[:progname]
-    @logger.formatter = options[:log_formatter] if options[:log_formatter]
+    # @logger.progname  = options[:progname]
+    # @logger.formatter = options[:log_formatter] if options[:log_formatter]
 
-    @rules_path   = options[:rules_path]
+    @rules_path = options[:rules_path]
     @trash_path   = options[:trash_path] || default_trash_path
     @file_options = options[:file_options]
 
