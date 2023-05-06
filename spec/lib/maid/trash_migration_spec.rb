@@ -4,6 +4,12 @@ require 'spec_helper'
 
 module Maid
   describe TrashMigration, fakefs: true do
+    before do
+      # Avoid FakeFS bug
+      FileUtils.mkdir_p(File.dirname(Maid::DEFAULTS[:log_device]))
+      FileUtils.touch(Maid::DEFAULTS[:log_device])
+    end
+
     context 'when running on Linux' do
       before do
         allow(Platform).to receive(:linux?).and_return(true)

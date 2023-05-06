@@ -15,7 +15,6 @@ require 'rubygems'
 require 'rspec'
 require 'timecop'
 require 'fakefs/spec_helpers'
-require_relative './fakefs_helper'
 require 'pry-byebug'
 require 'vcr'
 

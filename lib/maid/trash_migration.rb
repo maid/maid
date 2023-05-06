@@ -20,6 +20,8 @@ module Maid
       end
 
       def perform
+        # FIXME: This is tightly coupled, we can't pass a custom log device
+        # etc.
         maid = ::Maid::Maid.new(trash_path: correct_trash)
         # Use local variable so it's available in the closure used by `instance_eval`
         path = incorrect_trash

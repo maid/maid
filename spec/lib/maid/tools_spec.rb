@@ -16,6 +16,9 @@ module Maid
 
     before do
       FakeFS::FileSystem.clone(file_fixtures_path)
+      # Avoid FakeFS error when the logfile doesn't already exist.
+      FileUtils.mkdir_p(File.dirname(logfile))
+      FileUtils.touch(logfile)
 
       @home = File.expand_path('~')
       @now = Time.now
@@ -34,6 +37,8 @@ module Maid
 
     describe '#move' do
       before do
+        # Avoid FakeFS error when the logfile doesn't already exist.
+        FileUtils.touch(logfile)
         @src_dir = File.join('~', 'Source')
         @file_name = 'foo.zip'
         @src_file = File.join(@src_dir, @file_name)
@@ -101,6 +106,7 @@ module Maid
 
         context 'by default' do
           let!(:original_mtime) { File.stat(dst_file).mtime }
+          let(:maid) { Maid.new(log_device: logfile) }
 
           before do
             maid.move(src_file, dst_dir)
@@ -119,6 +125,7 @@ module Maid
 
         context 'when clobber: false' do
           let!(:original_mtime) { File.stat(dst_file).mtime }
+          let(:maid) { Maid.new(log_device: logfile) }
 
           before do
             maid.move(src_file, dst_dir, clobber: false)
@@ -843,7 +850,7 @@ module Maid
     let(:test_dir) { File.dirname(test_file) }
     let(:file_name) { File.basename(test_file) }
     let(:original_file_options) { maid.file_options.clone }
-    let(:maid) { Maid.new(log_device: '/tmp/maid-test.log') }
+    let(:maid) { Maid.new(log_device: File::NULL) }
 
     before do
       FileUtils.mkdir_p(test_dir)

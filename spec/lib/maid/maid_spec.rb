@@ -7,6 +7,12 @@ module Maid
     let(:rules_file) { File.expand_path(File.join(File.dirname(__dir__), '../../fixtures/files/test_rules.rb')) }
     let(:test_defaults) { Maid::DEFAULTS.merge({ log_device: logfile, rules_path: rules_file }) }
 
+    before do
+      # Avoid FakeFS error when the logfile doesn't already exist.
+      FileUtils.mkdir_p(File.dirname(logfile))
+      FileUtils.touch(logfile)
+    end
+
     describe '.new' do
       context 'with the default options' do
         before { Maid.new(**test_defaults, logger: logger) }
@@ -251,7 +257,11 @@ module Maid
 
     describe '#repeat', fake_zoneinfo: true do
       before do
-        @maid = Maid.new
+        # Avoid FakeFS error when the logfile doesn't already exist.
+        FileUtils.mkdir_p(File.dirname(logfile))
+        FileUtils.touch(logfile)
+
+        @maid = Maid.new(log_device: logfile)
       end
 
       it 'adds a repeat to the list of repeats' do
@@ -298,7 +308,11 @@ module Maid
 
     describe '#cmd' do
       before do
-        @maid = Maid.new
+        # Avoid FakeFS bug
+        FileUtils.mkdir_p(File.dirname(logfile))
+        FileUtils.touch(logfile)
+
+        @maid = Maid.new(log_device: logfile)
       end
 
       it 'reports `not-a-real-command` as not being a supported command' do
