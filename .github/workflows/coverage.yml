@@ -26,5 +26,4 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_KEY }}
           COVERAGE: true
-          ISOLATED: true
 

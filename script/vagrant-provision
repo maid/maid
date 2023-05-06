@@ -27,11 +27,7 @@ function install-ruby {
   tar -xzvf ruby-install-0.9.0.tar.gz
   cd ruby-install-0.9.0/
   sudo make install
-  ruby-install --system ruby "$target_ruby_version"
-}
-
-function enable-rspec {
-  echo 'export ISOLATED=true' >> /home/vagrant/.profile
+  ruby-install --system -M https://ftp.ruby-lang.org/pub/ruby ruby "$target_ruby_version"
 }
 
 sudo apt-get update
@@ -52,7 +48,6 @@ install-pkg 'make'
 install-pkg 'libffi-dev'
 install-pkg-if-ruby '1.9.3' 'ruby1.9.1-dev'
 
-enable-rspec
 sudo gem install bundler
 cd /vagrant
 bundle install

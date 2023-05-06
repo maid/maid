@@ -20,14 +20,6 @@ require 'vcr'
 
 require 'maid'
 
-# Prevent running RSpec unless it's running in Vagrant or Docker, to avoid
-# overwriting files on the live filesystem through the tests.
-unless ENV['ISOLATED']
-  raise "It's safer to run the tests within a Docker container or a Vagrant box.
-  See https://github.com/maid/maid/wiki/Contributing. To run anyway, set the
-  environment variable `ISOLATED` to `true`"
-end
-
 RSpec.configure do |config|
   config.mock_with(:rspec) do |mocks|
     mocks.allow_message_expectations_on_nil = false
