@@ -123,7 +123,7 @@ module Maid
       end
 
       after do
-        FileUtils.rm_f('/tmp/maid-test')
+        FileUtils.rm_rf('/tmp/maid-test')
       end
 
       it 'logs start' do
