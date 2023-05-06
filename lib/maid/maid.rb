@@ -30,7 +30,7 @@ class Maid::Maid
 
     @logger = options[:logger].new(device: options[:log_device])
 
-    @rules_path = options[:rules_path]
+    @rules_path   = options[:rules_path]
     @trash_path   = options[:trash_path] || default_trash_path
     @file_options = options[:file_options]
 
