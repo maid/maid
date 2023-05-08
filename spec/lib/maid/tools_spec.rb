@@ -20,10 +20,10 @@ module Maid
     let(:maid) { Maid.new({ log_device: logfile }) }
 
     before do
-      FakeFS::FileSystem.clone(filefixtures_path)
-      # Avoid FakeFS error when the logfile doesn't already exist.
+      # FakeFS::FileSystem.clone(filefixtures_path)
+      # # Avoid FakeFS error when the logfile doesn't already exist.
       FileUtils.mkdir_p(File.dirname(logfile))
-      FileUtils.touch(logfile)
+      # FileUtils.touch(logfile)
 
       @home = File.expand_path('~')
       @now = Time.now
