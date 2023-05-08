@@ -131,6 +131,8 @@ module Maid
           let!(:original_mtime) { File.stat(dst_file).mtime }
 
           before do
+            FileUtils.rm_rf(logfile)
+
             maid.move(src_file, dst_dir)
           end
 
@@ -149,6 +151,8 @@ module Maid
           let!(:original_mtime) { File.stat(dst_file).mtime }
 
           before do
+            FileUtils.rm_rf(logfile)
+
             maid.move(src_file, dst_dir, clobber: false)
           end
 
