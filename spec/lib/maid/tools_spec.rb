@@ -129,7 +129,6 @@ module Maid
 
         context 'by default' do
           let!(:original_mtime) { File.stat(dst_file).mtime }
-          let(:maid) { Maid.new(log_device: logfile) }
 
           before do
             maid.move(src_file, dst_dir)
@@ -148,7 +147,6 @@ module Maid
 
         context 'when clobber: false' do
           let!(:original_mtime) { File.stat(dst_file).mtime }
-          let(:maid) { Maid.new(log_device: logfile) }
 
           before do
             maid.move(src_file, dst_dir, clobber: false)
