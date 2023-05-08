@@ -439,7 +439,9 @@ module Maid
         end
 
         it 'lists files in directories when using recursive glob patterns' do
-          expect(maid.dir("#{File.dirname(src_file, 2)}/**/test_*")).to eq([src_file, src_file2])
+          # TODO: Once we ditch Ruby 2.7, we can do this instead:
+          # expect(maid.dir("#{File.dirname(src_file, 2)}/**/test_*")).to eq([src_file, src_file2])
+          expect(maid.dir("#{File.dirname(src_file)}/../**/test_*")).to eq([src_file, src_file2])
         end
       end
     end
@@ -1000,7 +1002,7 @@ module Maid
     end
   end
 
-  describe 'OSX tag support', fakefs: true do
+  describe 'OSX tag support', fakefs: false do
     let(:test_file) { '~/.maid/test/tag.zip' }
     let(:test_dir) { File.dirname(test_file) }
     let(:filename) { File.basename(test_file) }
