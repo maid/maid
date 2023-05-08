@@ -47,8 +47,6 @@ module Maid
 
     describe '#move' do
       before do
-        # Avoid FakeFS error when the logfile doesn't already exist.
-        FileUtils.touch(logfile)
         @src_dir = File.join('~', 'Source')
         @filename = 'foo.zip'
         @src_file = File.join(@src_dir, @filename)
