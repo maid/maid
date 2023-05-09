@@ -16,14 +16,11 @@ module Maid
     let(:filefixtures_glob) { "#{filefixtures_path}/*" }
     let(:image_path) { File.join(filefixtures_path, 'ruby.jpg') }
     let(:unknown_path) { File.join(filefixtures_path, 'unknown.foo') }
-    let(:logfile) { '/tmp/maid-test.log' }
+    let(:logfile) { '/tmp/maid-specs/test.log' }
     let(:maid) { Maid.new({ log_device: logfile }) }
 
     before do
-      # FakeFS::FileSystem.clone(filefixtures_path)
-      # # Avoid FakeFS error when the logfile doesn't already exist.
       FileUtils.mkdir_p(File.dirname(logfile))
-      # FileUtils.touch(logfile)
 
       @home = File.expand_path('~')
       @now = Time.now
