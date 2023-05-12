@@ -2,11 +2,7 @@ require 'spec_helper'
 
 module Maid
   # NOTE: FakeFS is disabled intentionally, because it causes weird and subtle
-  # issues that are hard to debug. For instance, it doesn't do locking.
-  # It is preferrable to use `/tmp/...` rather than `~` when writing files
-  # during tests to avoid messing your own files.
-  # NOTE: See https://github.com/maid/maid/wiki/Contributing on how to run
-  # the tests in a Docker container or a Vagrant box.
+  # issues that are hard to debug. See https://github.com/maid/maid/issues/315
   # FIXME: Split test suite into smaller files, likely one file per described
   # method.
   # FIXME: Replace *all* occurences of writing to `~/` in favour or `/tmp/`.
