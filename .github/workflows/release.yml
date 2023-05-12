@@ -49,6 +49,8 @@ jobs:
         run: bundle install
       - name: Run tests
         run: bundle exec rake
+        env:
+          ISOLATED: true
       - name: Publish gem
         run: |
           mkdir -p $HOME/.gem

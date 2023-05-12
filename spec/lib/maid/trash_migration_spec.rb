@@ -4,6 +4,12 @@ require 'spec_helper'
 
 module Maid
   describe TrashMigration, fakefs: true do
+    before do
+      # Avoid FakeFS' File#flock NotImplementedError
+      FileUtils.mkdir_p(File.dirname(Maid::DEFAULTS[:log_device]))
+      FileUtils.touch(Maid::DEFAULTS[:log_device])
+    end
+
     context 'when running on Linux' do
       before do
         allow(Platform).to receive(:linux?).and_return(true)
@@ -47,10 +53,6 @@ module Maid
     end
 
     describe 'performing' do
-      before do
-        allow(Logger).to receive(:new).and_return(double('Logger').as_null_object)
-      end
-
       context 'in Linux' do
         let(:filename) { 'foo.txt' }
         let(:trash_contents) do
