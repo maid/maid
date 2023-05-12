@@ -29,12 +29,12 @@ end
 namespace :guard do
   default_target_ruby_version = File.read('Dockerfile').match(/^FROM ruby:(.*)$/)[1]
 
-  desc "Run Guard and RSpec in a Docker container (ruby-#{default_target_ruby_version})"
+  desc "Run Guard in a Docker container (ruby-#{default_target_ruby_version})"
   task :docker do
     system('./script/docker-test')
   end
 
-  desc 'Run Guard and RSpec in a Docker container (ruby-2.7)'
+  desc 'Run Guard in a Docker container (ruby-2.7)'
   task :docker27 do
     system('./script/docker-test-27')
   end
