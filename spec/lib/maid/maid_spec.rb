@@ -8,9 +8,9 @@ module Maid
     let(:test_defaults) { Maid::DEFAULTS.merge({ log_device: logfile, rules_path: rules_file }) }
 
     before do
-      # Avoid FakeFS error when the logfile doesn't already exist.
       FileUtils.mkdir_p(File.dirname(logfile))
-      FileUtils.touch(logfile)
+      # Avoid FakeFS error when the logfile doesn't already exist.
+      FileUtils.touch(logfile) if FakeFS.activated?
     end
 
     after do
