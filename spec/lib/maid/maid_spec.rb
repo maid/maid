@@ -326,20 +326,14 @@ module Maid
     end
 
     describe '#cmd' do
-      before do
-        # Avoid FakeFS bug
-        FileUtils.mkdir_p(File.dirname(logfile))
-        FileUtils.touch(logfile)
-
-        @maid = Maid.new(log_device: logfile)
-      end
+      let(:maid) { Maid.new(log_device: logfile) }
 
       it 'reports `not-a-real-command` as not being a supported command' do
-        expect { @maid.cmd('not-a-real-command arg1 arg2') }.to raise_error(NotImplementedError)
+        expect { maid.cmd('not-a-real-command arg1 arg2') }.to raise_error(NotImplementedError)
       end
 
       it 'reports `echo` as a real command' do
-        expect { @maid.cmd('echo .') }.not_to raise_error
+        expect { maid.cmd('echo .') }.not_to raise_error
       end
     end
   end
