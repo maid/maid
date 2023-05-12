@@ -262,7 +262,7 @@ module Maid
             # Suppressing the exception is fine, because we just want to test
             # that the message is logged when it throws and the test above
             # checks that the exception is raised.
-          rescue StandardError # rubocop:disable RSpec/SuppressedException
+          rescue StandardError # rubocop:disable Lint/SuppressedException
           end
 
           expect(File.read(logfile)).to match(/file.*exist/)
