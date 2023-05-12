@@ -140,7 +140,7 @@ module Maid
           end
 
           it 'overwrites destination' do
-            expect(File.stat(dst_file).mtime.freeze).not_to eq(original_mtime)
+            expect(File.stat(dst_file).mtime).not_to eq(original_mtime)
           end
         end
 
