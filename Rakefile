@@ -26,7 +26,7 @@ Maid::Rake::Task.new(:clean) do
   trash('tmp')
 end
 
-namespace :spec do
+namespace :guard do
   default_target_ruby_version = File.read('Dockerfile').match(/^FROM ruby:(.*)$/)[1]
 
   desc "Run Guard and RSpec in a Docker container (ruby-#{default_target_ruby_version})"
