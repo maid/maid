@@ -1,3 +1,3 @@
 Maid.rules do
-  rename('/tmp/maid-test/perfect_man', '/tmp/maid-test/buffalo_fuzz')
+  rename('/tmp/maid-specs/perfect_man', '/tmp/maid-specs/buffalo_fuzz')
 end

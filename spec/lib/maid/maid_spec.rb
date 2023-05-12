@@ -28,7 +28,7 @@ module Maid
       end
 
       context 'with a custom logfile path' do
-        let(:device) { '/tmp/maid/overridden-maid.log' }
+        let(:device) { '/tmp/maid-specs/overridden-maid.log' }
 
         before { Maid.new(log_device: device, logger: logger) }
 
@@ -126,15 +126,15 @@ module Maid
 
       before do
         # Create the files that the test rules will impact
-        FileUtils.mkdir_p('/tmp/maid-test')
-        FileUtils.touch('/tmp/maid-test/perfect_man')
+        FileUtils.mkdir_p('/tmp/maid-specs')
+        FileUtils.touch('/tmp/maid-specs/perfect_man')
 
         maid.load_rules
         maid.clean
       end
 
       after do
-        FileUtils.rm_rf('/tmp/maid-test')
+        FileUtils.rm_rf('/tmp/maid-specs')
       end
 
       it 'logs start' do
@@ -146,8 +146,8 @@ module Maid
       end
 
       it 'follows the given rules' do
-        expect(File.exist?('/tmp/maid-test/perfect_man')).to be false
-        expect(File.exist?('/tmp/maid-test/buffalo_fuzz')).to be true
+        expect(File.exist?('/tmp/maid-specs/perfect_man')).to be false
+        expect(File.exist?('/tmp/maid-specs/buffalo_fuzz')).to be true
       end
     end
 
@@ -217,7 +217,7 @@ module Maid
       end
 
       # FIXME: Example is too long, shouldn't need the rubocop::disable
-      it 'accepts a hash of options and passes them to Listen' do # rubocop:disable RSpec/ExampleLength
+      it 'accepts a hash of options and passes them to Listen' do
         hash = { some: :options }
         FileUtils.mkdir_p('some_dir')
 
@@ -252,7 +252,7 @@ module Maid
             # Suppressing the exception is fine, because we just want to test
             # that the message is logged when it throws and the test above
             # checks that the exception is raised.
-          rescue StandardError # rubocop:disable Lint/SuppressedException
+          rescue StandardError
           end
 
           expect(File.read(logfile)).to match(/file.*exist/)
@@ -260,7 +260,7 @@ module Maid
       end
     end
 
-    describe '#repeat', fake_zoneinfo: true do
+    describe '#repeat', fake_zoneinfo: false do
       before do
         # Avoid FakeFS error when the logfile doesn't already exist.
         FileUtils.mkdir_p(File.dirname(logfile))
@@ -281,7 +281,7 @@ module Maid
       end
 
       # FIXME: Example is too long, shouldn't need the rubocop::disable
-      it 'accepts a hash of options and passes them to Rufus' do # rubocop:disable RSpec/ExampleLength
+      it 'accepts a hash of options and passes them to Rufus' do
         scheduler = double('scheduler')
         expect(Rufus::Scheduler).to receive(:singleton).and_return(scheduler)
 
