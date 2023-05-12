@@ -28,6 +28,7 @@ end
 guard :rubocop, cli: ['--autocorrect', '--display-cop-names'] do
   watch('Gemfile')
   watch('Vagrantfile')
+  watch('Rakefile')
   watch(%r{^(?!node_modules/).+\.rb$})
   watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
 end
