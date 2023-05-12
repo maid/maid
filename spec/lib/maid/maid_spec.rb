@@ -248,6 +248,10 @@ module Maid
       context('with a non-existent directory') do
         let(:maid) { Maid.new(**test_defaults) }
 
+        before do
+          FileUtils.rm_rf(logfile)
+        end
+
         it 'raises with an intelligible message' do
           expect { maid.watch('/doesnt_exist/') }.to raise_error(/file.*exist/)
         end
