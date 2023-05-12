@@ -63,10 +63,10 @@ Metrics/CyclomaticComplexity:
 Metrics/MethodLength:
   Max: 27
 
-# Offense count: 4
+# Offense count: 5
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ModuleLength:
-  Max: 852
+  Max: 855
 
 # Offense count: 2
 # Configuration parameters: AllowedMethods, AllowedPatterns.
@@ -173,10 +173,10 @@ RSpec/MultipleDescribes:
 RSpec/MultipleExpectations:
   Max: 4
 
-# Offense count: 21
+# Offense count: 22
 # Configuration parameters: AllowSubject.
 RSpec/MultipleMemoizedHelpers:
-  Max: 13
+  Max: 14
 
 # Offense count: 16
 # Configuration parameters: EnforcedStyle, IgnoreSharedExamples.

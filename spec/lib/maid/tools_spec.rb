@@ -12,7 +12,8 @@ module Maid
     let(:filefixtures_glob) { "#{filefixtures_path}/*" }
     let(:image_path) { File.join(filefixtures_path, 'ruby.jpg') }
     let(:unknown_path) { File.join(filefixtures_path, 'unknown.foo') }
-    let(:logfile) { '/tmp/maid-specs/test.log' }
+    let(:test_basedir) { '/tmp/maid-specs' }
+    let(:logfile) { "#{test_basedir}/test.log" }
     let(:maid) { Maid.new({ log_device: logfile }) }
 
     before do
@@ -23,6 +24,8 @@ module Maid
 
       expect(Maid.ancestors).to include(Tools)
 
+      # FIXME: Keeping the double to avoid a large refactor for now, but this
+      # probably isn't necessary anymore.
       @logger = double('::Logger').as_null_object
       @maid = Maid.new(logger: @logger)
 
@@ -40,10 +43,10 @@ module Maid
 
     describe '#move' do
       before do
-        @src_dir = File.join('~', 'Source')
+        @src_dir = File.join(test_basedir, 'Source')
         @filename = 'foo.zip'
         @src_file = File.join(@src_dir, @filename)
-        @dst_dir = File.join('~', 'Destination')
+        @dst_dir = File.join(test_basedir, 'Destination')
         FileUtils.mkdir_p(File.expand_path(@src_dir))
         FileUtils.touch(File.expand_path(@src_file))
         FileUtils.mkdir_p(File.expand_path(@dst_dir))
@@ -76,8 +79,8 @@ module Maid
       end
 
       context 'given the destination directory does not exist' do
-        let(:src_file) { '/tmp/src/test_file' }
-        let(:dst_dir) { '/tmp/dest/' }
+        let(:src_file) { File.join(test_basedir, 'test_file') }
+        let(:dst_dir) { File.join(test_basedir, 'dest') }
         let(:dst_file) { File.join(dst_dir, File.basename(src_file)) }
 
         before do
@@ -85,6 +88,7 @@ module Maid
           FileUtils.touch(src_file)
           FileUtils.mkdir_p(dst_dir)
           FileUtils.rmdir(dst_dir)
+          FileUtils.rm_rf(logfile)
 
           maid.move(src_file, dst_dir)
         end
@@ -103,8 +107,8 @@ module Maid
       end
 
       context 'when the destination file already exists' do
-        let(:src_file) { '/tmp/src/test_file' }
-        let(:dst_dir) { '/tmp/dest/' }
+        let(:src_file) { File.join(test_basedir, 'test_file') }
+        let(:dst_dir) { File.join(test_basedir, 'dest') }
         let(:dst_file) { File.join(dst_dir, File.basename(src_file)) }
 
         before do
@@ -162,8 +166,8 @@ module Maid
     end
 
     describe '#rename' do
-      let(:src_file) { '/tmp/src/test_file' }
-      let(:dst_dir) { '/tmp/dest/' }
+      let(:src_file) { File.join(test_basedir, 'test_file') }
+      let(:dst_dir) { File.join(test_basedir, 'dest') }
       let(:dst_file) { File.join(dst_dir, 'dest_test_file') }
 
       before do
@@ -194,8 +198,8 @@ module Maid
       end
 
       context 'given the target already exists' do
-        let(:src_file) { '/tmp/src/test_file' }
-        let(:dst_dir) { '/tmp/dest/' }
+        let(:src_file) { File.join(test_basedir, 'test_file') }
+        let(:dst_dir) { File.join(test_basedir, 'dest') }
         let(:dst_file) { File.join(dst_dir, 'dest_test_file') }
 
         before do
@@ -224,9 +228,9 @@ module Maid
     end
 
     describe '#trash' do
-      let(:src_file) { '/tmp/src/test_file' }
+      let(:src_file) { File.join(test_basedir, 'test_file') }
       let(:trash_file) { File.join(maid.trash_path, File.basename(src_file)) }
-      let(:dst_dir) { '/tmp/dest/' }
+      let(:dst_dir) { File.join(test_basedir, 'dest') }
       let(:dst_file) { File.join(dst_dir, File.basename(src_file)) }
 
       before do
@@ -255,7 +259,7 @@ module Maid
       end
 
       context 'with multiple files' do
-        let(:src_file2) { "#{src_file}2" }
+        let(:src_file2) { "#{src_file}_2" }
 
         before do
           FileUtils.touch(File.expand_path(src_file2))
@@ -313,11 +317,12 @@ module Maid
     end
 
     describe '#remove' do
-      let(:src_file) { '/tmp/src/test_file' }
+      let(:src_file) { File.join(test_basedir, 'test_file') }
 
       before do
         FileUtils.mkdir_p(File.dirname(src_file))
         FileUtils.touch(src_file)
+        FileUtils.rm_rf(logfile)
       end
 
       after do
@@ -367,7 +372,7 @@ module Maid
       end
 
       context 'with multiple paths' do
-        let(:src_files) { [src_file, "#{src_file}2"] }
+        let(:src_files) { [src_file, "#{src_file}_2"] }
 
         before do
           FileUtils.touch(src_files)
@@ -418,8 +423,8 @@ module Maid
       end
 
       context 'with multiple directories' do
-        let(:src_file) { '/tmp/maid/nested/test_file' }
-        let(:src_file2) { "#{src_file}2" }
+        let(:src_file) { File.join(test_basedir, 'multi', 'test_file') }
+        let(:src_file2) { "#{src_file}_2" }
 
         before do
           FileUtils.mkdir_p(File.dirname(src_file))
@@ -440,7 +445,7 @@ module Maid
     end
 
     describe '#files' do
-      let(:file) { '/tmp/maid/test_file' }
+      let(:file) { File.join(test_basedir, 'test_file') }
 
       context 'with a single file' do
         before do
@@ -543,7 +548,7 @@ module Maid
 
     describe '#find' do
       before do
-        @dir = File.join('/tmp', 'Source')
+        @dir = File.join(test_basedir, 'Source')
         @filename = 'foo.zip'
         @file = File.join(@dir, @filename)
         FileUtils.mkdir_p(File.expand_path(@dir))
@@ -634,7 +639,7 @@ module Maid
     end
 
     describe '#created_at' do
-      let(:file) { '/tmp/maid/test.file' }
+      let(:file) { File.join(test_basedir, 'test_file') }
 
       before do
         FileUtils.mkdir_p(File.dirname(file))
@@ -767,15 +772,16 @@ module Maid
     end
 
     describe '#copy' do
-      let(:src_file) { File.join('/tmp', 'maid-test', 'src', 'foo.zip') }
+      let(:src_file) { File.join(test_basedir, 'src', 'test_file') }
       let(:src_dir) { File.dirname(src_file) }
-      let(:dst_file) { File.join('/tmp', 'maid-test', 'dest', 'foo.zip') }
+      let(:dst_file) { File.join(test_basedir, 'dest', 'test_file') }
       let(:dst_dir) { File.dirname(dst_file) }
 
       before do
         FileUtils.mkdir_p(File.expand_path(src_dir))
         FileUtils.touch(File.expand_path(src_file))
         FileUtils.mkdir_p(File.expand_path(dst_dir))
+        FileUtils.rm_rf(logfile)
       end
 
       after do
@@ -997,7 +1003,8 @@ module Maid
   end
 
   describe 'OSX tag support', fakefs: false do
-    let(:test_file) { '~/.maid/test/tag.zip' }
+    let(:test_basedir) { '/tmp/maid-specs' }
+    let(:test_file) { File.join(test_basedir, 'tag.zip') }
     let(:test_dir) { File.dirname(test_file) }
     let(:filename) { File.basename(test_file) }
     let(:original_file_options) { maid.file_options.clone }
