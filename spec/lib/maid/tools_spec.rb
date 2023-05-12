@@ -462,34 +462,35 @@ module Maid
       end
 
       context 'with multiple files' do
-        let(:file1) { "#{file}_1" }
-        let(:file2) { "#{file}_2" }
+        let(:first_file) { "#{file}_1" }
+        let(:second_file) { "#{file}_2" }
 
         before do
-          FileUtils.mkdir_p(File.dirname(file1))
-          FileUtils.touch(file1)
-          FileUtils.touch(file2)
+          FileUtils.mkdir_p(File.dirname(first_file))
+          FileUtils.touch(first_file)
+          FileUtils.touch(second_file)
         end
 
         after do
-          FileUtils.rm_rf(File.dirname(file1))
-          FileUtils.rm_rf(File.dirname(file2))
+          FileUtils.rm_rf(File.dirname(first_file))
+          FileUtils.rm_rf(File.dirname(second_file))
         end
 
         it 'list files in all provided globs' do
-          expect(maid.dir(["#{File.dirname(file1)}/*_1", "#{File.dirname(file2)}/*_2"])).to eq([file1, file2])
+          expect(maid.dir(["#{File.dirname(first_file)}/*_1",
+                           "#{File.dirname(second_file)}/*_2",])).to eq([first_file, second_file])
         end
 
         it 'lists files when using regexp-like glob patterns' do
-          expect(@maid.dir("#{File.dirname(file1)}/*{1,2}")).to eq([file1, file2])
+          expect(@maid.dir("#{File.dirname(first_file)}/*{1,2}")).to eq([first_file, second_file])
         end
       end
 
       context 'with multiple directories' do
-        let(:file1) { "#{file}_1" }
-        let(:file2) { "#{file}_2" }
-        let(:dir1) { "#{File.dirname(file)}/test_dir_1" }
-        let(:dir2) { "#{File.dirname(file)}/test_dir_2" }
+        let(:first_file) { "#{file}_1" }
+        let(:second_file) { "#{file}_2" }
+        let(:first_dir) { "#{File.dirname(file)}/test_dir_1" }
+        let(:second_dir) { "#{File.dirname(file)}/test_dir_2" }
         let(:test_dir) { File.dirname(file) }
 
         before do
@@ -497,12 +498,12 @@ module Maid
           # "#{test_dir}/"
           # ├── test_dir_1
           # ├── test_dir_2
-          # ├── test_file1
-          # └── test_file2
-          FileUtils.mkdir_p(dir1)
-          FileUtils.mkdir_p(dir2)
-          FileUtils.touch(file1)
-          FileUtils.touch(file2)
+          # ├── test_first_file
+          # └── test_second_file
+          FileUtils.mkdir_p(first_dir)
+          FileUtils.mkdir_p(second_dir)
+          FileUtils.touch(first_file)
+          FileUtils.touch(second_file)
         end
 
         after do
@@ -510,7 +511,7 @@ module Maid
         end
 
         it 'only lists the files' do
-          expect(maid.dir("#{test_dir}/**/*{file}*")).to eq([file1, file2])
+          expect(maid.dir("#{test_dir}/**/*{file}*")).to eq([first_file, second_file])
         end
       end
     end

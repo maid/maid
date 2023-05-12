@@ -217,26 +217,29 @@ module Maid
       end
 
       # FIXME: Example is too long, shouldn't need the rubocop::disable
-      it 'accepts a hash of options and passes them to Listen' do
-        hash = { some: :options }
-        FileUtils.mkdir_p('some_dir')
+      context 'with a hash of options' do
+        let(:hash) { { some: :options } }
+        let(:listener) { double('listener') }
 
-        @maid.watch('some_dir', hash) do
-          rule 'test' do
+        before do
+          FileUtils.mkdir_p('some_dir')
+          @maid.watch('some_dir', hash) do
+            rule 'test' do
+            end
           end
         end
 
-        listener = double('listener')
+        it 'passes them to Listen' do
+          expect(Listen).to receive(:to) do |dir, opts|
+            expect(dir).to eq File.expand_path('some_dir')
+            expect(opts).to eq(hash)
+            listener
+          end
 
-        expect(Listen).to receive(:to) do |dir, opts|
-          expect(dir).to eq File.expand_path('some_dir')
-          expect(opts).to eq(hash)
-          listener
+          expect(listener).to receive(:start)
+
+          @maid.watches.last.run
         end
-
-        expect(listener).to receive(:start)
-
-        @maid.watches.last.run
       end
 
       context('with a non-existent directory') do
@@ -252,7 +255,7 @@ module Maid
             # Suppressing the exception is fine, because we just want to test
             # that the message is logged when it throws and the test above
             # checks that the exception is raised.
-          rescue StandardError
+          rescue StandardError # rubocop:disable RSpec/SuppressedException
           end
 
           expect(File.read(logfile)).to match(/file.*exist/)
@@ -280,20 +283,24 @@ module Maid
         expect(@maid.repeats.first.timestring).to eq('1s')
       end
 
-      # FIXME: Example is too long, shouldn't need the rubocop::disable
-      it 'accepts a hash of options and passes them to Rufus' do
-        scheduler = double('scheduler')
-        expect(Rufus::Scheduler).to receive(:singleton).and_return(scheduler)
+      context 'with a hash of options' do
+        let(:scheduler) { double('scheduler') }
+        let(:hash) { { some: :options } }
 
-        hash = { some: :options }
-        @maid.repeat('1s', hash) do
-          rule 'test' do
+        before do
+          allow(Rufus::Scheduler).to receive(:singleton).and_return(scheduler)
+
+          @maid.repeat('1s', hash) do
+            rule 'test' do
+            end
           end
         end
 
-        expect(scheduler).to receive(:repeat).with('1s', hash)
+        it 'passes them to Rufus' do
+          expect(scheduler).to receive(:repeat).with('1s', hash)
 
-        @maid.repeats.last.run
+          @maid.repeats.last.run
+        end
       end
     end
 
