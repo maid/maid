@@ -88,7 +88,7 @@ module Maid
       end
 
       context 'with a custom trash path' do
-        let(:trash_path) { '/tmp/my_trash/' }
+        let(:trash_path) { '/tmp/maid-specs/my_trash/' }
         let(:maid) { Maid.new(log_device: test_defaults[:log_device], trash_path: trash_path) }
 
         it 'sets the trash to the given path' do
