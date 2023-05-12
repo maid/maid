@@ -172,6 +172,7 @@ module Maid
 
         before do
           allow(Kernel).to receive(:load).and_raise(LoadError)
+          FileUtils.rm_rf(logfile)
         end
 
         it 'gives an error on STDERR if there is a LoadError' do
