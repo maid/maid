@@ -125,6 +125,8 @@ module Maid
       let(:maid) { Maid.new(**test_defaults) }
 
       before do
+        # Start with a clean logfile
+        FileUtils.rm_rf(logfile)
         # Create the files that the test rules will impact
         FileUtils.mkdir_p('/tmp/maid-specs')
         FileUtils.touch('/tmp/maid-specs/perfect_man')
@@ -137,11 +139,11 @@ module Maid
         FileUtils.rm_rf('/tmp/maid-specs')
       end
 
-      it 'logs start' do
+      it 'logs the beginning' do
         expect(File.read(logfile)).to match(/Started/)
       end
 
-      it 'logs finish' do
+      it 'logs the end' do
         expect(File.read(logfile)).to match(/Finished/)
       end
 
