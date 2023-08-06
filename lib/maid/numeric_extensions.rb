@@ -80,6 +80,23 @@ module Maid::NumericExtensions
     ### Maid additions ###
     ######################
 
+    # TODO: Import ActiveSupport directly: https://github.com/maid/maid/issues/81
+
+    def months
+      self * 30.days
+    end
+    alias month months
+
+    def quarters
+      self * 13.weeks
+    end
+    alias quarter quarters
+
+    def years
+      self * 365.days
+    end
+    alias year years
+
     # TODO: find a better place for these to live?
 
     # Reads well in a case like:
