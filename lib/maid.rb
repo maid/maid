@@ -33,8 +33,8 @@ module Maid
     end
 
     # Define rules for the Maid instance.
-    def rules(&block)
-      @instance.instance_exec(&block)
+    def rules(&)
+      @instance.instance_exec(&)
     end
   end
 end

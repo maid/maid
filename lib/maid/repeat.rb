@@ -4,13 +4,13 @@ class Maid::Repeat
 
   attr_reader :timestring, :scheduler, :logger
 
-  def initialize(maid, timestring, options = {}, &block)
+  def initialize(maid, timestring, options = {}, &)
     @maid = maid
     @logger = maid.logger # TODO: Maybe it's better to create seperate loggers?
     @scheduler = Rufus::Scheduler.singleton
     @timestring = timestring
     @options = options
-    initialize_rules(&block)
+    initialize_rules(&)
   end
 
   def run

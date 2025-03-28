@@ -71,7 +71,7 @@ class Maid::Maid
     warn e.message
   end
 
-  def watch(path, options = {}, &block)
+  def watch(path, options = {}, &)
     full_path = File.expand_path(path)
 
     unless File.directory?(full_path)
@@ -81,11 +81,11 @@ class Maid::Maid
       raise message
     end
 
-    @watches << ::Maid::Watch.new(self, path, options, &block)
+    @watches << ::Maid::Watch.new(self, path, options, &)
   end
 
-  def repeat(timestring, options = {}, &block)
-    @repeats << ::Maid::Repeat.new(self, timestring, options, &block)
+  def repeat(timestring, options = {}, &)
+    @repeats << ::Maid::Repeat.new(self, timestring, options, &)
   end
 
   # Daemonizes the process by starting all watches and repeats and joining

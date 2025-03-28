@@ -3,9 +3,9 @@ module Maid::RuleContainer
   attr_reader :rules
 
   # initialize_rules
-  def initialize_rules(&block)
+  def initialize_rules(&)
     @rules ||= []
-    instance_exec(&block)
+    instance_exec(&)
   end
 
   # Register a rule with a description and instructions (lambda function).

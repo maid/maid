@@ -727,7 +727,7 @@ module Maid::Tools
   #     where_content_type(dir('~/Downloads/*'), 'public.image')
   def where_content_type(paths, filter_types)
     filter_types = Array(filter_types)
-    Array(paths).select { |p| !(filter_types & content_types(p)).empty? }
+    Array(paths).select { |p| filter_types.intersect?(content_types(p)) }
   end
 
   # Test whether a directory is either empty, or contains only empty
