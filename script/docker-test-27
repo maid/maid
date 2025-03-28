@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-# Run RSpec in a docker container, to avoid mistakenly writing to the live
-# filesystem while developing.
-docker rm -f maid-dev
-docker build -t maid-dev:2.7 --file Dockerfile-27 .
-docker run -it --rm --name maid-dev --mount type=bind,src="$(pwd)",target=/usr/src/app maid-dev:2.7
