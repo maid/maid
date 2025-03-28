@@ -15,8 +15,8 @@ jobs:
         os:
           - ubuntu-20.04
           - ubuntu-22.04
-          - macos-11
-          - macos-12
+          - macos-14
+          - macos-15
         ruby-version:
           - "2.7"
           - "3.0"
