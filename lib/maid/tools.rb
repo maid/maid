@@ -328,7 +328,7 @@ module Maid::Tools
   def mkdir(path, options = {})
     path = expand(path)
     log("mkdir -p #{sh_escape(path)}")
-    FileUtils.mkdir_p(path, **@file_options.merge(options))
+    FileUtils.mkdir_p(path, **@file_options, **options)
     path
   end
 
@@ -739,7 +739,7 @@ module Maid::Tools
   #       trash('~/Downloads/foo')
   #     end
   def tree_empty?(root)
-    return nil if File.file?(root)
+    return false if File.file?(root)
     return true if Dir.glob(root + '/*').length == 0
 
     ignore = []

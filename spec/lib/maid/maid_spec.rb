@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Maid
   describe Maid do
-    let(:logger) { class_spy('Maid::Logger') }
+    let(:logger) { class_spy(::Logger) }
     let(:logfile) { '/tmp/maid-specs/test.log' }
     let(:rules_file) { File.expand_path(File.join(File.dirname(__dir__), '../../fixtures/files/test_rules.rb')) }
     let(:test_defaults) { Maid::DEFAULTS.merge({ log_device: logfile, rules_path: rules_file }) }

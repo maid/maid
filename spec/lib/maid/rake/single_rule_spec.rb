@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Maid
   module Rake
-    describe SingleRule, fakefs: true do
+    describe SingleRule, :fakefs do
       subject(:single_rule) { described_class.new name, task }
       let(:name)            { double(:rule_description) }
       let(:task)            { proc {} }
