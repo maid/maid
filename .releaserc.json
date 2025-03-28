@@ -10,7 +10,7 @@
       }
     ],
     [
-      "@semantic-release/exec", 
+      "@semantic-release/exec",
       {
         "prepareCmd": "ruby -e \"require 'fileutils'; version_file = 'lib/maid/version.rb'; content = File.read(version_file).gsub(/VERSION\\s*=\\s*['\\\"](.*?)['\\\"]/, 'VERSION = \\\"${nextRelease.version}\\\"'); File.write(version_file, content)\""
       }
