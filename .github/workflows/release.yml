@@ -25,31 +25,34 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          # ruby-version derived from .ruby-version file
-          bundler-cache: true
-        if: ${{ steps.release.outputs.release_created }}
-
-      - name: Install dependencies
-        run: bundle install
-        if: ${{ steps.release.outputs.release_created }}
-
-      - name: Run tests
-        run: bundle exec rake
-        env:
-          ISOLATED: true
-        if: ${{ steps.release.outputs.release_created }}
-
-      - name: Publish gem
-        run: |
-          mkdir -p $HOME/.gem
-          touch $HOME/.gem/credentials
-          chmod 0600 $HOME/.gem/credentials
-          printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
-          gem build *.gemspec
-          gem push *.gem
-        env:
-          GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_AUTH_TOKEN }}
+      # - name: Set up Ruby
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #     # ruby-version derived from .ruby-version file
+      #     bundler-cache: true
+      #   if: ${{ steps.release.outputs.release_created }}
+      #
+      # - name: Install dependencies
+      #   run: bundle install
+      #   if: ${{ steps.release.outputs.release_created }}
+      #
+      # - name: Run tests
+      #   run: bundle exec rake
+      #   env:
+      #     ISOLATED: true
+      #   if: ${{ steps.release.outputs.release_created }}
+      #
+      # - name: Publish gem
+      #   run: |
+      #     mkdir -p $HOME/.gem
+      #     touch $HOME/.gem/credentials
+      #     chmod 0600 $HOME/.gem/credentials
+      #     printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
+      #     gem build *.gemspec
+      #     gem push *.gem
+      #   env:
+      #     GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_AUTH_TOKEN }}
+      # #   if: ${{ steps.release.outputs.release_created }}
+      - name: Debug
+        run: echo 'would release'
         if: ${{ steps.release.outputs.release_created }}
