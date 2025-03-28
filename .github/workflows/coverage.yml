@@ -2,8 +2,7 @@ name: Code coverage
 
 on:
   push:
-    branches:
-      master
+    branches: master
   pull_request:
     branches:
       - master
@@ -12,7 +11,7 @@ jobs:
   code-climate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -27,4 +26,3 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_KEY }}
           COVERAGE: true
           ISOLATED: true
-
