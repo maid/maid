@@ -41,7 +41,7 @@ RSpec.configure do |config|
   # NOTE: If a test fails because ENOENT /usr/share/zoneinfo/Africa/Abidjan,
   # add `fake_zoneinfo: true` to the describe:
   # `describe(MyClass, fake_zoneinfo: true do`
-  config.before(:context, fake_zoneinfo: true) do
+  config.before(:context, :fake_zoneinfo) do
     # Rufus needs zoneinfo data to run, but when using FakeFS,
     # /usr/share/zoneinfo doesn't exist on the FakeFS.
     # On Linux, we just have to FakeFS::FileSystem.clone the directory and it

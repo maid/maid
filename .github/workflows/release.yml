@@ -13,10 +13,10 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Prepare release
         id: release
-        uses: google-github-actions/release-please-action@v3
+        uses: googleapis/release-please-action@v4
         with:
           release-type: ruby
           package-name: maid

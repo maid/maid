@@ -33,9 +33,4 @@ namespace :guard do
   task :docker do
     system('./script/docker-test')
   end
-
-  desc 'Run Guard in a Docker container (ruby-2.7)'
-  task :docker27 do
-    system('./script/docker-test-27')
-  end
 end

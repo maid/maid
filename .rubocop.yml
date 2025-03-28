@@ -3,6 +3,7 @@ inherit_from: .rubocop_todo.yml
 
 require:
   - rubocop-rake
+plugins:
   - rubocop-rspec
 
 AllCops:
@@ -12,7 +13,7 @@ AllCops:
     - "vendor/bundle/**/*" # when running on GH Actions
     - ".vagrant/**/*"
   NewCops: enable
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: "3.2"
 
 Metrics/BlockLength:
   Exclude:

@@ -328,7 +328,7 @@ module Maid::Tools
   def mkdir(path, options = {})
     path = expand(path)
     log("mkdir -p #{sh_escape(path)}")
-    FileUtils.mkdir_p(path, **@file_options.merge(options))
+    FileUtils.mkdir_p(path, **@file_options, **options)
     path
   end
 
@@ -727,7 +727,7 @@ module Maid::Tools
   #     where_content_type(dir('~/Downloads/*'), 'public.image')
   def where_content_type(paths, filter_types)
     filter_types = Array(filter_types)
-    Array(paths).select { |p| !(filter_types & content_types(p)).empty? }
+    Array(paths).select { |p| filter_types.intersect?(content_types(p)) }
   end
 
   # Test whether a directory is either empty, or contains only empty
@@ -739,7 +739,7 @@ module Maid::Tools
   #       trash('~/Downloads/foo')
   #     end
   def tree_empty?(root)
-    return nil if File.file?(root)
+    return false if File.file?(root)
     return true if Dir.glob(root + '/*').length == 0
 
     ignore = []

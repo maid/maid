@@ -9,5 +9,5 @@ RUN git config --global --add safe.directory /usr/src/app
 RUN bundle install
 
 ENV ISOLATED=true
-CMD ["bash", "-c", "/usr/local/bundle/bin/bundle exec guard"]
+CMD ["bash", "-c", "/usr/local/bin/bundle exec guard"]
 

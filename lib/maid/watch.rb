@@ -5,7 +5,7 @@ class Maid::Watch
 
   attr_reader :path, :listener, :logger
 
-  def initialize(maid, path, options = {}, &block)
+  def initialize(maid, path, options = {}, &)
     @maid = maid
 
     if options.nil? || options.empty?
@@ -19,7 +19,7 @@ class Maid::Watch
 
     @logger = maid.logger # TODO: Maybe it's better to create seperate loggers?
     @path = File.expand_path(path)
-    initialize_rules(&block)
+    initialize_rules(&)
   end
 
   def run

@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = 'maid'
 
-  s.required_ruby_version = '>= 2.7.0'
+  s.required_ruby_version = '>= 3.2.0'
 
   # Strategy: if possible, use ranges (so there are fewer chances of version conflicts)
   s.add_dependency('deprecated', '~> 3.0.0')
@@ -51,14 +51,17 @@ Gem::Specification.new do |s|
   s.add_development_dependency('guard-bundler', '~> 3.0.1')
   s.add_development_dependency('guard-rspec', '~> 4.7.3')
   s.add_development_dependency('guard-rubocop', '~> 1.5.0')
+  s.add_development_dependency('irb', '~> 1.15.1')
+  s.add_development_dependency('ostruct', '~> 0.6.1')
   s.add_development_dependency('pry-byebug', '~> 3.10.1')
   s.add_development_dependency('rake', '~> 13.0.6')
   s.add_development_dependency('rake-notes', '~> 0.2.2')
   s.add_development_dependency('redcarpet', '~> 3.6.0') # Soft dependency of `yard`
+  s.add_development_dependency('reline', '~> 0.6.0')
   s.add_development_dependency('rspec', '~> 3.12.0')
   s.add_development_dependency('rubocop', '~> 1.50')
   s.add_development_dependency('rubocop-rake', '~> 0.6.0')
-  s.add_development_dependency('rubocop-rspec', '~> 2.22.0')
+  s.add_development_dependency('rubocop-rspec', '~> 3.5.0')
   s.add_development_dependency('simplecov', '~> 0.22.0')
   s.add_development_dependency('timecop', '~> 0.9.6')
   s.add_development_dependency('vcr', '~> 6.1.0')

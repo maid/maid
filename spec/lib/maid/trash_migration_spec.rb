@@ -3,7 +3,7 @@ require 'fileutils'
 require 'spec_helper'
 
 module Maid
-  describe TrashMigration, fakefs: true do
+  describe TrashMigration, :fakefs do
     before do
       # Avoid FakeFS' File#flock NotImplementedError
       FileUtils.mkdir_p(File.dirname(Maid::DEFAULTS[:log_device]))
