@@ -32,8 +32,8 @@ jobs:
           manifest-file: .release-please-manifest.json
         # FIXME: Don't ship this
         env:
-          ACTIONS_STEP_DEBUG: true
-          DRY_RUN: true
+          ACTIONS_STEP_DEBUG: "true"
+          DRY_RUN: "true"
       # FIXME: Don't ship this commented out
       #
       # - name: Set up Ruby
