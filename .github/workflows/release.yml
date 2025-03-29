@@ -29,12 +29,15 @@ jobs:
         with:
           # ruby-version derived from .ruby-version file
           bundler-cache: true
+        if: ${{ steps.release.outputs.release_created }}
       - name: Install dependencies
         run: bundle install
+        if: ${{ steps.release.outputs.release_created }}
       - name: Run tests
         run: bundle exec rake
         env:
           ISOLATED: true
+        if: ${{ steps.release.outputs.release_created }}
       - name: Publish gem
         run: |
           mkdir -p $HOME/.gem
