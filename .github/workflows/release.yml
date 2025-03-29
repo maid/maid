@@ -50,7 +50,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
         # FIXME: Dont ship this
-        run: npx semantic-release --debug --dry-run
+        run: npx semantic-release --debug --dry-run --branches relplz5
 
       - name: Publish gem
         if: steps.semantic_release.outputs.new_release_published == 'true'
