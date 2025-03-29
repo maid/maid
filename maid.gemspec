@@ -68,7 +68,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('webmock', '~> 3.18.1')
   s.add_development_dependency('yard', '>= 0.9.11')
   s.add_development_dependency('semantic_release', '~> 1.0.0')
-  s.add_development_dependency('conventional_changelog', '~> 1.3.0')
+  s.add_development_dependency('conventional-changelog', '~> 1.3.0')
 
   # In Vagrant, polling won't cross over the OS boundary if you develop in the host OS but run your tests in the
   # guest.  One way around this is to force polling instead:
