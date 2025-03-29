@@ -32,7 +32,7 @@ jobs:
           manifest-file: .release-please-manifest.json
         # FIXME: Don't ship this
         env:
-          ACTION_STEP_DEBUG: true
+          ACTIONS_STEP_DEBUG: true
           DRY_RUN: true
       # FIXME: Don't ship this commented out
       #
