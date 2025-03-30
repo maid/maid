@@ -1,12 +1,17 @@
 {
-  "release-type": "ruby",
-  "version-file": "lib/maid/version.rb",
-  "package-name": "maid",
+  "always-update": true,
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
-  "always-update": true,
+  "commit-search-depth": 100,
   "group-pull-request-title-pattern": "chore: release ${version}",
-  "release-search-depth": 400,
-  "commit-search-depth": 500,
-  "sequential-calls": false
+  "package-name": "maid",
+  "release-search-depth": 100,
+  "release-type": "ruby",
+  "sequential-calls": false,
+  "version-file": "lib/maid/version.rb",
+  "packages": {
+    ".": {
+      "release-type": "ruby"
+    }
+  }
 }
