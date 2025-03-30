@@ -1,6 +1,6 @@
 {
   "always-update": true,
-  "bootstrap-sha": "0a6ff8abc6db00aca181d6bfed9751e332900ac9",
+  "bootstrap-sha": "d4901ad446c8a614ef80472ed5e6f1ba8c702ed5",
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "commit-search-depth": 500,
