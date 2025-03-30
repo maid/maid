@@ -4,14 +4,14 @@
   "bump-patch-for-minor-pre-major": true,
   "commit-search-depth": 500,
   "group-pull-request-title-pattern": "chore: release ${version}",
-  "package-name": "maid",
   "release-search-depth": 400,
   "release-type": "ruby",
   "sequential-calls": false,
-  "version-file": "lib/maid/version.rb",
   "packages": {
     ".": {
-      "release-type": "ruby"
+      "release-type": "ruby",
+      "package-name": "maid",
+      "version-file": "lib/maid/version.rb"
     }
   }
 }
