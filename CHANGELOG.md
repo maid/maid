@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.11.0](https://github.com/maid/maid/compare/maid-v0.10.0...maid/v0.11.0) (2025-03-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* Drop support for ruby < 3.2 (EOL rubies)
+
+### Features
+
+* Update to Ruby 3.4 ([770d9d9](https://github.com/maid/maid/commit/770d9d9ca9618ba4669077efd860335efe09d16d))
+
+
+### Code Refactoring
+
+* Drop support for ruby &lt; 3.2 (EOL rubies) ([770d9d9](https://github.com/maid/maid/commit/770d9d9ca9618ba4669077efd860335efe09d16d))
+
 ## [0.10.0](https://github.com/maid/maid/compare/v0.10.0-alpha.3...v0.10.0) (2023-05-01)
 
 
