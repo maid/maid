@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - master
-  # FIXME: Dont ship this
-  pull_request:
-    branches:
-      - master
 
 permissions:
   contents: write
