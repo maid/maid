@@ -11,7 +11,7 @@ PATH
       mime-types (~> 3.0, < 4.0)
       rubyzip (~> 2.3.2)
       rufus-scheduler (~> 3.8.2)
-      thor (~> 1.2.1)
+      thor (~> 1.4.0)
       xdg (~> 2.2.3)
 
 GEM
@@ -176,7 +176,7 @@ GEM
     simplecov-html (0.13.1)
     simplecov_json_formatter (0.1.4)
     stringio (3.1.6)
-    thor (1.2.2)
+    thor (1.4.0)
     timecop (0.9.10)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)

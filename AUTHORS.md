@@ -6,6 +6,7 @@ In alphabetical order:
 * Graham Siener (@gsiener)
 * Itsuki Kurokawa (@fanalis)
 * Jayson Rhynas (@jayrhynas)
+* Joe Francis (@lostapathy)
 * John Colvin (@JohnColvin)
 * Jurriaan Pruis (@jurriaan)
 * Justin Hileman (@bobthecow)
