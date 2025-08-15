@@ -1,0 +1,26 @@
+name: Upload coverage to Code Climate
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: # Allow manual triggering of the workflow
+
+jobs:
+  upload-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+
+      - name: Upload coverage to Code Climate
+        uses: paambaati/codeclimate-action@v3.2.0
+        with:
+          coverageCommand: echo "Tests already run, using existing coverage data"
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_KEY }}

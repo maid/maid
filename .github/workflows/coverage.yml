@@ -13,17 +13,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+
       - name: Install dependencies
         run: bundle install
-      - name: Publish code coverage
-        uses: paambaati/codeclimate-action@v3.2.0
-        with:
-          coverageCommand: bundle exec rake
+
+      - name: Run tests and generate coverage
+        run: bundle exec rake
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_KEY }}
           COVERAGE: true
           ISOLATED: true
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
