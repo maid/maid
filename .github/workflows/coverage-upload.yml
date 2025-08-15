@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-  workflow_dispatch: # Allow manual triggering of the workflow
 
 jobs:
   upload-coverage:
@@ -12,15 +11,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download coverage artifact
-        uses: actions/download-artifact@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          name: coverage-report
-          path: coverage/
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: bundle install
 
       - name: Upload coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.2.0
         with:
-          coverageCommand: echo "Tests already run, using existing coverage data"
+          coverageCommand: bundle exec rake
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_KEY }}
+          COVERAGE: true
+          ISOLATED: true
