@@ -1,25 +1,25 @@
-name: Code coverage
+name: Upload coverage to Code Climate
 
 on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
 
 jobs:
-  code-climate:
+  upload-coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+
       - name: Install dependencies
         run: bundle install
-      - name: Publish code coverage
+
+      - name: Upload coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.2.0
         with:
           coverageCommand: bundle exec rake
