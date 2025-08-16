@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# shellcheck disable=SC1071
 version = ARGV[0]
 version_file = 'lib/maid/version.rb'
 
