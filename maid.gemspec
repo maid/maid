@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
   s.add_dependency('mime-types', '~> 3.0', '< 4.0')
   s.add_dependency('rubyzip', '~> 2.3.2')
   s.add_dependency('rufus-scheduler', '~> 3.8.2')
-  s.add_dependency('thor', '~> 1.2.1')
+  s.add_dependency('thor', '~> 1.4.0')
   s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs
 
   # TODO: use one of these two gems instead of `mdfind`.  **But** They have to work on Linux as well.
