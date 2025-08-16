@@ -1,9 +1,10 @@
 # Maid
 
 [![Gem Version](https://badge.fury.io/rb/maid.svg)](https://badge.fury.io/rb/maid)
+![GitHub Release](https://img.shields.io/github/v/release/maid/maid)
 [![Test](https://github.com/maid/maid/actions/workflows/test.yml/badge.svg)](https://github.com/maid/maid/actions/workflows/test.yml)
-[![Code Climate](https://codeclimate.com/github/maid/maid.svg)](https://codeclimate.com/github/maid/maid)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/3898063fb5b3caf24044/test_coverage)](https://codeclimate.com/github/maid/maid/test_coverage)
+[![Maintainability](https://qlty.sh/gh/maid/projects/maid/maintainability.svg)](https://qlty.sh/gh/maid/projects/maid)
+[![Code Coverage](https://qlty.sh/gh/maid/projects/maid/coverage.svg)](https://qlty.sh/gh/maid/projects/maid)
 [![StackOverflow](http://img.shields.io/badge/stackoverflow-maid-blue.svg)](http://stackoverflow.com/questions/tagged/maid)
 
 **Be lazy!**  Let Maid clean up after you, based on rules you define.
