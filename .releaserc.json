@@ -1,5 +1,7 @@
 {
-  "branches": ["master"],
+  "branches": [
+    "master"
+  ],
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
@@ -12,13 +14,16 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "ruby -e \"require 'fileutils'; version_file = 'lib/maid/version.rb'; content = File.read(version_file).gsub(/VERSION\\s*=\\s*['\\\"](.*?)['\\\"]/, 'VERSION = \\\"${nextRelease.version}\\\"'); File.write(version_file, content)\""
+        "prepareCmd": "ruby script/update-version.rb ${nextRelease.version}"
       }
     ],
     [
       "@semantic-release/git",
       {
-        "assets": ["CHANGELOG.md", "lib/maid/version.rb"],
+        "assets": [
+          "CHANGELOG.md",
+          "lib/maid/version.rb"
+        ],
         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ],
