@@ -41,20 +41,18 @@ jobs:
         env:
           ISOLATED: true
 
-      - name: Release
-        id: semantic_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
-        run: npx semantic-release
-
-      - name: Publish gem
-        if: steps.semantic_release.outputs.new_release_published == 'true'
+      - name: Configure gem credentials
         run: |
           mkdir -p $HOME/.gem
           touch $HOME/.gem/credentials
           chmod 0600 $HOME/.gem/credentials
           printf -- "---\n:rubygems_api_key: ::add-mask::${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
-          gem build *.gemspec
-          gem push *.gem
         env:
           GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_AUTH_TOKEN }}
+
+      - name: Release
+        id: semantic_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
+        run: |
+          npx semantic-release

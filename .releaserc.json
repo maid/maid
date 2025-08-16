@@ -14,7 +14,8 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "ruby script/update-version.rb ${nextRelease.version}"
+        "prepareCmd": "ruby script/update-version.rb ${nextRelease.version}",
+        "publishCmd": "gem build *.gemspec && gem push *.gem"
       }
     ],
     [
