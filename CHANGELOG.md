@@ -1,3 +1,10 @@
+## [0.10.1](https://github.com/maid/maid/compare/v0.10.0...v0.10.1) (2025-08-16)
+
+
+### Bug Fixes
+
+* **thor:** Upgrade thor to fix vulnerability (ref: ef87ff8) ([24402df](https://github.com/maid/maid/commit/24402df3121ac0b50da3cd51ed07144e30f55c5d))
+
 # Changelog
 
 ## [0.11.0](https://github.com/maid/maid/compare/maid-v0.10.0...maid/v0.11.0) (2025-03-30)
