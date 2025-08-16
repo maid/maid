@@ -12,6 +12,7 @@ permissions:
 jobs:
   release:
     name: Release
+    needs: [commitlint, test, rubocop, shellcheck]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
