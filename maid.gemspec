@@ -7,10 +7,10 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Benjamin Oakes', 'Coaxial']
   s.email       = ['hello@benjaminoakes.com', 'c+rubygems@64b.it']
-  s.license     = 'GPL-2.0'
+  s.license     = 'GPL-2.0-only'
   s.homepage    = 'http://github.com/maid/maid'
-  s.summary     = Maid::SUMMARY
-  s.description = s.summary
+  s.summary     = 'Keep your filesystem clean by running custom rules periodically'
+  s.description = Maid::SUMMARY
   s.files       = Dir['lib/**/*.rb'] + Dir['bin/maid']
   s.metadata    = {
     'bug_tracker_uri' => 'https://github.com/maid/maid/issues',
@@ -20,8 +20,6 @@ Gem::Specification.new do |s|
     'wiki_uri' => 'https://github.com/maid/maid/wiki',
     'rubygems_mfa_required' => 'true',
   }
-
-  s.rubyforge_project = 'maid'
 
   s.required_ruby_version = '>= 3.2.0'
 
