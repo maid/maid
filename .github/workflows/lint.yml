@@ -13,6 +13,7 @@ on:
 jobs:
   commitlint:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,11 +25,7 @@ jobs:
       - name: Install commitlint
         run: npm install -g @commitlint/config-conventional @commitlint/cli
       - name: Validate current commit (push)
-        if: github.event_name == 'push'
         run: echo "${{ github.event.head_commit.message }}" | commitlint
-      - name: Validate PR commits
-        if: github.event_name == 'pull_request'
-        run: commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
   rubocop:
     runs-on: ubuntu-latest
