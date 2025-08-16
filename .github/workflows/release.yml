@@ -10,46 +10,51 @@ permissions:
   pull-requests: write
 
 jobs:
-  release-please:
+  release:
+    name: Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Prepare release
-        id: release
-        uses: googleapis/release-please-action@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          # Don't use GITHUB_TOKEN because this doesn't allow workflows to
-          # trigger workflows; it leave the `release-please`-generated PR with
-          # pending checks as they're never started.
-          token: ${{ secrets.BOT_GH_TOKEN }}
-          config-file: release-please-config.json
-          manifest-file: .release-please-manifest.json
+          fetch-depth: 0
+          persist-credentials: false
 
-      - name: Set up Ruby
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+
+      - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           # ruby-version derived from .ruby-version file
           bundler-cache: true
-        if: ${{ steps.release.outputs.release_created }}
 
       - name: Install dependencies
-        run: bundle install
-        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          npm install -g semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/exec
+          bundle install
 
       - name: Run tests
         run: bundle exec rake
         env:
           ISOLATED: true
-        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Release
+        id: semantic_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
+        run: npx semantic-release
 
       - name: Publish gem
+        if: steps.semantic_release.outputs.new_release_published == 'true'
         run: |
           mkdir -p $HOME/.gem
           touch $HOME/.gem/credentials
           chmod 0600 $HOME/.gem/credentials
-          printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
+          printf -- "---\n:rubygems_api_key: ::add-mask::${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
           gem build *.gemspec
           gem push *.gem
         env:
           GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_AUTH_TOKEN }}
-        if: ${{ steps.release.outputs.release_created }}

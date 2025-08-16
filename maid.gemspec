@@ -45,6 +45,7 @@ Gem::Specification.new do |s|
   #     s.add_dependency('spotlight', '~> 0.0.6')
 
   # Strategy: specific versions (since they're just for development)
+  s.add_development_dependency('conventional-changelog', '~> 1.3.0')
   s.add_development_dependency('fakefs', '~> 2.4.0')
   s.add_development_dependency('fuubar', '~> 2.5.1')
   s.add_development_dependency('guard', '~> 2.18.0')
@@ -62,6 +63,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rubocop', '~> 1.50')
   s.add_development_dependency('rubocop-rake', '~> 0.6.0')
   s.add_development_dependency('rubocop-rspec', '~> 3.5.0')
+  s.add_development_dependency('semantic_release', '~> 1.0.0')
   s.add_development_dependency('simplecov', '~> 0.22.0')
   s.add_development_dependency('timecop', '~> 0.9.6')
   s.add_development_dependency('vcr', '~> 6.1.0')
