@@ -14,7 +14,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "ruby script/update-version.rb ${nextRelease.version}",
+        "prepareCmd": "ruby script/update-version.rb ${nextRelease.version} && bundle install",
         "publishCmd": "gem build *.gemspec && gem push *.gem"
       }
     ],
@@ -23,7 +23,8 @@
       {
         "assets": [
           "CHANGELOG.md",
-          "lib/maid/version.rb"
+          "lib/maid/version.rb",
+          "Gemfile.lock"
         ],
         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
