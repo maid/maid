@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - master
-  # FIXME: Dont ship this
-  pull_request:
-    branches:
-      - master
 
 permissions:
   contents: write
@@ -49,8 +45,7 @@ jobs:
         id: semantic_release
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
-        # FIXME: Dont ship this
-        run: npx semantic-release --debug --dry-run --branches relplz5
+        run: npx semantic-release
 
       - name: Publish gem
         if: steps.semantic_release.outputs.new_release_published == 'true'
