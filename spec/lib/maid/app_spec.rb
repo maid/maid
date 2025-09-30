@@ -52,9 +52,25 @@ module Maid
       @app.clean
     end
 
-    it 'cleans when --force is specified' do
-      expect(@maid).to receive(:clean)
-      App.start(['clean', '--force'])
+    context 'with --force' do
+      let :flags do
+        %w[--force]
+      end
+
+      it 'calls clean' do
+        expect(@maid).to receive(:clean)
+        App.start(['clean', *flags])
+      end
+
+      fit 'logs actions to STDOUT' do
+        real_maid = Maid.new
+        allow(real_maid).to receive(:follow_rules)
+        allow(Maid).to receive(:new).and_return(real_maid)
+
+        stdout = capture_stdout { App.start(['clean', *flags]) }
+
+        expect(stdout).not_to match(/Logging actions to nil/)
+      end
     end
 
     it 'issues deprecation notice when called without option, but still clean' do

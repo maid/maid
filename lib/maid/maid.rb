@@ -7,6 +7,7 @@ require 'xdg'
 # the `Maid` module makes things confusing.
 class Maid::Maid
   include Maid::RuleContainer
+
   DEFAULTS = {
     log_device: File.expand_path('~/.maid/maid.log'),
     logger: ::Maid::Logger,
@@ -30,8 +31,8 @@ class Maid::Maid
 
     @logger = options[:logger].new(device: options[:log_device])
 
-    @rules_path   = options[:rules_path]
-    @trash_path   = options[:trash_path] || default_trash_path
+    @rules_path = options[:rules_path]
+    @trash_path = options[:trash_path] || default_trash_path
     @file_options = options[:file_options]
 
     # Just in case they aren't there...
@@ -45,6 +46,7 @@ class Maid::Maid
 
   # Start cleaning, based on the rules defined at rules_path.
   def clean
+    throw 'BOOM'
     unless @log_device.is_a?(IO)
       @logger.info "v#{Maid::VERSION}"
       @logger.info 'Started'

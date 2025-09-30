@@ -27,10 +27,10 @@ class Maid::App < Thor
   end
 
   desc 'clean', 'Clean based on rules'
-  method_option :rules,   type: :string,  aliases: %w[-r]
-  method_option :noop,    type: :boolean, aliases: %w[-n --dry-run]
-  method_option :force,   type: :boolean, aliases: %w[-f]
-  method_option :silent,  type: :boolean, aliases: %w[-s]
+  method_option :rules, type: :string, aliases: %w[-r]
+  method_option :noop, type: :boolean, aliases: %w[-n --dry-run]
+  method_option :force, type: :boolean, aliases: %w[-f]
+  method_option :silent, type: :boolean, aliases: %w[-s]
   def clean
     maid = Maid::Maid.new(maid_options(options))
 
@@ -73,8 +73,8 @@ class Maid::App < Thor
   end
 
   desc 'daemon', 'Runs the watch/repeat rules in a daemon'
-  method_option :rules,   type: :string,  aliases: %w[-r]
-  method_option :silent,  type: :boolean, aliases: %w[-s]
+  method_option :rules, type: :string, aliases: %w[-r]
+  method_option :silent, type: :boolean, aliases: %w[-s]
   def daemon
     maid = Maid::Maid.new(maid_options(options))
 
@@ -118,6 +118,11 @@ class Maid::App < Thor
 
         unless options['silent']
           h[:logger] = false
+          h[:log_device] = STDOUT
+          h[:log_formatter] = ->(_, _, _, msg) { "#{msg}\n" }
+        end
+      elsif options['force']
+        unless options['silent']
           h[:log_device] = STDOUT
           h[:log_formatter] = ->(_, _, _, msg) { "#{msg}\n" }
         end
