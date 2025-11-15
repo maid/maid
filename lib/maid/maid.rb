@@ -28,7 +28,8 @@ class Maid::Maid
   def initialize(options = {})
     options = DEFAULTS.merge(options.reject { |_k, v| v.nil? })
 
-    @logger = options[:logger].new(device: options[:log_device])
+    @log_device = options[:log_device]
+    @logger = (options[:logger] || DEFAULTS[:logger]).new(device: @log_device)
 
     @rules_path   = options[:rules_path]
     @trash_path   = options[:trash_path] || default_trash_path
