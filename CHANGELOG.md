@@ -1,3 +1,10 @@
+## [0.11.2](https://github.com/maid/maid/compare/v0.11.1...v0.11.2) (2025-11-29)
+
+
+### Bug Fixes
+
+* **Logger:** Provide default logger ([#354](https://github.com/maid/maid/issues/354)) ([2002e58](https://github.com/maid/maid/commit/2002e5846f84fa71addbda0f3909ade871e253c3))
+
 ## [0.11.1](https://github.com/maid/maid/compare/v0.11.0...v0.11.1) (2025-08-16)
 
 

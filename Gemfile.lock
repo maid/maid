@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    maid (0.11.1)
+    maid (0.11.2)
       deprecated (~> 3.0.0)
       dimensions (>= 1.0.0, < 2.0)
       escape (>= 0.0.1, < 0.1.0)
