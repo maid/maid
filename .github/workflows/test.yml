@@ -17,15 +17,18 @@ jobs:
         os:
           - ubuntu-22.04
           - ubuntu-24.04
+          - ubuntu-latest
           - macos-14
           - macos-15
+          - macos-latest
         ruby-version:
           - "3.2"
           - "3.3"
           - "3.4"
+          - "4.0"
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
