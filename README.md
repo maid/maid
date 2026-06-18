@@ -1,5 +1,7 @@
 # Maid
 
+[![Sponsored by CloudBreak](https://cloudbreak.app/promotional_banner.svg?source=maid_readme)](https://cloudbreak.app/promotional_banner/visit?source=maid_readme)
+
 [![Gem Version](https://badge.fury.io/rb/maid.svg)](https://badge.fury.io/rb/maid)
 ![GitHub Release](https://img.shields.io/github/v/release/maid/maid)
 [![Test](https://github.com/maid/maid/actions/workflows/test.yml/badge.svg)](https://github.com/maid/maid/actions/workflows/test.yml)
