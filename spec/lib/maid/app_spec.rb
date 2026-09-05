@@ -27,6 +27,17 @@ ensure
   $stderr = STDERR
 end
 
+def capture_stderr_and_exit_status
+  out = StringIO.new
+  $stderr = out
+  yield
+  [out.string, 0]
+rescue SystemExit => e
+  [out.string, e.status]
+ensure
+  $stderr = STDERR
+end
+
 module Maid
   describe App, '#clean' do
     before do
@@ -74,12 +85,22 @@ module Maid
     end
 
     it 'complains about a MISSPELLED option' do
-      expect(capture_stderr { App.start(['clean', '--slient']) }).to match(/Unknown/)
-      expect(capture_stderr { App.start(['clean', '--noop', '--slient']) }).to match(/Unknown/)
+      [
+        ['clean', '--slient'],
+        ['clean', '--noop', '--slient'],
+      ].each do |arguments|
+        message, exit_status = capture_stderr_and_exit_status { App.start(arguments) }
+
+        expect(message).to match(/Unknown/)
+        expect(exit_status).to eq(1)
+      end
     end
 
     it 'complains about an undefined task' do
-      expect(capture_stderr { App.start(['rules.rb']) }).to match(/Could not find/)
+      message, exit_status = capture_stderr_and_exit_status { App.start(['rules.rb']) }
+
+      expect(message).to match(/Could not find/)
+      expect(exit_status).to eq(1)
     end
   end
 
@@ -95,6 +116,13 @@ module Maid
 
     it 'is mapped as --version' do
       expect(App.start(['--version'])).to eq(@app.version)
+    end
+
+    it 'exits unsuccessfully for an invalid switch' do
+      message, exit_status = capture_stderr_and_exit_status { App.start(['-version']) }
+
+      expect(message).to match(/Unknown switches "-version"/)
+      expect(exit_status).to eq(1)
     end
 
     context 'with the "long" option' do

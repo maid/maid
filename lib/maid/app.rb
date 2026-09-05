@@ -2,9 +2,13 @@ require 'fileutils'
 
 require 'thor'
 
-class Maid::App < Thor
+class Maid::App < Thor # rubocop:disable Metrics/ClassLength
   check_unknown_options!
   default_task 'introduction'
+
+  def self.exit_on_failure?
+    true
+  end
 
   desc 'introduction', 'Become aquainted with maid'
   def introduction
