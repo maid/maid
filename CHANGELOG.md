@@ -1,3 +1,10 @@
+## [0.11.3](https://github.com/maid/maid/compare/v0.11.2...v0.11.3) (2026-09-10)
+
+
+### Bug Fixes
+
+* **thor:** Return failure status for invalid switches ([#356](https://github.com/maid/maid/issues/356)) ([3443d42](https://github.com/maid/maid/commit/3443d424a4602284b0e499a0bf81db006578a3ba))
+
 ## [0.11.2](https://github.com/maid/maid/compare/v0.11.1...v0.11.2) (2025-11-29)
 
 
