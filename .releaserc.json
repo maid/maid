@@ -1,9 +1,14 @@
 {
-  "branches": [
-    "master"
-  ],
+  "branches": ["master"],
   "plugins": [
-    "@semantic-release/commit-analyzer",
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "parserOpts": {
+          "breakingHeaderPattern": "^(\\w*)(?:\\((.*)\\))?!: (.*)$"
+        }
+      }
+    ],
     "@semantic-release/release-notes-generator",
     [
       "@semantic-release/changelog",
@@ -21,11 +26,7 @@
     [
       "@semantic-release/git",
       {
-        "assets": [
-          "CHANGELOG.md",
-          "lib/maid/version.rb",
-          "Gemfile.lock"
-        ],
+        "assets": ["CHANGELOG.md", "lib/maid/version.rb", "Gemfile.lock"],
         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ],
