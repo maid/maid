@@ -13,7 +13,7 @@ AllCops:
     - "vendor/bundle/**/*" # when running on GH Actions
     - ".vagrant/**/*"
   NewCops: enable
-  TargetRubyVersion: "3.2"
+  TargetRubyVersion: "3.3"
 
 Metrics/BlockLength:
   Exclude:

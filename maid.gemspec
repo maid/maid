@@ -2,17 +2,17 @@ $:.push File.expand_path('lib', __dir__)
 require 'maid/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'maid'
-  s.version     = Maid::VERSION
-  s.platform    = Gem::Platform::RUBY
-  s.authors     = ['Benjamin Oakes', 'Coaxial']
-  s.email       = ['hello@benjaminoakes.com', 'c+rubygems@64b.it']
-  s.license     = 'GPL-2.0-only'
-  s.homepage    = 'http://github.com/maid/maid'
-  s.summary     = 'Keep your filesystem clean by running custom rules periodically'
+  s.name = 'maid'
+  s.version = Maid::VERSION
+  s.platform = Gem::Platform::RUBY
+  s.authors = ['Benjamin Oakes', 'Coaxial']
+  s.email = ['hello@benjaminoakes.com', 'c+rubygems@64b.it']
+  s.license = 'GPL-2.0-only'
+  s.homepage = 'http://github.com/maid/maid'
+  s.summary = 'Keep your filesystem clean by running custom rules periodically'
   s.description = Maid::SUMMARY
-  s.files       = Dir['lib/**/*.rb'] + Dir['bin/maid']
-  s.metadata    = {
+  s.files = Dir['lib/**/*.rb'] + Dir['bin/maid']
+  s.metadata = {
     'bug_tracker_uri' => 'https://github.com/maid/maid/issues',
     'changelog_uri' => 'https://github.com/maid/maid/blob/master/CHANGELOG.md',
     'documentation_uri' => 'https://github.com/maid/maid/blob/master/README.md',
@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
     'rubygems_mfa_required' => 'true',
   }
 
-  s.required_ruby_version = '>= 3.2.0'
+  s.required_ruby_version = '>= 3.3.0'
 
   # Strategy: if possible, use ranges (so there are fewer chances of version conflicts)
   s.add_dependency('deprecated', '~> 3.0.0')
@@ -76,8 +76,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rb-fsevent', '~> 0.11.2')
   s.add_development_dependency('rb-inotify', '~> 0.10.1')
 
-  s.files         = `git ls-files -z`.split("\0")
-  s.executables   = `git ls-files -z -- bin/*`.split("\0").map { |f| File.basename(f) }
+  s.files = `git ls-files -z`.split("\0")
+  s.executables = `git ls-files -z -- bin/*`.split("\0").map { |f| File.basename(f) }
   s.require_paths = %w[lib]
 
   s.post_install_message = "🙏 Thank you for installing Maid, we hope it's " \

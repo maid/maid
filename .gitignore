@@ -7,3 +7,4 @@ doc/*
 .act-secrets
 coverage/
 guard_*_runner*
+vendor/
