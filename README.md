@@ -9,7 +9,7 @@
 [![Code Coverage](https://qlty.sh/gh/maid/projects/maid/coverage.svg)](https://qlty.sh/gh/maid/projects/maid)
 [![StackOverflow](http://img.shields.io/badge/stackoverflow-maid-blue.svg)](http://stackoverflow.com/questions/tagged/maid)
 
-**Be lazy!**  Let Maid clean up after you, based on rules you define.
+**Be lazy!** Let Maid clean up after you, based on rules you define.
 
 [Installation](#installation)
 | [Tutorial](#tutorial)
@@ -18,40 +18,40 @@
 | [Documentation][]
 | [Changelog](CHANGELOG.md)
 
-Maid keeps files from sitting around too long, untouched.  Many of the downloads and temporary files you collect can
-easily be categorized and handled appropriately by rules you define.  Let the `maid` in your computer take care of the
+Maid keeps files from sitting around too long, untouched. Many of the downloads and temporary files you collect can
+easily be categorized and handled appropriately by rules you define. Let the `maid` in your computer take care of the
 easy stuff, so you can spend more of your time on what matters.
 
-Think of it like the email filters you might already have, but for files.  Worried about things happening that you don't
-expect?  Maid doesn't overwrite files and actions are logged so you can tell what happened.
+Think of it like the email filters you might already have, but for files. Worried about things happening that you don't
+expect? Maid doesn't overwrite files and actions are logged so you can tell what happened.
 
-Maid is inspired by the Mac OS X shareware program [Hazel](http://www.noodlesoft.com/hazel.php).  Think of Maid as
+Maid is inspired by the Mac OS X shareware program [Hazel](http://www.noodlesoft.com/hazel.php). Think of Maid as
 **"Hazel for hackers"**.
 
-Your rules are defined in Ruby, so simple rules are easy and difficult rules are possible.  This also makes Maid a great
+Your rules are defined in Ruby, so simple rules are easy and difficult rules are possible. This also makes Maid a great
 general-purpose **advanced file renaming tool**.
 
 ## Want to help?
 
-This project wouldn't be where it is today without its users and contributors.  Thank you!  See [AUTHORS][] and the
+This project wouldn't be where it is today without its users and contributors. Thank you! See [AUTHORS][] and the
 [contributors graph][] for more info.
 
-  [authors]: https://github.com/maid/maid/blob/master/AUTHORS.md
-  [contributors graph]: https://github.com/maid/maid/graphs/contributors
+[authors]: https://github.com/maid/maid/blob/master/AUTHORS.md
+[contributors graph]: https://github.com/maid/maid/graphs/contributors
 
 ### For Users
 
-* Participate in [beta testing](https://github.com/maid/maid/issues/10)
-* [Report an issue](https://github.com/maid/maid/issues) (bug or feature request)
-* Read through the [wiki](https://github.com/maid/maid/wiki)
-* Even just [share a link to Maid](https://twitter.com/intent/tweet?related=maidgem&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fmaid%2Fmaid) :)
+- Participate in [beta testing](https://github.com/maid/maid/issues/10)
+- [Report an issue](https://github.com/maid/maid/issues) (bug or feature request)
+- Read through the [wiki](https://github.com/maid/maid/wiki)
+- Even just [share a link to Maid](https://twitter.com/intent/tweet?related=maidgem&text=Be+lazy%21+Let+Maid+clean+up+after+you%2C+based+on+rules+you+define&url=https%3A%2F%2Fgithub.com%2Fmaid%2Fmaid) :)
 
 ### For Developers
 
-* Address a `TODO` or `FIXME` in the code (list them with `rake notes`.)
-* Fix an [existing issue](https://github.com/maid/maid/issues)
-* **Working on an issue?** Please leave a comment so others know.
-* See the [Contributing guide](https://github.com/maid/maid/wiki/Contributing)
+- Address a `TODO` or `FIXME` in the code (list them with `rake notes`.)
+- Fix an [existing issue](https://github.com/maid/maid/issues)
+- **Working on an issue?** Please leave a comment so others know.
+- See the [Contributing guide](https://github.com/maid/maid/wiki/Contributing)
 
 ## Buzz
 
@@ -75,7 +75,7 @@ This project wouldn't be where it is today without its users and contributors.  
 
 ## Installation
 
-Maid is a gem, so just `gem install maid` like normal.  If you're unfamiliar with Ruby, please see below for details.
+Maid is a gem, so just `gem install maid` like normal. If you're unfamiliar with Ruby, please see below for details.
 
 #### Requirements
 
@@ -83,10 +83,10 @@ Modern Ruby versions and Unix-like operating systems should work, but only OS X 
 
 Offically supported:
 
-* **OS:** Mac OS X, Ubuntu
-* **Ruby:** 2.7.0+ (3.0.0+ preferred)
+- **OS:** Mac OS X, Ubuntu
+- **Ruby:** 2.7.0+ (3.0.0+ preferred)
 
-Some features require OS X.  See the [documentation][] for more details.
+Some features require OS X. See the [documentation][] for more details.
 
 ### Manual Installation
 
@@ -95,7 +95,7 @@ strongly recommend going for Ruby 3 as 2.7 is EOL.
 
 Consider using [`rvm`](https://rvm.io/rvm/install), [`rbenv`](https://github.com/rbenv/rbenv#installation), [`rtx`](https://github.com/jdxcode/rtx), or [any other version management tool](https://github.com/bernardoduarte/awesome-version-managers).
 
-Then, install via RubyGems.  Open a terminal and run:
+Then, install via RubyGems. Open a terminal and run:
 
 ```bash
 gem install maid
@@ -113,13 +113,13 @@ If you decide you don't want Maid installed anymore, remove it:
 gem uninstall maid
 ```
 
-**NOTE:** This does not remove any files under `~/.maid` or crontab entries.  Please remove them at your convenience.
+**NOTE:** This does not remove any files under `~/.maid` or crontab entries. Please remove them at your convenience.
 
 ### Install through RVM and a dedicated gemset
 
-Install Ruby 3.2 and create a gemset:
+Install Ruby 3.3 and create a gemset:
 
-`rvm install ruby-3.2 && rvm use 3.2 && rvm gemset create maid && rvm alias create maid ruby-3.2@maid`
+`rvm install ruby-3.3 && rvm use 3.3 && rvm gemset create maid && rvm alias create maid ruby-3.2@maid`
 
 Install maid:
 
@@ -131,11 +131,11 @@ Update maid:
 
 Update ruby:
 
-`rvm install ruby-3.3 && rvm gemset copy 3.{2,3}@maid && rvm alias maid 3.3@maid`
+`rvm install ruby-3.4 && rvm gemset copy 3.{3,4}@maid && rvm alias maid 3.4@maid`
 
 ## Tutorial
 
-In a nutshell, Maid uses "rules" to define how files are handled.  Once you have rules defined, you can either test what
+In a nutshell, Maid uses "rules" to define how files are handled. Once you have rules defined, you can either test what
 cleaning would do (`maid clean -n`) or actually clean (`maid clean -f`).
 
 To generate a [sample rules file](lib/maid/rules.sample.rb), run:
@@ -172,7 +172,7 @@ Maid.rules do
 end
 ```
 
-Before you start running your rules, you'll likely want to be able to test them.  Here's how:
+Before you start running your rules, you'll likely want to be able to test them. Here's how:
 
 ```bash
 # No actions are taken; you just see what would happen with your rules as defined.
@@ -206,14 +206,14 @@ mv "/Users/ben/Downloads/issue12.pdf" "/Users/ben/Books/"
 mv "/Users/ben/Downloads/spring2011newsletter.pdf" "/Users/ben/Books/"
 ```
 
-For help with command line usage, run `maid help`.  For more help, please see the links at the top of this README.
+For help with command line usage, run `maid help`. For more help, please see the links at the top of this README.
 
 ### Automation
 
-Once you get a hang for what you can do with Maid, let it do its stuff automatically throughout the day.  You'll find
+Once you get a hang for what you can do with Maid, let it do its stuff automatically throughout the day. You'll find
 your computer stays a little tidier with as you teach it how to handle your common files.
 
-**Note:** Daemon support (using `fsevent`/`inotify`) was recently added.  That said, `cron` takes care of the needs of many users.
+**Note:** Daemon support (using `fsevent`/`inotify`) was recently added. That said, `cron` takes care of the needs of many users.
 
 To do this, edit your crontab in your tool of choice:
 
@@ -221,8 +221,8 @@ To do this, edit your crontab in your tool of choice:
 crontab -e
 ```
 
-...and have it invoke the `maid clean -f` command.  The `--silent` option is provided to keep this from emailing you, if
-desired.  A log of the actions taken is kept at `~/.maid/maid.log`.
+...and have it invoke the `maid clean -f` command. The `--silent` option is provided to keep this from emailing you, if
+desired. A log of the actions taken is kept at `~/.maid/maid.log`.
 
 Example for every day at 1am:
 
@@ -272,7 +272,7 @@ Maid.rules do
 end
 ```
 
-The command to run the daemon is `maid daemon`.  Starting the daemon on login depends on the platform.
+The command to run the daemon is `maid daemon`. Starting the daemon on login depends on the platform.
 
 #### With RVM and cron
 
@@ -294,11 +294,11 @@ You can run `maid daemon` as a normal startup application (Power/Gear Menu -> St
 
 #### OS X
 
-Please see Jurriaan Pruis' blog post, [Maid as a Daemon on OS X](https://web.archive.org/web/20191228181605/jurriaan.ninja/2015/01/01/maid-on-os-x.html).  ([Automating this setup would be welcome as a pull request!](https://github.com/maid/maid/issues/136))
+Please see Jurriaan Pruis' blog post, [Maid as a Daemon on OS X](https://web.archive.org/web/20191228181605/jurriaan.ninja/2015/01/01/maid-on-os-x.html). ([Automating this setup would be welcome as a pull request!](https://github.com/maid/maid/issues/136))
 
 ### Rake Tasks
 
-Maid includes helpers that make file managment easier.  You may find them useful if you need to automate tasks in your Ruby projects.  This is available via support for Maid-based Rake tasks:
+Maid includes helpers that make file managment easier. You may find them useful if you need to automate tasks in your Ruby projects. This is available via support for Maid-based Rake tasks:
 
 ```ruby
 # File: Rakefile
@@ -330,6 +330,6 @@ ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
 
 ## License
 
-GPLv2.  See LICENSE for a copy.
+GPLv2. See LICENSE for a copy.
 
-  [documentation]: https://www.rubydoc.info/github/maid/maid/master
+[documentation]: https://www.rubydoc.info/github/maid/maid/master
