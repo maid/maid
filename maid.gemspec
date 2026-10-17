@@ -1,41 +1,41 @@
-$:.push File.expand_path("lib", __dir__)
-require "maid/version"
+$:.push File.expand_path('lib', __dir__)
+require 'maid/version'
 
 Gem::Specification.new do |s|
-  s.name = "maid"
+  s.name = 'maid'
   s.version = Maid::VERSION
   s.platform = Gem::Platform::RUBY
-  s.authors = ["Benjamin Oakes", "Coaxial"]
-  s.email = ["hello@benjaminoakes.com", "c+rubygems@64b.it"]
-  s.license = "GPL-2.0-only"
-  s.homepage = "http://github.com/maid/maid"
-  s.summary = "Keep your filesystem clean by running custom rules periodically"
+  s.authors = ['Benjamin Oakes', 'Coaxial']
+  s.email = ['hello@benjaminoakes.com', 'c+rubygems@64b.it']
+  s.license = 'GPL-2.0-only'
+  s.homepage = 'http://github.com/maid/maid'
+  s.summary = 'Keep your filesystem clean by running custom rules periodically'
   s.description = Maid::SUMMARY
-  s.files = Dir["lib/**/*.rb"] + Dir["bin/maid"]
+  s.files = Dir['lib/**/*.rb'] + Dir['bin/maid']
   s.metadata = {
-    "bug_tracker_uri" => "https://github.com/maid/maid/issues",
-    "changelog_uri" => "https://github.com/maid/maid/blob/master/CHANGELOG.md",
-    "documentation_uri" => "https://github.com/maid/maid/blob/master/README.md",
-    "source_code_uri" => "https://github.com/maid/maid",
-    "wiki_uri" => "https://github.com/maid/maid/wiki",
-    "rubygems_mfa_required" => "true"
+    'bug_tracker_uri' => 'https://github.com/maid/maid/issues',
+    'changelog_uri' => 'https://github.com/maid/maid/blob/master/CHANGELOG.md',
+    'documentation_uri' => 'https://github.com/maid/maid/blob/master/README.md',
+    'source_code_uri' => 'https://github.com/maid/maid',
+    'wiki_uri' => 'https://github.com/maid/maid/wiki',
+    'rubygems_mfa_required' => 'true',
   }
 
-  s.required_ruby_version = ">= 3.3.0"
+  s.required_ruby_version = '>= 3.3.0'
 
   # Strategy: if possible, use ranges (so there are fewer chances of version conflicts)
-  s.add_dependency("deprecated", "~> 3.0.0")
-  s.add_dependency("dimensions", ">= 1.0.0", "< 2.0")
+  s.add_dependency('deprecated', '~> 3.0.0')
+  s.add_dependency('dimensions', '>= 1.0.0', '< 2.0')
   # Used for better Ruby 1.8.7 support, could be replaced with `Shellwords`
-  s.add_dependency("escape", ">= 0.0.1", "< 0.1.0")
-  s.add_dependency("exifr", "~> 1.3.10")
-  s.add_dependency("geocoder", "~> 1.8.1")
-  s.add_dependency("listen", "~> 3.8.0")
-  s.add_dependency("mime-types", "~> 3.0", "< 4.0")
-  s.add_dependency("rubyzip", "~> 2.3.2")
-  s.add_dependency("rufus-scheduler", "~> 3.8.2")
-  s.add_dependency("thor", "~> 1.4.0")
-  s.add_dependency("xdg", "~> 2.2.3") # previous versions had bugs
+  s.add_dependency('escape', '>= 0.0.1', '< 0.1.0')
+  s.add_dependency('exifr', '~> 1.3.10')
+  s.add_dependency('geocoder', '~> 1.8.1')
+  s.add_dependency('listen', '~> 3.8.0')
+  s.add_dependency('mime-types', '~> 3.0', '< 4.0')
+  s.add_dependency('rubyzip', '~> 2.3.2')
+  s.add_dependency('rufus-scheduler', '~> 3.8.2')
+  s.add_dependency('thor', '~> 1.4.0')
+  s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs
 
   # TODO: use one of these two gems instead of `mdfind`.  **But** They have to work on Linux as well.
   #
@@ -43,38 +43,38 @@ Gem::Specification.new do |s|
   #     s.add_dependency('spotlight', '~> 0.0.6')
 
   # Strategy: specific versions (since they're just for development)
-  s.add_development_dependency("conventional-changelog", "~> 1.3.0")
-  s.add_development_dependency("fakefs", "~> 2.4.0")
-  s.add_development_dependency("fuubar", "~> 2.5.1")
-  s.add_development_dependency("guard", "~> 2.18.0")
-  s.add_development_dependency("guard-bundler", "~> 3.0.1")
-  s.add_development_dependency("guard-rspec", "~> 4.7.3")
-  s.add_development_dependency("guard-rubocop", "~> 1.5.0")
-  s.add_development_dependency("irb", "~> 1.15.1")
-  s.add_development_dependency("ostruct", "~> 0.6.1")
-  s.add_development_dependency("pry-byebug", "~> 3.10.1")
-  s.add_development_dependency("rake", "~> 13.0.6")
-  s.add_development_dependency("rake-notes", "~> 0.2.2")
-  s.add_development_dependency("redcarpet", "~> 3.6.0") # Soft dependency of `yard`
-  s.add_development_dependency("reline", "~> 0.6.0")
-  s.add_development_dependency("rspec", "~> 3.12.0")
-  s.add_development_dependency("rubocop", "~> 1.50")
-  s.add_development_dependency("rubocop-rake", "~> 0.6.0")
-  s.add_development_dependency("rubocop-rspec", "~> 3.5.0")
-  s.add_development_dependency("semantic_release", "~> 1.0.0")
-  s.add_development_dependency("simplecov", "~> 0.22.0")
-  s.add_development_dependency("timecop", "~> 0.9.6")
-  s.add_development_dependency("vcr", "~> 6.1.0")
-  s.add_development_dependency("webmock", "~> 3.18.1")
-  s.add_development_dependency("yard", ">= 0.9.11")
+  s.add_development_dependency('conventional-changelog', '~> 1.3.0')
+  s.add_development_dependency('fakefs', '~> 2.4.0')
+  s.add_development_dependency('fuubar', '~> 2.5.1')
+  s.add_development_dependency('guard', '~> 2.18.0')
+  s.add_development_dependency('guard-bundler', '~> 3.0.1')
+  s.add_development_dependency('guard-rspec', '~> 4.7.3')
+  s.add_development_dependency('guard-rubocop', '~> 1.5.0')
+  s.add_development_dependency('irb', '~> 1.15.1')
+  s.add_development_dependency('ostruct', '~> 0.6.1')
+  s.add_development_dependency('pry-byebug', '~> 3.10.1')
+  s.add_development_dependency('rake', '~> 13.0.6')
+  s.add_development_dependency('rake-notes', '~> 0.2.2')
+  s.add_development_dependency('redcarpet', '~> 3.6.0') # Soft dependency of `yard`
+  s.add_development_dependency('reline', '~> 0.6.0')
+  s.add_development_dependency('rspec', '~> 3.12.0')
+  s.add_development_dependency('rubocop', '~> 1.50')
+  s.add_development_dependency('rubocop-rake', '~> 0.6.0')
+  s.add_development_dependency('rubocop-rspec', '~> 3.5.0')
+  s.add_development_dependency('semantic_release', '~> 1.0.0')
+  s.add_development_dependency('simplecov', '~> 0.22.0')
+  s.add_development_dependency('timecop', '~> 0.9.6')
+  s.add_development_dependency('vcr', '~> 6.1.0')
+  s.add_development_dependency('webmock', '~> 3.18.1')
+  s.add_development_dependency('yard', '>= 0.9.11')
 
   # In Vagrant, polling won't cross over the OS boundary if you develop in the host OS but run your tests in the
   # guest.  One way around this is to force polling instead:
   #
   #     bundle exec guard --force-polling
   #
-  s.add_development_dependency("rb-fsevent", "~> 0.11.2")
-  s.add_development_dependency("rb-inotify", "~> 0.10.1")
+  s.add_development_dependency('rb-fsevent', '~> 0.11.2')
+  s.add_development_dependency('rb-inotify', '~> 0.10.1')
 
   s.files = `git ls-files -z`.split("\0")
   s.executables = `git ls-files -z -- bin/*`.split("\0").map { |f| File.basename(f) }
