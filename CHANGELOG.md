@@ -1,5 +1,15 @@
 # [1.0.0](https://github.com/maid/maid/compare/v0.11.3...v1.0.0) (2026-10-17)
 
+
+### chore
+
+* Drop Ruby 3.2 support ([#358](https://github.com/maid/maid/issues/358)) ([8cf4fb9](https://github.com/maid/maid/commit/8cf4fb986c33707556329d81558d5d8afcf90a33))
+
+
+### BREAKING CHANGES
+
+* Drop Ruby 3.2 support (#358)
+
 ## [0.11.3](https://github.com/maid/maid/compare/v0.11.2...v0.11.3) (2026-09-10)
 
 
