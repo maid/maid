@@ -1,5 +1,3 @@
-# [1.0.0](https://github.com/maid/maid/compare/v0.11.3...v1.0.0) (2026-10-17)
-
 ## [0.11.3](https://github.com/maid/maid/compare/v0.11.2...v0.11.3) (2026-09-10)
 
 
