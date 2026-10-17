@@ -4,22 +4,12 @@
     [
       "@semantic-release/commit-analyzer",
       {
-        "parserOpts": {
-          "breakingHeaderPattern": "^(\\w*)(?:\\((.*)\\))?!: (.*)$"
-        },
         "releaseRules": [
           { "breaking": true, "release": "minor" }
         ]
       }
     ],
-    [
-      "@semantic-release/release-notes-generator",
-      {
-        "parserOpts": {
-          "breakingHeaderPattern": "^(\\w*)(?:\\((.*)\\))?!: (.*)$"
-        }
-      }
-    ],
+    "@semantic-release/release-notes-generator",
     [
       "@semantic-release/changelog",
       {
