@@ -28,7 +28,9 @@ jobs:
       - name: Install commitlint
         run: npm install -g @commitlint/config-conventional @commitlint/cli
       - name: Validate current commit (push)
-        run: echo "${{ github.event.head_commit.message }}" | commitlint
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: printf '%s\n' "$COMMIT_MESSAGE" | commitlint
 
   rubocop:
     runs-on: ubuntu-latest
@@ -64,4 +66,6 @@ jobs:
       - name: Install commitlint
         run: npm install -g @commitlint/config-conventional @commitlint/cli
       - name: Validate PR title
-        run: echo "${{ github.event.pull_request.title }}" | commitlint
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: printf '%s\n' "$PR_TITLE" | commitlint
