@@ -15,10 +15,10 @@ on:
 
 jobs:
   commitlint:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     if: github.event_name == 'push'
     steps:
-      - uses: actions/checkout@v4
+      - uses: useblacksmith/checkout@v1
         with:
           fetch-depth: 0
       - name: Setup Node.js
@@ -33,9 +33,9 @@ jobs:
         run: printf '%s\n' "$COMMIT_MESSAGE" | commitlint
 
   rubocop:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
-      - uses: actions/checkout@v4
+      - uses: useblacksmith/checkout@v1
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -46,19 +46,19 @@ jobs:
       - name: Run lint
         run: bundle exec rubocop
   shellcheck:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
-      - uses: actions/checkout@v4
+      - uses: useblacksmith/checkout@v1
       - name: Install Shellcheck
         run: sudo apt install shellcheck -y
       - name: Run shellcheck
         run: shellcheck -x script/*
 
   pr-title-lint:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     if: github.event_name == 'pull_request'
     steps:
-      - uses: actions/checkout@v4
+      - uses: useblacksmith/checkout@v1
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
