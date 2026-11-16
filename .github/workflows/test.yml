@@ -16,7 +16,7 @@ jobs:
       matrix:
         os:
           - blacksmith-4vcpu-ubuntu-2404
-          - ubuntu-26.04
+          - blacksmith-4vcpu-ubuntu-2604
           - blacksmith-6vcpu-macos-15
           - blacksmith-6vcpu-macos-26
         ruby-version:
