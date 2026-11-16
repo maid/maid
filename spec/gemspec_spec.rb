@@ -1,9 +1,8 @@
 require 'spec_helper'
 
-describe 'maid.gemspec' do
-  it 'loads the description without Maid::SUMMARY' do
-    project_root = File.expand_path('..', __dir__)
-    script = <<~RUBY
+describe Gem::Specification do
+  let(:script) do
+    <<~RUBY
       require 'maid/version'
       Maid.send(:remove_const, :SUMMARY)
       specification = Gem::Specification.load('maid.gemspec')
@@ -13,7 +12,10 @@ describe 'maid.gemspec' do
       ].join
       abort unless specification&.description == expected_description
     RUBY
+  end
 
+  it 'loads the description without Maid::SUMMARY' do
+    project_root = File.expand_path('..', __dir__)
     expect(system(RbConfig.ruby, '-Ilib', '-e', script, chdir: project_root)).to be(true)
   end
 end
