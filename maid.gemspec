@@ -10,7 +10,8 @@ Gem::Specification.new do |s|
   s.license = 'GPL-2.0-only'
   s.homepage = 'http://github.com/maid/maid'
   s.summary = 'Keep your filesystem clean by running custom rules periodically'
-  s.description = Maid::SUMMARY
+  s.description = 'Be lazy. Let Maid clean up after you, based on rules you define. ' \
+                  'Think of it as "Hazel for hackers".'
   s.files = Dir['lib/**/*.rb'] + Dir['bin/maid']
   s.metadata = {
     'bug_tracker_uri' => 'https://github.com/maid/maid/issues',
