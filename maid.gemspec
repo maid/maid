@@ -1,5 +1,4 @@
-$:.push File.expand_path('lib', __dir__)
-require 'maid/version'
+require_relative 'lib/maid/version'
 
 Gem::Specification.new do |s|
   s.name = 'maid'
