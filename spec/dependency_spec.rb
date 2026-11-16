@@ -1,10 +1,13 @@
 require 'dimensions'
 require 'exifr/jpeg'
+require 'fileutils'
 require 'logger'
 require 'geocoder'
 require 'mime/types'
+require 'open3'
 require 'rbconfig'
 require 'stringio'
+require 'tmpdir'
 require 'xdg'
 require 'zip'
 
@@ -17,6 +20,49 @@ require 'zip'
 describe 'Dependency expectations' do
   before do
     @file_fixtures_path = File.expand_path(File.dirname(__FILE__) + '/fixtures/files/')
+  end
+
+  # Dependabot evaluates the gemspec in an isolated copy of the repo.  Its
+  # sanitizer wraps every `require`/`require_relative` in
+  # `begin ... rescue LoadError ... end`, and it only fetches files that are
+  # referenced with `require_relative` (plain `require`s are not fetched).  So a
+  # constant defined in a plain-`require`d local file (such as `Maid::SUMMARY`
+  # in `lib/maid/version.rb`) ends up undefined, and the security update fails
+  # with `uninitialized constant Maid`.
+  describe 'maid.gemspec' do
+    let(:repo_root) { File.expand_path('..', __dir__) }
+
+    def dependabot_sanitized_gemspec(dir)
+      gemspec = File.read(File.join(repo_root, 'maid.gemspec'))
+
+      gemspec.scan(/require_relative\s+['"]([^'"]+)['"]/).flatten.each do |path|
+        destination = File.join(dir, "#{path}.rb")
+        FileUtils.mkdir_p(File.dirname(destination))
+        FileUtils.cp(File.join(repo_root, "#{path}.rb"), destination)
+      end
+
+      gemspec.gsub(/^(\s*)(require_relative|require)\b.*$/) do
+        "begin\n#{Regexp.last_match(0)}\nrescue LoadError\nend"
+      end
+    end
+
+    def load_gemspec_without_bundler(dir)
+      command = [
+        RbConfig.ruby, '-e',
+        'abort("gemspec failed to load") unless Gem::Specification.load("maid.gemspec")',
+      ]
+      Bundler.with_unbundled_env { Open3.capture2e(*command, chdir: dir) }
+    end
+
+    it 'loads when evaluated the way Dependabot does' do
+      Dir.mktmpdir do |dir|
+        File.write(File.join(dir, 'maid.gemspec'), dependabot_sanitized_gemspec(dir))
+
+        output, status = load_gemspec_without_bundler(dir)
+
+        expect(status).to be_success, output
+      end
+    end
   end
 
   describe Logger do
