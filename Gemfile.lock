@@ -9,7 +9,7 @@ PATH
       geocoder (~> 1.8.1)
       listen (~> 3.8.0)
       mime-types (~> 3.0, < 4.0)
-      rubyzip (~> 2.3.2)
+      rubyzip (>= 2.3.2, < 4.0)
       rufus-scheduler (~> 3.8.2)
       thor (~> 1.4.0)
       xdg (~> 2.2.3)
