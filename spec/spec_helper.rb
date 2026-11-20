@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+# Redirect HOME (and XDG_DATA_HOME, which `xdg` uses for the Linux default
+# trash) before loading Maid so that any production code resolving `~/...`,
+# `Dir.home`, or XDG paths points inside /tmp/maid-specs during tests. Must
+# happen before `require 'maid'` because Maid::Maid::DEFAULTS freezes paths
+# derived from HOME at class-load time.
+ENV['HOME'] = '/tmp/maid-specs'
+ENV['XDG_DATA_HOME'] = '/tmp/maid-specs/.local/share'
+
 if ENV['COVERAGE']
   require 'simplecov'
   SimpleCov.start do
