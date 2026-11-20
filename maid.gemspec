@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency('geocoder', '~> 1.8.1')
   s.add_dependency('listen', '~> 3.8.0')
   s.add_dependency('mime-types', '~> 3.0', '< 4.0')
-  s.add_dependency('rubyzip', '>= 2.3.2', '< 4.0')
+  s.add_dependency('rubyzip', '>= 3.4.0', '< 4.0')
   s.add_dependency('rufus-scheduler', '~> 3.8.2')
   s.add_dependency('thor', '~> 1.4.0')
   s.add_dependency('xdg', '~> 2.2.3') # previous versions had bugs
